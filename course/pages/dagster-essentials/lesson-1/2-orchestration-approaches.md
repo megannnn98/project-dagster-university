@@ -1,83 +1,85 @@
 ---
-title: 'Lesson 1: Orchestration approaches'
+title: 'Урок 1: Подходы к оркестрации'
 module: 'dagster_essentials'
 lesson: '1'
 ---
 
-# Orchestration approaches
+# Подходы к оркестрации
 
-Data engineers see orchestration as key to solidifying a data pipeline for business and real-world use. In this section, we’ll go through two different approaches to workflow orchestration and the pros and cons of each.
+Инженеры данных считают оркестрацию ключевым элементом, позволяющим сделать пайплайн данных достаточно надёжным для бизнеса и практического применения. В этом разделе мы рассмотрим два подхода к оркестрации рабочих процессов, их преимущества и недостатки.
 
-But first, what’s a workflow?
+Но сначала: что такое рабочий процесс?
 
 {% callout %}
 
-> A workflow is a system for managing repetitive processes and tasks which occur in a particular order. They are the mechanism by which people and enterprises accomplish their work \[…].\_ - [IBM](https://www.ibm.com/topics/workflow) >
+> Рабочий процесс — система управления повторяющимися процессами и задачами, выполняемыми в определённом порядке. С их помощью люди и организации выполняют свою работу. — [IBM](https://www.ibm.com/topics/workflow) (пересказ определения)
 
 {% /callout %}
 
-A workflow can be visualized using a **directed acyclic graph,** or **DAG**, which depicts the steps required to complete the workflow. For example, sending a CSV of a report by email every Friday might have a DAG that looks like this:
+Рабочий процесс можно представить в виде **ориентированного ациклического графа (DAG)**, отображающего шаги, необходимые для его выполнения. Например, граф процесса отправки CSV-отчёта по электронной почте каждую пятницу может выглядеть так:
 
-![An email task as a DAG](/images/dagster-essentials/lesson-1/email-as-dag.png)
+![Отправка письма в виде DAG](/images/dagster-essentials/lesson-1/email-as-dag.png)
 
-As we mentioned, there are different approaches to orchestrating workflows, and we’ll focus on two: **task-centric** and **asset-centric**. We’ll use an example of each approach using a pipeline to bake a popular treat: **cookies.**
-
----
-
-## Task-centric workflow orchestration
-
-Task-centric orchestration is a methodology that focuses on managing and coordinating the execution of tasks. It focuses on the **hows** and less on the **whats**.
-
-For example, data engineers often perform tasks such as pulling data from an API, cleaning it, and loading it to a destination to perform analytics on it, a process known as ETL (extract, transform, load).
-
-### Example of a task-centric workflow
-
-It’s time to bring in the cookies! If you were to set up a task-centric workflow to bake cookies, it would look like this:
-
-1. Gather ingredients
-2. Combine ingredients
-3. Add chocolate chips
-4. Bake in the oven
-5. Enjoy freshly baked **chocolate chip cookies**
-
-![Baking chocolate cookies as a task-centric workflow](/images/dagster-essentials/lesson-1/cookie-etl.png)
-
-This workflow is sequential and focused on the **tasks** required to create the cookies. Notice how at the end, after all steps have been completed, there’s only one obvious output: the freshly baked cookies.
-
-We’ve added the other outputs that are created along the way to the DAG - **cookie dough** and **chocolate chip cookie dough** - but as this approach focuses on tasks, it’s not immediately obvious where or how outputs are created.
+Как уже отмечалось, существуют разные подходы к оркестрации рабочих процессов. Мы сосредоточимся на двух: **ориентированном на задачи (task-centric)** и **ориентированном на активы (asset-centric)**. Оба подхода рассмотрим на примере пайплайна приготовления популярного лакомства — **печенья**.
 
 ---
 
-## Asset-centric workflow orchestration
+## Оркестрация рабочих процессов, ориентированная на задачи
 
-Workflows that make things (whether they might be chocolate chip cookies or data) have different needs than task-centric workflows when building, troubleshooting, or scaling them. _Assets_ are what we call the outputs made by workflows. Asset-centric workflows make it easy to, at a glance, focus on the **whats** and less on the **hows.**
+Оркестрация, ориентированная на задачи, — это методология, основное внимание в которой уделяется управлению выполнением задач и их координации. Здесь важнее **как** что-то выполнить, чем **что** получить в результате.
 
-### Example of asset-centric workflow
+Например, инженеры данных часто извлекают данные из API, очищают их и загружают в целевую систему для дальнейшего анализа. Этот процесс называется ETL (extract, transform, load — извлечение, преобразование, загрузка).
 
-Let’s re-work our cookie workflow to use an **asset-centric** approach. We’ll still wind up with freshly baked cookies, but this time, the DAG will look a bit different. Specifically, our cookie graph will primarily contain **nouns** and fewer **verbs**, or instructions.
+### Пример рабочего процесса, ориентированного на задачи
 
-With an asset-centric approach, upstream assets are used as inputs to create their downstream dependencies. For example:
+Пришло время печенья! Рабочий процесс приготовления печенья, ориентированный на задачи, выглядел бы так:
 
-- To create the **cookie dough,** combine the **wet ingredients** and **dry ingredients**
-- To create the **chocolate chip cookie dough**, mix the **chocolate chips** into the **cookie dough**
-- Lastly, bake the **chocolate chip cookie dough** and wind up with **freshly baked chocolate chip cookies!**
+1. Собрать ингредиенты.
+2. Смешать ингредиенты.
+3. Добавить кусочки шоколада.
+4. Выпечь в духовке.
+5. Насладиться свежим **печеньем с кусочками шоколада**.
 
-![Baking chocolate cookies as an asset-centric workflow](/images/dagster-essentials/lesson-1/cookie-assets-one-cookie.png)
+![Приготовление печенья как рабочий процесс, ориентированный на задачи](/images/dagster-essentials/lesson-1/cookie-etl.png)
 
-### Expanding by adding more assets
+Этот рабочий процесс последовательный и сосредоточен на **задачах**, необходимых для приготовления печенья. Обрати внимание: после выполнения всех шагов явно виден только один результат — свежеиспечённое печенье.
 
-An asset-centric approach also makes adding additional assets straightforward. For example, let’s say you also wanted to bake some **peanut cookies.** To do this, you could:
+Мы добавили в DAG промежуточные результаты — **тесто для печенья** и **тесто с кусочками шоколада**. Но поскольку этот подход сосредоточен на задачах, не сразу понятно, где и как создаются результаты.
 
-- Add **peanuts** to the **raw ingredients**
-- To create the **peanut cookie dough**, mix the **peanuts** into the **cookie dough**
-- Lastly, bake the **peanut cookie dough** and wind up with **freshly baked peanut cookies!**
+---
 
-_Voila_! By adding only one additional asset - **peanuts** - we were able to use some of our existing assets to create something brand new - **peanut cookies** - with minimal alterations. Check out the new additions to the DAG (highlighted in light purple) to the right.
+## Оркестрация рабочих процессов, ориентированная на активы
 
-![Adding peanut cookies to the asset-centric cookie workflow](/images/dagster-essentials/lesson-1/cookie-assets-two-cookies.png)
+Рабочие процессы, создающие какие-либо результаты (будь то печенье с кусочками шоколада или данные), предъявляют другие требования к разработке, отладке и масштабированию, чем процессы, ориентированные на задачи. _Активами (assets)_ мы называем результаты, создаваемые рабочими процессами. Подход, ориентированный на активы, позволяет сразу увидеть, **что** создаётся, не сосредотачиваясь на том, **как** это происходит.
 
-So, how might this be beneficial to a real data pipeline? **Reusability.**
+### Пример рабочего процесса, ориентированного на активы
 
-In a task-centric workflow, assets are closely coupled with the tasks that create them. This can make re-using assets difficult, as they are more of a by-product than the focus.
+Переделаем процесс приготовления печенья, используя подход, ориентированный на активы. В результате мы по-прежнему получим свежеиспечённое печенье, но DAG будет выглядеть иначе. В нашем графе теперь будут преобладать **существительные**, а не **глаголы**, обозначающие инструкции.
 
-An asset could be added to an existing workflow even if it’s not fully relevant to it, resulting in tech debt. Or, it could be added to a new workflow, which would require running an existing workflow, thereby reducing observability, understanding, and data lineage.
+В таком подходе вышестоящие активы (upstream assets) используются как входные данные для создания зависящих от них нижестоящих активов (downstream assets). Например:
+
+- Чтобы получить **тесто для печенья**, смешай **жидкие ингредиенты** и **сухие ингредиенты**.
+- Чтобы получить **тесто с кусочками шоколада**, добавь **кусочки шоколада** в **тесто для печенья**.
+- Наконец, испеки **тесто с кусочками шоколада** и получи **свежее печенье с кусочками шоколада**!
+
+![Приготовление печенья как рабочий процесс, ориентированный на активы](/images/dagster-essentials/lesson-1/cookie-assets-one-cookie.png)
+
+### Расширение за счёт добавления активов
+
+Подход, ориентированный на активы, также упрощает добавление новых активов. Допустим, ты хочешь испечь ещё и **печенье с арахисом**. Для этого можно:
+
+- Добавить **арахис** к **исходным ингредиентам**.
+- Чтобы получить **тесто с арахисом**, добавь **арахис** в **тесто для печенья**.
+- Наконец, испеки **тесто с арахисом** и получи **свежее печенье с арахисом**!
+
+Готово! Добавив всего один новый исходный актив — **арахис**, — мы смогли повторно использовать существующие активы для создания совершенно нового результата — **печенья с арахисом** — с минимальными изменениями. На схеме справа новые элементы DAG выделены светло-фиолетовым цветом.
+
+![Добавление печенья с арахисом в рабочий процесс, ориентированный на активы](/images/dagster-essentials/lesson-1/cookie-assets-two-cookies.png)
+
+Чем это полезно для реального пайплайна данных? **Повторным использованием.**
+
+В рабочем процессе, ориентированном на задачи, активы тесно связаны с создающими их задачами. Это может затруднить повторное использование активов, поскольку они являются скорее побочным результатом, чем центральным элементом процесса.
+
+Актив можно добавить в существующий рабочий процесс, даже если он не вполне соответствует его назначению, что приведёт к накоплению технического долга. Или его можно добавить в новый рабочий процесс, который потребует запуска уже существующего процесса, усложняя наблюдение, понимание системы и отслеживание происхождения данных.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

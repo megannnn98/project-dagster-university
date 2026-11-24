@@ -1,17 +1,19 @@
 ---
-title: "Lesson 1: What's data engineering?"
+title: "Урок 1: Что такое инженерия данных?"
 module: 'dagster_essentials'
 lesson: '1'
 ---
 
-# What's data engineering?
+# Что такое инженерия данных?
 
-Data engineering is the practice of designing and building software for collecting, storing, and managing data. The most common goal in data engineering is to enable stakeholders (such as product managers, marketing, or the C-suite) to make informed decisions with data. Other common goals are providing data to external users, features for a machine learning model, or empowering applications to react to events.
+Инженерия данных (data engineering) — это проектирование и разработка программного обеспечения для сбора, хранения и управления данными. Чаще всего её цель — дать заинтересованным сторонам (например, продуктовым менеджерам, маркетологам или руководителям компании) возможность принимать обоснованные решения на основе данных. Среди других распространённых задач — предоставление данных внешним пользователям, подготовка признаков для моделей машинного обучения и обеспечение реакции приложений на события.
 
-To enable all of these workflows, those who practice data engineering create infrastructure and processes to create the data when needed. Many of these processes take into consideration the difficulties mentioned below:
+Для поддержки всех этих сценариев инженеры данных создают инфраструктуру и процессы, позволяющие получать необходимые данные в нужный момент. Многие из этих процессов учитывают следующие сложности:
 
-- **If it’s scattered**, they make the data easier to combine (for example, taxi trips and weather data)
-- **If it’s inconsistent**, they clean and test the data so stakeholders can trust it
-- **If it’s large,** they optimize how the data is used to reduce time and costs
+- **Если данные разрознены**, инженеры упрощают их объединение (например, данных о поездках на такси и погоде).
+- **Если данные противоречивы**, их очищают и проверяют, чтобы заинтересованные стороны могли им доверять.
+- **Если объём данных велик**, оптимизируют их обработку, чтобы сократить затраты времени и средств.
 
-Data engineering can be a difficult and time-consuming process due to the complexities of managing data from disparate sources. As data becomes larger and more complex, manual workflows become too time-intensive and unreliable. This is when data practitioners may consider adopting an **orchestrator.**
+Инженерия данных может быть сложным и трудоёмким процессом из-за необходимости управлять данными из разнородных источников. По мере роста объёма и сложности данных ручное выполнение рабочих процессов становится слишком медленным и ненадёжным. Тогда специалисты по данным могут задуматься об использовании **оркестратора**.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

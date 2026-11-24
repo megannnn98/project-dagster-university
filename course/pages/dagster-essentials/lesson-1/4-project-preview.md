@@ -1,18 +1,20 @@
 ---
-title: 'Lesson 1: Project preview'
+title: 'Урок 1: Знакомство с проектом'
 module: 'dagster_essentials'
 lesson: '1'
 ---
 
-# Project preview
+# Знакомство с проектом
 
-In this course, we will focus on asset-aware orchestrators and how they make data pipelines easier to manage. You’ll use Dagster, an open-source orchestrator, to build a sample data pipeline.
+В этом курсе мы сосредоточимся на оркестраторах, учитывающих активы, и рассмотрим, как они упрощают управление пайплайнами данных. Ты будешь использовать Dagster — оркестратор с открытым исходным кодом — для построения учебного пайплайна данных.
 
-Using data from [NYC OpenData,](https://opendata.cityofnewyork.us/) you’ll build a data pipeline that:
+Используя данные [NYC OpenData](https://opendata.cityofnewyork.us/), ты построишь пайплайн, который:
 
-- Extracts the data, stored in Parquet files, from NYC OpenData
-- Loads it into a DuckDB database
-- Transforms and prepares it for analysis
-- Creates a visualization using the transformed data
+- Извлекает данные NYC OpenData, хранящиеся в файлах Parquet.
+- Загружает их в базу данных DuckDB.
+- Преобразует и подготавливает данные для анализа.
+- Создаёт визуализацию на основе преобразованных данных.
 
-If you get stuck or want to jump ahead, check out the [finished project here on GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_essentials).
+Если возникнут трудности или захочется забежать вперёд, посмотри [готовый проект на GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_essentials).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
