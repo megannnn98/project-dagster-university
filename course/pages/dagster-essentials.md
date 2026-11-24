@@ -25,14 +25,14 @@ title: Dagster Essentials
   - [Практика: создание актива taxi_zones_file](/dagster-essentials/lesson-3/6-coding-practice-taxi-zones-file-asset)
   - [Итоги](/dagster-essentials/lesson-3/7-recap)
 
-- Lesson 4: Asset dependencies
-  - [Overview](/dagster-essentials/lesson-4/0-overview)
-  - [What's a dependency?](/dagster-essentials/lesson-4/1-whats-a-dependency)
-  - [Assets and database execution](/dagster-essentials/lesson-4/2-assets-and-database-execution)
-  - [Loading data into a database](/dagster-essentials/lesson-4/3-loading-data-into-a-database)
-  - [Practice: Create a taxi_zones asset](/dagster-essentials/lesson-4/4-coding-practice-taxi-zones-asset)
-  - [Assets with in-memory computations](/dagster-essentials/lesson-4/5-assets-with-in-memory-computations)
-  - [Practice: Create a trips_by_week asset](/dagster-essentials/lesson-4/6-coding-practice-trips-by-week-asset)
+- Урок 4: Зависимости активов
+  - [Обзор](/dagster-essentials/lesson-4/0-overview)
+  - [Что такое зависимость?](/dagster-essentials/lesson-4/1-whats-a-dependency)
+  - [Активы и вычисления в базе данных](/dagster-essentials/lesson-4/2-assets-and-database-execution)
+  - [Загрузка данных в базу данных](/dagster-essentials/lesson-4/3-loading-data-into-a-database)
+  - [Практика: создание актива taxi_zones](/dagster-essentials/lesson-4/4-coding-practice-taxi-zones-asset)
+  - [Активы с вычислениями в оперативной памяти](/dagster-essentials/lesson-4/5-assets-with-in-memory-computations)
+  - [Практика: создание актива trips_by_week](/dagster-essentials/lesson-4/6-coding-practice-trips-by-week-asset)
 
 - Lesson 5: Definitions & code locations
   - [Overview](/dagster-essentials/lesson-5/0-overview)

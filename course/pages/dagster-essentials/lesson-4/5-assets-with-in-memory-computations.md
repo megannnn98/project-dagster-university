@@ -1,24 +1,24 @@
 ---
-title: 'Lesson 4: Assets with in-memory computations'
+title: 'Урок 4: Активы с вычислениями в оперативной памяти'
 module: 'dagster_essentials'
 lesson: '4'
 ---
 
-# Assets with in-memory computations
+# Активы с вычислениями в оперативной памяти
 
-So far when writing assets, you’ve orchestrated computations in a database and did some light work in Python, such as downloading a file. In this section, you’ll learn how to use Dagster to orchestrate Python-based computation by using Python to generate and transform your data and build a report.
+До сих пор при написании активов ты управлял вычислениями в базе данных и выполнял простые операции в Python, например скачивание файла. В этом разделе ты научишься с помощью Dagster управлять вычислениями на Python: генерировать и преобразовывать данные и строить отчёт.
 
-### Creating metrics using assets
+### Создание метрик с помощью активов
 
-Having all of your assets in one file becomes difficult to manage. Let’s separate the assets by their purpose and put these analysis-focused assets in a different file than the assets that ingest data.
+Управлять всеми активами в одном файле становится сложно. Разделим активы по назначению и поместим активы, предназначенные для анализа, в отдельный файл, отдельно от активов загрузки данных.
 
-1. Use `dg` to create a new file for our metrics assets:
+1. С помощью `dg` создай новый файл для активов, вычисляющих метрики:
 
     ```bash
     dg scaffold defs dagster.asset assets/metrics.py
     ```
 
-2. At the top of the `src/dagster_essentials/defs/assets/metrics.py` file, add the following imports:
+2. В начале файла `src/dagster_essentials/defs/assets/metrics.py` добавь следующие импорты:
 
    ```python
    import dagster as dg
@@ -32,9 +32,9 @@ Having all of your assets in one file becomes difficult to manage. Let’s separ
    from dagster_essentials.defs.assets import constants
    ```
 
-   There may be some imports you’re unfamiliar with, but we’ll cover those as we use them.
+   Некоторые импорты могут быть тебе незнакомы, но мы рассмотрим их по мере использования.
 
-3. Next, define the `manhattan_stats` asset and its dependencies. Copy and paste the following code to the end of `metrics.py` :
+3. Далее определи актив `manhattan_stats` и его зависимости. Скопируй следующий код в конец файла `metrics.py`:
 
    ```python
    @dg.asset(
@@ -43,7 +43,7 @@ Having all of your assets in one file becomes difficult to manage. Let’s separ
    def manhattan_stats() -> None:
    ```
 
-4. Now, let’s add the logic to calculate `manhattan_stats`. Update the `manhattan_stats` asset definition to reflect the changes below:
+4. Теперь добавим логику вычисления `manhattan_stats`. Обнови определение актива `manhattan_stats` следующим образом:
 
    ```python
    # src/dagster_essentials/defs/assets/metrics.py
@@ -73,28 +73,28 @@ Having all of your assets in one file becomes difficult to manage. Let’s separ
            output_file.write(trips_by_zone.to_json())
    ```
 
-   Let’s walk through the code. It:
+   Разберём код. Он:
 
-   1. Makes a SQL query that joins the `trips` and `zones` tables, filters down to just trips in Manhattan, and then aggregates the data to get the number of trips per neighborhood.
-   2. Executes that query against the same DuckDB database that you ingested data into in the other assets.
-   3. Leverages the [GeoPandas](https://geopandas.org/en/stable/) library to turn the messy coordinates into a format other libraries can use.
-   4. Saves the transformed data to a GeoJSON file.
-
----
-
-## Materializing the metrics
-
-Reload the definitions in the UI, and the `manhattan_stats` asset should now be visible on the asset graph. Select it and click the **Materialize selected** button.
-
-After the materialization completes successfully, verify that you have a (large but) valid JSON file at `data/staging/manhattan_stats.geojson`.
+   1. Формирует SQL-запрос, объединяющий таблицы `trips` и `zones`, оставляющий только поездки на Манхэттене и агрегирующий данные для вычисления количества поездок по каждому району.
+   2. Выполняет запрос к той же базе DuckDB, в которую были загружены данные в других активах.
+   3. Использует библиотеку [GeoPandas](https://geopandas.org/en/stable/) для преобразования координат в формат, пригодный для других библиотек.
+   4. Сохраняет преобразованные данные в файл GeoJSON.
 
 ---
 
-## Making a map
+## Материализация метрик
 
-In this section, you’ll create an asset that depends on `manhattan_stats`, loads its GeoJSON data, and creates a visualization out of it.
+Перезагрузи определения в интерфейсе. Актив `manhattan_stats` должен появиться на графе активов. Выбери его и нажми **Materialize selected**.
 
-1. At the bottom of `metrics.py` file, copy and paste the following:
+После успешного завершения материализации убедись, что по пути `data/staging/manhattan_stats.geojson` находится большой, но корректный JSON-файл.
+
+---
+
+## Создание карты
+
+В этом разделе ты создашь актив, зависящий от `manhattan_stats`, загружающий его данные GeoJSON и создающий на их основе визуализацию.
+
+1. Скопируй следующий код в конец файла `metrics.py`:
 
    ```python
    # src/dagster_essentials/defs/assets/metrics.py
@@ -116,17 +116,19 @@ In this section, you’ll create an asset that depends on `manhattan_stats`, loa
        plt.close(fig)
    ```
 
-   The code above does the following:
+   Приведённый код выполняет следующие действия:
 
-   1. Defines a new asset called `manhattan_map`, which is dependent on `manhattan_stats`.
-   2. Reads the GeoJSON file back into memory.
-   3. Creates a map as a data visualization using the [Matplotlib](https://matplotlib.org/) visualization library.
-   4. Saves the visualization as a PNG.
+   1. Определяет новый актив `manhattan_map`, зависящий от `manhattan_stats`.
+   2. Загружает файл GeoJSON обратно в оперативную память.
+   3. Создаёт карту для визуализации данных с помощью библиотеки [Matplotlib](https://matplotlib.org/).
+   4. Сохраняет визуализацию в формате PNG.
 
-2. In the UI, click **Reload Definitions** to allow Dagster to detect the new asset.
+2. В интерфейсе нажми **Reload Definitions**, чтобы Dagster обнаружил новый актив.
 
-3. In the asset graph, select the `manhattan_map` asset and click **Materialize selected**.
+3. На графе активов выбери `manhattan_map` и нажми **Materialize selected**.
 
-4. Open the file at `data/outputs/manhattan_map.png` to confirm the materialization worked correctly. The file should look like the following:
+4. Открой файл `data/outputs/manhattan_map.png`, чтобы убедиться в успешной материализации. Файл должен выглядеть следующим образом:
 
-   ![The materialized map of Manhattan showing taxi trips by zones](/images/dagster-essentials/lesson-4/materialized-map.png)
+   ![Материализованная карта Манхэттена с количеством поездок по зонам такси](/images/dagster-essentials/lesson-4/materialized-map.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

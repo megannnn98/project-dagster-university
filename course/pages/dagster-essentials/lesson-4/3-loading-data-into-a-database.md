@@ -1,14 +1,14 @@
 ---
-title: 'Lesson 4: Loading data into a database'
+title: 'Урок 4: Загрузка данных в базу данных'
 module: 'dagster_essentials'
 lesson: '4'
 ---
 
-# Loading data into a database
+# Загрузка данных в базу данных
 
-Now that you have a query that produces an asset, let’s use Dagster to manage the materialization. By having Dagster manage the definition and materialization of data assets, you can easily determine when the table is changed and how long it takes.
+Теперь, когда у тебя есть запрос, создающий актив, воспользуемся Dagster для управления его материализацией. Когда Dagster управляет определением и материализацией активов данных, легко определить, когда изменяется таблица и сколько времени занимает её обновление.
 
-1. At the top of the `trips.py` file, import `duckdb` and `os` to help you manage where the DuckDB database file is stored as well as `backoff` from the `dagster._utils` which will help use DuckDB more effectively:
+1. В начале файла `trips.py` импортируй `duckdb` и `os` для управления расположением файла базы DuckDB, а также `backoff` из `dagster._utils`, который поможет эффективнее работать с DuckDB:
 
    ```python
    import duckdb
@@ -17,7 +17,7 @@ Now that you have a query that produces an asset, let’s use Dagster to manage 
    from dagster._utils.backoff import backoff
    ```
 
-2. Copy and paste the code below into the bottom of the `trips.py` file. Note how this code looks similar to the asset definition code for the `taxi_trips_file` and the `taxi_zones` assets:
+2. Скопируй приведённый ниже код в конец файла `trips.py`. Обрати внимание, насколько он похож на код определения активов `taxi_trips_file` и `taxi_zones`:
 
    ```python
    # src/dagster_essentials/defs/assets/trips.py
@@ -56,56 +56,56 @@ Now that you have a query that produces an asset, let’s use Dagster to manage 
        conn.execute(query)
    ```
 
-   Let’s walk through what this code does:
+   Разберём, что делает этот код:
 
-   1. Using the `@dg.asset` decorator, an asset named `taxi_trips` is created.
+   1. С помощью декоратора `@dg.asset` создаётся актив с именем `taxi_trips`.
 
-   2. The `taxi_trips_file` asset is defined as a dependency of `taxi_trips` through the `deps` argument.
+   2. Через аргумент `deps` актив `taxi_trips_file` определяется как зависимость актива `taxi_trips`.
 
-   3. Next, a variable named `query` is created. This variable contains a SQL query that creates a table named `trips`, which sources its data from the `data/raw/taxi_trips_2023-03.parquet` file. This is the file created by the `taxi_trips_file` asset.
+   3. Создаётся переменная `query`, содержащая SQL-запрос. Он создаёт таблицу `trips` на основе данных файла `data/raw/taxi_trips_2023-03.parquet`, который создаётся активом `taxi_trips_file`.
 
-   4. A variable named `conn` is created, which defines the connection to the DuckDB database in the project. To do this, we first wrap everything with the Dagster utility function `backoff`. Using the backoff function ensures that multiple assets can use DuckDB safely without locking resources. The backoff function takes in the function we want to call (in this case the `.connect` method from the `duckdb` library), any errors to retry on (`RuntimeError` and `duckdb.IOException`), the max number of retries, and finally, the arguments to supply to the `.connect` DuckDB method. Here we are passing in the `DUCKDB_DATABASE` environment variable to tell DuckDB where the database is located.
+   4. Создаётся переменная `conn`, представляющая подключение к базе DuckDB в проекте. Для этого сначала используется вспомогательная функция Dagster `backoff`. Она позволяет повторять попытки подключения, если ресурс DuckDB временно заблокирован другим активом. Функция принимает вызываемую функцию (в данном случае метод `.connect` библиотеки `duckdb`), типы ошибок, при которых нужно повторить попытку (`RuntimeError` и `duckdb.IOException`), максимальное число повторных попыток и аргументы метода `.connect`. Здесь передаётся переменная окружения `DUCKDB_DATABASE`, указывающая DuckDB расположение базы данных.
 
-      The `DUCKDB_DATABASE` environment variable, sourced from your project’s `.env` file, resolves to `data/staging/data.duckdb`. **Note**: We set up this file in Lesson 2 - refer to this lesson if you need a refresher. If this file isn’t set up correctly, the materialization will result in an error.
+      Переменная окружения `DUCKDB_DATABASE` из файла `.env` проекта имеет значение `data/staging/data.duckdb`. **Примечание:** этот файл был настроен в уроке 2. При необходимости вернись к нему. Если файл настроен неправильно, материализация завершится ошибкой.
 
-   5. Finally, `conn` is paired with the DuckDB `execute` method, where our SQL query (`query`) is passed in as an argument. This tells the asset that, when materializing, to connect to the DuckDB database and execute the query in `query`.
+   5. Наконец, вызывается метод DuckDB `execute` объекта `conn`, которому передаётся SQL-запрос (`query`). Таким образом, при материализации актив подключается к базе DuckDB и выполняет запрос из переменной `query`.
 
-3. Save the changes to the file.
+3. Сохрани изменения в файле.
 
-4. In the Dagster UI, navigate to the **Global asset lineage** page:
+4. В интерфейсе Dagster перейди на страницу **Global asset lineage**:
 
-   ![The asset graph in the Dagster UI with the taxi_trips_file and taxi_zones_file assets](/images/dagster-essentials/lesson-4/asset-graph.png)
+   ![Граф активов taxi_trips_file и taxi_zones_file в интерфейсе Dagster](/images/dagster-essentials/lesson-4/asset-graph.png)
 
-   It looks like there’s an issue - the new `taxi_trips` asset isn’t showing up. This is because the definitions in your **code location** have to be reloaded to reflect this newly added asset.
+   Похоже, возникла проблема: новый актив `taxi_trips` не отображается. Дело в том, что необходимо перезагрузить определения в твоём **расположении кода (code location)**, чтобы новый актив появился.
 
-   We’ll go into code locations in detail in a later lesson, but for now, you can manually reload your definitions by clicking the **Reload Definitions** button near the top-right corner of the page.
+   Подробнее о расположениях кода поговорим в одном из следующих уроков, а пока можно вручную перезагрузить определения, нажав кнопку **Reload Definitions** в правом верхнем углу страницы.
 
-Once reloaded, the `taxi_trips` asset will display in the asset graph:
+После перезагрузки актив `taxi_trips` появится на графе активов:
 
-![The taxi_trips asset, now visible in the asset graph of the Dagster UI](/images/dagster-essentials/lesson-4/taxi-trips-in-asset-graph.png)
+![Актив taxi_trips на графе активов в интерфейсе Dagster](/images/dagster-essentials/lesson-4/taxi-trips-in-asset-graph.png)
 
-Notice the arrow from the `taxi_trips` file asset to the `taxi_trips` asset: this indicates the dependency that `taxi_trips` has on `taxi_trips_file`.
+Обрати внимание на стрелку от файлового актива `taxi_trips_file` к активу `taxi_trips`: она обозначает зависимость `taxi_trips` от `taxi_trips_file`.
 
 {% callout %}
 
-> 💡 **When should definitions be reloaded**? If you installed dependencies with `pip install -e ".[dev]"`, you’ll only need to reload definitions when adding new assets or other Dagster objects, such as schedules, to your project. Because of the `-e` editable flag, Dagster can pick up the changes in your asset function’s code without needing to reload the code location again.
+> 💡 **Когда нужно перезагружать определения?** Если ты установил зависимости командой `pip install -e ".[dev]"`, перезагрузка определений потребуется только при добавлении новых активов или других объектов Dagster, например расписаний. Благодаря флагу редактируемой установки `-e` Dagster может подхватывать изменения кода функций активов без повторной перезагрузки расположения кода.
 > {% /callout %}
 
 ---
 
-## Materializing the pipeline
+## Материализация пайплайна
 
-Click the **Materialize all** button in the top right corner of the graph to create a new run that materializes all the assets. When the run starts, click the run link on the asset to open the **Run details** page. This allows you to view the run in progress.
+Нажми **Materialize all** в правом верхнем углу графа, чтобы создать запуск, материализующий все активы. Когда запуск начнётся, нажми ссылку на него в активе, чтобы открыть страницу **Run details**. Здесь можно наблюдать за выполнением запуска.
 
-On this page, you’ll see that all three of your assets in the process of materializing. The `taxi_trips_file` and `taxi_zones_file` assets should materialize in parallel, while `taxi_trips` won’t begin materializing until after `taxi_trips_file` finishes:
+На этой странице будут видны все три материализуемых актива. Активы `taxi_trips_file` и `taxi_zones_file` должны материализоваться параллельно, а материализация `taxi_trips` начнётся только после завершения материализации `taxi_trips_file`:
 
-![Timeline view of taxi_trips_file, taxi_zones_file, and taxi_trips asset materialization. taxi_trips_file and taxi_zones_file materialized in parallel, while taxi_trips, waited until its parent (taxi_trips_file) finished materializing successfully.](/images/dagster-essentials/lesson-4/materialization-graph.png)
+![Временная шкала материализации taxi_trips_file, taxi_zones_file и taxi_trips: первые два актива выполняются параллельно, а taxi_trips ожидает успешной материализации taxi_trips_file](/images/dagster-essentials/lesson-4/materialization-graph.png)
 
-This is because you’ve told Dagster that taxi_trips depends on the taxi_trips_file asset, using the deps= argument. Therefore, the taxi_trips asset waits until the taxi_trips_file is up-to-date and materialized before trying to materialize itself.
+Это происходит потому, что с помощью аргумента deps= ты указал Dagster, что taxi_trips зависит от taxi_trips_file. В этом запуске актив taxi_trips ожидает успешной материализации taxi_trips_file, прежде чем начать собственную материализацию.
 
-### Optional: Verifying the materialization
+### Дополнительно: проверка материализации
 
-To confirm that the `taxi_trips` asset materialized properly, you can access the newly made `trips` table in DuckDB. In a new terminal session, open a Python REPL and run the following snippet:
+Чтобы убедиться в успешной материализации актива `taxi_trips`, можно обратиться к созданной таблице `trips` в DuckDB. В новом сеансе терминала открой интерактивный интерпретатор Python и выполни следующий код:
 
 ```python
 import duckdb
@@ -113,6 +113,8 @@ conn = duckdb.connect(database="data/staging/data.duckdb") # assumes you're writ
 conn.execute("select count(*) from trips").fetchall()
 ```
 
-The command should succeed and return a row count of the taxi trips that were ingested. When finished, make sure to stop the terminal process before continuing or you may encounter an error. Use `Control+C` or `Command+C` to stop the process.
+Команда должна успешно выполниться и вернуть количество строк загруженных данных о поездках на такси. Закончив проверку, обязательно останови процесс в терминале перед продолжением, иначе может возникнуть ошибка. Для остановки используй `Control+C` или `Command+C`.
 
-Congratulations! You’ve finished writing a simple data pipeline that fetches data from an API and ingests it into a database.
+Поздравляем! Ты написал простой пайплайн данных, который получает данные из внешнего источника и загружает их в базу данных.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

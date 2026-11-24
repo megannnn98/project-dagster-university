@@ -1,29 +1,29 @@
 ---
-title: 'Lesson 4: Practice: Create a taxi_zones asset'
+title: 'Урок 4: Практика: создание актива taxi_zones'
 module: 'dagster_essentials'
 lesson: '4'
 ---
 
-# Practice: Create a taxi_zones asset
+# Практика: создание актива taxi_zones
 
-Let’s use what you learned about creating dependencies between assets to practice creating an asset with dependencies.
+Применим полученные знания о зависимостях между активами, чтобы потренироваться создавать актив с зависимостями.
 
-In Lesson 3, you created a `taxi_zones_file` asset that downloads a CSV containing data about NYC taxi zones.
+В уроке 3 ты создал актив `taxi_zones_file`, скачивающий CSV с данными о зонах такси Нью-Йорка.
 
-Now, create a `taxi_zones` asset that uses the `taxi_zones_file` file to create a table called `zones` in your DuckDB database. This new table should have four columns:
+Теперь создай актив `taxi_zones`, использующий файл, созданный активом `taxi_zones_file`, для создания таблицы `zones` в базе DuckDB. В новой таблице должно быть четыре столбца:
 
-- `zone_id`, which is the `LocationID` column, renamed
-- `zone`
-- `borough`
-- `geometry`, which is the `the_geom` column, renamed
+- `zone_id` — переименованный столбец `LocationID`.
+- `zone`.
+- `borough`.
+- `geometry` — переименованный столбец `the_geom`.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The asset you built should look similar to the following code. Click **View answer** to view it.
+Созданный актив должен выглядеть примерно как следующий код. Нажми **View answer**, чтобы посмотреть ответ.
 
-**If there are differences**, compare what you wrote to the asset below and change them, as this asset will be used as-is in future lessons.
+**Если есть различия**, сравни свой код с активом ниже и внеси необходимые изменения: в следующих уроках этот актив будет использоваться в таком виде.
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/trips.py
@@ -52,3 +52,5 @@ def taxi_zones() -> None:
     )
     conn.execute(query)
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

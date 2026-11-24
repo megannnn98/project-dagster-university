@@ -1,19 +1,21 @@
 ---
-title: 'Lesson 4: Overview'
+title: 'Урок 4: Обзор'
 module: 'dagster_essentials'
 lesson: '4'
 ---
 
-# Overview
+# Обзор
 
-In the previous lesson, you learned what an asset is and applied that knowledge to create your first assets in Dagster. Now, you’ll learn how to expand your Dagster project to create a data pipeline.
+В предыдущем уроке ты узнал, что такое актив, и применил эти знания для создания первых активов в Dagster. Теперь ты узнаешь, как расширить проект Dagster и построить пайплайн данных.
 
-Data pipelines are a chain of events that produce data assets. As introduced in [Lesson 1](https://www.notion.so/Lesson-1-Introduction-43c6dcd35f6b4a6bb0729d3fd185ce88?pvs=21), Dagster empowers you to efficiently create data pipelines that produce multiple assets.
+Пайплайны данных — это цепочки событий, создающие активы данных. Как было показано в [уроке 1](https://www.notion.so/Lesson-1-Introduction-43c6dcd35f6b4a6bb0729d3fd185ce88?pvs=21), Dagster позволяет эффективно создавать пайплайны данных, производящие несколько активов.
 
-Now, you’ll build a complete data pipeline that:
+Теперь ты построишь полноценный пайплайн данных, который:
 
-- Loads your downloaded files into a database
-- Combines and aggregates your data into metrics about taxi trips
-- Visualizes those metrics and saves the report
+- Загружает скачанные файлы в базу данных.
+- Объединяет и агрегирует данные, вычисляя показатели поездок на такси.
+- Визуализирует эти показатели и сохраняет отчёт.
 
-While doing so, you’ll learn how to use Dagster to define dependencies between assets to produce pipelines.
+В процессе ты научишься определять зависимости между активами в Dagster для построения пайплайнов.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
