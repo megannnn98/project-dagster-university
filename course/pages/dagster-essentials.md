@@ -2,18 +2,18 @@
 title: Dagster Essentials
 ---
 
-- Lesson 1: Introduction
-  - [What's data engineering?](/dagster-essentials/lesson-1/0-whats-data-engineering)
-  - [What's an orchestrator?](/dagster-essentials/lesson-1/1-whats-an-orchestrator)
-  - [Orchestration approaches](/dagster-essentials/lesson-1/2-orchestration-approaches)
-  - [Why is asset-centric orchestration good for data engineering?](/dagster-essentials/lesson-1/3-why-is-asset-centric-orchestration-good-for-data-engineering)
-  - [Project preview](/dagster-essentials/lesson-1/4-project-preview)
+- Урок 1: Введение
+  - [Что такое инженерия данных?](/dagster-essentials/lesson-1/0-whats-data-engineering)
+  - [Что такое оркестратор?](/dagster-essentials/lesson-1/1-whats-an-orchestrator)
+  - [Подходы к оркестрации](/dagster-essentials/lesson-1/2-orchestration-approaches)
+  - [Чем оркестрация, ориентированная на активы, полезна для инженерии данных?](/dagster-essentials/lesson-1/3-why-is-asset-centric-orchestration-good-for-data-engineering)
+  - [Знакомство с проектом](/dagster-essentials/lesson-1/4-project-preview)
 
-- Lesson 2: Requirements & installation
-  - [Requirements](/installation/requirements)
-  - [Set up local](/installation/set-up-local)
-  - [Set up Codespace](/installation/set-up-codespace)
-  - [Project files](/dagster-essentials/lesson-2/3-project-files)
+- Урок 2: Требования и установка
+  - [Требования](/installation/requirements)
+  - [Локальная настройка](/installation/set-up-local)
+  - [Настройка Codespace](/installation/set-up-codespace)
+  - [Файлы проекта](/dagster-essentials/lesson-2/3-project-files)
 
 - Lesson 3: SDAs
   - [Overview](/dagster-essentials/lesson-3/0-overview)
@@ -95,3 +95,5 @@ title: Dagster Essentials
   - [Materialization metadata](/dagster-essentials/extra-credit/5-materialization-metadata)
   - [Practice: Add metadata to taxi_zones_file](/dagster-essentials/extra-credit/6-coding-practice-metadata-taxi-zones-file)
   - [Asset metadata as Markdown](/dagster-essentials/extra-credit/7-asset-metadata-as-markdown)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,54 +1,56 @@
 ---
-title: "Lesson 2: Set up codespace"
+title: "Урок 2: Настройка Codespace"
 lesson: '2'
 ---
 
-# Set up with Github Codespace
+# Настройка с помощью GitHub Codespaces
 
-Instead of you setting up a local environment, you can use [Github Codespaces](https://github.com/features/codespaces). This will allow you to work through this course and edit code in this repository in a cloud based environment.
+Вместо настройки локального окружения можно воспользоваться [GitHub Codespaces](https://github.com/features/codespaces). Это позволит проходить курс и редактировать код репозитория в облачном окружении.
 
-## Creating a Github Codespace
+## Создание GitHub Codespace
 
-There are unique Codespaces for the different courses in Dagster University. Be sure to select the create one creating a Codespace.
+Для разных курсов Dagster University предусмотрены отдельные конфигурации Codespaces. При создании Codespace убедись, что выбрана конфигурация нужного курса.
 
-1. While logged into Github, go to the [Codespaces page](https://github.com/codespaces).
-2. In the top right, select "New Codespace"
-3. Create a Codespace using the following.
+1. Войди в аккаунт GitHub и перейди на [страницу Codespaces](https://github.com/codespaces).
+2. В правом верхнем углу выбери «New Codespace».
+3. Создай Codespace, используя следующие параметры.
 
-    | Field | Value |
+    | Поле | Значение |
     |--- | --- |
     | Repository | dagster-io/project-dagster-university |
     | Branch | main |
-    | Dev container configuration | Specific course name |
+    | Dev container configuration | Название нужного курса |
     | Region | US East |
     | Machine type | 2-core |
 
-    ![Codespace Create](/images/shared/codespaces/codespaces-create.png)
+    ![Создание Codespace](/images/shared/codespaces/codespaces-create.png)
 
-4. Click "Create codespace"
+4. Нажми «Create codespace».
 
-The first time you create a codespace it may take a minute for everything to start. You will then be dropped in an interactive editor containing the code for the entire Dagster University repository.
+При первом создании Codespace запуск всех компонентов может занять некоторое время. Затем откроется интерактивный редактор с кодом всего репозитория Dagster University.
 
-## Working in the Codespace
+## Работа в Codespace
 
-In the terminal at the bottom of the Codespace IDE, navigate to the specific course directory. For example, if you are completing "Dagster Essentials", change into that directory:
+В терминале в нижней части IDE перейди в каталог нужного курса. Например, если ты проходишь Dagster Essentials, перейди в следующий каталог:
 
 ```bash
 cd dagster_university/dagster_essentials
 ```
 
-To ensure everything is working you can launch the Dagster UI.
+Чтобы убедиться, что всё работает, запусти пользовательский интерфейс Dagster.
 
 ```bash
 dg dev
 ```
 
-After Dagster starts running you will be prompted to open the Dagster UI within your browser. Click "Open in Browser".
+После запуска Dagster появится предложение открыть интерфейс в браузере. Нажми «Open in Browser».
 
-![Codespace Launch](/images/shared/codespaces/codespaces-launch.png)
+![Запуск Dagster в Codespace](/images/shared/codespaces/codespaces-launch.png)
 
-## Stopping your Github Codespace
+## Остановка GitHub Codespace
 
-Be sure to stop your Codespace when you are not using it. Github provides personal accounts [120 cores hours per month](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#monthly-included-storage-and-core-hours-for-personal-accounts).
+Обязательно останавливай Codespace, когда не используешь его. Согласно оригинальному курсу, GitHub предоставляет личным аккаунтам [120 ядро-часов в месяц](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#monthly-included-storage-and-core-hours-for-personal-accounts).
 
-![Stop Codespace](/images/shared/codespaces/codespaces-stop.png)
+![Остановка Codespace](/images/shared/codespaces/codespaces-stop.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

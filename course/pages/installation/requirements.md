@@ -1,13 +1,15 @@
 ---
-title: "Lesson 2: Requirements"
+title: "Урок 2: Требования"
 lesson: '2'
 ---
 
-## Set up requirements
+## Требования к окружению
 
-This is an interactive class where you will be coding. In order to follow along you can either run the project locally on your own machine or work with the code in Github Codespaces where all requirements will be set.
+Это интерактивный курс, в котором ты будешь писать код. Для прохождения курса можно запускать проект локально на своём компьютере или работать с кодом в GitHub Codespaces, где все необходимые компоненты уже будут настроены.
 
-***You will only need to follow the set up for one of these options, please skip the other:***
+***Достаточно выполнить настройку для одного из вариантов. Второй можно пропустить:***
 
-- [Local Development](/installation/set-up-local)
-- [Github Codespaces](/installation/set-up-codespace)
+- [Локальная разработка](/installation/set-up-local)
+- [GitHub Codespaces](/installation/set-up-codespace)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
