@@ -1,14 +1,14 @@
 ---
-title: 'Lesson 3: Asset materialization'
+title: 'Урок 3: Материализация актива'
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-# Asset materialization
+# Материализация актива
 
-Now that you’ve defined an asset in code, the next step is to **materialize** it. When an asset is materialized, Dagster runs the asset’s function and creates the asset by persisting the results in storage, such as in a data warehouse. When a materialization begins, it kicks off a **run.**
+Теперь, когда актив определён в коде, следующий шаг — **материализовать** его. При материализации Dagster выполняет функцию актива, создавая актив и сохраняя результат в постоянном хранилище, например в хранилище данных. Начало материализации инициирует **запуск (run)**.
 
-To better understand how materialization works, let’s take another look at the `taxi_trips_file` asset you created and what its function does:
+Чтобы лучше понять материализацию, ещё раз рассмотрим созданный актив `taxi_trips_file` и работу его функции:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -26,129 +26,129 @@ def taxi_trips_file() -> None:
         output_file.write(raw_trips.content)
 ```
 
-1. A description of the asset is added using a docstring (`"""`), which will display in the Dagster UI.
+1. Описание актива задаётся строкой документации (docstring, `"""`), которая отображается в интерфейсе Dagster.
 
-2. Next, a variable named `month_to_fetch` is defined. The value is `2023-03`, or March 2023.
+2. Далее определяется переменная `month_to_fetch` со значением `2023-03`, то есть март 2023 года.
 
-3. A second variable named `raw_trips` is defined. This variable uses the `get` function from the `requests` library (`requests.get`) to retrieve a parquet file from the NYC Open Data portal website.
+3. Определяется вторая переменная `raw_trips`. Для получения файла Parquet с сайта NYC Open Data используется функция `get` библиотеки `requests` (`requests.get`).
 
-   Using the `month_to_fetch` variable, the URL to retrieve the file from becomes: `https://.../trip-data/yellow_tripdata_2023-03.parquet`
+   С учётом переменной `month_to_fetch` URL для получения файла принимает вид: `https://.../trip-data/yellow_tripdata_2023-03.parquet`
 
-4. Next, the path where the file will be stored is constructed. The value of `TAXI_TRIPS_TEMPLATE_FILE_PATH`, stored in your project’s `assets/constants.py` file, is retrieved: `data/raw/taxi_trips_{}.parquet`
+4. Далее формируется путь сохранения файла. Значение `TAXI_TRIPS_TEMPLATE_FILE_PATH` берётся из файла проекта `assets/constants.py`: `data/raw/taxi_trips_{}.parquet`
 
-5. The parquet file is created and saved at `data/raw/taxi_trips_2023-03.parquet`
+5. Файл Parquet создаётся и сохраняется по пути `data/raw/taxi_trips_2023-03.parquet`.
 
-6. The asset function’s execution completes successfully. This completion indicates to Dagster that an asset has been materialized, and Dagster will update the UI to reflect that asset materialized successfully.
+6. Функция актива успешно завершает выполнение. Это сообщает Dagster, что актив материализован, и интерфейс обновляется, отражая успешную материализацию.
 
-With the basics of materialization out of the way, let’s move on to actually materializing the `taxi_trips_file` asset.
+Разобравшись с основами материализации, перейдём к материализации актива `taxi_trips_file` на практике.
 
 ---
 
-## Materializing assets using the Dagster UI
+## Материализация активов через интерфейс Dagster
 
-If you don’t still have the Dagster UI running from Lesson 2, use the command line to run the following command in the root of your Dagster project (the top-level `dagster-university/dagster_essentials` directory):
+Если интерфейс Dagster больше не запущен после урока 2, выполни следующую команду в корне проекта Dagster (каталог курса `dagster_university/dagster_essentials`):
 
 ```bash
 dg dev
 ```
 
-Navigate to [`localhost:3000`](http://localhost:3000/) in your browser. The page should look like the following - if it doesn’t, click **Overview** in the top navigation bar:
+Открой в браузере [`localhost:3000`](http://localhost:3000/). Страница должна выглядеть следующим образом. Если это не так, нажми **Overview** в верхней панели навигации:
 
-![The Overview page in the Dagster UI](/images/dagster-essentials/lesson-3/overview-page.png)
+![Страница Overview в интерфейсе Dagster](/images/dagster-essentials/lesson-3/overview-page.png)
 
-The page is empty for now, but it’ll look more interesting shortly. Let’s get started materializing the asset.
+Пока страница пуста, но скоро станет интереснее. Приступим к материализации актива.
 
 {% table %}
 
-- Step one
+- Шаг 1
 
 ---
 
 - {% width="60%" %}
-  Click **Catalog** (or **Assets** in older versions) in the left sidebar. The page that opens should look like the one to the right.
+  Нажми **Catalog** (или **Assets** в старых версиях) в левой боковой панели. Откроется страница, подобная показанной справа.
 
-  **Note:** If this page is empty when you open it, click **Reload definitions**. We’ll discuss what this does in more detail in a later lesson.
+  **Примечание:** если страница пуста, нажми **Reload definitions**. Подробнее об этой функции поговорим в одном из следующих уроков.
 
-  In this page, you’ll find a list of assets in the project and some high-level information about them, including:
+  На этой странице перечислены активы проекта и основные сведения о них, включая:
 
-  - The Code location and Asset group the asset belongs to, which we’ll cover in a later lesson
-  - The asset’s status, which in the case of `taxi_trips_file`, is **Never materialized**
+  - Code location и Asset group (расположение кода и группа активов), к которым относится актив. Мы рассмотрим их позже.
+  - Статус актива, который для `taxi_trips_file` равен **Never materialized** (никогда не материализован).
 
-  Next, click the **View lineage** link. This opens the global asset graph, which is where you can view your DAG.
+  Далее нажми ссылку **View lineage**. Откроется глобальный граф активов, где можно увидеть свой DAG.
 
-- ![The Asset overview page in the Dagster UI](/images/dagster-essentials/lesson-3/assets-overview.png) {% rowspan=2 %}
+- ![Обзор активов в интерфейсе Dagster](/images/dagster-essentials/lesson-3/assets-overview.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step two
+- Шаг 2
 
 ---
 
 - {% width="60%" %}
-  It looks pretty empty right now, as there’s only one asset. But once you start adding more assets and dependencies, it’ll get more interesting.
+  Пока граф почти пуст, поскольку есть только один актив. Но по мере добавления активов и зависимостей он станет интереснее.
 
-- ![The Global Asset Lineage page in the Dagster UI](/images/dagster-essentials/lesson-3/global-asset-view.png) {% rowspan=2 %}
+- ![Страница глобального графа активов в Dagster](/images/dagster-essentials/lesson-3/global-asset-view.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step three
+- Шаг 3
 
 ---
 
 - {% width="60%" %}
-  Click the **Materialize** button, highlighted in the image to the right, to materialize the asset. This will run the function in the asset’s code to create the asset.
+  Для материализации актива нажми кнопку **Materialize**, выделенную на изображении справа. Будет выполнена функция, определяющая создание актива.
 
-- ![Highlighted Materialize button in the Global Asset Lineage page of the Dagster UI](/images/dagster-essentials/lesson-3/materialize-button.png) {% rowspan=2 %}
+- ![Кнопка Materialize на странице глобального графа активов](/images/dagster-essentials/lesson-3/materialize-button.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step four
+- Шаг 4
 
 ---
 
 - {% width="60%" %}
-  After you click **Materialize**, a purple box will display at the bottom of the page like in the image on the right. This indicates that the run started successfully.
+  После нажатия **Materialize** внизу страницы появится фиолетовый блок, как на изображении справа. Он сообщает, что запуск успешно начался.
 
-  A **run** is an instance of execution that materializes one or more assets.
+  **Запуск (run)** — экземпляр выполнения, материализующий один или несколько активов.
 
-- ![A materialized asset in the Global Asset Lineage page of the Dagster UI](/images/dagster-essentials/lesson-3/materialized-asset.png) {% rowspan=2 %}
+- ![Материализованный актив на странице глобального графа активов](/images/dagster-essentials/lesson-3/materialized-asset.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step five
+- Шаг 5
 
 ---
 
 - {% width="60%" %}
-  Navigate to `data/raw` in your Dagster project to check out the file created by the asset materialization: `data/raw/taxi_trips_2023-03.parquet`
+  Перейди в каталог `data/raw` проекта Dagster, чтобы увидеть файл, созданный при материализации актива: `data/raw/taxi_trips_2023-03.parquet`.
 
-  **Note:** As the download may take a minute, this file may not show up right away.
+  **Примечание:** загрузка может занять некоторое время, поэтому файл появится не сразу.
 
-- ![A materialized asset in the Global Asset Lineage page of the Dagster UI](/images/dagster-essentials/lesson-3/data-raw-parquet.png) {% rowspan=2 %}
+- ![Файл, созданный при материализации актива](/images/dagster-essentials/lesson-3/data-raw-parquet.png) {% rowspan=2 %}
 
 {% /table %}
 
-That’s it! You’ve successfully materialized your first asset! 🎉
+Готово! Ты успешно материализовал первый актив! 🎉
 
 ---
 
-## Materializing assets using `dg`
+## Материализация активов с помощью `dg`
 
-You can also execute assets directly from the command line using `dg`. This is useful when you want to run an asset without starting the Dagster web server. For example:
+Активы также можно выполнять непосредственно из командной строки с помощью `dg`. Это удобно, когда нужно выполнить актив без запуска веб-сервера Dagster. Например:
 
 ```
 dg launch --assets taxi_trips_file
 ```
 
-This command will execute the taxi_trips_file asset and stream all run events to your terminal:
+Эта команда выполнит актив taxi_trips_file и выведет все события запуска в терминал:
 
 ```
 2025-09-17 14:19:03 -0500 - dagster - DEBUG - __ASSET_JOB - 865a6f54-7acd-4bb4-8d97-2949e149a1d5 - 83621 - RUN_START - Started execution of run for "__ASSET_JOB".
@@ -166,8 +166,10 @@ This command will execute the taxi_trips_file asset and stream all run events to
 2025-09-17 14:19:14 -0500 - dagster - DEBUG - __ASSET_JOB - 865a6f54-7acd-4bb4-8d97-2949e149a1d5 - 83621 - RUN_SUCCESS - Finished execution of run for "__ASSET_JOB".
 ```
 
-## When to use `dg dev` vs `dg launch`
+## Когда использовать `dg dev`, а когда `dg launch`
 
-You now know two different ways to launch your asset. You may be wondering which one to use. Luckily there is no wrong answer. You might find it easier to execute an asset with `dg launch` when you need to quickly test something out while you may want to use `dg dev` as your Dagster project becomes more sophisticated.
+Теперь ты знаешь два способа запуска актива. Какой выбрать? Оба подходят. Для быстрой проверки может быть удобнее выполнить актив через `dg launch`, а по мере усложнения проекта Dagster можно использовать `dg dev`.
 
-For the majority of this course we will use `dg dev` to showcase more of the features of Dagster.
+В большей части курса мы будем пользоваться `dg dev`, чтобы продемонстрировать больше возможностей Dagster.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

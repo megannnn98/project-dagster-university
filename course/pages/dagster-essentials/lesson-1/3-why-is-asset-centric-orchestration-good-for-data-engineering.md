@@ -1,146 +1,148 @@
 ---
-title: 'Lesson 1: Why is asset-centric orchestration good for data engineering?'
+title: 'Урок 1: Чем оркестрация, ориентированная на активы, полезна для инженерии данных?'
 module: 'dagster_essentials'
 lesson: '1'
 ---
 
-# Why is asset-centric orchestration good for data engineering?
+# Чем оркестрация, ориентированная на активы, полезна для инженерии данных?
 
-To answer this question, let’s go back to our cookie example and take a look at what different situations might look like for both a task-centric and asset-centric approach.
+Чтобы ответить на этот вопрос, вернёмся к примеру с печеньем и посмотрим, как разные ситуации выглядят при использовании подходов, ориентированных на задачи и на активы.
 
 ---
 
-## Situation 1: Understanding data lineage
+## Ситуация 1: Понимание происхождения данных
 
 {% table %}
 
 -
-- Task-centric
-- Asset-centric
+- Подход, ориентированный на задачи
+- Подход, ориентированный на активы
 
 ---
 
-- In a task-centric world, it can be difficult to tell how an asset is produced, whether it’s up-to-date, and how it relates to other assets. Decoupling tasks from assets is necessary not only to troubleshoot issues when they arise, but to come to a basic understanding of the workflow.
+- При подходе, ориентированном на задачи, бывает сложно определить, как создаётся актив, актуален ли он и как связан с другими активами. Разделение задач и активов необходимо не только для устранения неполадок, но и для базового понимания рабочего процесса.
 
-  On the other hand, an asset-centric workflow puts the focus on the data that’s produced rather than how it’s produced. This can make it easy to determine how a change could impact other assets and allow stakeholders to understand how their data is produced.
+  Напротив, рабочий процесс, ориентированный на активы, сосредоточен на создаваемых данных, а не на способе их создания. Это упрощает оценку влияния изменений на другие активы и позволяет заинтересованным сторонам понять, как получены их данные.
 
-  Let’s go back to our cookie example and take a look at what different situations might look like for both a task-centric and asset-centric approach.
+  Вернёмся к примеру с печеньем и посмотрим, как эта ситуация выглядит при двух подходах.
 
-- 1. Figure out where in the workflow cookie dough is created
-  2. Add a fork to add in peanuts
-  3. Remake cookies from start to finish
+- 1. Определить, где в рабочем процессе создаётся тесто для печенья.
+  2. Добавить ответвление для внесения арахиса.
+  3. Заново приготовить печенье с самого начала.
 
-- 1. Add two new assets: peanuts and peanut cookie dough
-  2. Add peanuts to cookie dough
-  3. Result is peanut cookie dough
+- 1. Добавить два новых актива: арахис и тесто с арахисом.
+  2. Добавить арахис в тесто для печенья.
+  3. Получить тесто с арахисом.
 
 {% /table %}
 
 {% callout %}
-**Conclusion**: With an asset-centric approach, it’s easy for everyone to understand the workflow and what’s produced, even if they didn’t build the workflow themselves.
-With a task-centric approach, it may not be immediately obvious how and when assets are produced in the process.
+**Вывод**: Подход, ориентированный на активы, позволяет всем легко понять рабочий процесс и его результаты, даже если они сами его не разрабатывали.
+При подходе, ориентированном на задачи, может быть не сразу понятно, как и когда в процессе создаются активы.
 {% /callout %}
 
 ---
 
-## Situation 2: Re-using assets
+## Ситуация 2: Повторное использование активов
 
 {% table %}
 
 -
-- Task-centric
-- Asset-centric
+- Подход, ориентированный на задачи
+- Подход, ориентированный на активы
 
 ---
 
-- Let’s say you want to make other types of cookies using the cookie dough you already have.
+- Допустим, ты хочешь приготовить другие виды печенья из уже имеющегося теста.
 
-  In the real world, think of this as the ability to use an asset as input to another asset. For example, creating a database table using multiple tables.
+  В реальном мире это соответствует возможности использовать один актив как входные данные для другого. Например, создать таблицу базы данных на основе нескольких других таблиц.
 
-- 1. Figure out where in the workflow cookie dough is created
-  2. Add a fork to add in peanuts
-  3. Remake cookies from start to finish
+- 1. Определить, где в рабочем процессе создаётся тесто для печенья.
+  2. Добавить ответвление для внесения арахиса.
+  3. Заново приготовить печенье с самого начала.
 
-- 1. Add two new assets: peanuts and peanut cookie dough
-  2. Add peanuts to cookie dough
-  3. Result is peanut cookie dough
+- 1. Добавить два новых актива: арахис и тесто с арахисом.
+  2. Добавить арахис в тесто для печенья.
+  3. Получить тесто с арахисом.
 
 {% /table %}
 
 {% callout %}
-**Conclusion**: With an asset-centric approach, you can easily reuse assets by defining dependencies between them and other assets.
-With a task-centric approach, more changes may be required to create additional assets, as assets are closely coupled with the tasks that create them.
+**Вывод**: При подходе, ориентированном на активы, можно легко повторно использовать активы, определяя зависимости между ними.
+При подходе, ориентированном на задачи, для создания дополнительных активов может потребоваться больше изменений, поскольку активы тесно связаны с создающими их задачами.
 {% /callout %}
 
 ---
 
-## Situation 3: Determining data freshness
+## Ситуация 3: Определение актуальности данных
 
 {% table %}
 
 -
-- Task-centric
-- Asset-centric
+- Подход, ориентированный на задачи
+- Подход, ориентированный на активы
 
 ---
 
-- Before you can bake, you need to check how fresh your eggs are. Are they expired or still okay to use?
+- Перед выпечкой нужно проверить свежесть яиц. Истёк ли их срок годности или их ещё можно использовать?
 
-  In the real world, think of this as producing assets that use the most up-to-date data.
+  В реальном мире это соответствует созданию активов на основе наиболее актуальных данных.
 
-- 1. Add a step that checks the date on the eggs after gathering the ingredients
-  2. Start the process
-  3. If expired, fail and re-start the process
+- 1. Добавить шаг проверки срока годности яиц после сбора ингредиентов.
+  2. Запустить процесс.
+  3. Если срок истёк, завершить процесс с ошибкой и перезапустить его.
 
-- 1. Check the last updated time for the individual egg asset in the wet ingredients
-  2. Start the process
-  3. If expired, refresh the eggs before proceeding
+- 1. Проверить время последнего обновления отдельного актива «яйца» в составе жидких ингредиентов.
+  2. Запустить процесс.
+  3. Если срок истёк, обновить яйца, прежде чем продолжить.
 
 {% /table %}
 
 {% callout %}
-**Conclusion**: With an asset-centric approach, you can easily determine if an upstream asset is out-of-date and refresh it before downstream assets are executed.
-With a task-centric approach, you may not know data is outdated until the process fails.
+**Вывод**: При подходе, ориентированном на активы, можно легко определить, устарел ли вышестоящий актив, и обновить его до выполнения операций по созданию нижестоящих активов.
+При подходе, ориентированном на задачи, можно не узнать об устаревании данных до возникновения ошибки в процессе.
 {% /callout %}
 
 ---
 
-## Situation 4: Debugging
+## Ситуация 4: Отладка
 
 {% table %}
 
 -
-- Task-centric
-- Asset-centric
+- Подход, ориентированный на задачи
+- Подход, ориентированный на активы
 
 ---
 
-- Everything was going smoothly, but then something went wrong: your cookies got rubbery because you overmixed them.
+- Всё шло хорошо, но затем что-то пошло не так: печенье получилось резиновым из-за чрезмерного перемешивания теста.
 
-  In the real world, think of this as debugging an issue, such as a timeout or data discrepancy.
+  В реальном мире это соответствует отладке проблемы, например превышению времени ожидания или расхождению данных.
 
-- 1. Identify which step in the workflow failed
-  2. Re-execute the entire pipeline
+- 1. Определить, на каком шаге рабочего процесса произошёл сбой.
+  2. Повторно выполнить весь пайплайн.
 
-- 1. Identify the problematic asset (cookie dough)
-  2. Re-execute the asset
+- 1. Определить проблемный актив (тесто для печенья).
+  2. Повторно выполнить операцию создания актива.
 
 {% /table %}
 
 {% callout %}
-**Conclusion**: With an asset-centric approach, you can easily identify the problematic asset, address it, and only need to re-execute that asset again.
-With a task-centric approach, it may take more effort to identify which assets require troubleshooting and then the steps that produce them. Additionally, you may need to re-execute the entire pipeline once a fix is implemented, as it may not be possible to re-execute single steps.
+**Вывод**: При подходе, ориентированном на активы, можно легко определить проблемный актив, устранить проблему и повторно создать только этот актив.
+При подходе, ориентированном на задачи, может потребоваться больше усилий для определения проблемных активов и создающих их шагов. Кроме того, после исправления ошибки может понадобиться повторный запуск всего пайплайна, если отдельные шаги нельзя выполнить повторно.
 {% /callout %}
 
 ---
 
-## Recap
+## Итоги
 
-Before we move on, let’s recap the benefits of an asset-centric approach to building workflows:
+Прежде чем двигаться дальше, подведём итоги преимуществ подхода, ориентированного на активы, при построении рабочих процессов:
 
-- **Context and visibility.** Everyone in your organization can understand the data lineage and how data assets relate to each other
-- **Productivity.** By building a DAG that globally understands what data exists and why, asset-centric workflows allow for reusing assets without changing an existing sequence of tasks
-- **Observability.** It’s easy to tell exactly why assets are out-of-date, whether it might be late upstream data or errors in code
-- **Troubleshooting.** Every run and computation is tied to the goal of producing data, so debugging tools like logs are specific to the assets being produced
+- **Контекст и прозрачность.** Все сотрудники организации могут понять происхождение данных и взаимосвязи между активами данных.
+- **Продуктивность.** Благодаря построению DAG, описывающего имеющиеся данные и их назначение в масштабе всей системы, можно повторно использовать активы без изменения существующей последовательности задач.
+- **Наблюдаемость.** Легко определить, почему активы устарели: например, из-за задержки входных данных или ошибок в коде.
+- **Устранение неполадок.** Каждый запуск и вычисление связаны с целью создания данных, поэтому такие средства отладки, как журналы, привязаны к конкретным создаваемым активам.
 
-Given these benefits, how do they extend to the tools used to build and manage each type of pipeline? Why should the type of orchestrator you use matter?
+Как эти преимущества отражаются на инструментах, используемых для разработки и управления каждым типом пайплайна? Почему важно, какой тип оркестратора используется?
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

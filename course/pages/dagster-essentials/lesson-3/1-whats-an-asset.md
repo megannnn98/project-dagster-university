@@ -1,34 +1,34 @@
 ---
-title: "Lesson 3: What's an asset?"
+title: "Урок 3: Что такое актив?"
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-# What's an asset?
+# Что такое актив?
 
-An asset is an object in persistent storage that captures some understanding of the world. If you have an existing data pipeline, you’re likely already creating assets. For example, your pipeline might incorporate objects like:
+Актив — объект в постоянном хранилище, отражающий определённое представление о реальном мире. Если у тебя уже есть пайплайн данных, вероятно, он уже создаёт активы. Например:
 
-- **A database table or view**, such as those in a Google BigQuery data warehouse
-- **A file**, such as a file in your local machine or blob storage like Amazon S3
-- **A machine learning model**, such as TensorFlow or PyTorch
-- **An asset from an integration,** such as a dbt model or a Fivetran connector
+- **Таблица или представление базы данных**, например в хранилище Google BigQuery.
+- **Файл**, например на локальном компьютере или в объектном хранилище Amazon S3.
+- **Модель машинного обучения**, например TensorFlow или PyTorch.
+- **Актив из интеграции**, например модель dbt или коннектор Fivetran.
 
-Assets aren’t limited to just the objects listed above - these are just some common examples.
+Активы не ограничиваются перечисленными объектами: это лишь несколько распространённых примеров.
 
 ---
 
-## Anatomy of an asset
+## Устройство актива
 
-To create an asset, you write code that describes an asset that you want to exist, along with any other assets that the asset is derived from, and a function that computes the contents of the asset.
+Чтобы создать актив, нужно написать код, описывающий актив, который должен существовать, другие активы, из которых он получается, и функцию, вычисляющую его содержимое.
 
-Specifically, an asset includes:
+В частности, актив включает:
 
-- **An `@dg.asset` decorator.** This tells Dagster that the function produces an asset.
-- **An asset key** that uniquely identifies the asset in Dagster. By default, this is the function name. However, asset keys can have prefixes, much like how files are in folders or database tables are in schemas.
-- **A set of upstream asset dependencies**, referenced using their asset keys. We’ll talk about this more in the next lesson, which focuses on asset dependencies.
-- **A Python function** that defines how the asset is computed.
+- **Декоратор `@dg.asset`.** Он сообщает Dagster, что функция создаёт актив.
+- **Ключ актива**, однозначно идентифицирующий актив в Dagster. По умолчанию это имя функции. Однако у ключей активов могут быть префиксы, подобно тому как файлы находятся в каталогах, а таблицы баз данных — в схемах.
+- **Набор зависимостей от вышестоящих активов**, указанных с помощью их ключей. Подробнее об этом поговорим в следующем уроке, посвящённом зависимостям активов.
+- **Функцию Python**, определяющую способ вычисления актива.
 
-**Let’s look at our cookie example to demonstrate**. The following code creates a `cookie_dough` asset, which depends on the upstream `dry_ingredients` and `wet_ingredients` assets:
+**Рассмотрим пример с печеньем.** Следующий код создаёт актив `cookie_dough`, который зависит от вышестоящих активов `dry_ingredients` и `wet_ingredients`:
 
 ```python
 @dg.asset
@@ -36,23 +36,25 @@ def cookie_dough(dry_ingredients, wet_ingredients):
     return dry_ingredients + wet_ingredients
 ```
 
-When naming assets, it’s best practice to use a **noun**, specifically **a descriptor of what is produced,** and not the steps required to produce it.
+При выборе имён активов рекомендуется использовать **существительные**, описывающие **то, что создаётся**, а не шаги, необходимые для создания результата.
 
-For example, the example asset combines the `dry_ingredients` and `wet_ingredients` assets to create cookie dough. We named it `cookie_dough` because that’s what the asset produces, whereas a name like `combine_ingredients` focuses on an action and not the end result.
+Например, этот актив объединяет `dry_ingredients` и `wet_ingredients`, создавая тесто для печенья. Мы назвали его `cookie_dough`, поскольку именно это он производит, тогда как имя `combine_ingredients` описывает действие, а не конечный результат.
 
 ---
 
-## Assets vs Dagster Components
+## Активы и компоненты Dagster
 
-Introduced in Dagster 1.11, [Dagster Components](https://docs.dagster.io/guides/build/components/) provide a structured and modular way to:
+Появившиеся в Dagster 1.11 [Dagster Components](https://docs.dagster.io/guides/build/components/) предоставляют структурированный модульный подход, позволяющий:
 
-* Organize and scaffold Dagster projects efficiently.
-* Simplify configuration of common workflows using predefined or custom templates.
-* Enable reusable abstractions that make complex orchestration easier to manage and maintain.
+* Эффективно организовывать проекты Dagster и генерировать их каркас.
+* Упрощать настройку типовых рабочих процессов с помощью готовых или пользовательских шаблонов.
+* Создавать повторно используемые абстракции, облегчающие управление и сопровождение сложной оркестрации.
 
-Components are an incredibly powerful abstraction in Dagster, and we’ll cover in detail how to use the [dg CLI](https://docs.dagster.io/api/clis/dg-cli/dg-cli-reference) to scaffold and navigate your project. However, we won’t explore all the details of using components for integrations or custom workflows, as these will make more sense once you’re familiar with the foundational objects in a Dagster project. This course will focus primarily on those fundamentals.
+Компоненты — мощная абстракция Dagster. Мы подробно рассмотрим, как использовать [CLI dg](https://docs.dagster.io/api/clis/dg-cli/dg-cli-reference) для создания каркаса проекта и навигации по нему. Однако мы не будем подробно изучать использование компонентов для интеграций и пользовательских рабочих процессов: это станет понятнее после знакомства с базовыми объектами проекта Dagster. В этом курсе мы сосредоточимся на этих основах.
 
-For more information on applying components in practice, explore the following resources:
+Подробнее о практическом применении компонентов:
 
-* [ETL Tutorial Pipeline](https://docs.dagster.io/etl-pipeline-tutorial/)
+* [Учебный пайплайн ETL](https://docs.dagster.io/etl-pipeline-tutorial/)
 * [Dagster & ETL](https://courses.dagster.io/courses/dagster-etl)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

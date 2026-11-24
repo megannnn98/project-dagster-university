@@ -1,71 +1,73 @@
 ---
-title: "Lesson 2: Set up local"
+title: "Урок 2: Локальная настройка"
 lesson: '2'
 ---
 
-# Set up local
+# Локальная настройка
 
-This will set up Dagster for you local machine. If you would prefer to do this course in Github Codespaces, please follow [that guide](/installation/set-up-codespace).
+Эта инструкция поможет настроить Dagster на твоём компьютере. Если ты предпочитаешь проходить курс в GitHub Codespaces, воспользуйся [соответствующей инструкцией](/installation/set-up-codespace).
 
-- **To install git.** Refer to the [Git documentation](https://github.com/git-guides/install-git) if you don’t have this installed.
-- **To have Python installed.**  Dagster supports Python 3.10 - 3.13 (3.12 recommended).
-- **To install a package manager**. To manage the python packages, we recommend [`uv`](https://docs.astral.sh/uv/) which Dagster uses internally.
+- **Установить Git.** Если Git ещё не установлен, обратись к [документации Git](https://github.com/git-guides/install-git).
+- **Установить Python.** Для этого курса поддерживаются Python 3.10–3.13 (рекомендуется 3.12).
+- **Установить менеджер пакетов.** Для управления пакетами Python мы рекомендуем [`uv`](https://docs.astral.sh/uv/), который используется и в самом Dagster.
 
 ---
 
-## Clone the Dagster University project
+## Клонирование проекта Dagster University
 
-[Clone the Github repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository). The command will depend on if you choose to clone with [ssh or https](https://graphite.dev/guides/git-clone-ssh-vs-https):
+[Клонируй репозиторий GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository). Команда зависит от выбранного способа клонирования: [SSH или HTTPS](https://graphite.dev/guides/git-clone-ssh-vs-https).
 
-| Option | Command |
+| Вариант | Команда |
 | --- | --- |
 | ssh | ```git clone git@github.com:dagster-io/project-dagster-university.git``` |
 | https | ```git clone https://github.com/dagster-io/project-dagster-university.git``` |
 
-After cloning the Dagster University project, navigate to the specific course directory within the repository. All courses are located inside the `dagster_university` folder.
+После клонирования проекта Dagster University перейди в каталог нужного курса внутри репозитория. Все курсы находятся в папке `dagster_university`.
 
-For example, if you are completing "Dagster Essentials", change into that directory:
+Например, если ты проходишь Dagster Essentials, перейди в соответствующий каталог:
 
 ```bash
 cd project-dagster-university/dagster_university/dagster_essentials
 ```
 
-## Install the dependencies
+## Установка зависимостей
 
 **uv**
 
-If you do not have [`uv`](https://docs.astral.sh/uv/) installed, you can do so in a [number of ways](https://docs.astral.sh/uv/getting-started/installation/). To install the python dependencies with `uv`. While in the course specific directory run the following:
+Если [`uv`](https://docs.astral.sh/uv/) ещё не установлен, это можно сделать [несколькими способами](https://docs.astral.sh/uv/getting-started/installation/). Для установки зависимостей Python с помощью `uv` выполни следующую команду из каталога выбранного курса:
 
 ```bash
 uv sync
 ```
 
-This will create a virtual environment and install the required dependencies. To enter the newly created virtual environment:
+Команда создаст виртуальное окружение и установит необходимые зависимости. Для активации созданного виртуального окружения используй соответствующую команду:
 
-| OS | Command |
+| ОС | Команда |
 | --- | --- |
-| MacOS | ```source .venv/bin/activate``` |
+| Linux / macOS | ```source .venv/bin/activate``` |
 | Windows | ```.venv\Scripts\activate``` |
 
 ---
 
 **pip**
 
-To install the python dependencies with [pip](https://pypi.org/project/pip/).  While in the course specific directory run the following:
+Для установки зависимостей Python с помощью [pip](https://pypi.org/project/pip/) выполни следующую команду из каталога выбранного курса:
 
 ```bash
 python3 -m venv .venv
 ```
 
-This will create a virtual environment. To enter the newly created virtual environment:
+Команда создаст виртуальное окружение. Для его активации:
 
-| OS | Command |
+| ОС | Команда |
 | --- | --- |
-| MacOS | ```source .venv/bin/activate``` |
+| Linux / macOS | ```source .venv/bin/activate``` |
 | Windows | ```.venv\Scripts\activate``` |
 
-To install the required dependencies:
+Чтобы установить необходимые зависимости, выполни:
 
 ```bash
 pip install -e ".[dev]"
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

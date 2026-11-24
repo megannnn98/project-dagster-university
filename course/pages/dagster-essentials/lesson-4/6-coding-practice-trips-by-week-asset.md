@@ -1,39 +1,39 @@
 ---
-title: 'Lesson 4: Practice: Create a trips_by_week asset'
+title: 'Урок 4: Практика: создание актива trips_by_week'
 module: 'dagster_essentials'
 lesson: '4'
 ---
 
-# Practice: Create a trips_by_week asset
+# Практика: создание актива trips_by_week
 
-To practice what you’ve learned, create an asset (called `trips_by_week`) in `metrics.py`. This asset should produce a CSV that:
+Чтобы закрепить изученное, создай в файле `metrics.py` актив с именем `trips_by_week`. Он должен создавать CSV-файл, который:
 
-- Is saved in `constants.TRIPS_BY_WEEK_FILE_PATH`
-- Has the following schema:
-  - `period` - a string representing the Sunday of the week aggregated by, ex. `2023-03-05`
-  - `num_trips` - The total number of trips that started in that week
-  - `passenger_count` - The total number of passengers that were on a taxi trip that week
-  - `total_amount` - The total sum of the revenue produced by trips that week
-  - `trip_distance` - The total miles driven in all trips that happened that week
+- Сохраняется по пути `constants.TRIPS_BY_WEEK_FILE_PATH`.
+- Имеет следующую схему:
+  - `period` — строка, представляющая воскресенье, с которого начинается неделя агрегации, например `2023-03-05`.
+  - `num_trips` — общее количество поездок, начавшихся на этой неделе.
+  - `passenger_count` — общее количество пассажиров такси за эту неделю.
+  - `total_amount` — суммарная выручка от поездок за эту неделю.
+  - `trip_distance` — суммарное расстояние в милях всех поездок за эту неделю.
 
 {% callout %}
 
-> 💡 **Extra credit!** If you want a challenge, follow this constraint:
-> Imagine that the entire `trips` data is too big to fit into memory. However, a week’s worth of data fits comfortably. How would you structure your asset’s function to accommodate this?
+> 💡 **Дополнительное задание!** Если хочешь усложнить задачу, учти следующее ограничение:
+> Представь, что все данные `trips` не помещаются в оперативную память, а данные за одну неделю помещаются без проблем. Как организовать функцию актива с учётом этого ограничения?
 
 {% /callout %}
 
 ---
 
-## Tips
+## Подсказки
 
-- Everything you need to know about Dagster has been covered
-- There are many ways to solve these problems, such as within a database or aggregating a DataFrame
-- No additional imports are needed, but you can import whatever you need
-- For convenience and to accommodate for data quality issues, you can hard code the start date and end dates of the analysis to be the range of data you have (ex. `2023-03-05` to `2023-04-01`)
-- DuckDB supports date comparison and adding time intervals: `+ interval ‘1 week’`
+- Всё необходимое для решения задачи о Dagster уже было рассмотрено.
+- Есть много способов решить задачу, например выполнить вычисления в базе данных или агрегировать DataFrame.
+- Дополнительные импорты не обязательны, но можно импортировать всё необходимое.
+- Для удобства и учёта проблем с качеством данных можно жёстко задать даты начала и конца анализа в пределах имеющихся данных (например, с `2023-03-05` по `2023-04-01`).
+- DuckDB поддерживает сравнение дат и добавление временных интервалов: `+ interval ‘1 week’`.
 
-The numbers might not add up exactly this way, but the following is an example of what the output may look like:
+Числа могут не совпадать в точности, но результат может выглядеть следующим образом:
 
 ```shell
 period,num_trips,total_amount,trip_distance,passenger_count
@@ -44,15 +44,15 @@ period,num_trips,total_amount,trip_distance,passenger_count
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The asset you built should look similar to the following code. Click **View answer** to view it.
+Созданный актив должен выглядеть примерно как следующий код. Нажми **View answer**, чтобы посмотреть ответ.
 
-**Note**: The solution below is one of many possible ways to solve this challenge. Your way can be completely valid and more performant than this one! This is also more complicated than the assets we have seen so far so.
+**Примечание:** приведённое ниже решение — лишь один из многих способов выполнить задание. Твой вариант вполне может быть правильным и даже более производительным! Эта задача также сложнее, чем предыдущие примеры активов.
 
-We’ll assume your code looks like the following for the rest of the module. Despite not being the highest quality code, it’s flexible enough for us to extend in a later section.
+В оставшейся части курса мы будем предполагать, что твой код выглядит как приведённый ниже. Хотя это не самый качественный код, он достаточно гибок для расширения в одном из следующих разделов.
 
-**If there are differences**, compare what you wrote to the asset below, change it, and then re-materialize the asset to prepare for the next lesson.
+**Если есть различия**, сравни свой код с активом ниже, внеси изменения и повторно материализуй актив, чтобы подготовиться к следующему уроку.
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/metrics.py
@@ -118,3 +118,5 @@ def trips_by_week() -> None:
 
     result.to_csv(constants.TRIPS_BY_WEEK_FILE_PATH, index=False)
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

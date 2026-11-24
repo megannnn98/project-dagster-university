@@ -2,37 +2,37 @@
 title: Dagster Essentials
 ---
 
-- Lesson 1: Introduction
-  - [What's data engineering?](/dagster-essentials/lesson-1/0-whats-data-engineering)
-  - [What's an orchestrator?](/dagster-essentials/lesson-1/1-whats-an-orchestrator)
-  - [Orchestration approaches](/dagster-essentials/lesson-1/2-orchestration-approaches)
-  - [Why is asset-centric orchestration good for data engineering?](/dagster-essentials/lesson-1/3-why-is-asset-centric-orchestration-good-for-data-engineering)
-  - [Project preview](/dagster-essentials/lesson-1/4-project-preview)
+- Урок 1: Введение
+  - [Что такое инженерия данных?](/dagster-essentials/lesson-1/0-whats-data-engineering)
+  - [Что такое оркестратор?](/dagster-essentials/lesson-1/1-whats-an-orchestrator)
+  - [Подходы к оркестрации](/dagster-essentials/lesson-1/2-orchestration-approaches)
+  - [Чем оркестрация, ориентированная на активы, полезна для инженерии данных?](/dagster-essentials/lesson-1/3-why-is-asset-centric-orchestration-good-for-data-engineering)
+  - [Знакомство с проектом](/dagster-essentials/lesson-1/4-project-preview)
 
-- Lesson 2: Requirements & installation
-  - [Requirements](/installation/requirements)
-  - [Set up local](/installation/set-up-local)
-  - [Set up Codespace](/installation/set-up-codespace)
-  - [Project files](/dagster-essentials/lesson-2/3-project-files)
+- Урок 2: Требования и установка
+  - [Требования](/installation/requirements)
+  - [Локальная настройка](/installation/set-up-local)
+  - [Настройка Codespace](/installation/set-up-codespace)
+  - [Файлы проекта](/dagster-essentials/lesson-2/3-project-files)
 
-- Lesson 3: SDAs
-  - [Overview](/dagster-essentials/lesson-3/0-overview)
-  - [What's an asset?](/dagster-essentials/lesson-3/1-whats-an-asset)
-  - [Defining your first asset](/dagster-essentials/lesson-3/2-defining-your-first-asset)
-  - [Asset materialization](/dagster-essentials/lesson-3/3-asset-materialization)
-  - [Viewing run details](/dagster-essentials/lesson-3/4-viewing-run-details)
-  - [Troubleshooting failed runs](/dagster-essentials/lesson-3/5-troubleshooting-failed-runs)
-  - [Coding practice: Create a taxi_zones_file asset](/dagster-essentials/lesson-3/6-coding-practice-taxi-zones-file-asset)
-  - [Recap](/dagster-essentials/lesson-3/7-recap)
+- Урок 3: Программно определяемые активы (SDA)
+  - [Обзор](/dagster-essentials/lesson-3/0-overview)
+  - [Что такое актив?](/dagster-essentials/lesson-3/1-whats-an-asset)
+  - [Определение первого актива](/dagster-essentials/lesson-3/2-defining-your-first-asset)
+  - [Материализация актива](/dagster-essentials/lesson-3/3-asset-materialization)
+  - [Просмотр сведений о запуске](/dagster-essentials/lesson-3/4-viewing-run-details)
+  - [Устранение ошибок запуска](/dagster-essentials/lesson-3/5-troubleshooting-failed-runs)
+  - [Практика: создание актива taxi_zones_file](/dagster-essentials/lesson-3/6-coding-practice-taxi-zones-file-asset)
+  - [Итоги](/dagster-essentials/lesson-3/7-recap)
 
-- Lesson 4: Asset dependencies
-  - [Overview](/dagster-essentials/lesson-4/0-overview)
-  - [What's a dependency?](/dagster-essentials/lesson-4/1-whats-a-dependency)
-  - [Assets and database execution](/dagster-essentials/lesson-4/2-assets-and-database-execution)
-  - [Loading data into a database](/dagster-essentials/lesson-4/3-loading-data-into-a-database)
-  - [Practice: Create a taxi_zones asset](/dagster-essentials/lesson-4/4-coding-practice-taxi-zones-asset)
-  - [Assets with in-memory computations](/dagster-essentials/lesson-4/5-assets-with-in-memory-computations)
-  - [Practice: Create a trips_by_week asset](/dagster-essentials/lesson-4/6-coding-practice-trips-by-week-asset)
+- Урок 4: Зависимости активов
+  - [Обзор](/dagster-essentials/lesson-4/0-overview)
+  - [Что такое зависимость?](/dagster-essentials/lesson-4/1-whats-a-dependency)
+  - [Активы и вычисления в базе данных](/dagster-essentials/lesson-4/2-assets-and-database-execution)
+  - [Загрузка данных в базу данных](/dagster-essentials/lesson-4/3-loading-data-into-a-database)
+  - [Практика: создание актива taxi_zones](/dagster-essentials/lesson-4/4-coding-practice-taxi-zones-asset)
+  - [Активы с вычислениями в оперативной памяти](/dagster-essentials/lesson-4/5-assets-with-in-memory-computations)
+  - [Практика: создание актива trips_by_week](/dagster-essentials/lesson-4/6-coding-practice-trips-by-week-asset)
 
 - Lesson 5: Definitions & code locations
   - [Overview](/dagster-essentials/lesson-5/0-overview)
@@ -95,3 +95,5 @@ title: Dagster Essentials
   - [Materialization metadata](/dagster-essentials/extra-credit/5-materialization-metadata)
   - [Practice: Add metadata to taxi_zones_file](/dagster-essentials/extra-credit/6-coding-practice-metadata-taxi-zones-file)
   - [Asset metadata as Markdown](/dagster-essentials/extra-credit/7-asset-metadata-as-markdown)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

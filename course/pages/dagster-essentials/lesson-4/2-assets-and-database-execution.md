@@ -1,16 +1,16 @@
 ---
-title: 'Lesson 4: Assets and database execution'
+title: 'Урок 4: Активы и вычисления в базе данных'
 module: 'dagster_essentials'
 lesson: '4'
 ---
 
-# Assets and database execution
+# Активы и вычисления в базе данных
 
-At the end of the previous lesson, you created two assets that don’t depend on each other: `taxi_trips_file` during the lesson and `taxi_zones_file` during the **Practice problem** section. In this section, you’ll create additional assets that depend on these assets.
+В конце предыдущего урока ты создал два независимых актива: `taxi_trips_file` в ходе урока и `taxi_zones_file` в разделе **Практическое задание**. В этом разделе ты создашь дополнительные активы, зависящие от них.
 
-Before doing any work that requires the data files, we should load them into a database for optimal efficiency and storage. Luckily, the project template you started with comes with DuckDB installed.
+Прежде чем выполнять какие-либо операции с этими файлами, загрузим их в базу данных для эффективной обработки и хранения. К счастью, в исходном шаблоне проекта уже установлена DuckDB.
 
-DuckDB has multiple features that make it easy to ingest data into it, such as directly querying from a file. To load the `taxi_trips` file into a DuckDB database, you could run the following SQL query:
+DuckDB обладает рядом возможностей, упрощающих загрузку данных, например позволяет выполнять запросы непосредственно к файлам. Чтобы загрузить файл `taxi_trips` в базу DuckDB, можно выполнить следующий SQL-запрос:
 
 ```sql
 create or replace table trips as (
@@ -29,4 +29,6 @@ create or replace table trips as (
 );
 ```
 
-Don’t worry about how to run this query right now - we’ll get into that in the next section.
+Пока не беспокойся о том, как выполнить этот запрос. Мы разберём это в следующем разделе.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

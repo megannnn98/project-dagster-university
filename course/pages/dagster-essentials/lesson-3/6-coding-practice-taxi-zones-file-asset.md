@@ -1,24 +1,24 @@
 ---
-title: 'Lesson 3: Practice: Create a taxi_zones_file asset'
+title: 'Урок 3: Практика: создание актива taxi_zones_file'
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-# Practice: Create a taxi_zones_file asset
+# Практика: создание актива taxi_zones_file
 
-To practice what you’ve learned, create an asset in `trips.py` that:
+Чтобы закрепить изученное, создай в `trips.py` актив, который:
 
-- Is named `taxi_zones_file`. This asset will contain a unique identifier and name for each part of NYC as a distinct taxi zone.
-- Uses the `requests` library to obtain [NYC Taxi Zones](https://opendata.cityofnewyork.us/) data from [this link](https://community-engineering-artifacts.s3.us-west-2.amazonaws.com/dagster-university/data/taxi_zones.csv): `https://community-engineering-artifacts.s3.us-west-2.amazonaws.com/dagster-university/data/taxi_zones.csv`
-- Stores the data as a CSV in `data/raw/taxi_zones.csv`. This path is provided for you in `constants.TAXI_ZONES_FILE_PATH`.
+- Называется `taxi_zones_file`. Этот актив будет содержать уникальный идентификатор и название каждой части Нью-Йорка, выделенной в отдельную зону такси.
+- Использует библиотеку `requests` для получения данных [NYC Taxi Zones](https://opendata.cityofnewyork.us/) по [этой ссылке](https://community-engineering-artifacts.s3.us-west-2.amazonaws.com/dagster-university/data/taxi_zones.csv): `https://community-engineering-artifacts.s3.us-west-2.amazonaws.com/dagster-university/data/taxi_zones.csv`
+- Сохраняет данные в формате CSV в файл `data/raw/taxi_zones.csv`. Этот путь уже задан в `constants.TAXI_ZONES_FILE_PATH`.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The asset you built should look similar to the following code. Click **View answer** to view it.
+Созданный актив должен выглядеть примерно как следующий код. Нажми **View answer**, чтобы посмотреть ответ.
 
-**If there are differences**, compare what you wrote to the asset below and change them, as this asset will be used as-is in future lessons.
+**Если есть различия**, сравни свой код с активом ниже и внеси необходимые изменения: в следующих уроках этот актив будет использоваться в таком виде.
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/trips.py
@@ -34,3 +34,5 @@ def taxi_zones_file() -> None:
     with open(constants.TAXI_ZONES_FILE_PATH, "wb") as output_file:
         output_file.write(raw_taxi_zones.content)
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

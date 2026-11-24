@@ -1,12 +1,12 @@
 ---
-title: 'Lesson 2: Project files'
+title: 'Урок 2: Файлы проекта'
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-# Project files
+# Файлы проекта
 
-Let’s talk a bit about the files in the Dagster Essentials course. The `dagster_university/dagster_essentials` directory should look something like this:
+Рассмотрим файлы курса Dagster Essentials. Каталог `dagster_university/dagster_essentials` должен выглядеть примерно так:
 
 ```bash
 dagster_university/dagster_essentials
@@ -32,77 +32,79 @@ dagster_university/dagster_essentials
 └── uv.lock
 ```
 
-**We’re only going to touch on a handful of files for now**, but later lessons will go over additional files in more detail.
+**Пока мы рассмотрим только несколько файлов**, но в следующих уроках подробнее познакомимся с остальными.
 
-The columns in the following table are as follows:
+Столбцы следующей таблицы:
 
-- **File/Directory -** The name of the file/directory
-- **Context** - The reason the file/directory is in the project. Indicates that the file/directory is:
-  - **Dagster -** Found in every Dagster project
-  - **Dagster U** - Specifically for the project you will build during Dagster University
-  - **Python** - Highly recommended as software engineering and Python best practices, but not technically required by Dagster
-- **Description** - A description of what the file/directory contains or what it’s used for
+- **Файл/каталог** — имя файла или каталога.
+- **Контекст** — причина, по которой файл или каталог присутствует в проекте:
+  - **Dagster** — встречается в каждом проекте Dagster.
+  - **Dagster U** — относится именно к проекту, который ты будешь создавать в ходе Dagster University.
+  - **Python** — настоятельно рекомендуется в соответствии с практиками разработки ПО и Python, но технически не обязателен для Dagster.
+- **Описание** — что содержит файл или каталог и для чего используется.
 
 {% table %}
 
-- File/Directory {% width="20%" %}
-- Context {% width="10%" %}
-- Description
+- Файл/каталог {% width="20%" %}
+- Контекст {% width="10%" %}
+- Описание
 
 ---
 
 - `README.md`
 - Python
-- A description and starter guide for the Dagster project.
+- Описание проекта Dagster и руководство по началу работы.
 
 ---
 
 - `dagster_essentials/`
 - Dagster U
-- Contains the files we will be working with during the course.
+- Содержит файлы, с которыми мы будем работать в ходе курса.
 
 ---
 
 - `src/dagster_essentials/completed/`
 - Dagster U
-- Finished code for each lesson of the course.
+- Готовый код для каждого урока курса.
 
 ---
 
 - `src/tests/`
 - Dagster U
-- A Python module that contains unit tests for the completed code.
+- Модуль Python, содержащий модульные тесты готового кода.
 
 ---
 
 - `data/`
 - Dagster U
-- This directory (and directories within it) is where you’ll store the data assets you’ll make during this course. In production settings, this could be Amazon S3 or a data warehouse.
+- В этом каталоге и его подкаталогах будут храниться активы данных, создаваемые в ходе курса. В рабочей среде для этого можно использовать, например, Amazon S3 или хранилище данных.
 
 ---
 
 - `.env`
 - Python
-- A text file containing pre-configured environment variables. We’ll talk more about this file in Lesson 6, when we cover connecting to external services.
+- Текстовый файл с предварительно настроенными переменными окружения. Подробнее рассмотрим его в уроке 6, когда будем подключаться к внешним сервисам.
 
 ---
 
 - `pyproject.toml`
 - Python
-- A file that specifies package core metadata in a static, tool-agnostic way. This file includes a `tool.dagster` section which references the Python module with your Dagster definitions defined and discoverable at the top level. This allows you to use the `dagster dev` command to load your Dagster code without any parameters.
+- Файл, в котором основные метаданные пакета задаются статически, независимо от инструментов. В файле есть раздел `tool.dagster`, ссылающийся на модуль Python, определения Dagster в котором доступны на верхнем уровне. Благодаря этому можно использовать команду `dagster dev` без параметров для загрузки кода Dagster.
 
 ---
 
 - `pytest.ini`
 - Python
-- The pytest.ini file is a configuration file for pytest that allows you to define test settings, such as command-line options, markers, and plugin configurations.
+- Конфигурационный файл pytest, в котором задаются параметры тестирования: опции командной строки, маркеры и настройки плагинов.
 
 ---
 
 - `uv.lock`
 - Python
-- In Python, `uv.lock` is a file used by the package manager uv to lock dependencies, similar to `poetry.lock` or `requirements.txt`, ensuring reproducible installations.
+- Файл, используемый менеджером пакетов uv для фиксации зависимостей, аналогично `poetry.lock` или `requirements.txt`. Он обеспечивает воспроизводимость установки.
 
 {% /table %}
 
-For more info about the other files in your Dagster project, check out the [Project file reference in the Dagster Docs](https://docs.dagster.io/guides/build/projects/project-structure/project-overview).
+Подробнее о других файлах проекта можно прочитать в [справочнике по структуре проекта в документации Dagster](https://docs.dagster.io/guides/build/projects/project-structure/project-overview).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
