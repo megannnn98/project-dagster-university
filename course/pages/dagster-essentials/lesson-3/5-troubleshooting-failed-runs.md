@@ -1,14 +1,14 @@
 ---
-title: 'Lesson 3: Troubleshooting failed runs'
+title: 'Урок 3: Устранение ошибок запуска'
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-# Troubleshooting failed runs
+# Устранение ошибок запуска
 
-Now that you’re familiar with how assets are materialized and where to find details about their execution, let’s focus on how to troubleshoot issues. To demonstrate how to troubleshoot, you’ll intentionally cause the `taxi_trips_file` asset to fail.
+Теперь, когда ты знаешь, как материализуются активы и где искать сведения об их выполнении, сосредоточимся на устранении неполадок. Для демонстрации намеренно вызовем ошибку в активе `taxi_trips_file`.
 
-In the `assets/trips.py` file, comment out the `from dagster_essentials.defs.assets import constants` line so it looks like this:
+В файле `assets/trips.py` закомментируй строку `from dagster_essentials.defs.assets import constants`, чтобы код выглядел следующим образом:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -30,85 +30,87 @@ def taxi_trips_file() -> None:
         output_file.write(raw_trips.content)
 ```
 
-In the Dagster UI, navigate to the **Global asset lineage** page and click Materialize again to try materializing the `taxi_trips_file` asset. As expected, the run will fail, resulting in the asset looking like this in the graph:
+В интерфейсе Dagster перейди на страницу **Global asset lineage** и снова нажми Materialize, чтобы попытаться материализовать актив `taxi_trips_file`. Как и ожидалось, запуск завершится ошибкой, а актив в графе будет выглядеть так:
 
-![Failed taxi_trips_file asset](/images/dagster-essentials/lesson-3/failed-asset.png)
+![Актив taxi_trips_file с ошибкой](/images/dagster-essentials/lesson-3/failed-asset.png)
 
-Click the **date** in the asset to open the **Run details** page again. As you can see, it looks quite a bit different from the happy green success we saw before:
+Нажми на **дату** в активе, чтобы снова открыть страницу **Run details**. Как видишь, она заметно отличается от зелёного успешного запуска, который мы наблюдали раньше:
 
-![Run details page showing a run failure](/images/dagster-essentials/lesson-3/failed-run-details-page.png)
+![Страница Run details с неудачным запуском](/images/dagster-essentials/lesson-3/failed-run-details-page.png)
 
-When a run results in an error, the Run details page will indicate that something went wrong by:
+Когда запуск завершается ошибкой, страница Run details указывает на проблему следующим образом:
 
-- Displaying a **Failure** status in the **Run stats**
-- Highlighting the problem step (or steps) in the **Run timeline** in red
-- Listing the problem step(s) in the **Errored** section next to the **Run timeline**
-- Displaying detailed error information about the problem step(s) in the **Run logs**
+- Отображает статус **Failure** в разделе **Run stats**.
+- Выделяет проблемный шаг или шаги красным цветом на **Run timeline**.
+- Перечисляет проблемные шаги в разделе **Errored** рядом с **Run timeline**.
+- Показывает подробные сведения об ошибках проблемных шагов в **Run logs**.
 
-To home in on what went wrong, let’s take a closer look at the logs. We’ll use the **structured view** of the logs for this example.
+Чтобы выяснить причину сбоя, подробнее рассмотрим журналы. В этом примере воспользуемся **структурированным представлением** журналов.
 
 ---
 
-## Using logs to troubleshoot
+## Использование журналов для устранения неполадок
 
 {% table %}
 
-- Step one
+- Шаг 1
 
 ---
 
 - {% width="60%" %}
-  In the logs, locate the step that failed by looking for a STEP_FAILURE event. We’ve highlighted the problem step in the image to the right.
+  Найди в журналах неудавшийся шаг по событию STEP_FAILURE. Проблемный шаг выделен на изображении справа.
 
-- ![Highlighted STEP_FAILURE event in the Run logs](/images/dagster-essentials/lesson-3/run-failure-step.png) {% rowspan=2 %}
+- ![Выделенное событие STEP_FAILURE в журналах запуска](/images/dagster-essentials/lesson-3/run-failure-step.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step two
+- Шаг 2
 
 ---
 
 - {% width="60%" %}
-  In the **INFO** column for the failed step, click the View full message button to display the full stacktrace. A popover window like the one to the right will display.
+  В столбце **INFO** неудавшегося шага нажми кнопку View full message, чтобы увидеть полную трассировку стека. Откроется всплывающее окно, подобное показанному справа.
 
-  At this point, you can use the stacktrace to identify and fix the cause of the error. In this case, it’s because we didn’t import `constants`, leaving it undefined.
+  Теперь можно использовать трассировку стека для определения и устранения причины ошибки. В данном случае мы не импортировали `constants`, поэтому это имя не определено.
 
-  To fix this, uncomment the `from dagster_essentials.defs.assets import constants` line in the `trips.py` file and save it.
+  Для исправления раскомментируй строку `from dagster_essentials.defs.assets import constants` в файле `trips.py` и сохрани файл.
 
-  In the Dagster UI, click **Done** to close the popover window from the run logs.
+  В интерфейсе Dagster нажми **Done**, чтобы закрыть всплывающее окно журналов запуска.
 
-- ![Full stacktrace error displayed in the Dagster UI after clicking  View full message in the Run logs](/images/dagster-essentials/lesson-3/stacktrace-error.png) {% rowspan=2 %}
+- ![Полная трассировка стека ошибки после нажатия View full message](/images/dagster-essentials/lesson-3/stacktrace-error.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step three
+- Шаг 3
 
 ---
 
 - {% width="60%" %}
-  After adding the import back in and saving the `trips.py` file, you’ll re-execute the run.
+  После восстановления импорта и сохранения файла `trips.py` выполни запуск повторно.
 
-  In the Run details page, locate and click the **Re-execute all (\*)** button near the top-right corner of the page. This will re-execute all the steps in the run.
+  На странице Run details найди и нажми кнопку **Re-execute all (\*)** в правом верхнем углу. Это приведёт к повторному выполнению всех шагов запуска.
 
-- ![Highlighted Re-execute all button in the Run details page, located near the top-right corner](/images/dagster-essentials/lesson-3/highlighted-re-execute.png) {% rowspan=2 %}
+- ![Выделенная кнопка Re-execute all на странице Run details](/images/dagster-essentials/lesson-3/highlighted-re-execute.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step four
+- Шаг 4
 
 ---
 
 - {% width="60%" %}
-  At this point, the run should successfully materialize the asset!
+  Теперь запуск должен успешно материализовать актив!
 
-  The Run details page will look similar to the image on the right, indicating that while the root (original) run failed, the re-execution was successful.
+  Страница Run details будет выглядеть примерно как на изображении справа: первоначальный запуск (root run) завершился ошибкой, но повторное выполнение было успешным.
 
-- ![Successful run details page after the re-execution](/images/dagster-essentials/lesson-3/re-execute-successful.png) {% rowspan=2 %}
+- ![Страница Run details после успешного повторного выполнения](/images/dagster-essentials/lesson-3/re-execute-successful.png) {% rowspan=2 %}
 
 {% /table %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

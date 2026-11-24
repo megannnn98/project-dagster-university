@@ -1,19 +1,21 @@
 ---
-title: 'Lesson 3: Recap'
+title: 'Урок 3: Итоги'
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-## Recap
+## Итоги
 
-In this lesson, you learned:
+В этом уроке ты узнал:
 
-- How to use `dg` to help build a Dagster project
-- What an asset is
-- What makes up an asset
-- How to define and materialize an asset
-- How to find run info and troubleshoot issues
+- Как использовать `dg` для разработки проекта Dagster.
+- Что такое актив.
+- Из чего состоит актив.
+- Как определять и материализовать актив.
+- Как находить сведения о запусках и устранять неполадки.
 
-You also wrote your first assets - `taxi_trips_file` and `taxi_zones_file` - which you’ll use in the next lesson to create more assets and have them depend on each other.
+Ты также написал свои первые активы — `taxi_trips_file` и `taxi_zones_file`. В следующем уроке ты будешь использовать их, чтобы создавать новые активы и задавать зависимости между ними.
 
-> ‼️ Make sure you update your code to match the answer before continuing to Lesson 4!
+> ‼️ Перед переходом к уроку 4 обязательно приведи свой код в соответствие с ответом!
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

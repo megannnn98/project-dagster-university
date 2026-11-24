@@ -1,18 +1,20 @@
 ---
-title: 'Lesson 3: Overview'
+title: 'Урок 3: Обзор'
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-## Overview
+## Обзор
 
-In Lesson 1, we touched on how an asset-centric approach to writing data pipelines can benefit you and your team. To recap, focusing on assets improves:
+В уроке 1 мы рассмотрели, чем подход к построению пайплайнов данных, ориентированный на активы, полезен тебе и твоей команде. Напомним, какие преимущества даёт внимание к активам:
 
-- **Context and visibility.** Everyone in your organization can understand the data lineage and how data assets relate to each other
-- **Productivity.** By building a DAG that globally understands what data exists and why, asset-centric workflows allow for reusing assets without changing an existing sequence of tasks
-- **Observability.** It’s easy to tell exactly why assets are out-of-date, whether it might be late upstream data or errors in code
-- **Troubleshooting.** Every run and computation is tied to the goal of producing data, so debugging tools like logs are specific to the assets being produced
+- **Контекст и прозрачность.** Все сотрудники организации могут понять происхождение данных и взаимосвязи между активами данных.
+- **Продуктивность.** Благодаря построению DAG, описывающего имеющиеся данные и их назначение в масштабе всей системы, можно повторно использовать активы без изменения существующей последовательности задач.
+- **Наблюдаемость.** Легко определить, почему активы устарели: например, из-за задержки входных данных или ошибок в коде.
+- **Устранение неполадок.** Каждый запуск и вычисление связаны с целью создания данных, поэтому средства отладки, например журналы, привязаны к конкретным создаваемым активам.
 
-Think about the cookie example we started this course with. When the pipeline was **task-centric** - that is, focusing on the steps in the pipeline and not the assets that are produced - it was difficult to tell how a particular asset was produced. When the pipeline was **asset-centric**, however, it was easy to see how assets were created as the steps required to create the asset were **contained within the asset itself.**
+Вспомни пример с печеньем, с которого начался курс. Когда пайплайн был **ориентирован на задачи**, то есть на шаги, а не на создаваемые активы, было трудно определить, как получен конкретный актив. Когда же пайплайн был **ориентирован на активы**, понять, как они создаются, было легко: необходимые шаги **содержались в определении самого актива**.
 
-In Dagster, the core building block is the **Software-defined Asset (SDA)**. Software-defined assets allow you to write data pipelines by focusing on the assets they produce, making pipelines more debuggable and accessible. SDAs are also commonly referred to as **assets** in the context of Dagster.
+Основной строительный блок Dagster — **программно определяемый актив (Software-defined Asset, SDA)**. Такие активы позволяют разрабатывать пайплайны данных, сосредоточившись на создаваемых ими результатах, что упрощает отладку и понимание пайплайнов. В контексте Dagster SDA также обычно называют просто **активами**.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

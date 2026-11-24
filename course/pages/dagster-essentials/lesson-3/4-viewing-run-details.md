@@ -1,45 +1,47 @@
 ---
-title: 'Lesson 3: Viewing run details'
+title: 'Урок 3: Просмотр сведений о запуске'
 module: 'dagster_essentials'
 lesson: '3'
 ---
 
-# Viewing run details
+# Просмотр сведений о запуске
 
-In the last section, you successfully materialized an asset using the Dagster UI. The UI told you that the run was successful - but what if it hadn’t been? What would that look like, and how would you troubleshoot it? In this section, we’ll show you where to find run information in the Dagster UI and how to use it to pinpoint issues.
+В предыдущем разделе ты успешно материализовал актив через интерфейс Dagster. Интерфейс сообщил об успешном запуске. Но что было бы, если бы запуск завершился ошибкой? Как это выглядело бы и как найти причину? В этом разделе мы покажем, где находятся сведения о запуске в интерфейсе Dagster и как использовать их для поиска проблем.
 
-Before we jump into troubleshooting failures, let’s take a look at the details of the successful run you just kicked off.
+Прежде чем перейти к устранению ошибок, рассмотрим сведения об успешном запуске, который ты только что инициировал.
 
-To view the details, locate the **Materialized - <DATE>** portion of the asset in the graph. Click the **date -** highlighted in the following image - to open the **Run details** page:
+Чтобы просмотреть сведения, найди в графе надпись **Materialized - <DATE>** на активе. Нажми на **дату**, выделенную на следующем изображении, чтобы открыть страницу **Run details**:
 
-![Highlighted Materlization date in an asset](/images/dagster-essentials/lesson-3/highlighted-materialization-date.png)
+![Выделенная дата материализации актива](/images/dagster-essentials/lesson-3/highlighted-materialization-date.png)
 
-The **Run details** page contains three main sections:
+Страница **Run details** содержит три основных раздела:
 
-- The high-level stats about the job, such as its ID, status, date, and duration
-- The timeline view, which shows when each step is executed and its duration
-- The logs, which contain detailed info about each step and its execution
+- Общие сведения о задании: идентификатор, статус, дату и длительность.
+- Временную шкалу, показывающую момент выполнения каждого шага и его длительность.
+- Журналы с подробной информацией о каждом шаге и его выполнении.
 
-Let’s take a look at each section:
+Рассмотрим каждый раздел:
 
-![Highlighted sections in the Run details page of the Dagster UI](/images/dagster-essentials/lesson-3/run-details-diagram.png)
-
----
-
-## Run stats
-
-Let’s start with the top portion of the page, which provides high-level stats about the run.
-
-Here, you’ll find the run’s ID, its status, the name of the affected asset, the date it ran, and how long it took to complete. There are also buttons for the Launchpad and tags and config, which we’ll focus on later in the course.
+![Разделы страницы Run details в интерфейсе Dagster](/images/dagster-essentials/lesson-3/run-details-diagram.png)
 
 ---
 
-## Run timeline
+## Общие сведения о запуске
 
-Below the run stats is the Run timeline:
+Начнём с верхней части страницы, содержащей общую информацию о запуске.
 
-![The Run timeline in the Run details page, showing the taxi_trips_file step executed successfully](/images/dagster-essentials/lesson-3/run-timeline.png)
+Здесь можно найти идентификатор запуска, его статус, имя затронутого актива, дату выполнения и длительность. Здесь также находятся кнопки Launchpad, тегов и конфигурации, которые мы рассмотрим позже в курсе.
 
-The timeline visualizes how long each step in the run took to complete and whether it finished successfully or encountered an error. In this example, the `taxi_trips_file` step - the only step in this particular run - is highlighted in green, indicating it finished successfully.
+---
 
-Using the toggles on the left side and above the graph, you can change how this displays depending on your needs.
+## Временная шкала запуска
+
+Под общими сведениями располагается временная шкала Run timeline:
+
+![Временная шкала запуска с успешно выполненным шагом taxi_trips_file](/images/dagster-essentials/lesson-3/run-timeline.png)
+
+На временной шкале видно, сколько времени заняло выполнение каждого шага запуска и завершился ли он успешно или с ошибкой. В этом примере шаг `taxi_trips_file`, единственный шаг данного запуска, выделен зелёным, что указывает на успешное завершение.
+
+С помощью переключателей слева и над графиком можно изменять отображение в соответствии со своими потребностями.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

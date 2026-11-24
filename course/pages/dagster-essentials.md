@@ -15,15 +15,15 @@ title: Dagster Essentials
   - [Настройка Codespace](/installation/set-up-codespace)
   - [Файлы проекта](/dagster-essentials/lesson-2/3-project-files)
 
-- Lesson 3: SDAs
-  - [Overview](/dagster-essentials/lesson-3/0-overview)
-  - [What's an asset?](/dagster-essentials/lesson-3/1-whats-an-asset)
-  - [Defining your first asset](/dagster-essentials/lesson-3/2-defining-your-first-asset)
-  - [Asset materialization](/dagster-essentials/lesson-3/3-asset-materialization)
-  - [Viewing run details](/dagster-essentials/lesson-3/4-viewing-run-details)
-  - [Troubleshooting failed runs](/dagster-essentials/lesson-3/5-troubleshooting-failed-runs)
-  - [Coding practice: Create a taxi_zones_file asset](/dagster-essentials/lesson-3/6-coding-practice-taxi-zones-file-asset)
-  - [Recap](/dagster-essentials/lesson-3/7-recap)
+- Урок 3: Программно определяемые активы (SDA)
+  - [Обзор](/dagster-essentials/lesson-3/0-overview)
+  - [Что такое актив?](/dagster-essentials/lesson-3/1-whats-an-asset)
+  - [Определение первого актива](/dagster-essentials/lesson-3/2-defining-your-first-asset)
+  - [Материализация актива](/dagster-essentials/lesson-3/3-asset-materialization)
+  - [Просмотр сведений о запуске](/dagster-essentials/lesson-3/4-viewing-run-details)
+  - [Устранение ошибок запуска](/dagster-essentials/lesson-3/5-troubleshooting-failed-runs)
+  - [Практика: создание актива taxi_zones_file](/dagster-essentials/lesson-3/6-coding-practice-taxi-zones-file-asset)
+  - [Итоги](/dagster-essentials/lesson-3/7-recap)
 
 - Lesson 4: Asset dependencies
   - [Overview](/dagster-essentials/lesson-4/0-overview)
