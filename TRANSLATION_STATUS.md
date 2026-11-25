@@ -22,20 +22,20 @@
 | Workflow | Рабочий процесс |
 | Pipeline | Пайплайн |
 | Orchestration | Оркестрация |
-| Asset | Актив (данных) |
+| Asset | Ассет |
 | Task-centric | Ориентированный на задачи |
-| Asset-centric | Ориентированный на активы |
-| Upstream asset | Вышестоящий актив |
-| Downstream asset | Нижестоящий актив |
+| Asset-centric | Ориентированный на ассеты |
+| Upstream asset | Вышестоящий ассет |
+| Downstream asset | Нижестоящий ассет |
 | Data lineage | Происхождение данных |
 | Data freshness | Актуальность данных |
 | Observability | Наблюдаемость |
 | Materialization | Материализация |
-| Software-defined Asset (SDA) | Программно определяемый актив (SDA) |
-| Asset key | Ключ актива |
+| Software-defined Asset (SDA) | Программно определяемый ассет (SDA) |
+| Asset key | Ключ ассета |
 | Dependency | Зависимость |
-| Parent asset | Родительский актив |
-| Child asset | Дочерний актив |
+| Parent asset | Родительский ассет |
+| Child asset | Дочерний ассет |
 | Ancestor | Предок |
 | Code location | Расположение кода |
 | Definition | Определение |
@@ -51,7 +51,7 @@
 | Metadata | Метаданные |
 | Definition metadata | Метаданные определения |
 | Materialization metadata | Метаданные материализации |
-| Asset group | Группа активов |
+| Asset group | Группа ассетов |
 | Partition | Партиция |
 | Backfill | Backfill (заполнение или пересчёт диапазона) |
 | Environment variable | Переменная окружения |
@@ -60,5 +60,7 @@
 | Run | Запуск |
 | Dagster Components | Компоненты Dagster |
 | Directed acyclic graph (DAG) | Ориентированный ациклический граф (DAG) |
+
+Термин asset переводится как «ассет» с соответствующим склонением.
 
 Имена Python API, пути файлов, ссылки и синтаксис Markdoc не переводятся.
