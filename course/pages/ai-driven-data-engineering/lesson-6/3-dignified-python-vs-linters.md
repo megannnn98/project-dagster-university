@@ -1,27 +1,28 @@
 ---
-title: "Lesson 6: Dignified Python vs linters"
+title: 'Урок 6: Dignified Python и линтеры'
 module: 'ai_driven_data_engineering'
 lesson: '6'
 ---
 
-# Dignified Python vs linters
+# Dignified Python и линтеры
 
-How is dignified-python different from a linter like `ruff`? And can you use both? Yes. Internally we use both, for different reasons.
+Чем dignified-python отличается от линтера вроде `ruff`? Можно ли использовать оба инструмента? Да. Внутри команды мы используем оба, но для разных целей.
 
-## How they differ
+## В чём различия
 
-* `ruff` (and linters like it) is deterministic. Given the same code and config, it always reports the same issues. It runs quickly, fits into CLI and CI pipelines, and catches a well-defined set of problems: style (e.g. line length, quotes), common bugs (unused imports, undefined names), and rule-based patterns. It doesn’t “understand” higher-level design or narrative best practices; it applies fixed rules.
+* `ruff` (и подобные линтеры) детерминирован. При одинаковом коде и конфигурации он всегда сообщает об одних и тех же проблемах. Он работает быстро, вписывается в CLI и CI-пайплайны и обнаруживает чётко определённый набор проблем: нарушения стиля (например, длину строки, кавычки), распространённые ошибки (неиспользуемые импорты, неопределённые имена) и шаблоны, описанные правилами. Он не «понимает» высокоуровневую архитектуру или рекомендации в свободной форме, а применяет фиксированные правила.
 
-* Dignified-python is an AI skill. The agent reads the skill’s rules and your code, then suggests changes based on those patterns. It can address structure (e.g. “move this side effect inside a function”), repetition (“factor these three functions into one helper”), and design choices that are hard to encode as linter rules. The output can vary slightly between runs or agents, and it requires an AI assistant in the loop.
+* Dignified-python — ИИ-скилл. Агент читает правила скилла и твой код, затем предлагает изменения на основании этих шаблонов. Он может работать со структурой (например, «перенеси побочный эффект внутрь функции»), повторением («объедини эти три функции в одну вспомогательную») и архитектурными решениями, которые трудно выразить правилами линтера. Результат может немного отличаться между запусками или агентами, а в процессе необходим ИИ-ассистент.
 
-So: `ruff` = deterministic, fast, great for pipelines and consistent style. Dignified-python = broader, design- and structure-oriented, used with an agent to improve code quality beyond what a linter checks.
+Итак, `ruff` детерминирован, быстр и отлично подходит для пайплайнов и единообразного стиля. Dignified-python шире по охвату, ориентирован на архитектуру и структуру и используется с агентом для улучшения качества кода за пределами проверок линтера.
 
-## Using them together
+## Совместное использование
 
-We use both:
+Мы используем оба инструмента:
 
-- **Ruff**: run in CI and as part of the development workflow (e.g. `ruff check .`, `ruff format .`). Because it’s deterministic, it’s safe to run in CLI pipelines and to fail builds when rules are violated. It catches a different set of issues (formatting, many static bugs, import order) quickly and reliably.
+- **Ruff:** запускаем в CI и в процессе разработки (например, `ruff check .`, `ruff format .`). Благодаря детерминированности его удобно запускать в CLI-пайплайнах и останавливать сборку при нарушениях правил. Он быстро и надёжно обнаруживает другой набор проблем: форматирование, многие статически выявляемые ошибки, порядок импортов.
+- **Dignified-python:** вызывай, когда нужно поручить агенту ревью или рефакторинг кода согласно нашим лучшим практикам Python. Используй для улучшения структуры, сокращения повторений и разграничения поведения при импорте и выполнении. Он не заменяет Ruff, а дополняет его, решая проблемы, которые линтеры обычно не охватывают.
 
-- **Dignified-python**: invoke when you want the agent to review or refactor code against our Python best practices. Use it for structural improvements, reducing repetition, and import-time vs runtime behavior. It doesn’t replace Ruff; it complements it by addressing the kinds of issues linters don’t typically cover.
+**Рабочий процесс:** запускай Ruff и исправляй обнаруженные нарушения, чтобы кодовая база сохраняла единообразие и проходила CI. Используй скилл dignified-python при редактировании или ревью кода с агентом, когда нужны предложения за пределами возможностей линтера. Вместе они позволяют соблюдать как правила линтинга, так и более широкие стандарты Python.
 
-**Workflow:** Run Ruff (and fix what it reports) so the codebase stays consistent and passes CI. Use the dignified-python skill when you’re editing or reviewing code with an agent and want suggestions that go beyond what the linter can do. Together they keep the code both lint-clean and aligned with our broader Python standards.
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

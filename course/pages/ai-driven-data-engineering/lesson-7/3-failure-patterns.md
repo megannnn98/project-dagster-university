@@ -1,57 +1,59 @@
 ---
-title: "Lesson 7: Common session failure patterns"
+title: 'Урок 7: Типичные проблемы сессий'
 module: 'ai_driven_data_engineering'
 lesson: '7'
 ---
 
-# Common session failure patterns
+# Типичные проблемы сессий
 
-Good session habits prevent degradation. But degradation can also develop because of specific patterns that are easy to fall into and hard to notice from inside the session. These patterns have predictable shapes. Naming them makes them easier to self-diagnose before they compound.
+Хорошие привычки предотвращают ухудшение качества работы. Но оно может возникать из-за конкретных сценариев, в которые легко попасть и которые трудно заметить изнутри сессии. У этих сценариев предсказуемая форма. Если дать им названия, их легче самостоятельно диагностировать до накопления проблем.
 
-## Kitchen sink session
+## Сессия обо всём сразу
 
-**What it looks like:** A single session starts with "add the `trending_events` asset," and three hours later it also contains: a debugging round for the DuckDB path, a refactor of `resources.py`, a question about partitions, and the start of a new dbt model.
+**Как выглядит:** одна сессия начинается с «добавь ассет `trending_events`», а через три часа в ней также содержатся отладка пути DuckDB, рефакторинг `resources.py`, вопрос о партициях и начало новой модели dbt.
 
-**Why it's a problem:** Each completed task leaves residue: file reads, stack traces, revised decisions, resolved errors. That residue doesn't help the current task. It occupies context that the current task needs, and it gives the agent an increasingly blurry picture of what "the current state" actually is.
+**Почему это проблема:** каждая завершённая задача оставляет следы: прочитанные файлы, стеки вызовов, пересмотренные решения, устранённые ошибки. Эти сведения не помогают текущей задаче. Они занимают контекст, который ей нужен, и дают агенту всё менее ясное представление о реальном текущем состоянии проекта.
 
-**The tell:** You're explaining the current state of the project to the agent as if reminding it of something, not building on shared context.
+**Признак:** ты объясняешь агенту состояние проекта так, словно напоминаешь забытое, вместо развития общего контекста.
 
-**Reset:** One task per session. When `dg check defs` passes and you've committed, the task is done. The next task starts in a new session.
+**Выход:** одна задача на сессию. Когда `dg check defs` проходит и изменения закоммичены после необходимых проверок, задача завершена. Следующая начинается в новой сессии.
 
-## Correction loop
+## Цикл исправлений
 
-**What it looks like:** The agent produces code with a pattern you've already corrected twice. You correct it again. It acknowledges and fixes it. In the next message, the same pattern appears.
+**Как выглядит:** агент генерирует код с шаблоном, который ты уже дважды исправлял. Ты исправляешь его снова. Агент соглашается и вносит исправление. В следующем сообщении тот же шаблон возвращается.
 
-**Why it's a problem:** The correction is in context, but it's being outweighed by earlier content or by the agent generating from a compressed version of the session. You're spending energy on the same correction instead of making forward progress.
+**Почему это проблема:** исправление находится в контексте, но его влияние может быть ослаблено более ранним содержимым или сжатой версией истории сессии. Ты тратишь усилия на одно и то же исправление вместо продвижения вперёд.
 
-**The tell:** You've written "like I mentioned earlier" or "again, please use the factory pattern" more than once in the same session.
+**Признак:** в одной сессии ты уже несколько раз написал «как я говорил раньше» или «ещё раз: используй фабричный шаблон».
 
-**Reset:** Stop correcting in-session. Start a fresh session and lead with the correction as a standing constraint in the opening prompt. If the correction is structural, lead with it as a constraint in the opening prompt of every new session rather than correcting it repeatedly mid-session.
+**Выход:** прекрати повторные исправления в той же сессии. Начни новую и укажи исправление как постоянное ограничение в первом промпте. Если ограничение архитектурное, включай его в первый промпт каждой новой сессии вместо многократных исправлений в середине.
 
-To drop conversation history while keeping file state: in Claude Code type `/clear`; in Cursor start a new chat; in Copilot or Codex open a new conversation window.
+Чтобы отбросить историю разговора, сохранив состояние файлов: в Claude Code введи `/clear`; в Cursor начни новый чат; в Copilot или Codex открой новый разговор.
 
-## Trust-then-verify gap
+## Разрыв между доверием и проверкой
 
-**What it looks like:** The agent returns code that looks right. The file structure matches, the logic seems reasonable, and you move on. Two tasks later, you discover the asset was never registered in `Definitions`, or the resource is missing a field, or `dg check defs` would have caught something you didn't run.
+**Как выглядит:** агент возвращает код, который выглядит правильным. Структура файлов соответствует ожиданиям, логика разумна, и ты продолжаешь работу. Через две задачи обнаруживается, что ассет не был зарегистрирован в `Definitions`, у ресурса отсутствует поле или не выполненная вовремя команда `dg check defs` могла бы выявить проблему.
 
-**Why it's a problem:** Plausible-looking output is not the same as correct output. The agent can produce code that passes a quick visual scan but fails at load time. The longer the delay between code generation and validation, the harder it is to identify which change caused the problem.
+**Почему это проблема:** правдоподобный результат не равен корректному. Агент может создать код, проходящий быстрый визуальный просмотр, но не загружающийся. Чем больше задержка между генерацией и проверкой кода, тем сложнее определить, какое изменение вызвало проблему.
 
-**The tell:** You're running `dg check defs` reactively (when something breaks) rather than as a routine step after every implementation.
+**Признак:** ты выполняешь `dg check defs` реактивно (когда что-то ломается), а не как обычный шаг после каждой реализации.
 
-**Reset:** Run `dg check defs` after every substantive change. Include it as a step in the prompt itself (see the prompting lesson). Don't commit code you haven't validated.
+**Выход:** запускай `dg check defs` после каждого существенного изменения. Включай проверку в сам промпт (см. урок о промптах). Не коммить код, который не проверил.
 
-## Infinite exploration
+## Бесконечное исследование
 
-**What it looks like:** You ask the agent to "investigate why the schedule isn't running" or "explore whether partitions would help here." The agent reads a dozen files, reasons through several possibilities, and produces a long analysis, most of which isn't actionable.
+**Как выглядит:** ты просишь агента «выяснить, почему расписание не выполняется» или «исследовать, помогут ли здесь партиции». Агент читает десяток файлов, рассуждает о нескольких вариантах и выдаёт длинный анализ, большая часть которого не содержит конкретных действий.
 
-**Why it's a problem:** Open-ended investigation tasks have no natural stopping point. The agent keeps reading and reasoning until context pressure forces it to stop. The result is a context-heavy session with a diffuse output that's hard to act on.
+**Почему это проблема:** открытые исследовательские задачи не имеют естественной точки завершения. Агент продолжает чтение и рассуждения, пока ограничения контекста не вынудят его остановиться. Получается насыщенная контекстом сессия с расплывчатым результатом, который трудно применить.
 
-**The tell:** The agent's response is longer than the task warrants, covers multiple hypotheses without recommending one, or keeps re-reading files you've already discussed.
+**Признак:** ответ агента длиннее, чем требует задача, охватывает несколько гипотез без рекомендации или агент продолжает перечитывать уже обсуждавшиеся файлы.
 
-**Reset:** Scope investigation prompts explicitly. "Before suggesting fixes, tell me the three most likely causes of this error" is better than "investigate this error." Or use a subagent for the investigation so it doesn't consume the main context window. Get the findings, then decide what to act on.
+**Выход:** явно ограничивай исследовательские промпты. «Прежде чем предлагать исправления, назови три наиболее вероятные причины ошибки» лучше, чем «исследуй эту ошибку». Либо используй субагента для исследования, чтобы оно не занимало основное контекстное окно. Получи результаты и реши, что с ними делать.
 
-## Using the patterns
+## Применение шаблонов
 
-These patterns aren't failure modes reserved for bad sessions. They're tendencies that develop naturally in any working session, especially ones that span more than an hour or more than one task. The value of naming them is not to avoid them entirely but to recognize them earlier, before a single correction loop turns into ten, or a kitchen sink session turns into one you have to abandon and reconstruct.
+Эти сценарии не свойственны исключительно плохим сессиям. Такие тенденции естественно развиваются в рабочих сессиях, особенно охватывающих больше часа или нескольких задач. Ценность их названий не в том, чтобы полностью их избегать, а в раннем распознавании: до того, как один цикл исправлений превратится в десять или сессия обо всём сразу станет такой, что её придётся бросить и восстанавливать контекст.
 
-The degradation signals from the context lesson ("What is context?") tell you the session *is* degrading. These patterns tell you *why* it's degrading and what to do about it.
+Признаки ухудшения из урока о контексте («Что такое контекст?») показывают, *что* качество сессии снижается. Эти шаблоны объясняют, *почему* оно снижается и что с этим делать.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

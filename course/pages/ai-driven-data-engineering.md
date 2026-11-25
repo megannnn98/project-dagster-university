@@ -41,17 +41,17 @@ title: AI-Driven Data Engineering
   - [Дополнительные компоненты](/ai-driven-data-engineering/lesson-5/5-additional-components)
   - [Цепочки скиллов](/ai-driven-data-engineering/lesson-5/6-when-to-use-each-skill)
 
-- Lesson 6: Code quality with dignified-python
-  - [Overview](/ai-driven-data-engineering/lesson-6/0-overview)
-  - [Our patterns](/ai-driven-data-engineering/lesson-6/1-our-patterns)
-  - [Cleaning up our code](/ai-driven-data-engineering/lesson-6/2-cleaning-up-our-code)
-  - [Dignified Python vs linters](/ai-driven-data-engineering/lesson-6/3-dignified-python-vs-linters)
+- Урок 6: Качество кода с dignified-python
+  - [Обзор](/ai-driven-data-engineering/lesson-6/0-overview)
+  - [Наши шаблоны](/ai-driven-data-engineering/lesson-6/1-our-patterns)
+  - [Приведение кода в порядок](/ai-driven-data-engineering/lesson-6/2-cleaning-up-our-code)
+  - [Dignified Python и линтеры](/ai-driven-data-engineering/lesson-6/3-dignified-python-vs-linters)
 
-- Lesson 7: Managing AI sessions
-  - [Overview](/ai-driven-data-engineering/lesson-7/0-overview)
-  - [What is context](/ai-driven-data-engineering/lesson-7/1-how-context-works)
-  - [Session habits](/ai-driven-data-engineering/lesson-7/2-session-habits)
-  - [Common session failure patterns](/ai-driven-data-engineering/lesson-7/3-failure-patterns)
+- Урок 7: Управление ИИ-сессиями
+  - [Обзор](/ai-driven-data-engineering/lesson-7/0-overview)
+  - [Что такое контекст?](/ai-driven-data-engineering/lesson-7/1-how-context-works)
+  - [Привычки работы с сессиями](/ai-driven-data-engineering/lesson-7/2-session-habits)
+  - [Типичные проблемы сессий](/ai-driven-data-engineering/lesson-7/3-failure-patterns)
 
 - Lesson 8: Complex tasks with plan mode and subagents
   - [Overview](/ai-driven-data-engineering/lesson-8/0-overview)
