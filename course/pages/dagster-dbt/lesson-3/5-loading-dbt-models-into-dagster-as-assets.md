@@ -1,56 +1,58 @@
 ---
-title: 'Lesson 3: Loading dbt models into Dagster as assets'
+title: "Урок 3: Загрузка моделей dbt в Dagster как ассетов"
 module: 'dagster_dbt'
 lesson: '3'
 ---
 
-# Loading dbt models into Dagster as assets
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Now is the moment that we’ve been building up to since the beginning of this module. Let’s see your dbt models in a Dagster asset graph!
+# Загрузка моделей dbt в Dagster как ассетов
 
----
-
-## Turning dbt models into assets with  @dbt_assets
-
-The star of the show here is the `@dbt_assets` decorator. This is a specialized asset decorator that wraps around a dbt project to tell Dagster what dbt models exist. In the body of the `@dbt_assets` definition, you write exactly how you want Dagster to run your dbt models.
-
-Many Dagster projects may only need one `@dbt_assets`-decorated function that manages the entire dbt project. However, you may need to create multiple definitions for various reasons, such as:
-
-- You have multiple dbt projects
-- You want to exclude certain dbt models
-- You want to run different dbt commands on specific model groups (for example, `dbt build` for most models and `dbt run --no-version-check` for others)
-- You want to customize what happens after certain models finish, such as sending a notification
-- You need to configure some sets of models differently (for example, partitioned vs. non-partitioned)
-
-We’ll only create one `@dbt_assets` definition for now, but in a later lesson, we’ll encounter a use case for needing another `@dbt_assets` definition.
+Теперь посмотрим на модели dbt в графе ассетов Dagster.
 
 ---
 
-## Decorator arguments vs function parameters
+## Превращение моделей dbt в ассеты с помощью @dbt_assets
 
-When writing a `@dbt_assets` definition, configuration appears in two places. Understanding why helps you decide where new config belongs.
+Главную роль играет декоратор `@dbt_assets`. Он описывает проект dbt для Dagster, сообщая, какие модели существуют. В теле декорированной функции вы задаёте, как Dagster должен запускать эти модели.
 
-**Decorator arguments** (`manifest`, `select`, `exclude`, `partitions_def`, `dagster_dbt_translator`) are static configuration. Dagster reads them at load time to build the asset graph — before any run starts. They define _which assets exist_ and _how they relate to each other_.
+Для многих проектов достаточно одной функции с `@dbt_assets`, управляющей всем проектом dbt. Несколько определений могут понадобиться, если:
 
-**Function parameters** (`context: dg.AssetExecutionContext`, `dbt: DbtCliResource`) are injected at runtime, once per execution. `context` carries run-specific state (the active partition key, run ID, logger). `dbt` is the resource used to actually invoke dbt commands.
+- У вас несколько проектов dbt.
+- Нужно исключить определённые модели dbt.
+- Для разных групп моделей нужны разные команды, например `dbt build` для большинства и `dbt run --no-version-check` для остальных.
+- После выполнения некоторых моделей нужно выполнить дополнительные действия, например отправить уведомление.
+- Разным группам моделей нужны разные настройки, например партиционирование только для части моделей.
 
-A useful rule of thumb: if Dagster needs to know it before a run starts, it’s a decorator argument. If it’s only meaningful during a run, it’s a function parameter.
-
-This also explains command flexibility. The dbt command (`dbt run`, `dbt build`, etc.) lives inside the function body — not the decorator. A single `@dbt_assets` function issues one command for all its models. To run different commands for different model groups, you create multiple `@dbt_assets` definitions using `select` and `exclude` to split the models, each with its own command. Lesson 6 demonstrates this pattern.
+Пока создадим одно определение с `@dbt_assets`. В одном из следующих уроков нам понадобится второе.
 
 ---
 
-## Loading the models as assets
+## Аргументы декоратора и параметры функции
 
-1. Create a new file `dbt.py` in the `defs/assets/` directory. You can create this file manually or use `dg`:
+Настройки определения `@dbt_assets` задаются в двух местах.
+
+**Аргументы декоратора** (`manifest`, `select`, `exclude`, `partitions_def`, `dagster_dbt_translator`) — статические настройки. Dagster читает их при загрузке, до начала запуска, и строит граф ассетов. Они определяют, _какие ассеты существуют_ и _как они связаны_.
+
+**Параметры функции** (`context: dg.AssetExecutionContext`, `dbt: DbtCliResource`) передаются при выполнении. `context` содержит данные конкретного запуска: ключ активной партиции, идентификатор запуска и логгер. Ресурс `dbt` непосредственно вызывает команды dbt.
+
+Если настройка нужна Dagster до начала запуска, ей место в аргументах декоратора. Если она имеет смысл только во время выполнения — в параметрах функции.
+
+Сама команда (`dbt run`, `dbt build` и другие) задаётся в теле функции. Одна функция с `@dbt_assets` выполняет общую команду для своей группы моделей. Чтобы запускать разные команды для разных групп, создайте несколько определений с `@dbt_assets`, разделив модели через `select` и `exclude`. Этот подход показан в шестом уроке.
+
+---
+
+## Загрузка моделей как ассетов
+
+1. Создайте файл `dbt.py` в каталоге `defs/assets/` вручную или командой `dg`:
 
    ```bash
    dg scaffold defs dagster.asset assets/dbt.py
    ```
 
-   > ⚠️ **Note:** The scaffold command creates a basic `@dg.asset` template as a starting point. We'll be **replacing** the scaffolded content entirely with dbt-specific code below, since we need to use the specialized `@dbt_assets` decorator instead of the standard `@dg.asset` decorator.
+   > ⚠️ **Примечание:** команда создаёт шаблон с `@dg.asset`. Ниже мы полностью заменим его содержимое, поскольку для моделей dbt нужен специальный декоратор `@dbt_assets`.
 
-2. Replace the contents of `dbt.py` with the following imports:
+2. Замените содержимое `dbt.py` следующими импортами:
 
    ```python
    # src/dagster_and_dbt/defs/assets/dbt.py
@@ -60,7 +62,7 @@ This also explains command flexibility. The dbt command (`dbt run`, `dbt build`,
    from dagster_and_dbt.defs.project import dbt_project
    ```
 
-3. Next, we'll use the `@dbt_assets` decorator to create a new asset function and provide it with a reference to the project's manifest file:
+3. С помощью `@dbt_assets` определите новую функцию ассетов и передайте ссылку на манифест проекта:
 
    ```python
    @dbt_assets(
@@ -69,24 +71,24 @@ This also explains command flexibility. The dbt command (`dbt run`, `dbt build`,
    def dbt_analytics(context: dg.AssetExecutionContext, dbt: DbtCliResource):
    ```
 
-   Here, we used `dbt_project.manifest_path` to provide the reference to the project's manifest file. This is possible because the `dbt_project` representation we created earlier contains the manifest path, accessible by using the `manifest_path` attribute.
+   Путь к манифесту доступен через атрибут `manifest_path` созданного ранее представления `dbt_project`.
 
-   Notice we provided two arguments here. The first argument is the `context`, which indicates which dbt models to run and any related configurations. The second refers to the dbt resource you’ll be using to run dbt.
+   Функция принимает два параметра: `context` сообщает, какие модели dbt запускать и с какими настройками; `dbt` — ресурс для выполнения команд dbt.
 
-4. Finally, add the following to the body of `dbt_analytics` function:
+4. Добавьте в тело `dbt_analytics`:
 
    ```python
    yield from dbt.cli(["run"], context=context).stream()
    ```
 
-   Let’s review what’s happening in this line in a bit more detail:
+   Разберём эту строку:
 
-   - We use the `dbt` resource (defined in the asset's second argument, which is a `DbtCliResource`) to execute a dbt command through its `.cli` method.
-   - The `.stream()` method fetches the events and results of this dbt execution.
-     - This is one of multiple ways to get the Dagster events, such as what models materialized or tests passed. We recommend starting with this and exploring other methods in the future as your use cases grow (such as fetching the run artifacts after a run). In this case, the above line will execute `dbt run`.
-   - The results of the `stream` are a Python generator of what Dagster events happened. We used `yield from` (not just `yield`!) to have Dagster track asset materializations.
+   - Метод `.cli` ресурса `dbt` типа `DbtCliResource` выполняет команду dbt.
+   - Метод `.stream()` получает события и результаты выполнения.
+     - Это один из способов получить события Dagster, например сведения о материализации моделей и результатах тестов. Начните с него, а затем по необходимости изучите другие методы, в том числе получение артефактов завершённого запуска. Здесь выполняется команда `dbt run`.
+   - `stream` возвращает генератор событий Dagster. Конструкция `yield from` передаёт эти события Dagster, позволяя отслеживать материализации ассетов.
 
-At this point, `defs/assets/dbt.py` should look like this:
+Теперь `defs/assets/dbt.py` должен выглядеть так:
 
 ```python
 # src/dagster_and_dbt/defs/assets/dbt.py

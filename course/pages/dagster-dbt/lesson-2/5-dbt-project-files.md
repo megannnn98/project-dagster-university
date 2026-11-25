@@ -1,44 +1,44 @@
 ---
-title: "Lesson 2: dbt project files"
+title: "Урок 2: Файлы проекта dbt"
 module: 'dagster_dbt'
 lesson: '2'
 ---
 
-# dbt project files
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Before we get started building out the dbt project, let’s go over some of the files in the project.
+# Файлы проекта dbt
+
+Прежде чем развивать проект dbt, рассмотрим некоторые его файлы.
 
 ---
 
 ## dbt_project.yml
 
-From the dbt docs:
+Согласно документации dbt:
 
-> Every [dbt project](https://docs.getdbt.com/docs/build/projects) needs a `dbt_project.yml` file — this is how dbt knows a directory is a dbt project. It also contains important information that tells dbt how to operate your project.
+> Каждому [проекту dbt](https://docs.getdbt.com/docs/build/projects) нужен файл `dbt_project.yml`: по нему dbt определяет, что каталог содержит проект dbt. В этом файле также находится важная информация, управляющая работой проекта.
 
-Refer to [the dbt documentation](https://docs.getdbt.com/reference/dbt_project.yml) for more information about `dbt_project.yml`.
+Подробнее о `dbt_project.yml` — в [документации dbt](https://docs.getdbt.com/reference/dbt_project.yml).
 
 ---
 
 ## profiles.yml
 
-The next file we’ll cover is the `profiles.yml` file. This file contains connection details for your data platform, such as those for the DuckDB database we’ll use in this course. In this step, we’ll set up a `dev` environment for the project to use, which is where the DuckDB database is located.
+Файл `profiles.yml` содержит параметры подключения к платформе данных — в нашем случае к базе DuckDB, которую мы будем использовать в курсе. На этом шаге мы настроим целевое окружение `dev`, указывающее на эту базу.
 
-Before we start working, you should know:
+Перед началом работы учтите:
 
-- **Don’t put credentials in this file!** We’ll be pushing `profiles.yml` to git, which will compromise them. When we set up the file, we’ll show you how to use environment variables to store connection details securely.
-- **We’ll create the file in the `dagster_university/dagster_and_dbt/src/dagster_and_dbt/analytics`  directory, instead of in dbt’s recommended `.dbt`.**  We’re doing this for a few reasons:
-    - It allows dbt to use the same environment variables as Dagster
-    - It standardizes the way connections are created as more people contribute to the project
+- **Не записывайте секреты непосредственно в этот файл!** Мы будем отправлять `profiles.yml` в git, что приведёт к их раскрытию. При настройке покажем, как использовать переменные окружения для безопасной передачи параметров подключения.
+- **Мы создадим файл в каталоге `dagster_university/dagster_and_dbt/src/dagster_and_dbt/analytics`, а не в рекомендованном dbt каталоге `.dbt`.** Это позволит:
+    - Использовать в dbt те же переменные окружения, что и в Dagster.
+    - Единообразно настраивать подключения по мере подключения новых участников к проекту.
 
-### Set up profiles.yml
+### Настройка profiles.yml
 
-Now you’re ready - let’s go!
+1. Перейдите в каталог `dagster_university/dagster_and_dbt/src/dagster_and_dbt/analytics`.
+2. Создайте в нём файл `profiles.yml`.
+3. Скопируйте в него следующий код:
 
-1. Navigate to the `dagster_university/dagster_and_dbt/src/dagster_and_dbt/analytics` directory.
-2. In this folder, create a `profiles.yml` file.
-3. Copy the following code into the file:
-    
     ```yaml
     dagster_dbt_university:
       target: dev
@@ -47,13 +47,13 @@ Now you’re ready - let’s go!
           type: duckdb
           path: '../../../{{ env_var("DUCKDB_DATABASE", "data/staging/data.duckdb") }}'
     ```
-    
-Let’s review what this does:
 
-- Creates a profile named `dagster_dbt_university`
-- Set the default target (data warehouse) for the `dagster_dbt_university`  profile to `dev`
-- Defines one target: `dev`
-- Sets the `type` to `duckdb`
-- Sets the `path` using a [dbt macro](https://docs.getdbt.com/reference/dbt-jinja-functions/env_var) to reference the `DUCKDB_DATABASE` environment variable in the project’s `.env` file. With this, your dbt models will be built in the same DuckDB database as where your Dagster assets are materialized.
+Этот код:
 
-The `DUCKDB_DATABASE` environment variable is a relative path from the project’s root directory. For dbt to find it, we prefixed it with `../` to ensure it resolves correctly.
+- Создаёт профиль `dagster_dbt_university`.
+- Устанавливает `dev` как целевое окружение по умолчанию для этого профиля.
+- Определяет одно целевое окружение: `dev`.
+- Устанавливает `type` в `duckdb`.
+- Задаёт `path` с помощью [макроса dbt](https://docs.getdbt.com/reference/dbt-jinja-functions/env_var), обращающегося к переменной окружения `DUCKDB_DATABASE` из файла `.env` проекта. Благодаря этому модели dbt строятся в той же базе DuckDB, в которой материализуются ассеты Dagster.
+
+Переменная `DUCKDB_DATABASE` содержит путь относительно корня учебного проекта. Префикс `../../../` позволяет dbt правильно найти базу из каталога `analytics`.

@@ -1,46 +1,46 @@
 ---
-title: "Lesson 7: Setting up Dagster+"
+title: "Урок 7: Настройка Dagster+"
 module: 'dbt_dagster'
 lesson: '7'
 ---
 
-# Setting up Dagster+
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Now that the project is set up and ready in GitHub, it’s time to move to Dagster+. To keep things simple, we’ll use a [Serverless deployment](https://docs.dagster.io/dagster-plus/deployment/serverless) to deploy our project. This option offloads managing the required infrastructure to Dagster Labs.
+# Настройка Dagster+
 
-1. Sign up for a new [Dagster+ trial account](https://dagster.cloud/signup). Even if you already have an account, create a new one for this course. **Note:**  When you sign up for a new account, you’ll automatically begin a free trial. You won’t be charged for anything after the trial unless you enter a credit card.
-2. Complete the signup flow by creating an organization and finishing your user profile.
-3. When prompted to select a deployment type, click **Serverless.**
-4. The next step is to add our project to Dagster+! Click the **Import a Dagster project** option and do the following:
-    1. In the **Git scope** field, select the GitHub account or organization that contains your project repository.
-       
+Проект готов на GitHub — перейдём к Dagster+. Для простоты используем [Serverless-развёртывание](https://docs.dagster.io/dagster-plus/deployment/serverless): управление инфраструктурой берёт на себя Dagster Labs.
+
+1. Зарегистрируйте [пробную учётную запись Dagster+](https://dagster.cloud/signup). В оригинале курса предлагается отдельная учётная запись даже при наличии существующей. Там также указано, что пробный период начинается автоматически, а списания после него требуют добавленной банковской карты; актуальные условия проверьте при регистрации.
+2. Завершите регистрацию: создайте организацию и заполните профиль.
+3. При выборе типа развёртывания нажмите **Serverless**.
+4. Выберите **Import a Dagster project**:
+    1. В **Git scope** укажите аккаунт или организацию GitHub, где находится проект.
+
        {% callout %}
-       > 💡 **Don’t see the right account/organization?** You may need to install the Dagster+ GitHub app first. To do this, click **+ Add account or organization.** You’ll be redirected to GitHub to complete the setup, and then automatically sent back to Dagster+ when finished. If you’re installing within your company’s GitHub organization, you may need your company’s GitHub admin to approve the app.
+       > 💡 **Нужного аккаунта или организации нет в списке?** Возможно, сначала нужно установить GitHub-приложение Dagster+. Нажмите **+ Add account or organization**, завершите настройку на GitHub и вернитесь в Dagster+. Для установки в организацию компании может потребоваться согласование её администратора GitHub.
        {% /callout %}
-        
-    2. In the **Repository** field, select the repository containing your Dagster project.
-    3. Click **Deploy. Note that the deployment can take a few minutes.** Feel free to go grab a snack while you’re waiting!
+
+    2. В **Repository** выберите репозиторий проекта Dagster.
+    3. Нажмите **Deploy**. Развёртывание может занять несколько минут.
 
 ---
 
-## What happens when Dagster+ deploys code?
+## Что происходит при развёртывании кода в Dagster+
 
-When Dagster deploys the code, a few things happen:
-
-- Dagster creates a new code location for the repository in Dagster+ in the `prod` deployment
-- Dagster adds two GitHub Action files to the repository:
-    - `.github/workflows/deploy.yml` - This file sets up Continuous Deployment (CD) for the repository. We won’t talk through all the steps here, but a high-level summary is that every time a change is made to the `main` branch of your repository, this GitHub Action will build your Dagster project and deploy it to Dagster+.
-    - `.github/workflows/branch_deployments.yml` - This file enables the use of [Branch Deployments](https://docs.dagster.io/deployment/dagster-plus/deploying-code/branch-deployments), a Dagster+ feature that automatically creates staging environments for your Dagster code with every pull request. We won’t work with Branch Deployments during this lesson, but we highly recommend trying them out!
+- В окружении `prod` создаётся расположение кода для репозитория.
+- В репозиторий добавляются два файла GitHub Actions:
+    - `.github/workflows/deploy.yml` настраивает непрерывное развёртывание (CD). При изменении ветки `main` workflow собирает проект Dagster и развёртывает его в Dagster+.
+    - `.github/workflows/branch_deployments.yml` включает [Branch Deployments](https://docs.dagster.io/deployment/dagster-plus/deploying-code/branch-deployments): отдельные проверочные окружения кода для pull request. В этом уроке они не используются, но их можно изучить отдельно.
 
 ---
 
-## Checking deployment status
+## Проверка состояния развёртывания
 
-It looks like the deployment was completed, but it failed. If we look in the GitHub Action logs for the job, we’ll see the following error in the **Python Executable Deploy** step:
+Процесс завершился, но развёртывание не удалось. В журнале GitHub Actions, на шаге **Python Executable Deploy**, можно увидеть такую ошибку:
 
 ```yaml
 Error: Some locations failed to load after being synced by the agent:
 Error loading dagster_university: {'__typename': 'PythonError', 'message': "FileNotFoundError: [Errno 2] No such file or directory: '/venvs/3eca07cc1eb5/lib/python3.8/site-packages/working_directory/root/analytics/target/manifest.json'\n" ...
 ```
 
-Your deployment failed because Dagster could not find a dbt manifest file. In the next section of this lesson, we’ll walk you through fixing this.
+Dagster не нашёл манифест dbt. В следующем разделе исправим это.

@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 3: Overview'
+title: "Урок 3: Обзор"
 module: 'dagster_dbt'
 lesson: '3'
 ---
 
-# Overview
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-As you learned in Lesson 1, Dagster and dbt have similar mental models because both frameworks excel at building data models, defining relationships between them, and materializing them. You should have also grasped that dbt models are conceptually data assets and that these data assets can be represented in Dagster.
+# Обзор
 
-In this lesson, you’ll learn how to turn that conceptual understanding into real life by connecting a dbt project to Dagster, manually running your dbt models, and understanding what happens when Dagster runs dbt.
+В первом уроке вы узнали, что Dagster и dbt используют близкие концепции: оба инструмента позволяют строить модели данных, определять связи между ними и материализовывать их. Модели dbt концептуально являются ассетами данных, которые можно представить в Dagster.
+
+В этом уроке вы примените эти знания: подключите проект dbt к Dagster, вручную запустите модели dbt и разберётесь, что происходит при выполнении dbt через Dagster.

@@ -1,19 +1,21 @@
 ---
-title: 'Lesson 6: Lesson recap'
+title: "Урок 6: Итоги"
 module: 'dagster_dbt'
 lesson: '6'
 ---
 
-# Lesson recap
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-In this lesson, you:
+# Итоги урока
 
-- Learned the benefits of partitioning your incremental models
-- Added a time-based partition to an incremental model
-- Created a second `@dbt_assets` definition specifically for incremental dbt models 
+Вы:
 
-The patterns you used are general enough that they can also be applied to any type of partition, allowing you to partition your incremental models by location, customer, or other dimensions. Tinker around with the `context.partition_key` property if you’re interested!
+- Разобрались в преимуществах партиционирования инкрементальных моделей.
+- Добавили временные партиции к инкрементальной модели.
+- Создали второе определение `@dbt_assets` специально для инкрементальных моделей dbt.
+
+Этот подход можно применить и к другим измерениям: местоположениям, клиентам и так далее. Для таких сценариев изучите свойство `context.partition_key`.
 
 {% callout %}
-> 💡 **Tip:** Did you know dbt models can resolve schema changes on their own? Using `on_schema_change: "sync_all_columns"`, you can avoid needing to fully refresh your dbt models and instead only orchestrate with Dagster backfills.
+> 💡 **Совет:** dbt умеет учитывать изменения схемы инкрементальных моделей. Настройка `on_schema_change: "sync_all_columns"` синхронизирует столбцы и в поддерживаемых случаях позволяет обойтись без полного обновления. Уже существующие данные в новых столбцах автоматически не пересчитываются: для этого потребуется отдельная обработка, например backfill через Dagster.
 {% /callout %}
