@@ -1,18 +1,20 @@
 ---
-title: 'Lesson 5: Automating dbt models in Dagster'
+title: "Урок 5: Автоматизация моделей dbt в Dagster"
 module: 'dagster_dbt'
 lesson: '5'
 ---
 
-# Automating dbt models in Dagster
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Did you realize that your dbt models have already been scheduled to run on a regular basis because of an existing schedule within this Dagster project?
+# Автоматизация моделей dbt в Dagster
 
-Check it out in the Dagster UI by clicking **Jobs** in the top navigation bar, then click `trip_update_job` to check out the job’s details. It looks like the dbt models are already attached to this job!
+Модели dbt уже включены в регулярное выполнение благодаря существующему расписанию проекта Dagster.
 
-![dbt assets in the trip_update_job in the Dagster UI](/images/dagster-dbt/lesson-5/trip-update-job-dbt-assets.png)
+Откройте **Jobs** в интерфейсе Dagster и выберите `trip_update_job`. Среди ассетов задания уже есть модели dbt:
 
-Pretty cool, right? Let’s check out the code that made this happen. Open the `defs/jobs.py` and look at the definition for `trip_update_job`:
+![Ассеты dbt в задании trip_update_job](/images/dagster-dbt/lesson-5/trip-update-job-dbt-assets.png)
+
+Откройте `defs/jobs.py` и рассмотрите определение `trip_update_job`:
 
 ```python
 # src/dagster_and_dbt/defs/jobs.py
@@ -23,38 +25,38 @@ trip_update_job = dg.define_asset_job(
 )
 ```
 
-The dbt models were included in this job because of the `AssetSelection.all()` call. This reinforces the idea that once you load your dbt project into your Dagster project, Dagster will recognize and treat all of your dbt models as assets.
+Модели включены в задание благодаря `AssetSelection.all()`. После загрузки проекта dbt в Dagster его модели становятся ассетами и участвуют в обычном выборе ассетов.
 
 ---
 
-## Excluding specific dbt models
+## Исключение отдельных моделей dbt
 
-Treating dbt models as assets is great, but one of the core tenets of Dagster’s dbt integration is respecting how dbt is used, along with meeting dbt users where they are. That’s why there are a few utility methods that should feel familiar to dbt users. Let’s use one of these methods to remove some of our dbt models from this job explicitly.
+Интеграция Dagster учитывает привычные способы работы с dbt и предоставляет вспомогательные функции с его синтаксисом выбора моделей. Используем одну из них для явного исключения моделей из задания.
 
-Pretend that you’re working with an analytics engineer, iterating on the `stg_trips` model and planning to add new models that depend on it soon. Therefore, you’d like to exclude `stg_trips` and any new hypothetical dbt models downstream of it until the pipeline stabilizes. The analytics engineer you’re working with is really strong with dbt, but not too familiar with Dagster.
+Предположим, вы вместе с аналитическим инженером дорабатываете `stg_trips` и планируете добавить зависимые модели. Пока пайплайн нестабилен, нужно исключить `stg_trips` и все нижестоящие модели dbt из регулярного задания. Ваш коллега хорошо знает dbt, но пока мало знаком с Dagster.
 
-This is where you’d lean on a function like [`build_dbt_asset_selection`](https://docs.dagster.io/_apidocs/libraries/dagster-dbt#dagster_dbt.build_dbt_asset_selection). This utility method will help your analytics engineer contribute without needing to know Dagster’s asset selection syntax. It takes two arguments:
+Функция [`build_dbt_asset_selection`](https://docs.dagster.io/_apidocs/libraries/dagster-dbt#dagster_dbt.build_dbt_asset_selection) позволяет использовать привычный синтаксис dbt. Она принимает:
 
-- A list of `@dbt_assets` definitions to select models from
-- A string of the selector using [dbt’s selection syntax](https://docs.getdbt.com/reference/node-selection/syntax) of the models you want to select
+- Список определений `@dbt_assets`, из которых выбираются модели.
+- Строку выбора моделей в [синтаксисе dbt](https://docs.getdbt.com/reference/node-selection/syntax).
 
-The function will return an `AssetSelection` of the dbt models that match your dbt selector. Let’s put this into practice:
+Функция возвращает `AssetSelection` для подходящих моделей dbt.
 
-1. At the top of `defs/jobs.py`, import `dbt_analytics` from the `assets.dbt` module, along with the `build_dbt_asset_selection` function from `dagster_dbt`:
-    
+1. В начало `defs/jobs.py` добавьте импорты `dbt_analytics` из `assets.dbt` и `build_dbt_asset_selection` из `dagster_dbt`:
+
     ```python
     from dagster_and_dbt.defs.assets.dbt import dbt_analytics
     from dagster_dbt import build_dbt_asset_selection
     ```
-    
-2. After the other selections, define a new variable called `dbt_trips_selection` and make a call to `build_dbt_asset_selection`. Pass in the `dbt_analytics` definition and a string that selects `stg_trips` and all dbt models downstream of it:
-    
+
+2. После остальных выражений выбора определите `dbt_trips_selection`. Передайте `dbt_analytics` и строку, выбирающую `stg_trips` со всеми нижестоящими моделями dbt:
+
     ```python
     dbt_trips_selection = build_dbt_asset_selection([dbt_analytics], "stg_trips+")
     ```
-    
-3. Next, update the `selection` argument in the `trip_update_job` to subtract the `dbt_trips_selection`: 
-    
+
+3. Вычтите `dbt_trips_selection` из аргумента `selection` задания `trip_update_job`:
+
     ```python
     trip_update_job = dg.define_asset_job(
         name="trip_update_job",
@@ -62,21 +64,21 @@ The function will return an `AssetSelection` of the dbt models that match your d
         selection=dg.AssetSelection.all() - trips_by_week - adhoc_request - dbt_trips_selection
     )
     ```
-    
-4. Reload the code location and confirm that the dbt models are not in the `trip_update_job` anymore!
 
-   ![trip_update_job without dbt models](/images/dagster-dbt/lesson-5/job-with-dbt-models.png)
+4. Перезагрузите расположение кода и убедитесь, что выбранные модели dbt больше не входят в `trip_update_job`:
 
-You might notice that the `airport_trips` asset is still scheduled to run with this job! That’s because the `build_dbt_asset_selection` function only selects *dbt models* and **not** Dagster assets.
+   ![Задание trip_update_job после исключения моделей dbt](/images/dagster-dbt/lesson-5/job-with-dbt-models.png)
 
-If you want to also exclude the new `airport_trips` asset from this job, modify the `dbt_trips_selection` to include all *downstream assets*, too. Because we’re using Dagster’s native functionality to select all downstream assets, we can now drop the `+` from the dbt selector:
+Ассет `airport_trips` по-прежнему включён в задание: `build_dbt_asset_selection` выбирает только _модели dbt_, не охватывая написанные вами ассеты Dagster.
+
+Чтобы исключить также `airport_trips` и другие нижестоящие ассеты, используйте метод Dagster `.downstream()`. Теперь `+` в селекторе dbt не нужен:
 
 ```python
 dbt_trips_selection = build_dbt_asset_selection([dbt_analytics], "stg_trips").downstream()
 ```
 
-Reload the code location and look at the `trip_update_job` once more to verify that everything looks right.
+Перезагрузите расположение кода и ещё раз проверьте состав `trip_update_job`.
 
 {% callout %}
-> 💡 **Want an even more convenient utility to do this work for you?** Consider using the similar [`build_schedule_from_dbt_selection`](https://docs.dagster.io/_apidocs/libraries/dagster-dbt#dagster_dbt.build_schedule_from_dbt_selection) function to quickly create a job and schedule for a given dbt selection.
+> 💡 Для быстрого создания задания и расписания на основе выбора моделей dbt можно использовать похожую функцию [`build_schedule_from_dbt_selection`](https://docs.dagster.io/_apidocs/libraries/dagster-dbt#dagster_dbt.build_schedule_from_dbt_selection).
 {% /callout %}

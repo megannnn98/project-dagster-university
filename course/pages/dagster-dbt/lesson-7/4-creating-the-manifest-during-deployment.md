@@ -1,23 +1,25 @@
 ---
-title: "Lesson 7: Creating the manifest during deployment"
+title: "Урок 7: Создание манифеста при развёртывании"
 module: 'dbt_dagster'
 lesson: '7'
 ---
 
-# Creating the manifest during deployment
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-To recap, our deployment failed in the last section because Dagster couldn’t find a dbt manifest file, which it needs to turn dbt models into Dagster assets. This is because we built this file by running `dbt parse` during local development. You ran this manually in Lesson 3 and improved the experience using `DbtProject`'s `prepare_if_dev` in Lesson 4. However, you'll also need to build your dbt manifest file during deployment, which will require a couple additional steps. We recommend adopting CI/CD to automate this process.
+# Создание манифеста при развёртывании
 
-Building your manifest for your production deployment will be needed for both open source and Dagster+ deployments. In this case, Dagster+’s out-of-the-box `deploy.yml` GitHub Action isn’t aware that you’re also trying to deploy a dbt project with Dagster.
+На предыдущем шаге Dagster не нашёл манифест, необходимый для представления моделей dbt как ассетов. При локальной разработке мы создавали его через `dbt parse` в третьем уроке, затем автоматизировали подготовку методом `DbtProject.prepare_if_dev` в четвёртом. При развёртывании манифест тоже нужно создавать. Для автоматизации используем CI/CD.
 
-Since your CI/CD will be running in a fresh environment, you'll need to install dbt and other dependencies before building your manifest.
+Это требуется и при самостоятельном размещении Dagster, и в Dagster+. Исходный workflow `deploy.yml` в Dagster+ ещё не учитывает, что вместе с Dagster нужно развёртывать проект dbt.
 
-To get our deployment working, we need to add a step to our GitHub Actions workflow that runs the commands required to generate the `manifest.json`. Specifically, we need to run the `dbt project prepare-and-package` command, available in the `dagster_dbt` package.
+CI/CD работает в новом окружении, поэтому перед созданием манифеста необходимо установить dbt и остальные зависимости.
 
-1. In your Dagster project, pull the latest changes from the remote repo (`git fetch && git pull`), then locate the `.github/workflows` directory.
-2. Open the `deploy.yml` file.
-3. Locate the `Checkout for Python Executable Deploy` step, which should be on or near line 38.
-4. After this step, add the following:
+Добавим в GitHub Actions шаг подготовки `manifest.json` с помощью команды `dagster-dbt project prepare-and-package` из пакета `dagster_dbt`.
+
+1. Получите последние изменения проекта (`git fetch && git pull`) и откройте каталог `.github/workflows`.
+2. Откройте `deploy.yml`.
+3. Найдите шаг `Checkout for Python Executable Deploy` (в исходном примере примерно строка 38).
+4. После него добавьте:
 
     ```yaml
     - name: Prepare DBT project for deployment
@@ -30,26 +32,26 @@ To get our deployment working, we need to add a step to our GitHub Actions workf
       shell: bash
     ```
 
-The code above:
+Этот шаг:
 
-1. Creates a step named `Prepare DBT project for deployement`
-2. Upgrades `pip`, the package installer for Python
-3. Navigates inside the `project-repo` folder
-4. Upgrades the project dependencies
-5. Prepares the manifest file by running the `dagster-dbt project prepare-and-package` command, specifying the file in which the `DbtProject` object is located.
+1. Называется `Prepare DBT project for deployment`.
+2. Обновляет установщик пакетов Python `pip`.
+3. Переходит в каталог `project-repo`.
+4. Устанавливает проект и обновляет зависимости.
+5. Подготавливает манифест командой `dagster-dbt project prepare-and-package`, передавая файл с объектом `DbtProject`.
 
-Once the new step is pushed to the remote, GitHub will automatically try to run a new job using the updated workflow.
+**Путь в исходном примере устарел:** в текущей структуре учебного проекта объект находится в `src/dagster_and_dbt/defs/project.py`. В своём workflow замените значение `--file` на этот путь. Приведённый выше исходный блок сохранён для сопоставления с оригиналом.
 
-At this point, your dbt project will be successfully deployed onto Dagster+ and you should be able to see your models in the asset graph!
+После отправки изменений GitHub автоматически запустит обновлённый workflow. При правильной подготовке манифеста проект будет развёрнут в Dagster+, а модели появятся в графе ассетов:
 
-![dbt models in the Asset graph in Dagster+](/images/dagster-dbt/lesson-7/asset-graph.png)
+![Модели dbt в графе ассетов Dagster+](/images/dagster-dbt/lesson-7/asset-graph.png)
 
-## Experiencing issues?
+## Если возникли проблемы
 
-There are two ways to deploy Dagster+ Serverless. In our case, we only made changes to deploy dbt with the default option, called Fast Deploys with PEX (Python Executable).
+Dagster+ Serverless поддерживает разные способы развёртывания. В этом примере изменён процесс Fast Deploys с PEX (Python Executable).
 
-**If you receive an error message to turn off Fast Deploys**, GitHub Actions will skip the steps that build the dbt project. We recommend staying with Fast Deploys, if possible.
+**Если сообщение об ошибке предлагает отключить Fast Deploys**, учтите: условный шаг подготовки dbt из примера тогда будет пропущен. При возможности сохраните Fast Deploys либо адаптируйте подготовку dbt к выбранному способу сборки.
 
-**If your project works locally**, the issue is likely a mismatch between where Dagster looks for the manifest locally and in production. This can be resolved by tinkering with where the manifest is being written.
+**Если локально всё работает**, проверьте, совпадают ли пути создания и поиска манифеста в локальном окружении и production.
 
-Reach out to the Dagster community on [Slack](https://dagster.io/slack) in the `#dagster-university` channel if you need more support!
+Если нужна помощь, обратитесь в канал `#dagster-university` сообщества Dagster в [Slack](https://dagster.io/slack).

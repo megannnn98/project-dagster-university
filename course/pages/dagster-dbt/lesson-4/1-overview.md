@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 4: Overview'
+title: "Урок 4: Обзор"
 module: 'dagster_dbt'
 lesson: '4'
 ---
 
-# Overview
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-In the last lesson, you connected the dbt project to Dagster, loaded some dbt models as assets, and even materialized them in the Dagster UI. Things were (hopefully) fairly straightforward in the last lesson, and development was smooth sailing.
+# Обзор
 
-But what if we could improve development further? In this lesson, we’ll walk you through a better way to run `dbt parse` and how to debug failed runs in Dagster.
+В прошлом уроке вы подключили проект dbt к Dagster, загрузили модели как ассеты и материализовали их через интерфейс Dagster. Надеемся, настройка прошла без затруднений.
+
+Теперь улучшим процесс разработки: автоматизируем выполнение `dbt parse` и научимся отлаживать неудачные запуски в Dagster.

@@ -1,37 +1,39 @@
 ---
-title: 'Lesson 7: Using dbt Cloud'
+title: "Урок 7: Использование dbt Cloud"
 module: 'dbt_dagster'
 lesson: '7'
 ---
 
-# Using dbt Cloud
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-The course so far has used the dbt CLI (`DbtCliResource`) to run dbt commands locally and in CI/CD. If your team uses dbt Cloud, the setup is different: Dagster connects to dbt Cloud via its API and runs commands through it, rather than invoking a local dbt installation.
+# Использование dbt Cloud
 
-This page explains what changes and what stays the same.
+До сих пор мы выполняли команды dbt локально и в CI/CD через CLI и `DbtCliResource`. Если ваша команда использует dbt Cloud, Dagster подключается к нему через API и выполняет команды удалённо.
+
+Рассмотрим отличия и общие принципы.
 
 ---
 
-## How dbt Cloud integration differs
+## Отличия интеграции с dbt Cloud
 
-| | dbt CLI (this course) | dbt Cloud |
+| | CLI dbt в этом курсе | dbt Cloud |
 |---|---|---|
-| Decorator | `@dbt_assets` | `@dbt_cloud_assets` |
-| Resource | `DbtCliResource` | `DbtCloudWorkspace` |
-| Manifest source | Generated locally via `dbt parse` | Fetched from the dbt Cloud API |
-| Project object | `DbtProject` | Not used |
-| `prepare_if_dev()` | Used in local dev | Not applicable |
-| Function body | `yield from dbt.cli([...]).stream()` | `yield from dbt_cloud.cli(args=[...]).wait()` |
+| Декоратор | `@dbt_assets` | `@dbt_cloud_assets` |
+| Ресурс | `DbtCliResource` | `DbtCloudWorkspace` |
+| Источник манифеста | Локальная генерация через `dbt parse` | Получение через API dbt Cloud |
+| Объект проекта | `DbtProject` | Не используется |
+| `prepare_if_dev()` | Используется при локальной разработке | Не применяется |
+| Тело функции | `yield from dbt.cli([...]).stream()` | `yield from dbt_cloud.cli(args=[...]).wait()` |
 
-`.stream()` processes events in real time as a local dbt process runs. `.wait()` polls the dbt Cloud API until the remote job completes, then returns the results — there's no local process to stream from.
+Метод `.stream()` обрабатывает события по мере выполнения локального процесса dbt. Метод `.wait()` опрашивает API dbt Cloud до завершения удалённого задания, затем возвращает результаты. Локального процесса для потокового чтения здесь нет.
 
-The `DagsterDbtTranslator` works the same way in both cases.
+`DagsterDbtTranslator` работает одинаково в обоих вариантах.
 
 ---
 
-## Setting up dbt Cloud integration
+## Настройка интеграции с dbt Cloud
 
-### 1. Configure credentials and workspace
+### 1. Учётные данные и рабочее пространство
 
 ```python
 import os
@@ -49,9 +51,9 @@ workspace = DbtCloudWorkspace(
 )
 ```
 
-The `account_id` and `project_id` appear in your dbt Cloud URLs. The `environment_id` is the deployment environment you want Dagster to use.
+Значения `account_id` и `project_id` можно найти в URL dbt Cloud. `environment_id` — идентификатор окружения развёртывания, которое должен использовать Dagster.
 
-### 2. Define assets with `@dbt_cloud_assets`
+### 2. Определение ассетов через @dbt_cloud_assets
 
 ```python
 from dagster_dbt import dbt_cloud_assets
@@ -64,9 +66,9 @@ def my_dbt_cloud_assets(
     yield from dbt_cloud.cli(args=["build"], context=context).wait()
 ```
 
-The function body uses `dbt_cloud.cli(...).wait()` instead of `dbt.cli(...).stream()`. The `args` keyword argument takes the same dbt commands you'd pass from the terminal.
+В теле функции используется `dbt_cloud.cli(...).wait()` вместо `dbt.cli(...).stream()`. Именованный аргумент `args` принимает те же команды dbt, которые вы передали бы в терминале.
 
-### 3. Add to Definitions
+### 3. Регистрация в Definitions
 
 ```python
 defs = dg.Definitions(
@@ -77,9 +79,9 @@ defs = dg.Definitions(
 
 ---
 
-## Partitioned dbt Cloud assets
+## Партиционированные ассеты dbt Cloud
 
-Passing partition variables to dbt Cloud works the same way as with the CLI — use `--vars` with a JSON-encoded dict:
+Переменные партиций передаются так же, как через CLI: аргументом `--vars` со словарём в формате JSON.
 
 ```python
 import json
@@ -105,9 +107,9 @@ def my_partitioned_dbt_cloud_assets(
 
 ---
 
-## Custom translator with dbt Cloud
+## Собственный транслятор для dbt Cloud
 
-`DagsterDbtTranslator` works exactly the same way. Pass it to the decorator:
+Передайте экземпляр `DagsterDbtTranslator` в декоратор так же, как при работе через CLI:
 
 ```python
 @dbt_cloud_assets(
@@ -123,14 +125,16 @@ def my_dbt_cloud_assets(
 
 ---
 
-## When to use dbt Cloud vs dbt CLI
+## Когда выбирать dbt Cloud, а когда CLI dbt
 
-Use the **CLI integration** when:
-- You run dbt Core yourself (self-hosted or in CI/CD)
-- You want Dagster to own dbt execution end-to-end
-- You need fine-grained control over commands, selectors, and variables at runtime
+Используйте **интеграцию с CLI**, если:
 
-Use the **dbt Cloud integration** when:
-- dbt Cloud manages your project and environments
-- You want Dagster to orchestrate dbt Cloud alongside other pipeline steps
-- Your team controls dbt configuration through the dbt Cloud UI
+- Самостоятельно запускаете dbt Core на своей инфраструктуре или в CI/CD.
+- Хотите полностью управлять выполнением dbt через Dagster.
+- Нужен подробный контроль команд, селекторов и переменных во время выполнения.
+
+Используйте **интеграцию с dbt Cloud**, если:
+
+- Проектом и окружениями управляет dbt Cloud.
+- Хотите оркестрировать dbt Cloud вместе с остальными шагами пайплайна через Dagster.
+- Команда настраивает dbt через интерфейс dbt Cloud.

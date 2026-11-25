@@ -1,16 +1,18 @@
 ---
-title: 'Lesson 3: Representing the dbt project in Dagster'
+title: "Урок 3: Представление проекта dbt в Dagster"
 module: 'dagster_dbt'
 lesson: '3'
 ---
 
-# Representing the dbt project in Dagster
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-As you'll frequently point your Dagster code to the `target/manifest.json` file and your dbt project in this course, it'll be helpful to keep a reusable representation of the dbt project. This can be easily done using the `DbtProject` class.
+# Представление проекта dbt в Dagster
 
-> 📝 **Note:** The `defs/project.py` file exists in the starter project but is empty. You'll be adding all the code below to this file.
+В этом курсе код Dagster будет часто обращаться к проекту dbt и файлу `target/manifest.json`. Удобно создать переиспользуемое представление проекта с помощью класса `DbtProject`.
 
-In the `defs/project.py` file, add the following imports:
+> 📝 **Примечание:** файл `defs/project.py` уже есть в начальном проекте, но пока пуст. Весь приведённый ниже код нужно добавить в него.
+
+Добавьте импорты в `defs/project.py`:
 
 ```python
 # src/dagster_and_dbt/defs/project.py
@@ -19,9 +21,9 @@ from pathlib import Path
 from dagster_dbt import DbtProject
 ```
 
-The `Path` class from the `pathlib` standard library will help us create an accurate pointer to where our dbt project is. The `DbtProject` class is imported from the `dagster_dbt` package that we installed earlier. 
+Класс `Path` из стандартного модуля `pathlib` поможет задать точный путь к проекту dbt. Класс `DbtProject` импортируется из установленного ранее пакета `dagster_dbt`.
 
-After the import, add the following code: 
+После импортов добавьте:
 
 ```python
 dbt_project = DbtProject(
@@ -29,15 +31,15 @@ dbt_project = DbtProject(
 )
 ```
 
-This code creates a representation of the dbt project called `dbt_project`. The code defining the location of the project directory might look a little complicated, so let’s break it down:
+Этот код создаёт представление проекта под именем `dbt_project`. Разберём выражение, задающее каталог:
 
-- The location of the `project.py` file (via `__file__`) is used as a point of reference for finding the dbt project
-- The arguments in `joinpath` point us towards our dbt project by appending the following to the current path:
-   - Two directory levels up (`"../.."`)
-   - A directory named `analytics`, which is the directory containing our dbt project
-- The `resolve` method turns that path into an absolute file path that points to the dbt project correctly from any file we're working in
+- Путь к файлу `project.py`, доступный через `__file__`, служит отправной точкой.
+- Аргументы `joinpath` добавляют к этому пути:
+   - Переход на два уровня вверх (`"../.."`). Поскольку исходный путь включает имя файла, это приводит к каталогу `src/dagster_and_dbt`.
+   - Имя каталога `analytics`, содержащего проект dbt.
+- Метод `resolve` преобразует результат в абсолютный путь, не зависящий от текущего рабочего каталога.
 
-At this point, your complete `defs/project.py` file should look like this:
+Полный файл `defs/project.py` должен выглядеть так:
 
 ```python
 # src/dagster_and_dbt/defs/project.py
@@ -50,6 +52,6 @@ dbt_project = DbtProject(
 )
 ```
 
-> 💡 **Stuck?** You can reference the completed code in `src/dagster_and_dbt/completed/lesson_3/defs/project.py` to compare your work.
+> 💡 **Застряли?** Сравните свой код с готовым примером в `src/dagster_and_dbt/completed/lesson_3/defs/project.py`.
 
-Now that you can access your dbt project from any other file with the `dbt_project` representation, let's move on to the first place where you'll use it: creating the Dagster resource that will run dbt.
+Теперь представление `dbt_project` можно использовать из других файлов. Начнём с создания ресурса Dagster, который будет запускать dbt.

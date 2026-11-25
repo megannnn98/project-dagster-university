@@ -1,14 +1,16 @@
 ---
-title: 'Practice: Grouping dbt models by layer'
+title: "Практика: Группировка моделей dbt по слоям"
 module: 'dagster_essentials'
 lesson: '5'
 ---
 
-# Practice: Grouping dbt models by layer
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Override the `get_group_name` method in your `CustomizedDagsterDbtTranslator` to group each dbt model by their layer (`marts` and `staging`).
+# Практика: Группировка моделей dbt по слоям
 
-**Hint:** `dbt_resource_props` is a Python dictionary with a structure that similar to the following:
+Переопределите метод `get_group_name` в `CustomizedDagsterDbtTranslator`, чтобы группировать модели dbt по слоям (`marts` и `staging`).
+
+**Подсказка:** `dbt_resource_props` — словарь Python примерно такой структуры:
 
 ```json
 {
@@ -26,13 +28,13 @@ Override the `get_group_name` method in your `CustomizedDagsterDbtTranslator` to
 }
 ```
 
-`get_group_name` expects to return a string to group the dbt models by. What property of `dbt_resource_props` can you access (and maybe even index!) to group the models by layer (ex. `marts` or `staging`)?
+Метод `get_group_name` должен вернуть строку с именем группы. Какое свойство `dbt_resource_props` можно использовать, возможно обратившись к элементу по индексу, чтобы получить слой модели, например `marts` или `staging`?
 
 ---
 
-## Check your work
+## Проверка решения
 
-The method you built should look similar to the following code. Click **View answer** to view it.
+Ваш метод должен выглядеть примерно так. Нажмите **View answer**, чтобы увидеть ответ:
 
 ```python {% obfuscated="true" %}
 def get_group_name(self, dbt_resource_props):
