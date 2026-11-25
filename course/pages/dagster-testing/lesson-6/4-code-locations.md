@@ -1,24 +1,24 @@
 ---
-title: 'Lesson 6: Code locations'
+title: 'Урок 6: Расположения кода'
 module: 'dagster_testing'
 lesson: '6'
 ---
 
-# Code locations
+# Расположения кода
 
-We have covered how to test everything within a definition. Now we will zoom out and discuss how to test the multiple definitions that make up a platform.
+Мы рассмотрели, как тестировать всё, что находится внутри Definitions. Теперь посмотрим на платформу в целом и обсудим тестирование нескольких наборов определений, из которых она состоит.
 
-Each definition will be tied to a unique code location and will have its own Python dependencies. It is important that your tests are tailored to that code location. Part of a mature Dagster deployment is configuring your CI (continuous integration) process to run your tests. How to properly configure that will depend on how the code is organized and if you are using a single repository for all of your code locations (monorepo) or a repository for each code location (multi repo).
+Каждый набор определений связан с отдельным расположением кода и имеет собственные зависимости Python. Важно, чтобы тесты соответствовали конкретному расположению кода. Часть зрелого развёртывания Dagster — настройка CI (непрерывной интеграции) для выполнения тестов. Правильная настройка зависит от организации кода: используешь ли ты один репозиторий для всех расположений кода (монорепозиторий) или отдельный репозиторий для каждого (мультирепозиторий).
 
-## Monorepo
+## Монорепозиторий
 
-![Mono Repo](/images/dagster-testing/lesson-6/monorepo.png)
+![Монорепозиторий](/images/dagster-testing/lesson-6/monorepo.png)
 
-In a monorepo, the different code locations exist within different directories of the main project. Each of these directories will contain environment configurations specific to the code location and must be run separately.
+В монорепозитории различные расположения кода находятся в разных каталогах основного проекта. Каждый из этих каталогов содержит конфигурацию окружения своего расположения кода и должен тестироваться отдельно.
 
-Your CI build system will need build the Python environments separately and execute the tests specific to that directory in the given environment.
+Система CI должна создавать отдельные окружения Python и выполнять в каждом из них тесты соответствующего каталога.
 
-If you use a build system like Github Action to execute your tests, the step by step process might look like this.
+Если для выполнения тестов используется система сборки вроде GitHub Actions, последовательность шагов может выглядеть следующим образом.
 
 ```yaml
 name: dagster-example-action
@@ -52,21 +52,21 @@ jobs:
         run: uv run pytest -v
 ```
 
-The code above:
+Приведённый код:
 
-1. Sets a list of all the code locations within the monorepo.
-2. Checks out the code for the entire repo.
-3. Sets `uv` for use within the Github Action.
-4. For each code location, install the necessary Python dependencies using `uv`.
-5. For each code location, execute the tests for that code location.
+1. Задаёт список всех расположений кода внутри монорепозитория.
+2. Получает код всего репозитория.
+3. Настраивает `uv` для использования в GitHub Actions.
+4. Для каждого расположения кода устанавливает необходимые зависимости Python через `uv`.
+5. Выполняет тесты каждого расположения кода.
 
-## Multi Repo
+## Мультирепозиторий
 
-![Multi Repo](/images/dagster-testing/lesson-6/multi-repo.png)
+![Несколько репозиториев](/images/dagster-testing/lesson-6/multi-repo.png)
 
-In a multi repository, there will be a single environment as the entire repository is dedicated to a single code location. This usually means there is only one place where Python dependencies are set and only one testing suite.
+При использовании отдельных репозиториев в каждом будет одно окружение, поскольку весь репозиторий посвящён одному расположению кода. Обычно это означает одно место определения зависимостей Python и один набор тестов.
 
-In Github Actions, the set up will look very similar to a monorepo though we only need to run everything for the single code location.
+Настройка GitHub Actions будет очень похожа на настройку монорепозитория, но все операции нужно выполнять только для одного расположения кода.
 
 ```yaml
 name: dagster-example-action
@@ -91,9 +91,11 @@ jobs:
         run: uv run pytest -v
 ```
 
-The code above:
+Приведённый код:
 
-1. Checks out the code for the entire repo.
-2. Set `uv` for use within the Github Action.
-3. Install the necessary Python dependencies using `uv`.
-4. Executes the tests for the code location.
+1. Получает код всего репозитория.
+2. Настраивает `uv` для использования в GitHub Actions.
+3. Устанавливает необходимые зависимости Python через `uv`.
+4. Выполняет тесты расположения кода.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

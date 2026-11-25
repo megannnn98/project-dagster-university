@@ -38,13 +38,13 @@ title: Testing with Dagster
   - [Настройка интеграционных тестов](/dagster-testing/lesson-5/4-configuring-integration-tests)
   - [Фикстуры интеграционных тестов](/dagster-testing/lesson-5/5-integration-fixtures)
 
-- Lesson 6: Dagster Best Practices
-  - [Overview](/dagster-testing/lesson-6/0-overview)
-  - [Asset checks](/dagster-testing/lesson-6/1-asset-checks)
+- Урок 6: Лучшие практики Dagster
+  - [Обзор](/dagster-testing/lesson-6/0-overview)
+  - [Проверки ассетов](/dagster-testing/lesson-6/1-asset-checks)
   - [Definitions](/dagster-testing/lesson-6/2-definitions)
-  - [Dagster objects](/dagster-testing/lesson-6/3-dagster-objects)
-  - [Code locations](/dagster-testing/lesson-6/4-code-locations)
-  - [Anti-patterns to avoid](/dagster-testing/lesson-6/5-anti-patterns)
+  - [Тестирование других объектов Dagster](/dagster-testing/lesson-6/3-dagster-objects)
+  - [Расположения кода](/dagster-testing/lesson-6/4-code-locations)
+  - [Антипаттерны, которых следует избегать](/dagster-testing/lesson-6/5-anti-patterns)
 
 - Урок 7: Dagster Skills
   - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
