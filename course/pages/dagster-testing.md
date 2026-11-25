@@ -30,13 +30,13 @@ title: Testing with Dagster
   - [Тестирование материализации с ресурсами](/dagster-testing/lesson-4/3-materializing-resource-tests)
   - [Подмена ресурсов при тестировании](/dagster-testing/lesson-4/4-mocking-resources-for-testing)
 
-- Lesson 5: Integration
-  - [Overview](/dagster-testing/lesson-5/0-overview)
-  - [The limits of mocks](/dagster-testing/lesson-5/1-the-limits-of-mocks)
-  - [Integration tests](/dagster-testing/lesson-5/2-integration-tests)
-  - [Integration resources](/dagster-testing/lesson-5/3-integration-resources)
-  - [Configuring integration tests](/dagster-testing/lesson-5/4-configuring-integration-tests)
-  - [Integration fixtures](/dagster-testing/lesson-5/5-integration-fixtures)
+- Урок 5: Интеграционное тестирование
+  - [Обзор](/dagster-testing/lesson-5/0-overview)
+  - [Ограничения mock-объектов](/dagster-testing/lesson-5/1-the-limits-of-mocks)
+  - [Интеграционные тесты](/dagster-testing/lesson-5/2-integration-tests)
+  - [Ресурсы для интеграционных тестов](/dagster-testing/lesson-5/3-integration-resources)
+  - [Настройка интеграционных тестов](/dagster-testing/lesson-5/4-configuring-integration-tests)
+  - [Фикстуры интеграционных тестов](/dagster-testing/lesson-5/5-integration-fixtures)
 
 - Lesson 6: Dagster Best Practices
   - [Overview](/dagster-testing/lesson-6/0-overview)

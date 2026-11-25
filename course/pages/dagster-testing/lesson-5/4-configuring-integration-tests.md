@@ -1,29 +1,29 @@
 ---
-title: 'Lesson 5: Configuring integration tests'
+title: 'Урок 5: Настройка интеграционных тестов'
 module: 'dagster_testing'
 lesson: '5'
 ---
 
-# Configuring integration tests
+# Настройка интеграционных тестов
 
-As already mentioned, Postgres is an open source database with a publicly available distribution. This includes a [Docker](https://www.docker.com/) image we can use for testing purposes.
+Как уже упоминалось, Postgres — база данных с открытым исходным кодом и общедоступным дистрибутивом. В том числе существует образ [Docker](https://www.docker.com/), который можно использовать для тестирования.
 
-Docker is an open-source platform that allows developers to run applications in lightweight, portable containers. It is a great way to run ephemeral versions of services we need for tests.
+Docker — платформа с открытым исходным кодом, позволяющая разработчикам запускать приложения в легковесных переносимых контейнерах. Это удобный способ запускать временные экземпляры сервисов, необходимых для тестов.
 
-## Docker configuration
+## Конфигурация Docker
 
 {% callout %}
 
-> 💡 **Docker:** We will not go into too much detail about Docker. The important thing to see is how it can help build more elaborate integration tests.
+> 💡 **Docker:** мы не будем подробно изучать Docker. Главное — понять, как он помогает создавать более сложные интеграционные тесты.
 
 > {% /callout %}
 
-In order to configure Docker, let's think about what we need.
+Для настройки Docker сначала определим, что нам необходимо:
 
-1. A service running Postgres.
-2. A seeded table `data.city_population` with some sample records to query.
+1. Сервис с работающим Postgres.
+2. Таблица `data.city_population`, заполненная тестовыми записями для запросов.
 
-To begin we will create a `docker-compose.yml`. This defines all the Docker services needed to run our integration test. In this case it is just the Postgres database:
+Начнём с создания файла `docker-compose.yml`. Он определяет все сервисы Docker, необходимые для интеграционного теста. В данном случае это только база Postgres:
 
 ```yaml
 ---
@@ -41,7 +41,7 @@ services:
       - "5432:5432"
 ```
 
-If you are familiar with Docker you will notice that we give it build context directory rather than an image. That build context contains a Dockerfile file that contains the Postgres image and a initialization file.
+Если ты знаком с Docker, то заметишь, что мы указываем каталог контекста сборки, а не готовый образ. Этот каталог содержит Dockerfile с образом Postgres и файлом инициализации.
 
 ```yaml
 FROM postgres:17-alpine
@@ -49,7 +49,7 @@ FROM postgres:17-alpine
 COPY postgres_bootstrap.sql /docker-entrypoint-initdb.d/
 ```
 
-This two step build does two things. Uses the `postgres:17-alpine` image and copies and executes the `postgres_bootstrap.sql` file which will seed the database. This SQL file creates the schema, table and inserts a few sample records.
+Такая сборка использует образ `postgres:17-alpine` и копирует файл `postgres_bootstrap.sql`, который будет выполнен при первоначальной инициализации базы. SQL-файл создаёт схему, таблицу и добавляет несколько тестовых записей.
 
 ```sql
 CREATE SCHEMA data;
@@ -66,9 +66,9 @@ INSERT INTO data.city_population VALUES
 ('CA', 'Los Angeles', 3898747);
 ```
 
-## Executing Docker
+## Запуск Docker
 
-That is all the configuration required for Docker. We can now spin up the Postgres database with the Docker CLI:
+Это вся необходимая конфигурация Docker. Теперь можно запустить базу Postgres через CLI Docker:
 
 ```bash 
 > docker compose -f tests/docker-compose.yaml up -d
@@ -77,17 +77,17 @@ That is all the configuration required for Docker. We can now spin up the Postgr
  ✔ Container postgresql                   Started                                                   0.2s
 ```
 
-The `-d` flag will run the resource in the background. If this is the first time you have run this service it may take a little longer as your machine will need to pull the Postgres image and initialize the database. But it will be faster in subsequent runs.
+Флаг `-d` запускает сервис в фоновом режиме. При первом запуске может понадобиться больше времени, поскольку необходимо загрузить образ Postgres и инициализировать базу. Последующие запуски будут быстрее.
 
-If we need to stop the Docker service we can run:
+Если нужно остановить сервис Docker, выполни:
 
 ```bash
 docker compose -f tests/docker-compose.yaml down
 ```
 
-## Running Docker tests
+## Запуск тестов с Docker
 
-With Docker running Postgres, we can define a test that initializes the `PostgresResource` resource.
+Когда Postgres запущен в Docker, можно определить тест, инициализирующий ресурс `PostgresResource`.
 
 ```python
 # tests/test_lesson_5.py
@@ -106,14 +106,14 @@ def test_state_population_database():
     ]
 ```
 
-You can see all the parts of the testing code working together.
+Можно увидеть, как все части тестового кода работают вместе.
 
-![Docker Test](/images/dagster-testing/lesson-5/docker-test.png)
+![Тест с Docker](/images/dagster-testing/lesson-5/docker-test.png)
 
-1. The `postgres_resource` is initialized using the connection details of the Docker compose service.
-2. The results of the Postgres database are those set in the SQL script.
+1. `postgres_resource` инициализируется с параметрами подключения сервиса Docker Compose.
+2. База Postgres возвращает данные, заданные в SQL-скрипте.
 
-We can confirm everything is working with pytest.
+Убедимся, что всё работает, с помощью pytest.
 
 ```bash
 > pytest tests/test_lesson_5.py::test_state_population_database
@@ -121,9 +121,9 @@ We can confirm everything is working with pytest.
 tests/test_lesson_5.py .                                                          [100%]
 ```
 
-## Testing with materialize
+## Тестирование с materialize
 
-Similar to the testing with resources, we can use `dg.materialize()` with our integration tests while testing multiple assets.
+Как и при тестировании с ресурсами, можно использовать `dg.materialize()` в интеграционных тестах для проверки нескольких ассетов.
 
 ```python
 # tests/test_lesson_5.py
@@ -141,3 +141,5 @@ def test_assets(docker_compose, postgres_resource, query_output_ny):  # noqa: F8
     assert result.output_for_node("state_population_database") == query_output_ny
     assert result.output_for_node("total_population_database") == 9082539
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

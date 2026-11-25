@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 5: Overview'
+title: 'Урок 5: Обзор'
 module: 'dagster_testing'
 lesson: '5'
 ---
 
-# Overview
+# Обзор
 
-By this point you should feel comfortable writing unit tests for your assets. Even tests that rely on external systems.
+К этому моменту ты уже должен уверенно писать модульные тесты для ассетов, даже если они зависят от внешних систем.
 
-However while it's helpful to know how tests function with expected results, it can still be good to have tests that can connect to other systems. These tests require more setup and are as commonly invoked as unit tests but they add another critical layer to testing data applications.
+Однако, хотя полезно понимать поведение тестов при заранее заданных результатах, нужны и тесты, способные подключаться к другим системам. Они требуют дополнительной настройки и обычно запускаются реже модульных тестов, но добавляют ещё один важный уровень тестирования приложений обработки данных.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

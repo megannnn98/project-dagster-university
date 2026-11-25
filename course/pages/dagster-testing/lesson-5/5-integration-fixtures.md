@@ -1,12 +1,12 @@
 ---
-title: 'Lesson 5: Integration fixtures'
+title: 'Урок 5: Фикстуры интеграционных тестов'
 module: 'dagster_testing'
 lesson: '5'
 ---
 
-# Integration fixtures
+# Фикстуры интеграционных тестов
 
-Because we always need Docker to run the Postgres integration test, we can create a pytest fixture to handle the management of Docker. We will take the CLI command we used before and write a fixture around them.
+Поскольку для интеграционного теста Postgres всегда требуется Docker, можно создать фикстуру pytest, управляющую Docker. Возьмём использованные ранее команды CLI и обернём их в фикстуру.
 
 ```python
 # tests/fixtures.py
@@ -65,15 +65,15 @@ def docker_compose():
     subprocess.run(["docker", "compose", "-f", file_path, "down", "-v"], check=True)
 ```
 
-The code above does the following:
+Приведённый код:
 
-1. Gets the file path of the `docker-compose.yaml` relative to the test (which is in the same directory).
-2. Starts the Docker service using the `docker compose` command.
-3. Waits for the service to be ready by checking when the database is ready using `pg_isready`.
-4. Yields to the test execution (running the test).
-5. Spins down the Docker service when testing has completed.
+1. Получает путь к файлу `docker-compose.yaml` относительно теста (он находится в том же каталоге).
+2. Запускает сервис Docker с помощью команды `docker compose`.
+3. Ожидает готовности сервиса, проверяя доступность базы с помощью `pg_isready`.
+4. Передаёт управление тесту для его выполнения.
+5. Останавливает сервис Docker после завершения тестирования.
 
-Now that fixture can be used within the parameters of the integration test and couple our test and the underlying services:
+Теперь эту фикстуру можно передать в параметры интеграционного теста, связав тест с необходимыми ему сервисами:
 
 ```python
 # tests/test_lesson_5.py
@@ -98,6 +98,8 @@ def test_state_population_database(docker_compose):  # noqa: F811
 tests/test_lesson_5.py .                                                          [100%]
 ```
 
-Because this pytest fixture is scoped to the session, it will remain active for all the tests run. This can be very helpful because you may notice these tests take longer than the unit tests. Most of this is the set up time to spin up the necessary services (the tests themselves are relatively quick).
+Поскольку область действия фикстуры pytest — сессия, она остаётся активной на протяжении выполнения всех использующих её тестов. Это полезно, поскольку интеграционные тесты выполняются дольше модульных. Большая часть времени уходит на запуск необходимых сервисов, а сами тесты выполняются относительно быстро.
 
-Scoping everything to the session ensures that we do not have to needlessly spin the services up and down for each test.
+Область действия на уровне сессии позволяет не запускать и не останавливать сервисы заново для каждого теста.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

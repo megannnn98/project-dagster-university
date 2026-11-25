@@ -1,12 +1,12 @@
 ---
-title: 'Lesson 5: Integration resources'
+title: 'Урок 5: Ресурсы для интеграционных тестов'
 module: 'dagster_testing'
 lesson: '5'
 ---
 
-# Integrations resources
+# Ресурсы для интеграционных тестов
 
-If we think about the `state_population_database` asset, we want to make sure it can execute a query and return the results, but we are not necessarily concerned with which database is used to execute the query. Instead of insisting that the `database` resource must be Snowflake, we can change the annotation so that it can take in any resource:
+Рассмотрим ассет `state_population_database`. Мы хотим убедиться, что он способен выполнить запрос и вернуть результат, но не обязательно должны использовать конкретную базу данных. Вместо требования, чтобы ресурс `database` был именно Snowflake, можно изменить аннотацию, позволяя принимать произвольный ресурс:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_5.py
@@ -25,11 +25,11 @@ def state_population_database(database: dg.ConfigurableResource) -> list[tuple]:
         return cur.fetchall()
 ```
 
-Now in order to execute the asset, we only need to provide a resource that has a `get_connection` context manager with methods for `cursor` and `execute`.  From Dagster's perspective, this can be anything. It does not even need to be a database. As long as it meets those criteria.
+Теперь для выполнения ассета достаточно предоставить ресурс с контекстным менеджером `get_connection` и методами `cursor` и `execute`. С точки зрения Dagster это может быть любой объект, даже не обязательно база данных, если он удовлетворяет этим требованиям.
 
-For our purposes we will create a resource that provides similar functionality but uses a different database. We will use Postgres which, unlike Snowflake, is open sourced and can be used for free and run on our local machine.
+Для наших целей создадим ресурс с похожей функциональностью, но использующий другую базу данных. Возьмём Postgres, который, в отличие от Snowflake, имеет открытый исходный код и может бесплатно запускаться локально.
 
-Another benefit of using Postgres is that its Python client is a lot like the Snowflake Python client. Here is a resource to allow us to execute queries in Postgres. Click **View answer** to view it.
+Ещё одно преимущество Postgres — его клиент Python во многом похож на клиент Snowflake. Вот ресурс, позволяющий выполнять запросы в Postgres. Нажми **View answer**, чтобы посмотреть ответ.
 
 ```python {% obfuscated="true" %}
 # tests/test_lesson_5.py
@@ -52,17 +52,17 @@ class PostgresResource(dg.ConfigurableResource):
         yield self._connection()
 ```
 
-This resource provides everything we need and can be used in place of the Snowflake resource for the purposes of integration testing to ensure that our asset works while still connecting to a database.
+Этот ресурс предоставляет всё необходимое и может использоваться вместо ресурса Snowflake при интеграционном тестировании, чтобы проверить работу ассета с подключением к базе данных.
 
 {% callout %}
 
-> 💡 **SQL Syntax:** One thing to be aware of when using a different database backend for integration testing is any differences in SQL syntax. Snowflake and Postgres overlap on most [standard SQL](https://docs.snowflake.com/en/guides-overview-queries) but Snowflake does include some syntax and functions not supported by Postgres.
+> 💡 **Синтаксис SQL:** при использовании другой базы данных для интеграционного тестирования нужно учитывать различия синтаксиса SQL. Snowflake и Postgres поддерживают большую часть общего [стандартного SQL](https://docs.snowflake.com/en/guides-overview-queries), но Snowflake также содержит синтаксические конструкции и функции, отсутствующие в Postgres.
 
 > {% /callout %}
 
-## Similar resources
+## Аналогичные ресурсы
 
-We defined our own Postgres resource to take the place of Snowflake but there are  other options. One popular tool is DuckDB which serves as an OLAP database that can run locally. This can serve as a great substitute for a data warehouse like Snowflake. Just remember that there are some subtle differences between the Snowflake and DuckDB Python clients. For example, something like.
+Мы определили собственный ресурс Postgres вместо Snowflake, но есть и другие варианты. Один из популярных инструментов — DuckDB, локальная OLAP-база данных. Она может стать хорошей заменой хранилищу данных вроде Snowflake. Однако следует учитывать различия между Python-клиентами Snowflake и DuckDB. Например, такой код:
 
 ```python
 @dg.asset
@@ -72,7 +72,7 @@ def truncate_table(database: dg.ConfigurableResource) -> None:
         conn.execute(query)
 ```
 
-Would not work with Snowflake because Snowflake requires the `cursor` while DuckDB does not. The code would need to match for both resources:
+Не будет работать со Snowflake, поскольку Snowflake требует `cursor`, а DuckDB — нет. Код должен подходить для обоих ресурсов:
 
 ```python
 @dg.asset
@@ -83,4 +83,6 @@ def truncate_table(database: dg.ConfigurableResource) -> None:
         cur.execute(query)
 ```
 
-The DuckDB resource may be a better fit for your use case but we will use the custom Postgres resource for the purposes of demonstration.
+Ресурс DuckDB может лучше соответствовать твоим задачам, но для демонстрации мы используем собственный ресурс Postgres.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
