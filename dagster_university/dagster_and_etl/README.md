@@ -1,10 +1,10 @@
-# ETL with Dagster
+# ETL с Dagster
 
-Learn how to ingest data to power your assets. You’ll build custom pipelines and see how to use Embedded ETL and Dagster Components to build out your data platform.
+Научись загружать данные для своих активов. Ты построишь собственные пайплайны и узнаешь, как использовать встроенный ETL (Embedded ETL) и компоненты Dagster для создания платформы данных.
 
-## Completed code
+## Готовый код
 
-If you are stuck you can reference the completed code for each lesson.
+Если возникнут сложности, можешь обратиться к готовому коду каждого урока.
 
 ```
 src
@@ -17,3 +17,5 @@ src
         ├── lesson_6
         └── lesson_7
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

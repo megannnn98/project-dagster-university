@@ -1,12 +1,12 @@
-# Dagster and dbt
+# Dagster и dbt
 
-## Overview
+## Обзор
 
-Learn how to integrate and orchestrate dbt projects with Dagster. You'll load dbt models into Dagster as assets, build dependencies, and ready your project for production deployment.
+Научись интегрировать и оркестрировать проекты dbt с помощью Dagster. Ты загрузишь модели dbt в Dagster как активы, построишь зависимости и подготовишь проект к развёртыванию в рабочем окружении.
 
-## Completed code
+## Готовый код
 
-If you are stuck you can reference the completed code for each lesson.
+Если возникнут сложности, можешь обратиться к готовому коду каждого урока.
 
 ```
 src
@@ -19,3 +19,5 @@ src
         ├── lesson_6
         └── lesson_7
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
