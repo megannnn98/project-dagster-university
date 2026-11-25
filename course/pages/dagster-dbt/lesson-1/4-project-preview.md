@@ -1,18 +1,20 @@
 ---
-title: "Lesson 1: Project preview"
+title: "Урок 1: Обзор проекта"
 module: 'dbt_dagster'
 lesson: '1'
 ---
 
-# Project preview
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-In this course, we’ll focus on integrating a dbt project with Dagster from end to end. We’ll build on the Dagster project used in the Dagster Essentials course, which uses data from [NYC OpenData](https://opendata.cityofnewyork.us/). If you haven’t completed Dagster Essentials, no worries - we'll show you what to do in the next lesson.
+# Обзор проекта
 
-By the end of the course, you will:
+В этом курсе мы рассмотрим полный процесс интеграции проекта dbt с Dagster. За основу возьмём проект Dagster из курса Dagster Essentials, использующий данные [NYC OpenData](https://opendata.cityofnewyork.us/). Если вы ещё не прошли Dagster Essentials, ничего страшного — в следующем уроке мы объясним, что нужно сделать.
 
-- Create dbt models and load them into Dagster as assets
-- Run dbt and store the transformed data in a DuckDB database
-- Apply partitions to incremental dbt models
-- Deploy the Dagster project to Dagster+
+К концу курса вы научитесь:
 
-If you get stuck or want to jump ahead, check out the [finished project here on GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_and_dbt).
+- Создавать модели dbt и загружать их в Dagster в качестве ассетов
+- Запускать dbt и сохранять преобразованные данные в базе DuckDB
+- Применять партиции к инкрементальным моделям dbt
+- Развёртывать проект Dagster в Dagster+
+
+Если вы столкнулись с трудностями или хотите забежать вперёд, посмотрите [готовый проект на GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_and_dbt).

@@ -1,16 +1,18 @@
 ---
-title: "Lesson 1: Deprecation"
+title: "Урок 1: Устаревание курса"
 module: 'dbt_dagster'
 lesson: '1'
 ---
 
-**Deprecation Notice**
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-This course was originally built around the Python-based integration of Dagster and dbt. With the introduction of [Dagster Components](https://docs.dagster.io/guides/build/components), connecting to a dbt project is now far more streamlined and beginner-friendly.
+**Уведомление об устаревании**
 
-If you’re new to Dagster and dbt, we recommend starting with the simpler, component-based guides instead:
+Изначально этот курс был посвящён интеграции Dagster и dbt на основе Python. С появлением [компонентов Dagster](https://docs.dagster.io/guides/build/components) подключение проекта dbt стало значительно проще и доступнее для начинающих.
 
-* [dbt integration](https://docs.dagster.io/integrations/libraries/dbt)
-* [Dagster and dbt example](https://docs.dagster.io/examples/dbt)
+Если вы только знакомитесь с Dagster и dbt, рекомендуем начать с более простых руководств на основе компонентов:
 
-If you’d like to explore Dagster internals and work directly with the Python APIs for the Dagster–dbt integration, you are still welcome to take this course. You’ll also receive a certificate upon completion.
+* [Интеграция dbt](https://docs.dagster.io/integrations/libraries/dbt)
+* [Пример использования Dagster и dbt](https://docs.dagster.io/examples/dbt)
+
+Если вы хотите изучить внутреннее устройство Dagster и работать непосредственно с Python API интеграции Dagster и dbt, вы по-прежнему можете пройти этот курс. По завершении вы также получите сертификат.
