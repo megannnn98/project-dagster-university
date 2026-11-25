@@ -1,127 +1,129 @@
 ---
-title: 'Lesson 8: Partitions and backfills in the Dagster UI'
+title: 'Урок 8: Партиции и backfill в интерфейсе Dagster'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Partitions and backfills in the Dagster UI
+# Партиции и backfill в интерфейсе Dagster
 
-Now that you've created your partitions, used those partitions in the assets, and updated the jobs with partitions to create a partitioned schedule, let’s check out how things look in the Dagster UI. If you still have `dagster dev` running, you’ll need to **Reload definitions** to ensure the partitions are visible.
+Теперь, когда ты создал партиции, использовал их в активах и обновил задания для создания расписания с партиционированием, посмотрим, как это выглядит в интерфейсе Dagster. Если `dagster dev` всё ещё работает, нажми **Reload definitions**, чтобы партиции стали видны.
 
 ---
 
-## Viewing and materializing assets with partitions
+## Просмотр и материализация активов с партициями
 
 {% table %}
 
-- Step one
+- Шаг 1
 
 ---
 
 - {% width="60%" %}
-  Navigate to **Lineage**. As you’ll see in the asset graph, the `taxi_trips` assets now have partition information.
+  Перейди в **Lineage**. На графе активов ты увидишь, что активы `taxi_trips` теперь содержат информацию о партициях.
 
-- ![Assets with partitions in the Dagster UI](/images/dagster-essentials/lesson-8/ui-assets-with-partitions.png) {% rowspan=2 %}
+- ![Активы с партициями в интерфейсе Dagster](/images/dagster-essentials/lesson-8/ui-assets-with-partitions.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step two
+- Шаг 2
 
 ---
 
 - {% width="60%" %}
-  Taking a closer look at the `taxi_trips_file` asset, there are three partitions that represent the three months that were included in the partition.
+  Если подробнее рассмотреть актив `taxi_trips_file`, можно увидеть три партиции, соответствующие трём месяцам.
 
-  - **&#10003;&#x20DD; 0** - represents that 0 partitions have been successfully materialization
-  - **&#x20E0; All** - represents all (three) partitions haven't yet been materialized
-  - **!&#x20DD; 0** - represents that there are zero failed partitions
+  - **&#10003;&#x20DD; 0** — ни одна партиция пока не материализована успешно.
+  - **&#x20E0; All** — все три партиции ещё не материализованы.
+  - **!&#x20DD; 0** — нет партиций с ошибками.
 
-  This information is useful to get a quick look at the state of your asset.
+  Эти сведения позволяют быстро оценить состояние актива.
 
-- ![The taxi_trips_file asset with new partitions](/images/dagster-essentials/lesson-8/ui-taxi-trips-file-asset.png) {% rowspan=2 %}
+- ![Актив taxi_trips_file с новыми партициями](/images/dagster-essentials/lesson-8/ui-taxi-trips-file-asset.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step three
+- Шаг 3
 
 ---
 
 - {% width="60%" %}
-  Clicking **Materialize all** will display a popup containing the partition information.
+  При нажатии **Materialize all** появится всплывающее окно с информацией о партициях.
 
-  This allows you to choose which partitions you want to materialize or launch a backfill that can materialize several partitions at once.
+  Здесь можно выбрать партиции для материализации или запустить backfill, материализующий несколько партиций одновременно.
 
 {% /table %}
 
 ---
 
-## Launching a backfill
+## Запуск backfill
 
 {% table %}
 
-- Step one
+- Шаг 1
 
 ---
 
 - {% width="60%" %}
-  To begin the backfill, click **Launch backfill** in the popup window from the last section. By default, no date range will be selected. Click the **All** button to select the entire date range.
+  Для начала backfill нажми **Launch backfill** во всплывающем окне из предыдущего раздела. По умолчанию диапазон дат не выбран. Нажми **All**, чтобы выбрать весь диапазон дат.
 
-  Next, click **Overview > Backfills** to view the backfill’s information.
+  Затем перейди в **Overview > Backfills**, чтобы просмотреть информацию о backfill.
 
-- ![A popup displaying an asset's partition information in the Dagster UI](/images/dagster-essentials/lesson-8/ui-asset-partition-info.png) {% rowspan=2 %}
-
-{% /table %}
-
-{% table %}
-
-- Step two
-
----
-
-- {% width="60%" %}
-  Click on a backfill to open its details page. In this page, you’ll see each asset being materialized in the backfill, along with their status.
+- ![Всплывающее окно с информацией о партициях актива в интерфейсе Dagster](/images/dagster-essentials/lesson-8/ui-asset-partition-info.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step three
+- Шаг 2
 
 ---
 
 - {% width="60%" %}
-  Navigate back to the **Global Asset Lineage** page. In the asset graph, you’ll see the status of the partitioned and non-partitioned assets has been updated.
-
-{% /table %}
-
----
-
-## Viewing asset partition details
-
-{% table %}
-
-- Step one
-
----
-
-- {% width="60%" %}
-  In the asset graph, click the `taxi_trips` asset and view in the **Asset Catalog**. Each month is listed as a partition that can be examined.
-
-- ![The Asset partition details page in the Dagster UI](/images/dagster-essentials/lesson-8/ui-asset-partition-details.png) {% rowspan=2 %}
+  Нажми на backfill, чтобы открыть страницу сведений о нём. На этой странице отображаются все материализуемые в рамках backfill активы и их статусы.
 
 {% /table %}
 
 {% table %}
 
-- Step two
+- Шаг 3
 
 ---
 
 - {% width="60%" %}
-  Select **2023-03-01** to view a specific partition. Here you can see information specific to that partition of the asset, including lineage to the source data. In this case, that’s `taxi_trips_file`.
+  Вернись на страницу **Global Asset Lineage**. На графе активов ты увидишь обновлённые статусы партиционированных и непартиционированных активов.
 
 {% /table %}
+
+---
+
+## Просмотр сведений о партициях актива
+
+{% table %}
+
+- Шаг 1
+
+---
+
+- {% width="60%" %}
+  На графе активов нажми на актив `taxi_trips` и открой его в **Asset Catalog**. Каждый месяц представлен отдельной партицией, которую можно изучить.
+
+- ![Страница сведений о партициях актива в интерфейсе Dagster](/images/dagster-essentials/lesson-8/ui-asset-partition-details.png) {% rowspan=2 %}
+
+{% /table %}
+
+{% table %}
+
+- Шаг 2
+
+---
+
+- {% width="60%" %}
+  Выбери **2023-03-01**, чтобы просмотреть конкретную партицию. Здесь можно увидеть сведения именно об этой партиции актива, включая происхождение исходных данных. В данном случае источник — `taxi_trips_file`.
+
+{% /table %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

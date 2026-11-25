@@ -58,17 +58,17 @@ title: Dagster Essentials
   - [Обновление объекта Definitions](/dagster-essentials/lesson-7/5-updating-the-definitions-object)
   - [Задания и расписания в интерфейсе Dagster](/dagster-essentials/lesson-7/6-jobs-schedules-dagster-ui)
 
-- Lesson 8: Partitions and backfills
-  - [Overview](/dagster-essentials/lesson-8/0-overview)
-  - [What are partitions and backfills?](/dagster-essentials/lesson-8/1-what-are-partitions-and-backfills)
-  - [Creating a partition](/dagster-essentials/lesson-8/2-creating-a-partition)
-  - [Practice: Create a weekly partition](/dagster-essentials/lesson-8/3-coding-practice-weekly-partition)
-  - [Adding partitions to assets](/dagster-essentials/lesson-8/4-adding-partitions-to-assets)
-  - [Practice: Partition the taxi_trips asset](/dagster-essentials/lesson-8/5-coding-practice-partition-taxi-trips)
-  - [Creating a schedule with a date-based partition](/dagster-essentials/lesson-8/6-creating-a-schedule-with-a-date-based-partition)
-  - [Practice: Partition the trips_by_week asset](/dagster-essentials/lesson-8/7-coding-practice-partition-trips-by-week)
-  - [Partitions and backfills in the Dagster UI](/dagster-essentials/lesson-8/8-partitions-backfills-dagster-ui)
-  - [Recap](/dagster-essentials/lesson-8/9-recap)
+- Урок 8: Партиции и backfill
+  - [Обзор](/dagster-essentials/lesson-8/0-overview)
+  - [Что такое партиции и backfill?](/dagster-essentials/lesson-8/1-what-are-partitions-and-backfills)
+  - [Создание партиции](/dagster-essentials/lesson-8/2-creating-a-partition)
+  - [Практика: создание недельной партиции](/dagster-essentials/lesson-8/3-coding-practice-weekly-partition)
+  - [Добавление партиций к активам](/dagster-essentials/lesson-8/4-adding-partitions-to-assets)
+  - [Практика: партиционирование актива taxi_trips](/dagster-essentials/lesson-8/5-coding-practice-partition-taxi-trips)
+  - [Создание расписания с партициями по дате](/dagster-essentials/lesson-8/6-creating-a-schedule-with-a-date-based-partition)
+  - [Практика: партиционирование актива trips_by_week](/dagster-essentials/lesson-8/7-coding-practice-partition-trips-by-week)
+  - [Партиции и backfill в интерфейсе Dagster](/dagster-essentials/lesson-8/8-partitions-backfills-dagster-ui)
+  - [Итоги](/dagster-essentials/lesson-8/9-recap)
 
 - Lesson 9: Sensors
   - [Overview](/dagster-essentials/lesson-9/0-overview)

@@ -1,13 +1,15 @@
 ---
-title: 'Lesson 8: Overview'
+title: 'Урок 8: Обзор'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Overview
+# Обзор
 
-In the previous lesson, you learned about schedules and running your pipelines regularly. Going back to the cookie analogy, imagine that your cookie business is blossoming, and you’ve started taking orders in advance. Making every cookie right as each order came in would create problems. For example, an order for today is more urgent than an order for next week. Meanwhile, on some days, you would receive 100 orders, but you may receive zero orders on other days.
+В предыдущем уроке ты познакомился с расписаниями и регулярным запуском пайплайнов. Вернёмся к аналогии с печеньем: представь, что твой бизнес процветает и ты начал принимать предварительные заказы. Выпекать печенье сразу после поступления каждого заказа неудобно. Например, заказ на сегодня более срочный, чем заказ на следующую неделю. В одни дни может поступать 100 заказов, а в другие — ни одного.
 
-Therefore, you batch your orders by the day they’re expected to be picked up. Every morning, you look at the orders to be fulfilled that day and only make the cookies for those orders.
+Поэтому ты группируешь заказы по дням, когда покупатели должны их забрать. Каждое утро ты проверяешь заказы на этот день и выпекаешь печенье только для них.
 
-By looking at each day at a time, you are **partitioning** the orders. In this lesson, you’ll learn why you should partition your data assets and how to do it in Dagster by partitioning the taxi trip data.
+Рассматривая каждый день отдельно, ты выполняешь **партиционирование** заказов. В этом уроке ты узнаешь, зачем партиционировать активы данных и как делать это в Dagster на примере данных о поездках на такси.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

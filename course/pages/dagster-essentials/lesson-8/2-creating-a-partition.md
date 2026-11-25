@@ -1,24 +1,24 @@
 ---
-title: 'Lesson 8: Creating a partition'
+title: 'Урок 8: Создание партиции'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Creating a partition
+# Создание партиции
 
-In the previous lesson, you created monthly and weekly schedules to materialize assets. You’ll now modify the assets to partition the taxi trips data and add a new partition with every scheduled run.
+В предыдущем уроке ты создал ежемесячное и еженедельное расписания материализации активов. Теперь ты изменишь активы, чтобы партиционировать данные о поездках на такси и добавлять новую партицию при каждом запуске по расписанию.
 
-Luckily for us, the trip data is stored in parquet files that are separated by month, but NYC OpenData has historical taxi information dating back to 2009. In this example, you’ll only ingest and partition data from the beginning of 2023 to be mindful of compute resources and time.
+К счастью, данные о поездках хранятся в файлах Parquet, разделённых по месяцам, но NYC OpenData содержит исторические сведения о такси начиная с 2009 года. В этом примере мы загрузим и партиционируем только данные с начала 2023 года, чтобы экономить вычислительные ресурсы и время.
 
 ---
 
-## Constructing a partition definition
+## Создание определения партиций
 
-The first step in partitioning an asset is setting up a `PartitionDefinition`. Dagster has prebuilt hourly, daily, weekly, and monthly partitions for date-partitioned data. Following Dagster’s best practices for project structure, all partitions should be located in the `partitions` folder. In this project, all partitions will be in the `defs/partitions.py` file.
+Первый шаг при партиционировании актива — настройка определения партиций. В Dagster есть готовые определения часовых, дневных, недельных и месячных партиций для данных, разделяемых по датам. Согласно рекомендациям Dagster по структуре проекта, определения партиций следует размещать в отдельном модуле. В данном проекте все определения партиций будут находиться в файле `defs/partitions.py`.
 
-Additionally, your Dagster project contains an `assets/constants.py` file. This file contains `START_DATE` and `END_DATE` variables that, when used together, define the date range of the trip data to bring into the data pipeline.
+Кроме того, проект Dagster содержит файл `assets/constants.py`. В нём определены переменные `START_DATE` и `END_DATE`, вместе задающие диапазон дат данных о поездках, которые необходимо загрузить в пайплайн.
 
-Now that you have all the info you need to start building partitions, let’s take a look at an example:
+Теперь у тебя есть всё необходимое для создания партиций. Рассмотрим пример:
 
 ```python
 # src/dagster_essentials/defs/partitions.py
@@ -34,12 +34,14 @@ monthly_partition = dg.MonthlyPartitionsDefinition(
 )
 ```
 
-Using Dagster’s `MonthlyPartitionDefinition`, we created a partition named `monthly_partition` and used the start and end dates to set the parameters of the function.
+С помощью определения месячных партиций Dagster мы создали объект `monthly_partition`, передав начальную и конечную даты в качестве параметров.
 
 ---
 
-## Cleaning up existing storage
+## Очистка существующего хранилища
 
-Before continuing, you should first delete Dagster’s materialization history of the existing assets. This only needs to be done when running locally.
+Прежде чем продолжить, следует удалить историю материализации существующих активов в Dagster. Это требуется только при локальном запуске.
 
-In your terminal, stop the running server with `Ctrl+C`, then re-run the `dagster dev` command to start it again. This will delete this history.
+В терминале останови работающий сервер сочетанием `Ctrl+C`, затем снова выполни команду `dagster dev`. При использовании временного локального хранилища история будет сброшена.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

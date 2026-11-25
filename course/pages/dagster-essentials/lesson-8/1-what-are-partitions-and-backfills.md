@@ -1,33 +1,35 @@
 ---
-title: 'Lesson 8: What are partitions and backfills?'
+title: 'Урок 8: Что такое партиции и backfill?'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# What are partitions and backfills?
+# Что такое партиции и backfill?
 
-Let's start by discussing what, exactly, partitions and backfills are.
-
----
-
-## Partitions
-
-Partitions are a way to split your data into smaller, easier-to-use chunks. By breaking the data into chunks, you get the following benefits:
-
-- **Cost efficiency**: Run only the data that’s needed and gain granular control over slices. For example, you can store recent orders in hot storage and older orders in cheaper, cold storage.
-- **Speed up compute**: Divide large datasets into smaller, more manageable parts to speed up queries.
-- **Scalability**: As data grows, you can distribute it across multiple servers or storage systems or run multiple partitions at a time in parallel.
-- **Concurrent processing**: Boost computational speed with parallel processing, significantly reducing the time and cost of data processing tasks.
-- **Speed up debugging**: Test on an individual partition before trying to run larger ranges of data.
-
-Partitions are a mental model and a physical representation. In the cookie orders example, orders are an asset. In our mental model and Dagster UI, there is only one `orders` asset regardless of how many days we partition the orders for. How it’s stored physically might differ. If we were to represent our cookie orders as a table in a database, it might be represented as a single `orders` table. However, if it’s dumped into Amazon Web Services (AWS) S3 as parquet files, creating a new parquet file per day/partition would better adhere to best practices.
-
-In summary, partitions in Dagster enable you to compute on individual slices, but how it’s read or written from storage is flexible.
+Начнём с определения партиций и backfill.
 
 ---
 
-## Backfills
+## Партиции
 
-Backfilling is the process of running jobs for specific ranges. For example you might run a backfill for partitions that have not yet been processed in an asset or need to be updated.
+Партиции позволяют разделить данные на более мелкие и удобные для работы части. Разделение данных даёт следующие преимущества:
 
-Backfills are common when setting up a pipeline for the first time. The assets you want to materialize might have historical data that needs to be materialized to get the assets up to date. Another common reason to run a backfill is when you’ve changed the logic for an asset and need to update historical data with the new logic.
+- **Экономичность**: обрабатывай только необходимые данные и управляй отдельными срезами. Например, свежие заказы можно хранить в горячем хранилище, а старые — в более дешёвом холодном.
+- **Ускорение вычислений**: разделяй большие наборы данных на более управляемые части, чтобы ускорить запросы.
+- **Масштабируемость**: по мере роста данных можно распределять их между несколькими серверами или системами хранения, либо обрабатывать несколько партиций параллельно.
+- **Параллельная обработка**: увеличивай скорость вычислений за счёт параллелизма, существенно сокращая время и стоимость обработки.
+- **Ускорение отладки**: проверяй отдельную партицию перед обработкой больших диапазонов данных.
+
+Партиции — одновременно концептуальная модель и физическое представление. В примере с заказами печенья заказы являются активом. В нашей модели и интерфейсе Dagster существует только один актив `orders`, независимо от того, на сколько дней разделены заказы. Физический способ хранения может отличаться. Если представить заказы в базе данных, это может быть одна таблица `orders`. Если же сохранять их в Amazon Web Services (AWS) S3 в формате Parquet, хорошей практикой будет создавать отдельный файл для каждого дня или партиции.
+
+Таким образом, партиции в Dagster позволяют выполнять вычисления над отдельными срезами данных, а способ чтения и записи в хранилище остаётся гибким.
+
+---
+
+## Backfill
+
+Backfill — процесс запуска заданий для определённых диапазонов. Например, можно выполнить backfill для партиций актива, которые ещё не обработаны или требуют обновления.
+
+Backfill часто используется при первоначальной настройке пайплайна: может потребоваться материализовать исторические данные, чтобы привести активы в актуальное состояние. Другая распространённая причина — изменение логики актива, после которого необходимо пересчитать исторические данные по новой логике.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

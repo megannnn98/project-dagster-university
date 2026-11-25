@@ -1,21 +1,21 @@
 ---
-title: 'Lesson 8: Practice: Partition the taxi_trips asset'
+title: 'Урок 8: Практика: партиционирование актива taxi_trips'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Practice: Partition the taxi_trips asset
+# Практика: партиционирование актива taxi_trips
 
-To practice what you’ve learned, partition the `taxi_trips` asset by month using the following guidelines:
+Чтобы закрепить изученное, раздели актив `taxi_trips` на месячные партиции, следуя рекомендациям:
 
-- Because a month’s parquet file may contain historical data from outside the month, it is recommended that you partition by the month of the parquet file, not the month of the trip
+- Поскольку файл Parquet за месяц может содержать исторические данные за пределами этого месяца, рекомендуется партиционировать данные по месяцу файла Parquet, а не по месяцу поездки.
 
-- With every partition, insert the new data into the `taxi_trips` table
+- При материализации каждой партиции добавляй новые данные в таблицу `taxi_trips`.
 
-- For convenience, add a `partition_date` column to represent which partition the record was inserted from. 
+- Для удобства добавь столбец `partition_date`, указывающий, из какой партиции была добавлена запись.
 
   {% callout %}
-  You’ll need to drop the existing `taxi_trips` because of the new `partition_date` column. In a Python REPL or scratch script, run the following:
+  Из-за нового столбца `partition_date` потребуется удалить существующую учебную таблицу `taxi_trips`. В интерактивном интерпретаторе Python или отдельном скрипте выполни:
 
   ```
   import duckdb
@@ -24,20 +24,20 @@ To practice what you’ve learned, partition the `taxi_trips` asset by month usi
   ```
   {% /callout %}
 
-- Because the `taxi_trips` table will exist after the first partition materializes, the SQL query will have to change
+- Поскольку после материализации первой партиции таблица `taxi_trips` уже будет существовать, SQL-запрос потребуется изменить.
 
-- In this asset, you’ll need to do three actions:
-  - Create the `taxi_trips` table if it doesn’t already exist
-  - Delete any old data from `partition_date` to prevent duplicates when backfilling
-  - Insert new records from the month’s parquet file
+- В этом активе необходимо выполнить три действия:
+  - Создать таблицу `taxi_trips`, если она ещё не существует.
+  - Удалить старые данные соответствующей `partition_date`, чтобы избежать дублирования при backfill.
+  - Добавить новые записи из файла Parquet за месяц.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The updated asset should look similar to the following code. Click **View answer** to view it.
+Обновлённый актив должен выглядеть примерно как следующий код. Нажми **View answer**, чтобы посмотреть ответ.
 
-**If there are differences**, compare what you wrote to the asset below and change them, as this asset will be used as-is in future lessons.
+**Если есть различия**, сравни свой код с активом ниже и внеси изменения: в следующих уроках он будет использоваться в таком виде.
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/trips.py
@@ -84,3 +84,5 @@ def taxi_trips(context: dg.AssetExecutionContext, database: DuckDBResource) -> N
           [month_to_fetch, constants.TAXI_TRIPS_TEMPLATE_FILE_PATH.format(month_to_fetch)],
       )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
