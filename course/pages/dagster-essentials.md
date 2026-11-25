@@ -49,14 +49,14 @@ title: Dagster Essentials
   - [Анализ использования ресурсов через интерфейс Dagster](/dagster-essentials/lesson-6/5-analyzing-resources-dagster-ui)
   - [Итоги урока](/dagster-essentials/lesson-6/6-recap)
 
-- Lesson 7: Schedules
-  - [Overview](/dagster-essentials/lesson-7/0-overview)
-  - [What are schedules?](/dagster-essentials/lesson-7/1-what-are-schedules)
-  - [Practice: Create a weekly_update_job](/dagster-essentials/lesson-7/2-coding-practice-weekly-update-job)
-  - [Creating a schedule](/dagster-essentials/lesson-7/3-creating-a-schedule)
-  - [Practice: Create a weekly_update_schedule](/dagster-essentials/lesson-7/4-coding-practice-weekly-update-schedule)
-  - [Updating the Definitions object](/dagster-essentials/lesson-7/5-updating-the-definitions-object)
-  - [Jobs and schedules in the Dagster UI](/dagster-essentials/lesson-7/6-jobs-schedules-dagster-ui)
+- Урок 7: Расписания
+  - [Обзор](/dagster-essentials/lesson-7/0-overview)
+  - [Что такое расписания?](/dagster-essentials/lesson-7/1-what-are-schedules)
+  - [Практика: создание weekly_update_job](/dagster-essentials/lesson-7/2-coding-practice-weekly-update-job)
+  - [Создание расписания](/dagster-essentials/lesson-7/3-creating-a-schedule)
+  - [Практика: создание weekly_update_schedule](/dagster-essentials/lesson-7/4-coding-practice-weekly-update-schedule)
+  - [Обновление объекта Definitions](/dagster-essentials/lesson-7/5-updating-the-definitions-object)
+  - [Задания и расписания в интерфейсе Dagster](/dagster-essentials/lesson-7/6-jobs-schedules-dagster-ui)
 
 - Lesson 8: Partitions and backfills
   - [Overview](/dagster-essentials/lesson-8/0-overview)

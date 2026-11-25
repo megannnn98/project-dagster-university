@@ -1,9 +1,11 @@
 ---
-title: 'Lesson 7: Updating the Definitions object'
+title: 'Урок 7: Обновление объекта Definitions'
 module: 'dagster_essentials'
 lesson: '7'
 ---
 
-## Adding jobs and schedules to Definitions
+## Добавление заданий и расписаний в Definitions
 
-Similar to assets, schedules and jobs are loaded into the `Definitions` object with the rest of the module. And unlike resources which required mapping to specific resource keys, jobs and schedules are included automatically.
+Как и активы, расписания и задания загружаются в объект `Definitions` вместе с остальным содержимым модуля. В отличие от ресурсов, требующих сопоставления с конкретными ключами, задания и расписания включаются автоматически.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

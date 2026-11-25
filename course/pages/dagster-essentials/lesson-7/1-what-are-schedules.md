@@ -1,54 +1,54 @@
 ---
-title: 'Lesson 7: What are schedules?'
+title: 'Урок 7: Что такое расписания?'
 module: 'dagster_essentials'
 lesson: '7'
 ---
 
-# What are schedules?
+# Что такое расписания?
 
-Schedules are the most traditional way to keep your assets up-to-date. Schedules define a fixed time interval to run your pipeline, such as daily, hourly, or Monday at 9:00 AM.
+Расписания — традиционный способ поддерживать активы в актуальном состоянии. Расписание задаёт периодичность запуска пайплайна: например, ежедневно, каждый час или по понедельникам в 9:00.
 
-Returning to our cookie example, let’s say things at your bakery have really started to take off! To meet demand, all of your cookies must be freshly made before your customers pick them up every morning. Like most bakeries, this happens early in the morning, so you want to start baking at 4:00 AM every day.
+Вернёмся к примеру с печеньем. Допустим, твоя пекарня стала популярной! Чтобы удовлетворить спрос, всё печенье должно быть свежим к моменту прихода покупателей каждое утро. Как и в большинстве пекарен, это происходит рано утром, поэтому ты хочешь начинать выпечку ежедневно в 4:00.
 
-For example, the following image highlights the cookie assets that will be materialized, starting every day at 4:00 AM. This means that every day at 4:00 AM, a **tick** would be created, indicating that baking should begin. Ticks kick off a **run,** which is a single instance of baking or asset materialization.
+На следующей схеме выделены активы, которые будут материализоваться ежедневно начиная с 4:00. Каждый день в 4:00 будет создаваться **тик (tick)**, означающий, что пора начинать выпечку. Тики инициируют **запуск (run)** — отдельный экземпляр выполнения выпечки или материализации активов.
 
-![Cookie pipeline with a 4:00 AM schedule, running every day](/images/dagster-essentials/lesson-7/cookie-schedule.png)
+![Пайплайн приготовления печенья с ежедневным расписанием на 4:00](/images/dagster-essentials/lesson-7/cookie-schedule.png)
 
-In Dagster, you can define a schedule to express how often a pipeline should run. Dagster will use this schedule and run the pipeline by materializing the assets you specify.
+В Dagster можно определить расписание, задающее частоту выполнения пайплайна. Dagster будет использовать его для запуска пайплайна и материализации указанных активов.
 
 ---
 
-## Anatomy of a schedule
+## Устройство расписания
 
-Refreshing a series of assets with a schedule has multiple components. The two components that we’ll focus on in this lesson are:
+Обновление нескольких активов по расписанию состоит из ряда компонентов. В этом уроке мы рассмотрим два из них:
 
-- A job
-- A cron expression
+- Задание (job).
+- Выражение cron.
 
-Next, we’ll go through each part of the schedule and begin materializing most of the assets on a regular frequency. In particular, you’ll write a schedule that updates your assets every month. This is because the NYC Taxi & Limo Commission (TLC) releases trip data in batches of months.
+Далее разберём каждую часть расписания и начнём регулярно материализовывать большинство активов. В частности, напишем расписание, обновляющее активы каждый месяц, поскольку комиссия NYC Taxi & Limo Commission (TLC) публикует данные о поездках помесячными наборами.
 
-### Jobs
+### Задания (jobs)
 
-When working with large asset graphs, you likely don’t want to materialize all of your assets with every run.
+При работе с большими графами активов, скорее всего, не нужно материализовывать все активы при каждом запуске.
 
-Jobs are a Dagster utility to take a slice of your asset graph and focus specifically on running materializations of those assets. As you learn more about Dagster, you’ll also learn more about how to customize your materializations and runs with jobs. For example, having multiple jobs can enable running one set of assets in an isolated Kubernetes pod and another selection of assets on a single process.
+Задания Dagster позволяют выбрать часть графа активов и сосредоточиться на материализации именно этих активов. По мере изучения Dagster ты также узнаешь, как настраивать материализации и запуски с помощью заданий. Например, несколько заданий позволяют выполнять один набор активов в изолированном поде Kubernetes, а другой — в одном процессе.
 
-As you might have noticed while defining assets and resources, Dagster’s best practice is to store definitions in their own directory/Python sub-module.
+Как ты мог заметить при определении активов и ресурсов, рекомендуемая практика Dagster — хранить определения в собственном каталоге или подмодуле Python.
 
-To select only the assets you want to include, you’ll use the `AssetSelection` class. This class lets you look up and reference assets across your code location. In particular, there will be two methods that you’ll be using:
+Для выбора нужных активов воспользуемся классом `AssetSelection`. Этот класс позволяет искать активы и ссылаться на них в пределах расположения кода. В частности, будем использовать два метода:
 
-- `AssetSelection.all()` gives you a list of all asset definitions in the code location
-- `AssetSelection.assets(<string>, ...)` which gives you a list of assets that match the asset keys provided
+- `AssetSelection.all()` выбирает все определения активов в расположении кода.
+- `AssetSelection.assets(<string>, ...)` выбирает активы, соответствующие указанным ключам.
 
-For more info on asset selection, refer to the [asset selection syntax guide in the Dagster docs](https://docs.dagster.io/concepts/assets/asset-selection-syntax).
+Подробнее см. [руководство по синтаксису выбора активов в документации Dagster](https://docs.dagster.io/concepts/assets/asset-selection-syntax).
 
-1. Scaffold the `jobs.py` using `dg`:
+1. Создай каркас файла `jobs.py` с помощью `dg`:
 
    ```bash
    dg scaffold defs dagster.job jobs.py
    ```
 
-2. In `src/dagster_essentials/defs/jobs.py`, let’s first define our asset selection. Copy and paste the following snippet into the file:
+2. В файле `src/dagster_essentials/defs/jobs.py` сначала определим выборку активов. Скопируй следующий фрагмент:
 
    ```python
    # src/dagster_essentials/defs/jobs.py
@@ -57,9 +57,9 @@ For more info on asset selection, refer to the [asset selection syntax guide in 
    trips_by_week = dg.AssetSelection.assets("trips_by_week")
    ```
 
-   This uses the `AssetSelection` utility to reference a single asset, `trips_by_week`. We’ll isolate this specifically because we won’t want to run it with the rest of our pipeline and it should be run more frequently.
+   Здесь утилита `AssetSelection` используется для ссылки на один актив — `trips_by_week`. Мы выделим его отдельно, поскольку не хотим запускать его вместе с остальным пайплайном: он должен выполняться чаще.
 
-2. Next, create a job named `trip_update_job` that selects all assets using `AssetSelection.all()` and then omit `trips_by_week` by subtracting its selection:
+2. Далее создай задание `trip_update_job`, выбирающее все активы с помощью `AssetSelection.all()`, и исключи `trips_by_week`, вычтя соответствующую выборку:
 
    ```python
    trip_update_job = dg.define_asset_job(
@@ -68,9 +68,9 @@ For more info on asset selection, refer to the [asset selection syntax guide in 
    )
    ```
 
-4. Save your changes and continue.
+4. Сохрани изменения и продолжай.
 
-Your final code in `src/dagster_essentials/defs/jobs.py` should look like the following:
+Итоговый код в `src/dagster_essentials/defs/jobs.py` должен выглядеть следующим образом:
 
 ```python
 # src/dagster_essentials/defs/jobs.py
@@ -84,22 +84,24 @@ trip_update_job = dg.define_asset_job(
 )
 ```
 
-### Cron expressions
+### Выражения cron
 
-Cron syntax is the gold standard for how schedules and time intervals are defined. Cron started off as the original scheduling utility in computer programming somewhere around the 1970s.
+Синтаксис cron — общепринятый стандарт определения расписаний и временных интервалов. Утилита cron появилась примерно в 1970-х годах как один из первых инструментов планирования в программировании.
 
-Despite many schedulers and orchestrators replacing the cron program since then, its syntax for expressing schedules and intervals is still used today. You can use this syntax in Dagster to define schedules that materialize assets:
+Хотя с тех пор появилось множество планировщиков и оркестраторов, заменяющих программу cron, её синтаксис используется до сих пор. В Dagster с его помощью можно определять расписания материализации активов:
 
-![Image credit: Crontogo.com](/images/dagster-essentials/lesson-7/crontogo-cron-syntax.png)
+![Источник изображения: Crontogo.com](/images/dagster-essentials/lesson-7/crontogo-cron-syntax.png)
 
-Consider the following example:
+Рассмотрим пример:
 
 ```
 15 5 * * 1-5
 ```
 
-This expression translates to `Every Monday through Friday of every month at 5:15AM`.
+Это выражение означает «каждый будний день с понедельника по пятницу в 5:15 утра».
 
-To make creating cron schedules easier, you can use an online tool like [Crontab Guru](https://crontab.guru/). This tool allows you to create and describe cron expressions in a human-readable format and test the execution dates produced by the expression.
+Чтобы упростить создание расписаний cron, можно использовать онлайн-инструмент [Crontab Guru](https://crontab.guru/). Он позволяет создавать выражения cron, получать их понятное описание и проверять даты выполнения.
 
-**Note**: While this tool is useful for general cron expression testing, always remember to test your schedules in Dagster to ensure the results are as expected.
+**Примечание:** хотя этот инструмент полезен для общей проверки выражений cron, всегда проверяй расписания в самом Dagster, чтобы убедиться в ожидаемом результате.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 7: Overview'
+title: 'Урок 7: Обзор'
 module: 'dagster_essentials'
 lesson: '7'
 ---
 
-# Overview
+# Обзор
 
-So far, you’ve built a data pipeline and materialized it manually. However, the primary role of an orchestrator is to kick off runs without human intervention.
+До сих пор ты создавал пайплайн данных и материализовывал его вручную. Однако основная роль оркестратора — инициировать запуски без вмешательства человека.
 
-In this lesson, you’ll learn the simplest way to automate the regular materialization of assets: using schedules.
+В этом уроке ты узнаешь о самом простом способе автоматизации регулярной материализации активов — использовании расписаний.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
