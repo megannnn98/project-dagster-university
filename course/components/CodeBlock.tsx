@@ -57,6 +57,7 @@ export const CodeBlock = (props: Props) => {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-label="Копировать код"
             onClick={copyToClipboard}
           >
             <path
@@ -80,7 +81,7 @@ export const CodeBlock = (props: Props) => {
       >
         <div className="absolute top-2 right-1 mt-1 mr-2">
           <span className="select-none inline-flex items-center px-2 rounded text-xs font-medium leading-4 bg-gray-900 text-gray-400">
-            Copied
+            Скопировано
           </span>
         </div>
       </Transition>
@@ -91,7 +92,7 @@ export const CodeBlock = (props: Props) => {
               className="bg-white py-2 px-4 rounded-full transition hover:no-underline cursor-pointer border text-gable-green hover:text-gable-green-darker hover:border-gable-green"
               onClick={() => setHidden(false)}
             >
-              View answer
+              Посмотреть ответ (View answer)
             </button>
           </div>
         </div>
