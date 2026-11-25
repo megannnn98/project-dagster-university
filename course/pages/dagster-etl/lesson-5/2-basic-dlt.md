@@ -1,14 +1,14 @@
 ---
-title: "Lesson 5: Basic dlt"
+title: 'Урок 5: Основы dlt'
 module: 'dagster_etl'
 lesson: '5'
 ---
 
-# Basic dlt
+# Основы dlt
 
-When working with dlt, you should think in terms of two main components: your source and your destination. In our case, the source will be a simple list of dictionaries defined in our code, and the destination will be the same DuckDB database we’ve been using throughout this course.
+При работе с dlt следует мыслить двумя основными компонентами: источником и местом назначения. В нашем случае источником будет простой список словарей, определённый в коде, а назначением — та же база DuckDB, которую мы использовали на протяжении курса.
 
-This setup allows us to explore the basics of how a dlt pipeline works without adding complexity. Once you're comfortable with the mechanics, you can easily scale up to dynamic sources like APIs or cloud storage.
+Такая настройка позволяет изучить основы работы пайплайна dlt без дополнительной сложности. Освоив механизм, можно легко перейти к динамическим источникам, например API или облачному хранилищу.
 
 ```python
 import os
@@ -39,43 +39,45 @@ pipeline = dlt.pipeline(
 load_info = pipeline.run(simple_source())
 ```
 
-The code above does the following:
+Приведённый код:
 
-1. Creates a list containing two dicts called `data`.
-2. Uses the `dlt.source` decorator to define a source function, inside of this source is a `dlt.resource` decorated function that yields the list defined above.
-3. Creates a pipeline using `dlt.pipeline()` that sets the pipeline name, destination (DuckDB) and name of the dataset as it will appear in DuckDB.
-4. Executes the pipeline with `pipeline.run`.
+1. Создаёт список из двух словарей с именем `data`.
+2. Использует декоратор `dlt.source` для определения функции источника. Внутри неё находится функция с декоратором `dlt.resource`, которая выдаёт ранее определённый список.
+3. Создаёт пайплайн с помощью `dlt.pipeline()`, задавая его имя, место назначения (DuckDB) и имя набора данных в DuckDB.
+4. Выполняет пайплайн с помощью `pipeline.run`.
 
-We can execute this code by running the file:
+Этот код можно выполнить, запустив файл:
 
 ```bash
 python dlt_quick_start.py
 ```
 
-Since dlt is a pure Python framework, there are no additional services or heavy dependencies required, it runs natively in your Python environment.
+Поскольку dlt — фреймворк на Python, он работает непосредственно в твоём окружении Python, не требуя дополнительных сервисов или тяжёлых зависимостей.
 
-## dlt Benefits
+## Преимущества dlt
 
-What stands out most about the dlt approach is how much more ergonomic and streamlined it is compared to the code we previously wrote by hand. Recall that when working directly with DuckDB, we had to manually manage several tedious steps:
+Главное преимущество подхода dlt — удобство и простота по сравнению с кодом, который мы ранее писали вручную. Напомним, что при непосредственной работе с DuckDB приходилось самостоятельно выполнять несколько трудоёмких шагов:
 
-* Stage the data by writing it to a CSV file.
-* Define the target table and schema in DuckDB ahead of time.
-* Load the data using a COPY statement.
+* Подготавливать данные, записывая их в CSV.
+* Заранее определять целевую таблицу и схему в DuckDB.
+* Загружать данные оператором COPY.
 
-With dlt, all of these responsibilities are abstracted away. Once you define your destination, dlt takes care of the rest. Its configuration based approach to REST APIs minimizes the amount of code required, reducing it to just the configuration object.
+dlt абстрагирует все эти обязанности. После определения места назначения dlt берёт остальное на себя. Подход к REST API на основе конфигурации минимизирует объём необходимого кода, сводя его к объекту конфигурации.
 
-In addition to simplifying setup, dlt handles a number of complex API behaviors out of the box, including:
+Помимо упрощения настройки, dlt предоставляет готовую поддержку ряда сложных сценариев работы с API:
 
-* Pagination
-* Chained/multi-step API requests
-* Other common API reliability issues
+* Пагинация.
+* Цепочки и многоэтапные запросы API.
+* Другие распространённые проблемы надёжности API.
 
-dlt also takes care of:
+dlt также отвечает за:
 
-* Schema and table creation
-* Data type inference
-* Loading the data into your destination
+* Создание схем и таблиц.
+* Автоматическое определение типов данных.
+* Загрузку данных в целевую систему.
 
-This dramatically reduces boilerplate code and makes your ETL pipelines more maintainable, reliable, and adaptable.
+Это значительно сокращает количество шаблонного кода и делает ETL-пайплайны удобнее в сопровождении, надёжнее и гибче.
 
-Finally, while we’re building a custom API integration here, it's worth noting that dlt also provides out-of-the-box support for [many common verified sources](https://dlthub.com/docs/dlt-ecosystem/verified-sources/).
+Наконец, хотя здесь мы создаём собственную интеграцию API, dlt также предоставляет готовую поддержку [многих распространённых проверенных источников](https://dlthub.com/docs/dlt-ecosystem/verified-sources/).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

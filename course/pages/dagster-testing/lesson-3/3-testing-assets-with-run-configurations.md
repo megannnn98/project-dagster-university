@@ -1,14 +1,14 @@
 ---
-title: 'Lesson 3: Testing assets with run configurations'
+title: 'Урок 3: Тестирование ассетов с конфигурациями запуска'
 module: 'dagster_testing'
 lesson: '3'
 ---
 
-# Testing assets with run configurations 
+# Тестирование ассетов с конфигурациями запуска
 
-Some assets in Dagster pipelines may take in parameters defined outside of asset outputs. Typically, these are run configurations that are set at execution time. 
+Некоторые ассеты в пайплайнах Dagster могут принимать параметры, определённые вне выходных данных других ассетов. Обычно это конфигурации запуска, задаваемые во время выполнения.
 
-If we think about the `state_population_file` it can currently only parse a single file. Let's create a new asset called `state_population_file_config` with a run configuration. This asset will be able to process any file:
+Сейчас ассет `state_population_file` может разобрать только один файл. Создадим новый ассет `state_population_file_config` с конфигурацией запуска. Он сможет обрабатывать произвольный файл:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_3.py
@@ -23,7 +23,7 @@ def state_population_file_config(config: FilepathConfig) -> list[dict]:
         return [row for row in reader]
 ```
 
-Now let's write a new test for this asset. Since we can now provide any file. we will use the `test.csv` file in the `tests/data` directory. This file has the same schema as our `ny.csv` file but includes some test data.
+Теперь напишем новый тест этого ассета. Поскольку можно передать любой файл, воспользуемся файлом `test.csv` из каталога `tests/data`. Этот файл имеет ту же схему, что и `ny.csv`, но содержит тестовые данные.
 
 ```
 City,Population
@@ -32,7 +32,7 @@ Example 2,3000000
 Example 3,1000000
 ```
 
-To test an asset with a run configuration, you will set the specific run configuration required by the asset as an input parameter. Here is what the test will look like. Click **View answer** to view it.
+Для тестирования ассета с конфигурацией запуска нужно передать требуемую конфигурацию в качестве входного параметра. Вот как будет выглядеть тест. Нажми **View answer**, чтобы посмотреть ответ.
 
 ```python {% obfuscated="true" %}
 # tests/test_lesson_3.py
@@ -62,9 +62,9 @@ def test_state_population_file_config():
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-## pytest fixtures
+## Фикстуры pytest
 
-When testing with Dagster and `pytest` together, we can take advantage of some `pytest` functionality to make the testing code easier to reuse. If the `FilepathConfig` was used by multiple tests, we might benefit from creating a `pytest` fixture:
+При совместном использовании Dagster и `pytest` можно воспользоваться возможностями `pytest`, чтобы упростить повторное использование тестового кода. Если `FilepathConfig` используется несколькими тестами, полезно создать фикстуру `pytest`:
 
 ```python
 # tests/test_lesson_3.py
@@ -96,9 +96,9 @@ def test_state_population_file_config_fixture_1(config_file):
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-## Multiple pytest fixtures
+## Несколько фикстур pytest
 
-Fixtures make testing code much easier to read and helps consolidate aspects that may be used by multiple tests. Tests can also use multiple fixtures. If we wanted to include an additional fixture for the output of the function.
+Фикстуры упрощают чтение тестового кода и позволяют объединить части, используемые несколькими тестами. Тесты могут использовать несколько фикстур. Например, можно добавить дополнительную фикстуру для ожидаемого результата функции:
 
 ```python
 # tests/test_lesson_3.py
@@ -136,9 +136,9 @@ def test_state_population_file_config_fixture_2(config_file, file_example_output
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-## Passing run configuration to the materialization run
+## Передача конфигурации запуска при материализации
 
-In order to provide the run configuration to the materialization run, we will need to specify an additional parameter called `run_config` within the call to `materialize()`. This parameter takes a `RunConfig` object that maps the specific run configuration to the asset that requires it:
+Для передачи конфигурации запуска при материализации необходимо указать дополнительный параметр `run_config` в вызове `materialize()`. Этот параметр принимает объект `RunConfig`, сопоставляющий конкретную конфигурацию запуска с ассетом, которому она необходима:
 
 ```python
 # tests/test_lesson_3.py
@@ -163,7 +163,7 @@ def test_assets_config(config_file, file_example_output):
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-You can also pass in this configuration information with YAML in a format similar to the Dagster UI. Here is the same run configuration as YAML:
+Конфигурацию также можно передать с помощью YAML в формате, аналогичном интерфейсу Dagster. Вот та же конфигурация запуска в YAML:
 
 ```yaml
 ops:
@@ -172,7 +172,7 @@ ops:
       path: "tests/data/test.csv"
 ```
 
-Then we can update the `run_config` parameter to use that YAML file:
+Затем обновим параметр `run_config`, чтобы использовать этот YAML-файл:
 
 ```python {% obfuscated="true" %}
 # tests/test_lesson_3.py
@@ -199,4 +199,6 @@ def test_assets_config_yaml(file_example_output):
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-There is no difference between using `dg.RunConfig` or a YAML when running tests. You may find YAML easier to manage in more complex configurations for readability or to keep as examples for users who will run executions in the Dagster UI.
+При выполнении тестов результат использования `dg.RunConfig` или эквивалентной конфигурации из YAML одинаков. YAML может оказаться удобнее для чтения сложных конфигураций или хранения примеров для пользователей, которые будут запускать выполнение через интерфейс Dagster.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

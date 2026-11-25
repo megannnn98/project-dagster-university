@@ -1,14 +1,14 @@
 ---
-title: "Lesson 1: Testing philosophy"
+title: 'Урок 1: Философия тестирования'
 module: 'dagster_testing'
 lesson: '1'
 ---
 
-# Testing philosophy
+# Философия тестирования
 
-When building a comprehensive test suite for your Dagster project, it's helpful to think about a **defense-in-depth testing strategy** with multiple layers. Each layer serves a specific purpose and trades off speed for confidence.
+При создании комплексного набора тестов для проекта Dagster полезно применять **многоуровневую стратегию тестирования (defense in depth)**. Каждый уровень имеет своё назначение и предполагает компромисс между скоростью и уверенностью в корректности системы.
 
-## The testing pyramid
+## Пирамида тестирования
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -20,21 +20,21 @@ When building a comprehensive test suite for your Dagster project, it's helpful 
 └─────────────────────────────────────────────────────────┘
 ```
 
-The philosophy is simple: **test business logic extensively with fast, isolated tests**. Use real implementations sparingly for integration validation.
+Философия проста: **тщательно тестируй бизнес-логику с помощью быстрых изолированных тестов**. Реальные реализации используй выборочно для проверки интеграции.
 
-| Layer | Test Type | Location | Portion |
+| Уровень | Вид тестов | Расположение | Доля |
 | ----- | --------- | -------- | ------- |
-| 1 | Direct function tests | `tests/unit/test_*.py` | 55% |
-| 2 | Asset graph tests | `tests/unit/test_*.py` | 25% |
-| 3 | Integration & E2E tests | `tests/integration/test_*.py` | 20% |
+| 1 | Прямое тестирование функций | `tests/unit/test_*.py` | 55% |
+| 2 | Тестирование графа ассетов | `tests/unit/test_*.py` | 25% |
+| 3 | Интеграционные и сквозные тесты (E2E) | `tests/integration/test_*.py` | 20% |
 
-## Layer 1: Direct function tests (55%)
+## Уровень 1: прямое тестирование функций (55%)
 
-**Purpose**: Test asset business logic directly as Python functions.
+**Цель**: тестировать бизнес-логику ассетов напрямую, как обычные функции Python.
 
-**When to use**: For EVERY asset. This is the default testing approach.
+**Когда использовать**: для КАЖДОГО ассета. Это подход к тестированию по умолчанию.
 
-**Why**: Fast, reliable, easy to debug. No Dagster overhead.
+**Почему**: быстро, надёжно, удобно отлаживать. Без накладных расходов Dagster.
 
 ```python
 # Asset under test
@@ -54,25 +54,25 @@ def test_calculate_revenue():
     assert result == 45.0
 ```
 
-**What to test at this layer**:
-- Business logic and calculations
-- Data transformations
-- Edge cases (empty inputs, nulls, invalid data)
-- Error conditions
+**Что тестировать на этом уровне**:
+- Бизнес-логику и вычисления.
+- Преобразования данных.
+- Граничные случаи (пустые входные данные, null, некорректные данные).
+- Ошибочные ситуации.
 
-**Characteristics**:
-- Runs in milliseconds
-- No Dagster context needed
-- Provide mock inputs for upstream dependencies
-- Test the function, not the framework
+**Характеристики**:
+- Выполняется за миллисекунды.
+- Не требует контекста Dagster.
+- Использует тестовые входные данные для вышестоящих зависимостей.
+- Проверяет функцию, а не фреймворк.
 
-## Layer 2: Asset graph tests (25%)
+## Уровень 2: тестирование графа ассетов (25%)
 
-**Purpose**: Test asset materialization, graph execution, and resource integration with mocked resources.
+**Цель**: тестировать материализацию ассетов, выполнение графа и интеграцию ресурсов с подменёнными ресурсами.
 
-**When to use**: When testing asset interactions, configs, or resource dependencies.
+**Когда использовать**: при проверке взаимодействий ассетов, конфигураций или зависимостей от ресурсов.
 
-**Why**: Validates Dagster-specific behavior (context, configs, IO managers) without slow external calls.
+**Почему**: проверяет специфичное для Dagster поведение (контекст, конфигурации, IO-менеджеры) без медленных внешних вызовов.
 
 ```python
 def test_asset_graph_with_mocked_resource():
@@ -88,27 +88,27 @@ def test_asset_graph_with_mocked_resource():
     assert result.output_for_node("process_users") == [{"id": 1, "name": "ALICE"}]
 ```
 
-**What to test at this layer**:
-- Asset graph execution order
-- Resource injection
-- Run configs and asset configs
-- Multi-asset interactions
-- IO manager behavior
-- Partitioned asset logic
+**Что тестировать на этом уровне**:
+- Порядок выполнения графа ассетов.
+- Внедрение ресурсов.
+- Конфигурации запуска и ассетов.
+- Взаимодействие нескольких ассетов.
+- Поведение IO-менеджеров.
+- Логику партиционированных ассетов.
 
-**Characteristics**:
-- Uses `dg.materialize()` or `build_asset_context()`
-- Mock external resources (databases, APIs)
-- Validates Dagster integration points
-- Slower than Layer 1, but still fast (no I/O)
+**Характеристики**:
+- Использует `dg.materialize()` или `build_asset_context()`.
+- Подменяет внешние ресурсы (базы данных, API).
+- Проверяет точки интеграции Dagster.
+- Медленнее первого уровня, но всё ещё быстро (без внешнего ввода-вывода).
 
-## Layer 3: Integration & E2E tests (20%)
+## Уровень 3: интеграционные и сквозные тесты (20%)
 
-**Purpose**: Validate real resource connections, external system behavior, and end-to-end workflows.
+**Цель**: проверять реальные подключения ресурсов, поведение внешних систем и сквозные рабочие процессы.
 
-**When to use**: For critical paths where mock behavior might diverge from reality, and for smoke testing complete workflows.
+**Когда использовать**: для критических сценариев, где поведение mock-объектов может отличаться от реального, и для smoke-тестов полных рабочих процессов.
 
-**Why**: Catches issues that mocks miss (actual SQL syntax, API quirks, authentication, real system interactions).
+**Почему**: выявляет проблемы, которые не обнаруживаются при использовании mock-объектов (реальный синтаксис SQL, особенности API, аутентификация, взаимодействие реальных систем).
 
 ```python
 @pytest.mark.integration
@@ -127,37 +127,39 @@ def test_complete_etl_pipeline(docker_postgres):
         assert rows[0] > 0
 ```
 
-**What to test at this layer**:
-- Database connection and query execution
-- API authentication and response parsing
-- Critical business workflows
-- Data pipeline end-to-end correctness
-- Production configuration validation
+**Что тестировать на этом уровне**:
+- Подключение к базе данных и выполнение запросов.
+- Аутентификацию API и разбор ответов.
+- Критические бизнес-процессы.
+- Сквозную корректность пайплайнов данных.
+- Корректность конфигурации рабочего окружения.
 
-**Characteristics**:
-- Requires environment setup (credentials, staging systems, Docker)
-- Slower (seconds to minutes with real network calls)
-- May be skipped in CI without proper environment
-- Use pytest markers: `@pytest.mark.integration`
-- Use sparingly as final validation
+**Характеристики**:
+- Требует настройки окружения (учётных данных, тестовых систем, Docker).
+- Медленнее (от секунд до минут при реальных сетевых вызовах).
+- Может пропускаться в CI при отсутствии подходящего окружения.
+- Использует маркеры pytest: `@pytest.mark.integration`.
+- Применяется выборочно для окончательной проверки.
 
-## Test speed guidelines
+## Рекомендации по скорости тестов
 
-Each layer has expected speed characteristics. If your tests are slower than expected, it may indicate a problem.
+Для каждого уровня характерна определённая скорость. Если тесты выполняются медленнее ожидаемого, это может указывать на проблему.
 
-| Layer | Expected Speed | If Slower, Consider |
+| Уровень | Ожидаемая скорость | Если медленнее, рассмотрите |
 | ----- | -------------- | ------------------- |
-| 1 | < 100ms | Check for hidden I/O |
-| 2 | < 500ms | Mock expensive resources |
-| 3 | < 60s | Parallelize or reduce scope |
+| 1 | < 100 мс | Проверку скрытого ввода-вывода |
+| 2 | < 500 мс | Подмену ресурсоёмких зависимостей |
+| 3 | < 60 с | Параллельное выполнение или сокращение объёма теста |
 
-## When NOT to use higher layers
+## Когда НЕ следует использовать более высокие уровни
 
-| Don't Use | For | Instead Use |
+| Не используй | Для | Вместо этого используй |
 | --------- | --- | ----------- |
-| Layer 2 (materialize) | Testing pure business logic | Layer 1 (direct call) |
-| Layer 3 (integration) | Testing error handling | Layer 1/2 with mocked errors |
-| Layer 3 (integration) | Rapid iteration during development | Layer 1/2 |
-| Layer 3 (integration) | Testing edge cases | Layer 1 with mock inputs |
+| Уровень 2 (materialize) | Тестирования чистой бизнес-логики | Уровень 1 (прямой вызов) |
+| Уровень 3 (integration) | Тестирования обработки ошибок | Уровень 1/2 с имитацией ошибок |
+| Уровень 3 (integration) | Быстрых итераций разработки | Уровень 1/2 |
+| Уровень 3 (integration) | Тестирования граничных случаев | Уровень 1 с тестовыми входными данными |
 
-The default should always be Layer 1 (direct function test). Only move up layers when you need to test Dagster-specific behavior or real integrations.
+По умолчанию всегда начинай с уровня 1 (прямое тестирование функций). Переходи к более высоким уровням, только когда нужно проверить специфичное для Dagster поведение или реальные интеграции.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

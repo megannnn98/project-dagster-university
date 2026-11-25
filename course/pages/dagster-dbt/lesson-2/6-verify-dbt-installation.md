@@ -1,20 +1,22 @@
 ---
-title: "Lesson 2: Verify dbt installation"
+title: "Урок 2: Проверка установки dbt"
 module: 'dagster_dbt'
 lesson: '2'
 ---
 
-# Verify dbt installation
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Before continuing, let’s run the dbt project from the command line to confirm that everything is configured correctly.
+# Проверка установки dbt
 
-From the `dagster_university/dagster_and_dbt/src/dagster_and_dbt/analytics`  directory, run the following command:
+Перед продолжением запустим проект dbt из командной строки и убедимся, что всё настроено правильно.
+
+Из каталога `dagster_university/dagster_and_dbt/src/dagster_and_dbt/analytics` выполните:
 
 ```bash
 dbt build
 ```
 
-The two staging models should materialize successfully and pass their tests:
+Обе staging-модели должны успешно материализоваться и пройти тесты:
 
 ```bash
 19:12:41  Running with dbt=1.9.3

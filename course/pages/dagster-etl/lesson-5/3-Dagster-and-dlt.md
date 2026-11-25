@@ -1,22 +1,22 @@
 ---
-title: "Lesson 5: Dagster and dlt"
+title: 'Урок 5: Dagster и dlt'
 module: 'dagster_etl'
 lesson: '5'
 ---
 
-# Dagster and dlt
+# Dagster и dlt
 
-Dagster is built to integrate seamlessly with the best tools in the modern data ecosystem, using each tool where it makes the most sense within your pipeline. That’s why Dagster provides a native integration for dlt that combines the simplicity and flexibility of lightweight ETL frameworks with the robustness and orchestration capabilities of Dagster.
+Dagster создан для интеграции с лучшими инструментами современной экосистемы данных, чтобы каждый инструмент использовался там, где он наиболее уместен. Поэтому Dagster предоставляет встроенную интеграцию с dlt, объединяющую простоту и гибкость легковесных ETL-фреймворков с надёжностью и возможностями оркестрации Dagster.
 
-These lightweight services pair well with Dagster because they can leverage Dagster’s existing architecture. Many standalone ETL tools require setting up separate infrastructure, like databases and task queues, to handle state tracking and orchestration. With Dagster, those responsibilities are already built-in. Instead of duplicating that architecture, tools like dlt can integrate directly and let Dagster manage scheduling and focus on what it does best around orchestration and observability.
+Такие легковесные инструменты хорошо сочетаются с Dagster, поскольку могут использовать его существующую архитектуру. Многие самостоятельные ETL-инструменты требуют отдельной инфраструктуры — например, баз данных и очередей задач — для отслеживания состояния и оркестрации. В Dagster эти возможности уже встроены. Вместо дублирования архитектуры инструменты вроде dlt могут интегрироваться напрямую, позволяя Dagster управлять расписаниями и выполнять свои основные функции оркестрации и наблюдаемости.
 
-![Dagster and dlt](/images/dagster-etl/lesson-5/dlt-etl.png)
+![Dagster и dlt](/images/dagster-etl/lesson-5/dlt-etl.png)
 
-## dlt assets
+## Ассеты dlt
 
-To see this in action, we’ll take the dlt quickstart pipeline we just created and convert it into a set of Dagster assets.
+Чтобы увидеть это на практике, возьмём только что созданный простой пайплайн dlt и преобразуем его в набор ассетов Dagster.
 
-We’ll continue using the `simple_source` function decorated with `@dlt.source`. The only change is that we’ll now inject the `data` list directly within the function, so it behaves as a self-contained data source inside the pipeline:
+Мы продолжим использовать функцию `simple_source` с декоратором `@dlt.source`. Единственное изменение — теперь список `data` будет определён непосредственно внутри функции, чтобы она работала как самостоятельный источник данных внутри пайплайна:
 
 ```python
 @dlt.source
@@ -33,8 +33,7 @@ def simple_source():
     return load_dict
 ```
 
-Next, we’ll update our `resources.py` file to include the `DagsterDltResource`. This resource allows Dagster to execute dlt pipelines directly, bridging the gap between Dagster’s orchestration layer and dlt’s data loading capabilities. With this integration in place, we no longer need to define a separate `DuckDBResource` in Dagster, dlt will now be fully responsible for loading data into the database:
-
+Далее обновим файл `resources.py`, добавив `DagsterDltResource`. Этот ресурс позволяет Dagster напрямую выполнять пайплайны dlt, связывая слой оркестрации Dagster с возможностями загрузки данных dlt. При такой интеграции нам больше не нужно определять отдельный ресурс `DuckDBResource` в Dagster: теперь dlt полностью отвечает за загрузку данных в базу:
 
 ```python
 # src/dagster_and_etl/definitions.py
@@ -51,7 +50,7 @@ def resources():
     )
 ```
 
-Back in `assets.py`, we can define our dlt assets. This will resemble the dlt.pipeline code we used earlier, but much of the logic will now be embedded in the `@dlt_assets` decorator. The function itself simply yields the result of running the `dlt pipeline`:
+Вернёмся к файлу `assets.py`, где определим ассеты dlt. Код будет похож на использованный ранее dlt.pipeline, но большая часть логики теперь находится в декораторе `@dlt_assets`. Сама функция просто выдаёт результат выполнения пайплайна dlt:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -68,6 +67,8 @@ def dlt_assets(context: dg.AssetExecutionContext, dlt: DagsterDltResource):
     yield from dlt.run(context=context)
 ```
 
-Just like that, the same dlt pipeline we previously built can now be executed and tracked by Dagster! This integration doesn’t just improve maintainability, it also cleans up our code and reduces boilerplate, making our ETL pipelines more modular and production-ready.
+Теперь тот же пайплайн dlt, который мы построили ранее, можно выполнять и отслеживать средствами Dagster! Интеграция не только улучшает сопровождаемость, но и упрощает код, сокращая количество шаблонных конструкций и делая ETL-пайплайны более модульными и пригодными для рабочего окружения.
 
-This works well for our simple example, but the real power comes next, we’ll refactor our earlier CSV and API pipelines to use dlt for extraction and loading, while continuing to orchestrate and monitor them through Dagster and represent each dlt resource as an asset.
+В простом примере это работает хорошо, но дальше возможности станут заметнее: мы отрефакторим ранее созданные пайплайны CSV и API, используя dlt для извлечения и загрузки данных, а Dagster — для оркестрации и мониторинга, представляя каждый ресурс dlt как ассет.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

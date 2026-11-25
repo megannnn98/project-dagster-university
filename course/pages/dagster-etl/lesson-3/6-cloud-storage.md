@@ -1,32 +1,31 @@
 ---
-title: "Lesson 3: Cloud storage"
+title: 'Урок 3: Облачное хранилище'
 module: 'dagster_etl'
 lesson: '3'
 ---
 
-# Cloud storage
+# Облачное хранилище
 
-What if you want to change the source of your ETL pipeline from local files to cloud storage? In most real-world scenarios, data is not stored locally but in a managed storage layer like Amazon S3. Let’s walk through how to modify your Dagster assets to support S3 as the source for the ingestion pipeline.
+Что, если нужно изменить источник ETL-пайплайна с локальных файлов на облачное хранилище? В большинстве реальных сценариев данные хранятся не локально, а в управляемом хранилище вроде Amazon S3. Рассмотрим, как изменить ассеты Dagster для поддержки S3 в качестве источника пайплайна загрузки.
 
-**Note:** We won’t run this code since we’re not setting up an actual S3 bucket for testing. Instead, we’ll focus on the structure and design changes required to support this integration.
+**Примечание:** мы не будем запускать этот код, поскольку не настраиваем настоящий бакет S3 для тестирования. Вместо этого сосредоточимся на изменениях структуры и архитектуры, необходимых для интеграции.
 
-## Redefining the run configuration
+## Переопределение конфигурации запуска
 
-If you’re new to AWS Simple Storage Service (S3):
-S3 is a cloud-based object storage service that lets you upload and retrieve data using "buckets" and "paths" (which are really just key prefixes).
+Если ты впервые сталкиваешься с AWS Simple Storage Service (S3): S3 — облачный сервис объектного хранения, позволяющий загружать и получать данные с помощью бакетов и путей (которые в действительности являются префиксами ключей).
 
 ```bash
 s3://<bucket-name>/<optional-folder-path>/<object-name>
 ```
 
-To support dynamic S3-based ingestion, we'll define a new config schema called IngestionFileS3Config. This configuration will have two fields:
+Для динамической загрузки из S3 определим новую схему конфигурации IngestionFileS3Config. Она будет содержать два поля:
 
-| Property | Type | Description |
-| --- | --- |  --- |
-| `bucket` | string | The name of the S3 bucket |
-| `path` | string | The path within the S3 bucket of the object |
+| Свойство | Тип | Описание |
+| --- | --- | --- |
+| `bucket` | string | Имя бакета S3 |
+| `path` | string | Путь к объекту внутри бакета S3 |
 
-What would this run configuration `IngestionFileS3Config` looke like:
+Как будет выглядеть конфигурация запуска `IngestionFileS3Config`?
 
 ```python {% obfuscated="true" %}
 class IngestionFileS3Config(dg.Config):
@@ -34,19 +33,19 @@ class IngestionFileS3Config(dg.Config):
     path: str
 ```
 
-This could be modeled as a single string (e.g. full S3 URI), but splitting bucket and path is often more practical, especially if your pipelines reuse the same bucket across different datasets.
+Её можно представить одной строкой (например, полным S3 URI), но разделять бакет и путь часто практичнее, особенно если пайплайны повторно используют один бакет для разных наборов данных.
 
-## S3 assets
+## Ассеты S3
 
-Next, let’s update the import_file and duckdb_table assets to support S3-based ingestion. One key thing to note about DuckDB is that it can load data directly from S3 using a COPY statement, like so:
+Обновим ассеты import_file и duckdb_table для поддержки загрузки из S3. Важно знать, что DuckDB может загружать данные непосредственно из S3 с помощью оператора COPY:
 
 ```sql
 COPY my_table FROM 's3://my-bucket/my-file.csv' (FORMAT CSV, HEADER);
 ```
 
-However, this approach only works if the S3 bucket is public. Most real-world buckets are private, but for the purpose of this example, we’ll assume the S3 bucket is publicly accessible and does not require authentication.
+Без настройки учётных данных этот подход работает, только если бакет S3 публичный. Большинство реальных бакетов приватные, но в этом примере предположим, что бакет общедоступен и не требует аутентификации.
 
-With this background we can update our asset code:
+С учётом этого обновим код ассетов:
 
 ```python {% obfuscated="true" %}
 @dg.asset(
@@ -86,4 +85,6 @@ def duckdb_table_s3(
         )
 ```
 
-Not much needs to change when moving from local files to cloud storage. The main takeaway is that loading static files from S3 closely mirrors loading them from the local filesystem. All the patterns and tools we've already applied (partitions, schedules, sensors) still apply. Whether the file is local or in S3 bucket, the logic for defining and orchestrating data assets remains largely the same.
+При переходе от локальных файлов к облачному хранилищу требуется не так много изменений. Главное: загрузка статических файлов из S3 во многом аналогична загрузке из локальной файловой системы. Все уже рассмотренные шаблоны и инструменты (партиции, расписания, сенсоры) остаются применимыми. Независимо от расположения файла логика определения и оркестрации ассетов данных по большей части не меняется.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

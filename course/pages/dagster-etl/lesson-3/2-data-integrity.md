@@ -1,22 +1,22 @@
 ---
-title: "Lesson 3: Data integrity"
+title: 'Урок 3: Целостность данных'
 module: 'dagster_etl'
 lesson: '3'
 ---
 
-# Data integrity
+# Целостность данных
 
-Our ETL pipeline can already execute successfully. We provide a file, and it gets loaded into DuckDB. While it’s encouraging to see data load without errors, there's actually something worse than a pipeline that fails to run, a pipeline that loads bad data.
+Наш ETL-пайплайн уже успешно выполняется. Мы передаём файл, и он загружается в DuckDB. Отсутствие ошибок при загрузке радует, но есть кое-что хуже неработающего пайплайна — пайплайн, загружающий некорректные данные.
 
-Poor-quality data can cause more damage in an ETL workflow than a job that simply fails. Once bad data is ingested, it can have cascading effects, affecting all downstream consumers and applications. When fixing a bug around bad data, we not only have to fix the original issue, we’re also tasked with cleaning up every process that depends on it.
+Некачественные данные могут причинить больше вреда рабочему процессу ETL, чем просто завершившееся ошибкой задание. После загрузки некорректных данных возможен каскадный эффект, затрагивающий всех нижестоящих потребителей и приложения. При исправлении ошибки нужно не только устранить исходную причину, но и восстановить каждый зависящий от неё процесс.
 
-In many cases, the data we ingest comes from systems outside our control. We often treat these sources as their own source of truth and assume they enforce some form of validation rules. But when we know there are specific characteristics that could disrupt our pipelines or outputs, it becomes critical to add validation checks as part of our ingestion process.
+Во многих случаях загружаемые данные поступают из систем, которые мы не контролируем. Часто мы считаем такие системы самостоятельными источниками истины и предполагаем, что в них действуют правила валидации. Однако если известны конкретные свойства данных, способные нарушить работу пайплайна или его результатов, критически важно включить проверки в процесс загрузки.
 
-## Asset checks
+## Проверки ассетов (Asset checks)
 
-In Dagster, one way to handle data validation is with asset checks. Asset checks let you define logic for your code to ensure they meet predefined quality standards. For example, we can attach an asset check to `import_file` to verify that the file structure and contents meet our expectations.
+В Dagster одним из способов валидации данных являются проверки ассетов. Они позволяют определить логику проверки соответствия заданным стандартам качества. Например, можно добавить проверку к ассету `import_file`, чтобы убедиться, что структура и содержимое файла соответствуют ожиданиям.
 
-Let’s start by writing an asset check to ensure the "share_price" column in the file contains only valid, non-zero values. Before we think about the asset check, what might that logic look like if we were just reading the file:
+Начнём с написания проверки, гарантирующей, что столбец "share_price" содержит только допустимые ненулевые значения. Прежде чем перейти к проверке ассета, посмотрим, как могла бы выглядеть логика обычного чтения файла:
 
 ```python {% obfuscated="true" %}
 import csv
@@ -30,9 +30,9 @@ with open("my_file.csv", mode="r", encoding="utf-8") as file:
             raise ValueError("Share price is invalid")
 ```
 
-We would want to read the file, iterate through the rows and raise an exception if we find a row that does not meet our criteria.
+Нужно прочитать файл, перебрать строки и выбросить исключение, если обнаружится строка, не удовлетворяющая критериям.
 
-Here is that similar logic within an asset check:
+Вот аналогичная логика внутри проверки ассета:
 
 ```python {% obfuscated="true" %}
 # src/dagster_and_etl/defs/assets.py
@@ -63,15 +63,17 @@ def not_empty(
     )
 ```
 
-The code above does the following:
+Приведённый код:
 
-1. Uses the `@dg.asset_check` decorator to define an asset check. It references the `import_file` asset and sets `blocking=True`, which prevents downstream assets from executing if the check fails.
-2. Reads the file path returned by the `import_file` asset and parses it as a CSV.
-3. Iterates through each row to check whether the "share_price" value is less than or equal to zero.
-4. If a row fails the validation check, the `AssetCheckResult` will return as failed, otherwise this check will pass.
+1. Использует декоратор `@dg.asset_check` для определения проверки ассета. Он ссылается на ассет `import_file` и задаёт `blocking=True`, что предотвращает выполнение нижестоящих ассетов при провале проверки.
+2. Получает путь к файлу, возвращённый ассетом `import_file`, и разбирает его как CSV.
+3. Перебирает строки и проверяет, меньше или равно нулю значение "share_price".
+4. Если строка не проходит валидацию, `AssetCheckResult` сообщает о провале; иначе проверка проходит успешно.
 
-When you launch `dg dev` to view the assets in our pipeline, you won’t see an additional node in the graph since the asset check is visually tied to the import_file asset.
+При запуске `dg dev` для просмотра ассетов пайплайна дополнительный узел на графе не появится, поскольку проверка визуально привязана к ассету import_file.
 
-Now, when you re-execute the pipeline, a green dot will appear on the `import_file` node if the asset check passes, indicating both successful materialization and validation.
+Теперь при повторном выполнении пайплайна на узле `import_file` появится зелёная точка, если проверка пройдена. Она обозначает успешную материализацию и валидацию.
 
-If the check fails, the dot will appear red, and the downstream asset will not run. This helps catch data issues early in the process.
+Если проверка провалится, точка станет красной, а нижестоящий ассет не выполнится. Это помогает обнаруживать проблемы с данными на ранних этапах.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

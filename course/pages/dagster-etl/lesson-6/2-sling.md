@@ -1,13 +1,15 @@
 ---
-title: "Lesson 6: Sling"
+title: 'Урок 6: Sling'
 module: 'dagster_etl'
 lesson: '6'
 ---
 
 # Sling
 
-In the previous lesson we used dlt. dlt is great for flexibility but since we know we are doing replication between two systems, we can try something else (though dlt can also do replication).
+В предыдущем уроке мы использовали dlt. Он обеспечивает большую гибкость, но поскольку теперь нам нужна репликация между двумя системами, попробуем другой инструмент (хотя dlt тоже поддерживает репликацию).
 
-For this lesson we’ll introduce another open-source ETL framework: [Sling](https://docs.slingdata.io/). Sling is a modern tool designed to simplify both real-time and batch data replication. It helps teams move data from databases like Postgres and MySQL into cloud data warehouses such as Snowflake or Redshift with minimal setup. Exposing all configuration through a simple YAML interface. 
+В этом уроке познакомимся с ещё одним ETL-фреймворком с открытым исходным кодом — [Sling](https://docs.slingdata.io/). Sling — современный инструмент, предназначенный для упрощения репликации данных как в реальном времени, так и пакетами. Он помогает переносить данные из баз вроде Postgres и MySQL в облачные хранилища данных, такие как Snowflake или Redshift, с минимальной настройкой. Вся конфигурация задаётся через простой интерфейс YAML.
 
-Sling differs from dlt in that it is declarative by design. While dlt offers greater flexibility and can handle data ingestion from a wide variety of sources (such as our custom NASA API), Sling is purpose-built for database replication and excels at managing the complexities of moving data and schema evolution.
+Sling отличается от dlt тем, что изначально является декларативным инструментом. dlt предоставляет большую гибкость и способен загружать данные из разнообразных источников (например, нашего API NASA). Sling же специально разработан для репликации баз данных и хорошо справляется со сложностями переноса данных и эволюции схем.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

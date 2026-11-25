@@ -1,22 +1,22 @@
 ---
-title: 'Lesson 6: Definitions'
+title: 'Урок 6: Definitions'
 module: 'dagster_testing'
 lesson: '6'
 ---
 
 # Definitions
 
-Within your Dagster project the most important object is the `Definitions`. This defines all the objects that will deployed into your code location. If you are using `dg` you may already be in the habit of checking to ensure your `Definitions` is valid by running `dg check defs`.
+Один из важнейших объектов проекта Dagster — `Definitions`. Он определяет все объекты, которые будут развёрнуты в твоём расположении кода. Если ты используешь `dg`, возможно, уже привык проверять корректность `Definitions` командой `dg check defs`.
 
-This is a great habit and you can build out workflows (such as precommit hooks) to always run that check. But it is also good to get in the habit of writing a specific test for this to live alongside your other Dagster tests.
+Это хорошая привычка, и можно построить рабочие процессы (например, pre-commit-хуки), которые всегда выполняют эту проверку. Однако полезно также написать отдельный тест, который будет находиться рядом с остальными тестами Dagster.
 
-Luckily this is a very easy test to write.
+К счастью, такой тест очень легко написать.
 
-## Loading the Definition object
+## Загрузка объекта Definitions
 
-The `@dg.definitions` decorator is lazily evaluated. This means it is not loaded until it is needed. In order to load the definition we can use `dg.components.load_defs`.
+Декоратор `@dg.definitions` использует отложенное вычисление. Это означает, что определения загружаются только тогда, когда они нужны. Для загрузки можно использовать `dg.components.load_defs`.
 
-We can now write a test to assert that the definition can load properly.
+Теперь напишем тест, проверяющий, что определения успешно загружаются.
 
 ```python
 # tests/test_lesson_6.py
@@ -32,9 +32,9 @@ def test_defs():
 tests/test_lesson_6.py .                                                          [100%]
 ```
 
-As simple as it may seem, this test will find many issues associated with your Dagster project. This ensures that all the Dagster objects can load successfully and that certain dependencies between objects are satisfied (such a given resource being present if it is required for an asset). So if there is an issue loading any of your assets, asset checks, jobs, resources, schedules and sensors into the definition this test will trigger.
+Несмотря на простоту, этот тест обнаружит множество проблем проекта Dagster. Он проверяет, что все объекты могут успешно загружаться и что определённые зависимости между объектами удовлетворены (например, необходимый ассету ресурс присутствует). Если возникнет проблема при загрузке ассетов, проверок ассетов, заданий, ресурсов, расписаний или сенсоров в Definitions, тест её выявит.
 
-We can also pull out loading the definition into a fixture if we want to run multiple tests against the definition.
+Загрузку Definitions можно вынести в фикстуру, если нужно выполнять несколько тестов над определениями.
 
 ```python
 # tests/test_lesson_6.py
@@ -48,13 +48,13 @@ def test_defs(defs):
 
 {% callout %}
 
-💡 **Unit tests:** While this test will catch many issues, we still need individual tests to ensure that the assets and other Dagster objects __execute__ as expected. The definition test only ensures proper __loading__ of the objects.
+💡 **Модульные тесты:** хотя этот тест обнаруживает множество проблем, всё равно нужны отдельные тесты, проверяющие, что ассеты и другие объекты Dagster __выполняются__ ожидаемым образом. Тест Definitions проверяет только корректность __загрузки__ объектов.
 
 {% /callout %}
 
-## Definition objects
+## Объекты Definitions
 
-The `Definitions` object includes additional methods for accessing various objects contained within. For example rather than importing assets directly, you can access them from the definitions object. For example we can access the `squared` asset and test it from the definitions.
+Объект `Definitions` содержит дополнительные методы доступа к различным содержащимся в нём объектам. Например, вместо прямого импорта ассетов можно получить их из Definitions. Получим ассет `squared` и протестируем его через Definitions.
 
 ```python
 # tests/test_lesson_6.py
@@ -69,7 +69,7 @@ def test_square_asset(defs):
 tests/test_lesson_6.py .                                                          [100%]
 ```
 
-Be aware that access Dagster objects is different when they have named keys. For example the asset `squared_key`.
+Обрати внимание: доступ к объектам Dagster отличается, когда у них явно задан ключ. Например, рассмотрим ассет `squared_key`.
 
 ```python
 # src/dagster_testing/defs/assets/lesson_6.py
@@ -78,7 +78,7 @@ def squared_key(number: int):
     return number * number
 ```
 
-In order to access this asset you must set the key with `dg.AssetKey`.
+Для доступа к нему нужно задать ключ с помощью `dg.AssetKey`.
 
 ```python
 # tests/test_lesson_6.py
@@ -87,11 +87,11 @@ def test_square_key_asset(defs):
     assert _asset(5) == 25
 ```
 
-## Components
+## Компоненты
 
-Accessing Dagster objects from the `definitions` object is especially useful when working with components.
+Доступ к объектам Dagster через объект `definitions` особенно полезен при работе с компонентами.
 
-Since components typically do not expose their underlying Dagster objects as directly importable code, you should load the `definitions` object and access the relevant objects from it when writing tests or performing operations involving component-generated assets or jobs.
+Поскольку компоненты обычно не предоставляют содержащиеся в них объекты Dagster в виде напрямую импортируемого кода, при написании тестов или выполнении операций с ассетами и заданиями, сгенерированными компонентами, следует загружать объект `definitions` и получать нужные объекты из него.
 
 ```python
 # tests/test_lesson_6.py
@@ -110,3 +110,5 @@ def test_materialize_partition(defs, duckdb_resource):
     )
     assert result.success
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

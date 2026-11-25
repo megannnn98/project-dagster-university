@@ -1,27 +1,29 @@
 ---
-title: "Lesson 1: What's dbt?"
+title: "Урок 1: Что такое dbt?"
 module: 'dbt_dagster'
 lesson: '1'
 ---
 
-# What's dbt?
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-In the world of ETL/ELT, dbt - that’s right, all lowercase - is the ‘T’ in the process of Extracting, Loading, and **Transforming** data. Using familiar languages like SQL and Python, dbt is open-source software that allows users to write and run data transformations against the data loaded into their data warehouses.
+# Что такое dbt?
 
-Before we go any further, let’s take a look at how the folks at dbt describe their product:
+В мире ETL/ELT dbt — именно так, строчными буквами — отвечает за «T»: **преобразование** данных после извлечения и загрузки. Это программное обеспечение с открытым исходным кодом позволяет описывать и выполнять преобразования данных в хранилище на знакомых языках SQL и Python.
 
-> dbt is a transformation workflow that helps you get more work done while producing higher quality results. You can use dbt to modularize and centralize your analytics code, while also providing your data team with guardrails typically found in software engineering workflows. Collaborate on data models, version them, and test and document your queries before safely deploying them to production, with monitoring and visibility.
+Вот как авторы dbt описывают свой продукт:
+
+> dbt — инструмент организации преобразований, помогающий выполнять больше работы и получать более качественные результаты. Он позволяет сделать аналитический код модульным и централизованным, применяя в команде данных практики контроля, привычные разработчикам ПО. Вы можете совместно разрабатывать и версионировать модели данных, тестировать и документировать запросы перед безопасным развёртыванием в production, сохраняя возможности мониторинга и наблюдения за выполнением.
 >
-> dbt compiles and runs your analytics code against your data platform, enabling you and your team to collaborate on a single source of truth for metrics, insights, and business definitions. This single source of truth, combined with the ability to define tests for your data, reduces errors when logic changes, and alerts you when issues arise. ([source](https://docs.getdbt.com/docs/introduction))
+> dbt компилирует и выполняет аналитический код на вашей платформе данных. Команда получает единый источник определений метрик, аналитических показателей и бизнес-понятий. Вместе с тестами данных это помогает уменьшить число ошибок при изменении логики и обнаруживать возникающие проблемы. ([Источник](https://docs.getdbt.com/docs/introduction))
 
 ---
 
-## Why use dbt?
+## Зачем использовать dbt?
 
-dbt isn’t popular only for its easy, straightforward adoption, but also because it embraces software engineering best practices. Data analysts can use skills they already have - like SQL expertise - and simultaneously take advantage of:
+Популярность dbt объясняется не только простотой освоения, но и использованием лучших практик разработки ПО. Аналитики могут применять знакомый SQL и одновременно получать следующие преимущества:
 
-- **Keeping things DRY** (**Don’t Repeat Yourself).** dbt models, which are business definitions represented in SQL `SELECT` statements, can be referenced in other models. Focusing on modularity allows you to reduce bugs, standardize analytics logic, and get a running start on new analyses.
-- **Automatically managing dependencies and generating documentation.** Dependencies between models are not only easy to declare, they’re automatically managed by dbt. Additionally, dbt also generates a DAG (directed acyclic graph), which shows how models in a dbt project relate to each other.
-- **Preventing negative impact on end-users.** Support for multiple environments ensures that development can occur without impacting users in production.
+- **DRY — «не повторяйся».** На модели dbt, представляющие бизнес-логику через SQL-запросы `SELECT`, можно ссылаться из других моделей. Модульность уменьшает число ошибок, унифицирует аналитическую логику и ускоряет создание новых исследований.
+- **Автоматическое управление зависимостями и создание документации.** Зависимости легко объявить, а dbt управляет ими автоматически и строит DAG — ориентированный ациклический граф связей моделей проекта.
+- **Изоляция разработки от пользователей production.** Поддержка нескольких окружений позволяет разрабатывать изменения, не затрагивая пользователей рабочей системы.
 
-Dagster’s approach to building data platforms maps directly to these same best practices, making dbt and Dagster a natural, powerful pairing. In the next section, we’ll dig into this a bit more.
+Подход Dagster к построению платформ данных опирается на те же практики, поэтому Dagster и dbt хорошо сочетаются. Подробнее об этом — в следующем разделе.

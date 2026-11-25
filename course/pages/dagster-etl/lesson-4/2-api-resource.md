@@ -1,42 +1,42 @@
 ---
-title: "Lesson 4: API resource"
+title: 'Урок 4: Ресурс API'
 module: 'dagster_etl'
 lesson: '4'
 ---
 
-# API Resource
+# Ресурс API
 
-When working with external APIs in Dagster, it's often best to start by creating a resource. A resource provides a clean abstraction for external services, making it easy to reuse API logic across multiple assets. It also simplifies testing and long-term maintenance by isolating API-specific logic in a single, well-defined interface.
+При работе с внешними API в Dagster часто лучше начать с создания ресурса. Ресурс предоставляет удобную абстракцию внешних сервисов, упрощая повторное использование логики API в нескольких ассетах. Кроме того, он упрощает тестирование и долгосрочное сопровождение, изолируя специфичную для API логику в одном чётко определённом интерфейсе.
 
-Before we write any code, let’s review the characteristics of the NeoWs (Near Earth Object Web Service) API. The base URL for the endpoint is:
+Прежде чем писать код, рассмотрим характеристики API NeoWs (Near Earth Object Web Service). Базовый URL конечной точки:
 
 ```bash
 https://api.nasa.gov/neo/rest/v1/feed
 ```
 
-This endpoint supports three query parameters:
+Эта конечная точка поддерживает три параметра запроса:
 
-| Parameter	| Type | Default | Description|
+| Параметр | Тип | Значение по умолчанию | Описание |
 | --- | --- | --- | --- |
-| start_date | YYYY-MM-DD | none | Starting date for asteroid search |
-| end_date | YYYY-MM-DD | 7 days after start_date | Ending date for asteroid search |
-| api_key | string | DEMO_KEY | api.nasa.gov key for expanded usage |
+| start_date | YYYY-MM-DD | отсутствует | Начальная дата поиска астероидов |
+| end_date | YYYY-MM-DD | 7 дней после start_date | Конечная дата поиска астероидов |
+| api_key | string | DEMO_KEY | Ключ api.nasa.gov для расширенных лимитов использования |
 
-Given this structure, a full API request might look like:
+С учётом этой структуры полный запрос API может выглядеть так:
 
 ```bash
 https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY
 ```
 
-The API will return a large JSON response that includes various metadata fields. To keep things simple, we’ll focus only on the part we care about, the `near_earth_objects` field. This field contains the actual asteroid data, organized by date, and is all we need for our ETL pipeline.
+API вернёт большой JSON-ответ, содержащий различные поля метаданных. Для простоты сосредоточимся только на интересующей нас части — поле `near_earth_objects`. Оно содержит непосредственно данные об астероидах, сгруппированные по датам, и этого достаточно для нашего ETL-пайплайна.
 
-## Coding our resource
+## Реализация ресурса
 
-Now that we know the API endpoint and the parameters required to make a call, let’s write our resource. There are many ways to structure this, but we’ll keep the implementation lean.
+Теперь, когда мы знаем конечную точку API и параметры вызова, напишем ресурс. Реализовать его можно по-разному, но мы остановимся на простой реализации.
 
-We’ll create a resource called `NASAResource`, which is initialized from our API key. This resource will expose a single method: `get_near_earth_asteroids` with two parameters (start_date, end_date), which returns the parsed JSON response from the API.
+Создадим ресурс `NASAResource`, инициализируемый нашим ключом API. Он будет предоставлять один метод: `get_near_earth_asteroids` с двумя параметрами (start_date, end_date), возвращающий разобранный JSON-ответ API.
 
-Here’s what that might look like added to the `resources.py`:
+Вот как это может выглядеть в файле `resources.py`:
 
 ```python {% obfuscated="true" %}
 # src/dagster_and_etl/defs/resources.py
@@ -59,7 +59,7 @@ class NASAResource(dg.ConfigurableResource):
         return resp.json()["near_earth_objects"][start_date]
 ```
 
-Now that we have our resource defined, we can include it in the `Definitions` alongside the `DuckDBResource` resource in the `resources.py`:
+Определив ресурс, можно включить его в `Definitions` вместе с ресурсом `DuckDBResource` в файле `resources.py`:
 
 ```python
 # src/dagster_and_etl/defs/resources.py
@@ -77,10 +77,12 @@ def resources():
     )
 ```
 
-**Note**: To run this pipeline you need to set the `NASA_API_KEY` environment variable. The simplest way is to create a `.env` file in the root of the `dagster_and_etl` project directory with the following content:
+**Примечание:** для запуска пайплайна нужно задать переменную окружения `NASA_API_KEY`. Самый простой способ — создать файл `.env` в корне каталога проекта `dagster_and_etl` со следующим содержимым:
 
 ```bash
 NASA_API_KEY=your_api_key_here
 ```
 
-Dagster automatically loads `.env` files when you start the development server. If the server is already running, restart it after creating the file.
+Dagster автоматически загружает файлы `.env` при запуске сервера разработки. Если сервер уже работает, перезапусти его после создания файла.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

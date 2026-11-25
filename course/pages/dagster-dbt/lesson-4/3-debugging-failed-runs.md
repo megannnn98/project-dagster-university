@@ -1,16 +1,18 @@
 ---
-title: 'Lesson 4: Debugging failed runs'
+title: "Урок 4: Отладка неудачных запусков"
 module: 'dagster_dbt'
 lesson: '4'
 ---
 
-# Debugging failed runs
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Data engineers spend more time debugging failures than writing new pipelines, so it’s important to know how to debug a failing dbt execution step.
+# Отладка неудачных запусков
 
-To demonstrate, we’re going to intentionally make a bug in our dbt model code, see it fail in Dagster, troubleshoot the failure, and then re-run the pipeline. Here, you’ll learn how to debug your dbt assets similarly to how you would troubleshoot dbt on its own.
+Инженерам данных часто приходится разбирать сбои, поэтому важно уметь отлаживать шаг выполнения dbt.
 
-1. Open the `stg_zones.sql` file and add a new column called `zone_population` to the `select` statement. Your code should look like the following:
+Намеренно внесём ошибку в модель dbt, увидим сбой в Dagster, найдём его причину и повторно запустим пайплайн. Отладка ассетов dbt во многом похожа на отладку dbt при самостоятельном использовании.
+
+1. Откройте `stg_zones.sql` и добавьте столбец `zone_population` в выражение `select`:
 
    ```sql
    with raw_zones as (
@@ -26,25 +28,22 @@ To demonstrate, we’re going to intentionally make a bug in our dbt model code,
    from raw_zones
    ```
 
-2. Navigate to the Dagster UI and reload the code location by either clicking the **Reload Definitions** button or using **Option+Shift+R**.
+2. В интерфейсе Dagster перезагрузите расположение кода кнопкой **Reload Definitions** или сочетанием **Option+Shift+R**.
+3. Найдите в графе ассет `stg_zones`. Жёлтая метка **Code version** показывает, что Dagster обнаружил изменение SQL:
 
-3. On the asset graph, locate the `stg_zones` asset. You’ll see a yellow **Code version** tag indicating that Dagster recognized the SQL code changed:
+   ![Ассет stg_zones с меткой версии кода в Dagster](/images/dagster-dbt/lesson-4/stg-zones-code-version.png)
 
-   ![dbt std_zones asset with a code version badge in the Dagster UI](/images/dagster-dbt/lesson-4/stg-zones-code-version.png)
+4. Выберите `stg_zones` и нажмите **Materialize**.
+5. Перейдите к странице сведений о запуске.
+6. Нажмите шаг `dbt_analytics`:
 
-4. Select the `stg_zones` asset and click the **Materialize** button.
+   ![Журнал stdout с ошибкой материализации stg_zones](/images/dagster-dbt/lesson-4/stg-zones-stdout-failure.png)
 
-5. Navigate to the run’s details page.
+Из журнала видно, что DuckDB не может найти столбец `zone_population`: такого столбца нет в исходных данных.
 
-6. On the run’s details page, click the `dbt_analytics` step.
+Исправим ошибку:
 
-   ![stdout logs showing failure for std_zones materialization in the Dagster UI](/images/dagster-dbt/lesson-4/stg-zones-stdout-failure.png)
+1. Удалите `zone_population` из модели `stg_zones`.
+2. Перезагрузите расположение кода в Dagster, чтобы применить изменения.
 
-In these logs, we can see that DuckDB can’t find the `zone_population` column in `stg_zones`. That’s because this column doesn’t exist!
-
-Now that we know what the problem is, let’s fix it:
-
-1. Remove the `zone_population` column from the `stg_zones` model
-2. In the Dagster UI, reload the code location to allow Dagster to pick up the changes.
-
-At this point, if you materialize the  `stg_zones` asset again, the run should be successful.
+Повторная материализация `stg_zones` теперь должна завершиться успешно.

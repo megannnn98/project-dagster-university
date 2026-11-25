@@ -1,15 +1,17 @@
 ---
-title: "Lesson 7: Dagster Components"
+title: 'Урок 7: Компоненты Dagster'
 module: 'dagster_etl'
 lesson: '7'
 ---
 
-# Dagster Components
+# Компоненты Dagster
 
-Dagster Components provide a class-based interface (`Component`) for dynamically constructing Dagster definitions from arbitrary data sources, such as third-party integrations. They’re designed to simplify orchestration by encapsulating complex logic into reusable, declarative building blocks.
+Компоненты Dagster предоставляют интерфейс на основе классов (`Component`) для динамического создания определений Dagster из произвольных источников данных, например сторонних интеграций. Они упрощают оркестрацию, инкапсулируя сложную логику в переиспользуемые декларативные строительные блоки.
 
-To ground this in a practical example: a component can manage our dlt connection between Postgres and DuckDB. This eliminates the need for low-level setup—like CLI initialization with external libraries—and lets you focus solely on the relevant inputs and outputs for your use case.
+Рассмотрим практический пример: компонент может управлять соединением между Postgres и DuckDB. Это устраняет необходимость низкоуровневой настройки, например инициализации внешних библиотек через CLI, и позволяет сосредоточиться исключительно на входных и выходных данных, необходимых для конкретной задачи.
 
-This approach is especially effective for common workflows like database replication, which shouldn’t require extensive custom development. Instead, users can provide a few configuration values, such as connection credentials or table filters, and let the component handle the orchestration. This lowers the barrier for non-engineers or new users, enabling them to integrate systems in Dagster without needing deep expertise in the framework’s internals.
+Такой подход особенно эффективен для распространённых рабочих процессов, например репликации баз данных, которые не должны требовать значительного объёма собственной разработки. Вместо этого пользователи могут задать несколько конфигурационных значений, например учётные данные подключения или фильтры таблиц, и поручить оркестрацию компоненту. Это снижает порог входа для неспециалистов и новых пользователей, позволяя интегрировать системы в Dagster без глубокого знания внутреннего устройства фреймворка.
 
-Let’s walk through how to configure Postgres-to-DuckDB replication using a Dagster component. You’ll see how much simpler and cleaner your setup becomes when you rely on components to manage orchestration and integration behind the scenes.
+Рассмотрим настройку репликации из Postgres в DuckDB с помощью компонента Dagster. Ты увидишь, насколько проще и понятнее становится настройка, когда компоненты отвечают за оркестрацию и интеграцию.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

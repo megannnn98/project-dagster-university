@@ -1,75 +1,77 @@
 ---
-title: 'Lesson 3: Viewing dbt models in the Dagster UI'
+title: "Урок 3: Просмотр моделей dbt в интерфейсе Dagster"
 module: 'dagster_dbt'
 lesson: '3'
 ---
 
-# Viewing dbt models in the Dagster UI
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Once you finished everything from the previous sections, you're ready to see your dbt models represented as assets! Here's how you can find your models:
+# Просмотр моделей dbt в интерфейсе Dagster
 
-1. If you haven't yet, run `dg dev` in your command line and then navigate to the Dagster UI at [http://localhost:3000](http://localhost:3000).
-2. Click **Catalog** in the left sidebar (this may also appear as **Assets** in some versions), then click **View global asset lineage** to open the asset graph.
-3. Expand the `default` group in the asset graph.
-4. You should see your two dbt models, `stg_trips` and `stg_zones`, converted as assets within your Dagster project!
+После выполнения предыдущих шагов модели dbt готовы к просмотру как ассеты:
 
-   If you don't see the dbt models, click **Reload definitions** to have Dagster reload the code location.
+1. Если ещё не сделали этого, выполните `dg dev` и откройте [http://localhost:3000](http://localhost:3000).
+2. На левой боковой панели нажмите **Catalog** (в некоторых версиях — **Assets**), затем **View global asset lineage**.
+3. Разверните группу `default` в графе ассетов.
+4. В проекте Dagster должны появиться два ассета моделей dbt: `stg_trips` и `stg_zones`.
 
-   ![dbt assets with description metadata in the Dagster UI](/images/dagster-dbt/lesson-3/asset-description-metadata.png)
+   Если их нет, нажмите **Reload definitions**, чтобы перезагрузить расположение кода.
 
-If you’re familiar with the Dagster metadata system, you’ll notice that the descriptions you defined for the dbt models in `staging.yml` are carried over as those for your dbt models. In this case, your `stg_zones`'s description would say _“The taxi zones, with enriched records and additional flags”._
+   ![Ассеты dbt с метаданными описания в интерфейсе Dagster](/images/dagster-dbt/lesson-3/asset-description-metadata.png)
 
-And, of course, the orange dbt logo attached to the assets indicates that they are dbt models.
+Описания моделей из `staging.yml` переносятся в метаданные Dagster. Например, описание `stg_zones` будет содержать _“The taxi zones, with enriched records and additional flags”_ — «Зоны такси с обогащёнными записями и дополнительными флагами».
 
-Click the `stg_trips` node on the asset graph and look at the right sidebar. You’ll get some metadata out-of-the-box, such as the dbt code used for the model, how long the model takes to materialize over time, and the schema of the model.
+Оранжевый логотип dbt у ассетов указывает, что это модели dbt.
+
+Нажмите узел `stg_trips` и посмотрите на правую боковую панель. Там уже есть метаданные: код модели dbt, история длительности материализаций и схема модели.
 
 {% table %}
 
-- dbt model code
-- Model schema
+- Код модели dbt
+- Схема модели
 
 ---
 
-- ![dbt model code as asset metadata in the Dagster UI](/images/dagster-dbt/lesson-3/dbt-asset-code.png)
-- ![model schema as asset metadata in the Dagster UI](/images/dagster-dbt/lesson-3/dbt-asset-table-schema.png)
+- ![Код модели dbt в метаданных ассета Dagster](/images/dagster-dbt/lesson-3/dbt-asset-code.png)
+- ![Схема модели в метаданных ассета Dagster](/images/dagster-dbt/lesson-3/dbt-asset-table-schema.png)
 
 {% /table %}
 
 ---
 
-## Running dbt models with Dagster
+## Запуск моделей dbt через Dagster
 
-After clicking around a bit and seeing the dbt models within Dagster, the next step is to materialize them.
+После знакомства с представлением моделей dbt в Dagster материализуем их:
 
-1. Click the `stg_zones` asset.
-2. Hold **Command** (or **Control** on Windows/Linux) and click the `stg_trips` asset.
-3. Click the **Materialize selected** button toward the top-right section of the asset graph.
-4. Click the toast notification at the top of the page (or the hash that appears at the bottom right of a dbt asset’s node) to navigate to the run.
-5. Under the run ID - in this case, `35b467ce` - change the toggle from a **timed view (stopwatch)** to the **flat view (blocks).**
+1. Выберите ассет `stg_zones`.
+2. Удерживая **Command** (или **Control** в Windows/Linux), нажмите ассет `stg_trips`.
+3. Нажмите **Materialize selected** в правой верхней части графа.
+4. Перейдите к запуску через уведомление сверху страницы или хеш в правом нижнем углу узла ассета dbt.
+5. Под идентификатором запуска (в примере `35b467ce`) переключите представление с **временной шкалы (секундомер)** на **плоское представление (блоки)**.
 
-The run’s page should look similar to this:
+Страница запуска должна выглядеть примерно так:
 
-![Run details page in the Dagster UI](/images/dagster-dbt/lesson-3/dbt-run-details-page.png)
+![Страница сведений о запуске в Dagster](/images/dagster-dbt/lesson-3/dbt-run-details-page.png)
 
-Notice that there is only one “block,” or step, in this chart. That’s because Dagster runs dbt as it’s intended to be run: in a single execution of a `dbt` CLI command. This step will be named after the `@dbt_assets` -decorated asset, which we called `dbt_analytics` in the `assets/dbt.py` file.
+На диаграмме всего один блок — один шаг. Dagster выполняет dbt одним вызовом команды CLI. Шаг получает имя функции с `@dbt_assets`: в нашем файле `assets/dbt.py` это `dbt_analytics`.
 
-Scrolling through the logs, you’ll see the dbt commands Dagster executes, along with each model materialization. We want to point out two note-worthy logs.
+В журнале видны команды dbt, которые выполняет Dagster, и материализации отдельных моделей. Рассмотрим два вида записей.
 
-### dbt commands
+### Команды dbt
 
-![Highlighted dbt command in Dagster's run logs](/images/dagster-dbt/lesson-3/dbt-logs-dbt-command.png)
+![Команда dbt, выделенная в журнале запуска Dagster](/images/dagster-dbt/lesson-3/dbt-logs-dbt-command.png)
 
-The log statement that indicates what dbt command is being run. Note that this executed the dbt run specified in the `dbt_analytics` asset.
+Запись показывает исполняемую команду. В данном случае это `dbt run`, заданная в ассете `dbt_analytics`.
 
 {% callout %}
 
-> 💡 **What’s `--select fqn:*`?** As mentioned earlier, Dagster tries to run dbt in as few executions as possible. `fqn` is a [dbt selection method](https://docs.getdbt.com/reference/node-selection/methods#the-fqn-method) that is as explicit as it gets and matches the node names in a `manifest.json`. The `*` means it will run all dbt models.
+> 💡 **Что означает `--select fqn:*`?** Dagster стремится выполнить dbt за минимальное число вызовов. `fqn` — [метод выбора узлов dbt](https://docs.getdbt.com/reference/node-selection/methods#the-fqn-method), использующий полные имена узлов из `manifest.json`. Символ `*` означает выбор всех моделей dbt.
 > {% /callout %}
 
-### Materialization events
+### События материализации
 
-![Highlighted asset materialization events for dbt assets in Dagster's run logs](/images/dagster-dbt/lesson-3/dbt-logs-materialization-events.png)
+![События материализации ассетов dbt в журнале Dagster](/images/dagster-dbt/lesson-3/dbt-logs-materialization-events.png)
 
-The asset materialization events indicating that `stg_zones` and `stg_trips` were successfully materialized during the dbt execution.
+Эти события показывают, что `stg_zones` и `stg_trips` успешно материализованы при выполнении dbt.
 
-Try running just one of the dbt models and see what happens! Dagster will dynamically generate the `--select` argument based on the assets selected to run.
+Попробуйте запустить только одну модель. Dagster динамически сформирует аргумент `--select` в соответствии с выбранными ассетами.

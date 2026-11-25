@@ -1,20 +1,20 @@
 ---
-title: 'Lesson 6: Asset checks'
+title: 'Урок 6: Проверки ассетов'
 module: 'dagster_testing'
 lesson: '6'
 ---
 
-# Asset checks
+# Проверки ассетов
 
-One key aspect of testing data is validation and data quality. Tests like this are special and have a different work flow than our unit and integration tests. Instead of being run outside of the main application before the code is live, these data validation checks exist in the production environment alongside the assets.
+Один из ключевых аспектов тестирования данных — валидация и контроль качества. Такие проверки отличаются от модульных и интеграционных тестов. Вместо выполнения вне основного приложения до развёртывания кода проверки данных существуют в рабочем окружении вместе с ассетами.
 
-When designing data validation steps, it is best to keep that code separate from the core logic of our assets. This gives us more flexibility on how to handle issues around validation and can help us reuse certain elements.
+При проектировании этапов валидации данных лучше отделять их код от основной логики ассетов. Это даёт больше гибкости при обработке проблем валидации и помогает переиспользовать отдельные элементы.
 
-In order to solve the problem of data quality, Dagster offers asset checks which validate assets when they execute. Asset checks are part of your Dagster project and are set in the definitions like any other Dagster object. When looking in the asset graph you will not see them directly but will see them associated with the asset.
+Для решения задачи контроля качества данных Dagster предоставляет проверки ассетов (asset checks), которые позволяют проверять ассеты при выполнении. Проверки являются частью проекта Dagster и регистрируются в Definitions, как и другие объекты Dagster. На графе ассетов они не отображаются отдельными узлами, а связаны с соответствующим ассетом.
 
-# Defining asset checks
+# Определение проверок ассетов
 
-To define an asset check we first need an asset. `total_population` is a slightly modified version of the asset we have used throughout the course. Now it will take in the output of several assets and sums their populations.
+Для определения проверки сначала нужен ассет. `total_population` — немного изменённая версия ассета, который мы использовали на протяжении курса. Теперь он принимает результаты нескольких ассетов и суммирует население.
 
 ```python
 # src/dagster_testing/defs/assets/lesson_6.py
@@ -27,13 +27,13 @@ def total_population(
     return sum([int(x["Population"]) for x in all_assets])
 ```
 
-Say we wanted to write a test to ensure that the number returned by `total_population` is always positive. We would define an asset check using the `dg.asset_check` decorator. Within the decorator we link it to the `total_population`.
+Допустим, мы хотим проверить, что число, возвращаемое `total_population`, всегда положительное. Определим проверку ассета с помощью декоратора `dg.asset_check`. В декораторе свяжем её с `total_population`.
 
 ```python
 @dg.asset_check(asset=total_population)
 ```
 
-Now `total_population` can be used an input parameter for the function itself. This is what the asset check might look like. Click **View answer** to view it.
+Теперь `total_population` можно использовать как входной параметр самой функции. Вот как может выглядеть проверка ассета. Нажми **View answer**, чтобы посмотреть ответ.
 
 ```python {% obfuscated="true" %}
 # src/dagster_testing/defs/assets/lesson_6.py
@@ -44,13 +44,13 @@ def non_negative(total_population):
     )
 ```
 
-The function itself checks if the result of `total_population` is above 0 and sets that result to `AssetCheckResult` which will be stored within the Dagster metadata history.
+Функция проверяет, что результат `total_population` больше нуля, и передаёт результат проверки в `AssetCheckResult`, который будет зарегистрирован в истории метаданных Dagster.
 
-# Tests for asset checks
+# Тестирование проверок ассетов
 
-You can also write unit tests for your asset check code. Depending on the level of complexity contained within your asset checks it can be helpful to have tests to ensure assets are properly validated.
+Для кода проверок ассетов также можно писать модульные тесты. В зависимости от сложности проверок полезно иметь тесты, подтверждающие корректность валидации ассетов.
 
-Writing a test for our asset check is similar to writing a test for an asset. Our input parameter is the value we wish to check and then we can see if the asset did or did not pass validation.
+Написание теста для проверки ассета похоже на написание теста для самого ассета. В качестве входного параметра передаём проверяемое значение, а затем определяем, прошёл ли ассет валидацию.
 
 ```python
 # tests/test_lesson_6.py
@@ -67,9 +67,9 @@ def test_non_negative():
 tests/test_lesson_6.py .                                                          [100%]
 ```
 
-# Blocking asset checks
+# Блокирующие проверки ассетов
 
-By default, asset checks run alongside asset materialization and report their results. However, you can use `blocking=True` to prevent downstream asset materialization if a check fails. This is useful for critical data quality gates.
+По умолчанию проверки выполняются вместе с материализацией ассетов и сообщают свои результаты. Однако можно использовать `blocking=True`, чтобы предотвратить материализацию нижестоящих ассетов при провале блокирующей проверки с уровнем серьёзности ERROR. Это полезно для критических проверок качества данных.
 
 ```python
 @dg.asset_check(asset=raw_data, blocking=True)
@@ -89,14 +89,14 @@ def validate_schema(raw_data: list[dict]) -> dg.AssetCheckResult:
     )
 ```
 
-**When to use blocking checks**:
-- Schema validation before transformation
-- Critical data quality checks
-- Prerequisites for expensive downstream operations
+**Когда использовать блокирующие проверки**:
+- Валидация схемы перед преобразованием.
+- Критические проверки качества данных.
+- Проверка предварительных условий дорогостоящих нижестоящих операций.
 
-# Asset check severity
+# Уровень серьёзности проверки ассета
 
-Asset checks can report different severity levels to indicate the importance of a failure. Use `dg.AssetCheckSeverity` to distinguish between errors and warnings.
+Проверки ассетов могут сообщать разные уровни серьёзности, чтобы указать важность обнаруженной проблемы. Используй `dg.AssetCheckSeverity`, чтобы различать ошибки и предупреждения.
 
 ```python
 @dg.asset_check(asset=my_data)
@@ -122,11 +122,11 @@ def row_count_check(my_data: list) -> dg.AssetCheckResult:
         )
 ```
 
-The `WARN` severity allows you to flag potential issues without failing the check, which is useful for soft thresholds or advisory conditions.
+Уровень `WARN` позволяет отмечать потенциальные проблемы как предупреждения, не блокируя нижестоящие ассеты даже при `blocking=True`. Сам результат проверки при этом всё равно может быть отрицательным (`passed=False`). Это полезно для мягких порогов и рекомендательных условий.
 
-# Multi-asset checks
+# Групповые проверки ассетов
 
-When you have multiple checks that operate on the same data, loading the asset once and running all checks together is more efficient. Use `@dg.multi_asset_check` for this pattern.
+Если несколько проверок работают с одними и теми же данными, эффективнее загрузить ассет один раз и выполнить все проверки вместе. Для этого используй `@dg.multi_asset_check`.
 
 ```python
 @dg.multi_asset_check(
@@ -156,16 +156,16 @@ def customer_data_checks(customer_data: list[dict]):
     )
 ```
 
-**Use `@multi_asset_check` when**:
-- Multiple checks run on the same data
-- Loading the asset is expensive
-- Checks share computation logic
+**Используй `@multi_asset_check`, когда**:
+- Несколько проверок работают с одними и теми же данными.
+- Загрузка ассета требует значительных ресурсов.
+- Проверки используют общую вычислительную логику.
 
-# Partitioned asset checks
+# Партиционированные проверки ассетов
 
-When assets are partitioned, a single asset check validates the entire asset regardless of which partition triggered the materialization. If you want to validate each partition independently — catching issues in a specific date range or region without affecting others — use a partitioned asset check.
+Если ассеты партиционированы и нужно проверять каждую партицию независимо — обнаруживать проблемы в конкретном диапазоне дат или регионе, не затрагивая остальные партиции, — используй партиционированную проверку ассета.
 
-Add `partitions_def` to `@dg.asset_check` with the same `PartitionsDefinition` as the asset:
+Добавь `partitions_def` в `@dg.asset_check` с тем же определением `PartitionsDefinition`, что и у ассета:
 
 ```python
 file_partitions = dg.StaticPartitionsDefinition(["ca.csv", "mn.csv", "ny.csv"])
@@ -179,9 +179,9 @@ def partition_has_data(population_file_partition: list[dict]) -> dg.AssetCheckRe
     )
 ```
 
-Dagster runs this check once per partition. The function receives only that partition's data, so the logic stays simple — no partition filtering required.
+Dagster выполняет такую проверку для каждой выбранной партиции. При соответствующем сопоставлении входов функция получает данные этой партиции, поэтому логика остаётся простой — дополнительная фильтрация не требуется.
 
-Testing a partitioned check follows the same pattern as any other check: call the function directly with representative data.
+Тестирование партиционированной проверки следует тому же шаблону, что и тестирование любой другой проверки: вызови функцию напрямую с репрезентативными данными.
 
 ```python
 def test_partition_has_data(file_output):
@@ -200,9 +200,9 @@ def test_partition_has_data_empty():
 tests/test_lesson_6.py ..                                                         [100%]
 ```
 
-# Factory pattern for asset checks
+# Фабричный шаблон для проверок ассетов
 
-When you need to apply the same check logic to multiple assets or columns, use a factory function to generate checks programmatically.
+Если нужно применить одинаковую логику проверки к нескольким ассетам или столбцам, используй фабричную функцию для программной генерации проверок.
 
 ```python
 def create_not_null_check(asset_name: str, column: str):
@@ -221,4 +221,6 @@ email_check = create_not_null_check("customer_data", "email")
 name_check = create_not_null_check("customer_data", "name")
 ```
 
-This pattern reduces code duplication and makes it easy to maintain consistent validation rules across your project.
+Этот шаблон сокращает дублирование кода и упрощает поддержание согласованных правил валидации во всём проекте.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

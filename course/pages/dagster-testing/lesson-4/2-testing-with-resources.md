@@ -1,16 +1,16 @@
 ---
-title: 'Lesson 4: Testing with resources'
+title: 'Урок 4: Тестирование с ресурсами'
 module: 'dagster_testing'
 lesson: '4'
 ---
 
-# Testing with resources
+# Тестирование с ресурсами
 
-In Dagster you will not always see external dependencies defined directly within assets. Usually external dependencies are reused and shared across multiple assets. This is where resources come in handy.
+В Dagster внешние зависимости не всегда определяются непосредственно внутри ассетов. Обычно они переиспользуются несколькими ассетами. Здесь пригодятся ресурсы.
 
-Resources are objects that provide access to external systems, databases, or services, and are used to manage dependencies within Dagster.
+Ресурсы — объекты, предоставляющие доступ к внешним системам, базам данных или сервисам и используемые для управления зависимостями в Dagster.
 
-We can refactor the API asset code into a resource. A resource is just a class that inherits from `dg.ConfigurableResource`. It can have any number of methods which assets can use. This resource will only include a single method for `get_cities`.
+Можно вынести код работы с API из ассета в ресурс. В данном примере ресурс представляет собой класс, наследуемый от `dg.ConfigurableResource`. Он может иметь любое количество методов, используемых ассетами. В нашем ресурсе будет только один метод — `get_cities`.
 
 ```python
 # src/dagster_testing/defs/assets/lesson_4.py
@@ -35,9 +35,9 @@ class StatePopulation(dg.ConfigurableResource):
             return output
 ```
 
-This code is almost unchanged from the `state_population_api` asset. It connects to the API, retrieves the JSON, and returns the parsed results.
+Этот код практически не изменился по сравнению с ассетом `state_population_api`. Он подключается к API, получает JSON и возвращает разобранные результаты.
 
-Since the resource now contains all the logic for connecting to the API, we can write a new asset that invokes the method:
+Поскольку теперь ресурс содержит всю логику подключения к API, можно написать новый ассет, вызывающий его метод:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_4.py
@@ -48,15 +48,15 @@ def state_population_api_resource(
     return state_population_resource.get_cities("ny")
 ```
 
-## Testing resources
+## Тестирование ресурсов
 
-Our asset is different. Now in order to execute it will require an initialized `StatePopulation` resource:
+Наш ассет изменился. Теперь для его выполнения требуется инициализированный ресурс `StatePopulation`:
 
 ```python
 assets.state_population_api_resource(assets.StatePopulation())
 ```
 
-But we left the core logic unchanged. So what needs to change in our test? Click **View answer** to view it.
+Но основная логика осталась неизменной. Что нужно изменить в тесте? Нажми **View answer**, чтобы посмотреть ответ.
 
 ```python {% obfuscated="true" %}
 # tests/test_lesson_4.py
@@ -84,4 +84,6 @@ def test_state_population_api_resource_mock(mock_get, example_response):
 tests/test_lesson_4.py .                                                          [100%]
 ```
 
-Surprisingly not much. We still will want to patch the `requests.get` method so all of our set up with mocks remains the same. The main difference is that the `request` method is invoked by the resource instead of the asset itself. From a testing perspective this does not make a difference so almost everything about our test remains.
+На удивление немногое. По-прежнему нужно подменить метод `requests.get`, поэтому вся настройка mock-объектов останется прежней. Главное отличие в том, что запрос выполняется ресурсом, а не самим ассетом. С точки зрения тестирования это почти ничего не меняет, поэтому практически весь тест сохраняется.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

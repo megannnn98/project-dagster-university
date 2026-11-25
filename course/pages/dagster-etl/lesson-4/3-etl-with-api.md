@@ -1,35 +1,37 @@
 ---
-title: "Lesson 4: ETL with API"
+title: 'Урок 4: ETL с API'
 module: 'dagster_etl'
 lesson: '4'
 ---
 
-# ETL with APIs
+# ETL с API
 
-The `NASAResource` gives us the ability to extract data, but it leaves us in a slightly more ambiguous position than when we were importing static files. With files, there’s a clear boundary. One file ends, another begins. When extracting data from an API, those boundaries aren’t always as obvious, making it less clear how to structure our assets.
+Ресурс `NASAResource` позволяет извлекать данные, но теперь ситуация несколько менее однозначна, чем при импорте статических файлов. У файлов есть чёткие границы: один файл заканчивается, другой начинается. При извлечении данных из API эти границы не всегда очевидны, поэтому не так просто определить структуру ассетов.
 
-## Time bounding
+## Ограничение по времени
 
-With the NASA API and our resource, we need to provide a date range when pulling data. Some APIs allow filtering down to the minute or even the second, but the NASA API works at the day level. This makes it easy to structure our ingestion around pulling a full day's worth of data at a time.
+При работе с API NASA и нашим ресурсом для получения данных необходимо передавать диапазон дат. Некоторые API позволяют фильтровать данные с точностью до минуты или даже секунды, но API NASA работает с точностью до дня. Поэтому удобно организовать загрузку так, чтобы каждый раз получать данные за целый день.
 
-But we do have the question of when should we run the process? If we try to fetch today's data, we can't be sure that all of it has been published yet. The safest approach is to query the API for the previous day’s data by using a rolling, non-overlapping window.
+Но когда следует запускать процесс? Если попытаться получить данные за сегодня, нельзя быть уверенным, что все они уже опубликованы. Наиболее безопасный подход — запрашивать у API данные предыдущего дня, используя скользящее окно без перекрытий.
 
-![Rolling window](/images/dagster-etl/lesson-4/rolling-windows.png)
+![Скользящее окно](/images/dagster-etl/lesson-4/rolling-windows.png)
 
-Alternatively, it’s possible to implement a rolling window with overlaps:
+Другой вариант — реализовать скользящее окно с перекрытиями:
 
-![Rolling window overlap](/images/dagster-etl/lesson-4/rolling-windows-overlap.png)
+![Скользящее окно с перекрытием](/images/dagster-etl/lesson-4/rolling-windows-overlap.png)
 
-This can be useful in two key scenarios:
+Это может быть полезно в двух основных случаях:
 
-* When the API allows for data corrections or updates, such as changes to past orders or late-arriving data.
-* To add resiliency in the event of failures. If one run fails, the next overlapping window might successfully capture the missed data.
+* Если API допускает исправления или обновления данных, например изменения прошлых заказов или запоздалое поступление данных.
+* Для повышения устойчивости при сбоях. Если один запуск завершится ошибкой, следующее перекрывающееся окно может успешно получить пропущенные данные.
 
-![Rolling window overlap failure](/images/dagster-etl/lesson-4/rolling-windows-overlap-failure.png)
+![Сбой при использовании скользящего окна с перекрытием](/images/dagster-etl/lesson-4/rolling-windows-overlap-failure.png)
 
-Rolling windows with overlaps do introduce added complexity. Since overlapping periods will process the same data more than once, this needs to be handled at the destination layer. This can be done using:
+Скользящие окна с перекрытиями повышают сложность. Поскольку пересекающиеся периоды обрабатывают одни и те же данные несколько раз, это необходимо учитывать на уровне целевого хранилища. Для этого можно использовать:
 
-* Hard deletes, where old overlapping data is removed before new data is loaded.
-* Soft deletes, where older records are marked as outdated and superseded by the newer ones.
+* Физическое удаление (hard delete): старые данные за пересекающийся период удаляются перед загрузкой новых.
+* Логическое удаление (soft delete): старые записи помечаются как устаревшие и заменяются новыми.
 
-For the purposes of this course, we’ll stick to rolling windows without overlaps, which provide a simpler and more deterministic ingestion model.
+В этом курсе мы будем использовать скользящие окна без перекрытий, обеспечивающие более простую и детерминированную модель загрузки.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

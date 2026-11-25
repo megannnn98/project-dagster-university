@@ -1,14 +1,14 @@
 ---
-title: "Lesson 5: Refactoring static data with dlt"
+title: 'Урок 5: Рефакторинг загрузки статических данных с dlt'
 module: 'dagster_etl'
 lesson: '5'
 ---
 
-# Refactoring static data with dlt
+# Рефакторинг загрузки статических данных с dlt
 
-There are a couple of key differences between our original CSV pipeline and the dlt quickstart we just converted into Dagster assets. First, the CSV pipeline uses a run configuration to allow a specific file name to be passed in at runtime. Second, the dlt asset in this case is dependent on an upstream asset that stages the file.
+Между исходным CSV-пайплайном и простым примером dlt, который мы только что преобразовали в ассеты Dagster, есть два ключевых отличия. Во-первых, CSV-пайплайн использует конфигурацию запуска для передачи конкретного имени файла во время выполнения. Во-вторых, ассет dlt в данном случае зависит от вышестоящего ассета, подготавливающего файл.
 
-We’ll start by reusing the existing run configuration and upstream asset, both of which can remain unchanged. This allows us to maintain the same flexible file-based interface while swapping in dlt to handle the data loading:
+Начнём с повторного использования существующей конфигурации запуска и вышестоящего ассета. Оба можно оставить без изменений. Это позволит сохранить гибкий файловый интерфейс, заменив механизм загрузки данных на dlt:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -24,7 +24,7 @@ def import_file(context: dg.AssetExecutionContext, config: FilePath) -> str:
     return str(file_path.resolve())
 ```
 
-Next, we need to define the `dlt.source` function for our CSV pipeline. This will look very similar to the `simple_source` function we used earlier, but with a few changes: it will read from a CSV file and take a file path as an input parameter. This allows us to dynamically pass in the file we want to process, while letting dlt handle schema inference:
+Далее необходимо определить функцию `dlt.source` для CSV-пайплайна. Она будет очень похожа на ранее использованную функцию `simple_source`, но с несколькими изменениями: она читает CSV-файл и принимает путь к файлу как входной параметр. Это позволяет динамически передавать обрабатываемый файл, поручая dlt определение схемы:
 
 ```python {% obfuscated="true" %}
 @dlt.source
@@ -37,13 +37,13 @@ def csv_source(file_path: str = None):
     return load_csv
 ```
 
-Using `pandas.read_csv()` here is important: unlike Python's built-in `csv.DictReader`, pandas infers column types from the data, giving dlt the typed values it needs to write the correct schema to DuckDB.
+Здесь важно использовать `pandas.read_csv()`: в отличие от встроенного `csv.DictReader` Python, pandas определяет типы столбцов на основе данных, предоставляя dlt типизированные значения для записи корректной схемы в DuckDB.
 
-This is very helpful. Before our pipelines had to be hardcoded to define the schema for the destination table. Offloading your schema management to a framework can make your pipelines much less error prone. Though it is still good to be aware of what data types it has selected. Just because a zip code looks like an integer does not mean that is how we want the data represented.
+Это очень полезно. Ранее приходилось жёстко задавать схему целевой таблицы в пайплайнах. Передача управления схемой фреймворку может существенно уменьшить количество ошибок. Однако всё равно следует понимать, какие типы данных он выбрал. Например, почтовый индекс может выглядеть как целое число, но это не означает, что его следует хранить как число.
 
-So far, things are looking very similar to our previous setup. We’ll once again use the `@dlt_assets `decorator to generate our dlt-backed assets. The one key difference in this case is that our `csv_source` function accepts an input parameter for the file path.
+Пока всё выглядит очень похоже на предыдущую настройку. Мы снова используем декоратор `@dlt_assets` для создания ассетов на основе dlt. Главное отличие — функция `csv_source` принимает входной параметр с путём к файлу.
 
-Just like in our earlier Dagster pipeline, this parameter will be satisfied by the upstream `import_file` asset. This allows the dlt asset to consume the file path dynamically and run the ETL process based on the specific file returned by `import_file`:
+Как и в предыдущем пайплайне Dagster, этот параметр будет предоставлен вышестоящим ассетом `import_file`. Это позволяет ассету dlt динамически получать путь к файлу и выполнять ETL для конкретного файла, возвращённого `import_file`:
 
 ```python {% obfuscated="true" %}
 @dlt_assets(
@@ -61,14 +61,13 @@ def dlt_csv_assets(
     yield from dlt.run(context=context, dlt_source=csv_source(import_file))
 ```
 
-## dlt Translator
+## Транслятор dlt
 
-This setup might look complete, but there’s one final step we need to take. Because dlt assets are generated differently, they also have a unique way of handling dependencies.
+Настройка выглядит завершённой, но остаётся ещё один шаг. Поскольку ассеты dlt создаются иначе, они также по-особому обрабатывают зависимости.
 
-If you’ve taken the [Dagster & dbt course](https://courses.dagster.io/courses/dagster-dbt), you may recall the need for a Translator to map dbt assets to other assets in your Dagster project. Similarly, for dlt, we use a specialized translator (the `DagsterDltTranslator`) to accomplish the same thing.
+Если ты проходил [курс Dagster & dbt](https://courses.dagster.io/courses/dagster-dbt), возможно, помнишь необходимость использовать транслятор для сопоставления ассетов dbt с другими ассетами проекта Dagster. Для dlt мы аналогично используем специализированный транслятор (`DagsterDltTranslator`).
 
-In this case, we want to map our dlt asset to depend on the import_file asset, so that the file path returned by import_file is passed into the dlt source function. Fortunately, this is straightforward to implement. Our translator will look like this:
-
+В данном случае нужно сопоставить ассет dlt с зависимостью от ассета import_file, чтобы путь к файлу, возвращаемый import_file, передавался функции источника dlt. Это довольно просто реализовать. Наш транслятор будет выглядеть так:
 
 ```python
 class CustomDagsterDltTranslator(DagsterDltTranslator):
@@ -79,7 +78,7 @@ class CustomDagsterDltTranslator(DagsterDltTranslator):
         )
 ```
 
-With the translator set. We can include it within the `dlt_assets` decorator for the `dagster_dlt_translator` parameter:
+После определения транслятора можно передать его в декоратор `dlt_assets` через параметр `dagster_dlt_translator`:
 
 ```python
 @dlt_assets(
@@ -87,3 +86,5 @@ With the translator set. We can include it within the `dlt_assets` decorator for
     dagster_dlt_translator=CustomDagsterDltTranslator(),
 )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,22 +1,24 @@
 ---
-title: 'Lesson 3: Creating a Dagster resource to run dbt'
+title: "Урок 3: Создание ресурса Dagster для запуска dbt"
 module: 'dagster_dbt'
 lesson: '3'
 ---
 
-# Creating a Dagster resource to run dbt
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Our next step is to define a Dagster resource as the entry point used to run dbt commands and configure its execution.
+# Создание ресурса Dagster для запуска dbt
 
-The `DbtCliResource` is the main resource that you’ll be working with. In later sections, we’ll walk through some of the resource’s methods and how to customize what Dagster does when dbt runs.
+Следующий шаг — определить ресурс Dagster, через который будут запускаться и настраиваться команды dbt.
 
-> 💡 **Resource refresher:** Resources are Dagster’s recommended way of connecting to other services and tools, such as dbt, your data warehouse, or a BI tool.
+Основной ресурс, с которым вы будете работать, — `DbtCliResource`. В следующих разделах рассмотрим его методы и настройку действий Dagster при выполнении dbt.
 
-Navigate to `defs/resources.py`, which is where other resources are defined. You'll be adding to this existing file, not replacing it.
+> 💡 **Напоминание о ресурсах:** ресурсы — рекомендуемый в Dagster способ подключения к другим сервисам и инструментам: dbt, хранилищу данных или BI-инструменту.
 
-> ⚠️ **Important:** The `resources.py` file already contains code for `database_resource`, `smart_open_config`, and other imports. Do not delete this existing code! You'll be adding the dbt-related imports and resource definition to the file.
+Откройте `defs/resources.py`, где уже определены другие ресурсы. Мы будем дополнять этот файл.
 
-1. First, add the following imports to the **top of the file**, alongside the existing imports:
+> ⚠️ **Важно:** в `resources.py` уже есть `database_resource`, `smart_open_config` и другие импорты. Сохраните этот код и добавьте к нему импорты и определение ресурса dbt.
+
+1. В начало файла, рядом с существующими импортами, добавьте:
 
    ```python
    from dagster_dbt import DbtCliResource
@@ -24,7 +26,7 @@ Navigate to `defs/resources.py`, which is where other resources are defined. You
    from dagster_and_dbt.defs.project import dbt_project
    ```
 
-2. Next, add the `dbt_resource` definition somewhere below the existing `smart_open_config` code:
+2. После кода `smart_open_config` добавьте определение `dbt_resource`:
 
    ```python
    dbt_resource = DbtCliResource(
@@ -32,7 +34,7 @@ Navigate to `defs/resources.py`, which is where other resources are defined. You
    )
    ```
 
-3. Finally, update the `@dg.definitions` function to include the new `dbt` resource:
+3. Обновите функцию с декоратором `@dg.definitions`, включив новый ресурс `dbt`:
 
    ```python
    @dg.definitions
@@ -45,7 +47,7 @@ Navigate to `defs/resources.py`, which is where other resources are defined. You
        )
    ```
 
-After making these changes, your complete `resources.py` file should look like this:
+После изменений полный файл `resources.py` должен выглядеть так:
 
 ```python
 # src/dagster_and_dbt/defs/resources.py
@@ -88,10 +90,10 @@ def resources():
     )
 ```
 
-The new code:
+Добавленный код:
 
-1. Imports the `DbtCliResource` from the `dagster_dbt` package that we installed earlier
-2. Imports the `dbt_project` representation we just defined
-3. Instantiates a new `DbtCliResource` under the variable name `dbt_resource`
-4. Tells the resource that the dbt project to execute is the `dbt_project`
-5. Adds the dbt resource to the definitions so it can be automatically loaded
+1. Импортирует `DbtCliResource` из установленного ранее пакета `dagster_dbt`.
+2. Импортирует созданное представление `dbt_project`.
+3. Создаёт экземпляр `DbtCliResource` под именем `dbt_resource`.
+4. Указывает ресурсу, что запускать нужно проект `dbt_project`.
+5. Добавляет ресурс в определения для автоматической загрузки.

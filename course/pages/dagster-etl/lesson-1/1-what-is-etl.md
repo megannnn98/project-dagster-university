@@ -1,33 +1,35 @@
 ---
-title: "Lesson 1: What is ETL?"
+title: 'Урок 1: Что такое ETL?'
 module: 'dagster_etl'
 lesson: '1'
 ---
 
-# What is ETL?
+# Что такое ETL?
 
-ETL stands for Extract, Transform, Load and is the process of consolidating data from various upstream sources into a single destination storage layer. These upstream sources often span multiple systems and data formats: including application databases, third-party services, and raw files. To fully leverage this data, it’s typically best to bring everything into one centralized location, traditionally a data warehouse or data lake, where it can be standardized and made usable.
+ETL расшифровывается как Extract, Transform, Load (извлечение, преобразование, загрузка). Это процесс объединения данных из разных вышестоящих источников в едином целевом хранилище. Источники часто охватывают разные системы и форматы данных: базы данных приложений, сторонние сервисы и исходные файлы. Чтобы максимально эффективно использовать эти данные, обычно лучше собрать их в одном централизованном месте, традиционно в хранилище данных или озере данных, где их можно стандартизировать и подготовить к использованию.
 
 ![ETL](/images/dagster-etl/lesson-1/what-is-etl.png)
 
-## ETL vs ELT
+## ETL и ELT
 
-A quick note on definitions. If you're familiar with ETL, you may have also encountered ELT. The two approaches are very similar, but as the acronym suggests, the key difference is when the transformation happens. In ELT, data is loaded first into the destination system, and transformed afterward.
+Небольшое уточнение терминологии. Если ты знаком с ETL, возможно, встречал и ELT. Подходы очень похожи, но, как следует из аббревиатур, ключевое отличие — момент преобразования. В ELT данные сначала загружаются в целевую систему, а затем преобразуются.
 
-With the rise of modern data warehouses and lakes that support semi-structured and unstructured data, it's become less critical to transform data into a strict schema before loading. As a result, ETL and ELT are increasingly used interchangeably. Throughout this course, we’ll refer to the process as ETL, even if some examples technically follow the ELT pattern.
+С появлением современных хранилищ и озёр данных, поддерживающих полуструктурированные и неструктурированные данные, необходимость приводить данные к строгой схеме до загрузки стала менее критичной. Поэтому ETL и ELT всё чаще используют как взаимозаменяемые термины. В этом курсе мы будем называть процесс ETL, даже если некоторые примеры технически соответствуют ELT.
 
-Each stage of the ETL/ELT process can take many different forms:
+Каждый этап ETL/ELT может принимать множество форм:
 
-| Stage | Types|
+| Этап | Варианты |
 | --- | --- |
-| (E)xtract | Web scraping, external files (e.g., CSV, Excel), database replication, API ingestion, log parsing, message queues (Kafka, Kinesis) |
-| (T)ransform | Data cleaning, normalization, filtering, aggregation, enrichment, joins, deduplication, business logic application, format conversion |
-| (L)oad | Data warehouse ingestion (e.g., BigQuery, Snowflake, Redshift), database inserts/updates, data lake storage (e.g., S3, Delta Lake), streaming sinks, flat file outputs |
+| (E)xtract — извлечение | Веб-скрейпинг, внешние файлы (например, CSV, Excel), репликация баз данных, получение данных из API, разбор журналов, очереди сообщений (Kafka, Kinesis) |
+| (T)ransform — преобразование | Очистка данных, нормализация, фильтрация, агрегация, обогащение, соединение таблиц, дедупликация, применение бизнес-логики, преобразование форматов |
+| (L)oad — загрузка | Загрузка в хранилище данных (например, BigQuery, Snowflake, Redshift), вставка и обновление записей в базе, хранение в озере данных (например, S3, Delta Lake), приёмники потоковых данных, вывод в плоские файлы |
 
-A variety of tools are available to perform one or more of these stages. For example, Fivetran can handle both extraction and loading, while a tool like dbt is more commonly used for transformation.
+Существуют разные инструменты для выполнения одного или нескольких этапов. Например, Fivetran может выполнять извлечение и загрузку, а dbt чаще используется для преобразования.
 
-## The Importance of ETL
+## Важность ETL
 
-No matter the industry, ETL is foundational to data systems and applications. When implemented effectively, your data becomes a strategic moat that powers everything from operational dashboards to machine learning pipelines. Whether you're building classic BI reports or cutting-edge AI products, the value lies less in the tools and more in the quality and structure of your data.
+Независимо от отрасли, ETL лежит в основе систем и приложений, работающих с данными. При эффективной реализации данные становятся стратегическим конкурентным преимуществом, обеспечивающим работу всего — от операционных дашбордов до пайплайнов машинного обучения. Создаёшь ли ты классические BI-отчёты или передовые продукты на основе ИИ, ценность определяется не столько инструментами, сколько качеством и структурой данных.
 
-Even in emerging areas like large language models (LLMs), it's not the model itself that defines success, but the clean, curated datasets used to generate embeddings and provide meaningful context. In short, great data makes great systems.
+Даже в развивающихся областях, таких как большие языковые модели (LLM), успех зависит не только от самой модели, но и от чистых, тщательно подготовленных наборов данных, используемых для генерации эмбеддингов и предоставления содержательного контекста. Иными словами, качественные данные — основа качественных систем.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,22 +1,22 @@
 ---
-title: "Lesson 3: File import"
+title: 'Урок 3: Импорт файлов'
 module: 'dagster_etl'
 lesson: '3'
 ---
 
-# File import
+# Импорт файлов
 
-As mentioned, we’ll start by loading a file into a data warehouse. While we’re using a local file and a local DuckDB instance for simplicity, the same principles apply regardless of the source and destination. You could easily adapt this pipeline to pull data from another storage layer and load it into a different data warehouse.
+Как уже говорилось, начнём с загрузки файла в хранилище данных. Для простоты используем локальный файл и локальный экземпляр DuckDB, но те же принципы применимы независимо от источника и назначения. Этот пайплайн легко адаптировать для получения данных из другого хранилища и загрузки их в другое хранилище данных.
 
-## Config
+## Конфигурация (Config)
 
-Let’s consider the first asset we need. As we discussed, the logical approach to designing ETL pipelines is to start as far left in the diagram as possible and follow the data as it progresses through our system.
+Рассмотрим первый необходимый ассет. Как мы обсуждали, логичный подход к проектированию ETL-пайплайнов — начинать с крайней левой части схемы и прослеживать движение данных по системе.
 
-If we’re building a pipeline to load files into a data warehouse, we should start with the files we want to import. When we think about those files, it’s likely that we’ll have more than one file to ingest, with new files arriving over time. Because of this, we want to avoid hardcoding the pipeline for a single file.
+Если мы создаём пайплайн загрузки файлов в хранилище данных, следует начать с файлов, которые хотим импортировать. Скорее всего, потребуется загружать несколько файлов, а со временем будут поступать новые. Поэтому не стоит жёстко привязывать пайплайн к одному файлу.
 
-Instead, we can use a [run configuration](https://docs.dagster.io/guides/operate/configuration/run-configuration) to parameterize the process. This allows us to dynamically specify which file to load each time we execute the pipeline.
+Вместо этого можно параметризовать процесс с помощью [конфигурации запуска](https://docs.dagster.io/guides/operate/configuration/run-configuration). Она позволяет динамически указывать файл для загрузки при каждом выполнении пайплайна.
 
-First, we’ll define a run configuration so we can set the file path. In the `src/dagster_and_etl/defs/assets.py` file add the code for the run configuration:
+Сначала определим конфигурацию запуска, в которой можно задать путь к файлу. Добавь следующий код в файл `src/dagster_and_etl/defs/assets.py`:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -27,9 +27,9 @@ class IngestionFileConfig(dg.Config):
     path: str
 ```
 
-Run configurations inherit from the Dagster `Config` class and allow us to define schemas that can be used in our Dagster assets.
+Конфигурации запуска наследуются от класса Dagster `Config` и позволяют определять схемы, используемые в ассетах Dagster.
 
-Next, we will write an asset that uses this config. To make things easier, the asset will be designed to look within a specific directory relative to the asset file itself. This way, we only need to provide the file name, rather than the full path, when specifying the configuration:
+Затем напишем ассет, использующий эту конфигурацию. Для удобства ассет будет искать файл в определённом каталоге относительно собственного расположения. Тогда при задании конфигурации достаточно указать имя файла, а не полный путь:
 
 ```python
 @dg.asset()
@@ -40,13 +40,13 @@ def import_file(context: dg.AssetExecutionContext, config: IngestionFileConfig) 
     return str(file_path.resolve())
 ```
 
-This asset will take in the run config and return the full file path string of a file in the `dagster_and_etl/data/source` directory.
+Этот ассет принимает конфигурацию запуска и возвращает строку с полным путём к файлу в каталоге `dagster_and_etl/data/source`.
 
-## Loading data
+## Загрузка данных
 
-Now that we’ve identified the file we want to load, we can define the destination. In this case, we’ll use [DuckDB](https://duckdb.org/). DuckDB is an in-process Online Analytical Processing (OLAP) database similar to Redshift and Snowflake, but designed to run locally with minimal setup.
+Теперь, когда мы определили загружаемый файл, можно определить место назначения. В данном случае используем [DuckDB](https://duckdb.org/). DuckDB — встраиваемая аналитическая база данных (OLAP), похожая на Redshift и Snowflake, но предназначенная для локального запуска с минимальной настройкой.
 
-In order to use DuckDB we need to establish a connection with our database. In Dagster we can do this with resources, so in the `resources.py` file, add the following:
+Для использования DuckDB необходимо установить соединение с базой данных. В Dagster это можно сделать с помощью ресурсов. Добавь в файл `resources.py` следующий код:
 
 ```python
 # src/dagster_and_etl/defs/resources.py
@@ -64,23 +64,24 @@ def resources():
     )
 ```
 
-The code above does the following:
-1. Maps the `DuckDBResource` resource to the `Definitions` object.
-2. Initializes the `DuckDBResource` to use the local file at `data/staging/data.duckdb` as the backend.
+Приведённый код:
 
-Defining our resource here means we can use it throughout out Dagster project.
+1. Сопоставляет ресурс `DuckDBResource` с объектом `Definitions`.
+2. Инициализирует `DuckDBResource`, используя локальный файл `data/staging/data.duckdb` как хранилище.
 
-## DuckDB asset
+Определив ресурс здесь, мы можем использовать его во всём проекте Dagster.
 
-Like most databases, DuckDB offers multiple ways to ingest data. One common way when working with files is using DuckDB’s [`COPY`](https://duckdb.org/docs/stable/sql/statements/copy.html) statement. A typical COPY command follows this pattern:
+## Ассет DuckDB
+
+Как и большинство баз данных, DuckDB предлагает несколько способов загрузки данных. При работе с файлами распространённый способ — оператор DuckDB [`COPY`](https://duckdb.org/docs/stable/sql/statements/copy.html). Типичная команда COPY выглядит так:
 
 ```sql
 COPY {table name} FROM {source}
 ```
 
-This can include additional parameters to specify things like file type and formatting, but DuckDB often infers these settings correctly so we will not worry about it here.
+Можно указать дополнительные параметры, например тип и формат файла, но DuckDB часто правильно определяет их автоматически, поэтому здесь не будем их рассматривать.
 
-As well as loading data into DuckDB, we need a destination table defined. We can design an asset that creates a table to match the schema of our file and load the file:
+Помимо загрузки данных в DuckDB, нужно определить целевую таблицу. Можно создать ассет, который создаёт таблицу по схеме файла и загружает этот файл:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -110,29 +111,29 @@ def duckdb_table(
         conn.execute(f"copy {table_name} from ?;", [import_file])
 ```
 
-The code above does the following:
+Приведённый код:
 
-1. Connects to DuckDB using the Dagster resource `DuckDBResource`.
-2. Uses the DuckDB connection to create a table `raw_data` if that tables does not already exist. We define the schema of the table ourselves, knowing the structure of the data.
-3. Runs a `COPY` for file path from the `import_file` asset into the `raw_data` table. `COPY` is an append command so if we run the command twice, the data will be loaded again. The file path fills the `?` placeholder as a query parameter rather than being formatted into the SQL string, so a path from the run configuration can’t change the query.
+1. Подключается к DuckDB с помощью ресурса Dagster `DuckDBResource`.
+2. Использует подключение DuckDB для создания таблицы `raw_data`, если она ещё не существует. Схему таблицы определяем сами, зная структуру данных.
+3. Выполняет `COPY` для загрузки файла, путь к которому получен из ассета `import_file`, в таблицу `raw_data`. `COPY` добавляет записи, поэтому при повторном выполнении команды данные загрузятся ещё раз. Путь к файлу передаётся вместо заполнителя `?` как параметр запроса, а не подставляется в строку SQL, поэтому путь из конфигурации запуска не может изменить структуру запроса.
 
-## Executing the assets
+## Выполнение ассетов
 
-These two assets are all we need to ingest the data and there are multiple ways to do so in Dagster.
+Для загрузки данных достаточно этих двух ассетов. В Dagster их можно выполнить несколькими способами.
 
-### Command line (`dg launch`)
+### Командная строка (`dg launch`)
 
 ```bash
 dg launch --assets import_file,duckdb_table --config-json '{"resources": {"database": {"config": {"database": "data/staging/data.duckdb"}}}, "ops": {"import_file": {"config": {"path": "2018-01-22.csv"}}}}'
 ```
 
-### Web UI (`dg dev`)
+### Веб-интерфейс (`dg dev`)
 
 ```bash
 dg dev
 ```
 
-Within the UI, materialize the assets while providing the following run execution:
+В интерфейсе материализуй ассеты, указав следующую конфигурацию запуска:
 
 ```yaml
 resources:
@@ -145,11 +146,11 @@ ops:
       path: 2018-01-22.csv
 ```
 
-In either case (whether using the CLI or the UI) remember that we need to provide a value for the file path as a run configuration in orders to execute the assets.
+В обоих случаях (через CLI или интерфейс) помни, что для выполнения ассетов нужно передать путь к файлу в конфигурации запуска.
 
-## Confirm data
+## Проверка данных
 
-To check that everything has loaded correctly, we can connect to the DuckDB database using the [DuckDB CLI](https://duckdb.org/docs/stable/clients/cli/overview.html) and run a query for the table we just made.
+Чтобы убедиться, что всё загрузилось правильно, подключись к базе данных DuckDB с помощью [DuckDB CLI](https://duckdb.org/docs/stable/clients/cli/overview.html) и выполни запрос к только что созданной таблице.
 
 ```bash
 > duckdb data/staging/data.duckdb
@@ -168,3 +169,5 @@ D SELECT * FROM raw_data;
 │ 2018-09-19 │      299.02 │  8264353.0 │ 280.51 │    300.0 │    280.5 │
 └────────────┴─────────────┴────────────┴────────┴──────────┴──────────┘
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
