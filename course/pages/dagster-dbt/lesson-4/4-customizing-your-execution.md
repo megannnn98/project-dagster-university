@@ -1,24 +1,26 @@
 ---
-title: 'Lesson 4: Customizing your execution'
+title: "Урок 4: Настройка выполнения"
 module: 'dagster_dbt'
 lesson: '4'
 ---
 
-# Customizing your execution
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-When looking at the asset catalog's page for a dbt model, you might notice the dbt code embedded into the description. This is an easy way to get a high-level understanding of the query, but it doesn't show you what the SQL query run by dbt will loook like, with the Jinja templating resolved. This is because the asset description is defined when the code location is _loaded_ and not during _runtime_ when the dbt model is compiled and run.
+# Настройка выполнения
 
-Let's make some changes that allow you to see what dbt does under the hood. To do this, we'll update our code so we can see the SQL dbt executes at runtime and show you some ways to customize what happens in a `@dbt_assets` definition. We'll refactor the body of the `@dbt_assets` definition to fetch dbt's `run_results.json` artifact from the completed run and print the compiled SQL code for each model.
+На странице модели dbt в каталоге ассетов можно увидеть исходный код dbt. Он помогает понять запрос, но не показывает окончательный SQL после обработки шаблонов Jinja. Описание ассета формируется при _загрузке_ расположения кода, а модель компилируется и выполняется позже, _во время запуска_.
 
-In the `defs/assets/dbt.py` file, make the following changes:
+Изменим тело определения `@dbt_assets`, чтобы получать артефакт `run_results.json` завершённого запуска и выводить скомпилированный SQL каждой модели. Это также покажет, как добавлять собственную логику выполнения.
 
-1. Right now, our code immediately yields all the results of the `dbt.cli()` execution with `yield from`. Once a generator is consumed by `yield from`, it's exhausted — you can't go back and call `.get_artifact()` on it afterward. To access artifacts after the run, we need to store the invocation object first and stream it separately. Let's refactor to store the `dbt.cli()` invocation in a variable called `dbt_build_invocation`:
+В `defs/assets/dbt.py`:
+
+1. Сейчас `yield from` сразу передаёт события из генератора `.stream()`. После потребления генератор исчерпан. Чтобы затем обращаться к артефактам через `.get_artifact()`, сохраним сам объект вызова `dbt.cli()` в переменной `dbt_build_invocation`:
 
    ```python
     dbt_build_invocation = dbt.cli(["build"], context=context)
    ```
 
-2. Next, we'll yield from the `dbt_build_invocation.stream()` to get the logs from the `dbt` command. This ensures that we replicate the functionality that we originally had by yielding all of the events from the `dbt` command:
+2. Передадим события из `dbt_build_invocation.stream()` с помощью `yield from`, сохранив прежнюю передачу событий команды dbt:
 
    ```python
    dbt_build_invocation = dbt.cli(["build"], context=context)
@@ -26,7 +28,7 @@ In the `defs/assets/dbt.py` file, make the following changes:
    yield from dbt_build_invocation.stream()
    ```
 
-3. Because we stored the execution of `dbt.cli()` in `dbt_build_invocation`, we can now access the rest of our dbt artifacts. We'll use `dbt_build_invocation.get_artifact("run_results.json")` to get the `run_results.json` artifact. This artifact contains information such as how long the run took, the number of models that were compiled, and the compiled SQL code for each model:
+3. Через сохранённый объект вызова получим `run_results.json` методом `get_artifact`. Этот артефакт содержит результаты отдельных узлов, сведения о времени выполнения и, для соответствующих результатов, скомпилированный SQL:
 
    ```python
    dbt_build_invocation = dbt.cli(["build"], context=context)
@@ -36,7 +38,7 @@ In the `defs/assets/dbt.py` file, make the following changes:
    run_results_json = dbt_build_invocation.get_artifact("run_results.json")
    ```
 
-4. Finally, we'll loop through the `run_results_json` and print the compiled SQL code for each model. We'll access Dagster's logger from the `context` argument and use it to print the compiled SQL code to the `DEBUG` log level:
+4. Переберём результаты и запишем SQL в журнал с уровнем `DEBUG`, используя логгер из `context`:
 
    ```python
    dbt_build_invocation = dbt.cli(["build"], context=context)
@@ -48,6 +50,6 @@ In the `defs/assets/dbt.py` file, make the following changes:
        context.log.debug(result["compiled_code"])
    ```
 
-Once you've made these changes, restart your code location and run any of your dbt models. You should see the compiled SQL code for each model in the logs.
+Перезагрузите расположение кода и запустите модели dbt. В журнале должен появиться их скомпилированный SQL. Пример предполагает наличие `compiled_code` в каждой обрабатываемой записи; если среди результатов есть другие типы узлов без этого поля, добавьте проверку перед обращением к нему.
 
-This is the tip of the iceberg of what you can do in a `@dbt_assets` definition. For example, you can report the metadata of dbt runs to other services that may be dbt-specific.
+В определении `@dbt_assets` можно выполнять и другую логику, например отправлять метаданные запусков dbt во внешние сервисы.

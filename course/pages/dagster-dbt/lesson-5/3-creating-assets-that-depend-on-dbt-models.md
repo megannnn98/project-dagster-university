@@ -1,33 +1,31 @@
 ---
-title: 'Lesson 5: Creating assets that depend on dbt models'
+title: "Урок 5: Создание ассетов, зависящих от моделей dbt"
 module: 'dagster_dbt'
 lesson: '5'
 ---
 
-# Creating assets that depend on dbt models
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-At this point, you’ve loaded your dbt models as Dagster assets and linked the dependencies between the dbt assets and their source Dagster assets. However, a dbt model is typically not the last asset in a pipeline. For example, you might want to:
+# Создание ассетов, зависящих от моделей dbt
 
-- Generate a chart,
-- Update a dashboard, or
-- Send data to Salesforce
+Вы загрузили модели dbt как ассеты Dagster и связали их с исходными ассетами. Но модель dbt не всегда завершает пайплайн: после неё может потребоваться построить график, обновить дашборд или отправить данные в Salesforce.
 
-In this section, you’ll learn how to do this by defining a new Dagster asset that depends on a dbt model. We’ll make some metrics in a dbt model and then use Python to generate a chart with that data.
+Создадим ассет Dagster, зависящий от модели dbt. Сначала рассчитаем метрики в dbt, затем построим по ним график на Python.
 
-If you’re familiar with New York City, you might know that there are three major airports - JFK, LGA, and EWR - in different parts of the metropolitan area. Let's say you’re curious if a traveler's final destination impacts the airport they fly into. For example, how many people staying in Queens flew into LGA?
+В агломерации Нью-Йорка есть три крупных аэропорта: JFK, LGA и EWR. Проверим, как аэропорт прибытия связан с конечным районом поездки. Например, сколько поездок в Куинс началось в LGA?
 
 ---
 
-## Creating the dbt model
+## Создание модели dbt
 
-To answer these questions, let’s define a new dbt model that builds a series of metrics from the staging models you wrote earlier. 
+Определим модель, вычисляющую метрики по созданным ранее staging-моделям.
 
-In the `src/dagster_and_dbt/analytics/models` directory:
+В каталоге `src/dagster_and_dbt/analytics/models`:
 
-1. Create a new directory called `marts`.
-2. In the `marts` directory, create a new file called `location_metrics.sql`. 
-3. Copy and paste the following into `location_metrics.sql`: 
-    
+1. Создайте каталог `marts`.
+2. Создайте в нём файл `location_metrics.sql`.
+3. Добавьте следующий код:
+
     ```sql
     with
         trips as (
@@ -56,56 +54,50 @@ In the `src/dagster_and_dbt/analytics/models` directory:
     select *
     from trips_by_zone
     ```
-    
-4. In the Dagster UI, reload the code location. 
-5. Observe and materialize the new `location_metrics` dbt asset:
 
-   ![The new location_metrics dbt asset in the Dagster UI](/images/dagster-dbt/lesson-5/new-location-metrics-asset.png)
+4. В интерфейсе Dagster перезагрузите расположение кода.
+5. Найдите и материализуйте новый ассет dbt `location_metrics`:
+
+   ![Новый ассет dbt location_metrics в Dagster](/images/dagster-dbt/lesson-5/new-location-metrics-asset.png)
 
 ---
 
-## Creating the Dagster asset
+## Создание ассета Dagster
 
-Next, we’ll create an asset that uses some of the columns in the `location_metrics` model to chart the number of taxi trips that happen per major NYC airport and the borough they come from.
+Создадим ассет, использующий столбцы `location_metrics` для отображения числа поездок из каждого аэропорта по районам назначения.
 
-### Adding a new constant
+### Добавление константы
 
-Let's start by adding a new string constant to reference when building the new asset. This will make it easier for us to reference the correct location of the chart in the asset.
-
-In the `defs/assets/constants.py` file, add the following to the end of the file:
+В конец `defs/assets/constants.py` добавьте строковую константу, задающую путь к графику:
 
 ```python
 AIRPORT_TRIPS_FILE_PATH = get_path_for_env(os.path.join("data", "outputs", "airport_trips.png"))
 ``` 
 
-This creates a path to where we want to save the chart. The `get_path_for_env` utilty function is not specific to Dagster, but rather is a utility function we've defined in this file to help with Lesson 7 (Deploying your Dagster and dbt project).
+Вспомогательная функция `get_path_for_env` определена в этом файле и не относится к API Dagster. Она понадобится в седьмом уроке при развёртывании проекта Dagster и dbt.
 
-### Creating the airport_trips asset
+### Создание ассета airport_trips
 
-Now we’re ready to create the asset!
+1. Откройте `defs/assets/metrics.py`.
+2. В конце файла определите функцию `airport_trips`. Она принимает существующий ресурс `database` типа `DuckDBResource` и возвращает `MaterializeResult` с метаданными:
 
-1. Open the `defs/assets/metrics.py` file.
-2. At the end of the file, define a new asset called `airport_trips` with the existing `DuckDBResource` named `database` and it will return a `MaterializeResult`, indicating that we'll be returning some metadata:
-    
     ```python
     def airport_trips(database: DuckDBResource) -> dg.MaterializeResult:
     ```
-    
-3. Add the asset decorator to the `airport_trips` function and specify the `location_metrics` model as a dependency:
-    
+
+3. Добавьте декоратор ассета, указав модель `location_metrics` как зависимость:
+
     ```python
     @dg.asset(
         deps=["location_metrics"],
     )
     def airport_trips(database: DuckDBResource) -> dg.MaterializeResult:
     ```
-    
-    **Note:** Because Dagster doesn’t discriminate and treats all dbt models as assets, you’ll add this dependency just like you would with any other asset.
-    
-4. Fill in the body of the function with the following code to follow a similar pattern to your project’s existing pipelines: query for the data, use a library to generate a chart, save the chart as a file, and embed the chart.
 
-   At this point, the `airport_trips` asset should look like this:
-    
+   **Примечание:** Dagster рассматривает модели dbt как обычные ассеты, поэтому зависимость задаётся тем же способом.
+
+4. Заполните тело функции: запросите данные, постройте график, сохраните изображение в файл и добавьте предпросмотр в метаданные. Получится следующий ассет:
+
    ```python
    # src/dagster_and_dbt/defs/assets/metrics.py
    @dg.asset(
@@ -160,25 +152,25 @@ Now we’re ready to create the asset!
        )
    ```
 
-5. Reload your code location to see the new `airport_trips` asset within the `metrics` group. Notice how the asset graph links the dependency between the `location_metrics` dbt asset and the new `airport_trips` chart asset:
+5. Перезагрузите расположение кода. Новый ассет `airport_trips` появится в группе `metrics`. Граф покажет его зависимость от ассета dbt `location_metrics`:
 
-   ![The airport_trips asset in the Asset Graph of the Dagster UI](/images/dagster-dbt/lesson-5/airport-trips-asset.png)
+   ![Ассет airport_trips в графе Dagster](/images/dagster-dbt/lesson-5/airport-trips-asset.png)
 
 ---
 
-## Common MaterializeResult metadata patterns
+## Типичные метаданные MaterializeResult
 
-The `airport_trips` asset returned a chart preview, but `MaterializeResult` accepts any metadata that's useful for observability. The table below covers the most common patterns:
+Ассет `airport_trips` вернул предпросмотр графика, но `MaterializeResult` принимает любые метаданные, полезные для наблюдаемости:
 
-| Use case | MetadataValue type | Example |
+| Назначение | Тип MetadataValue | Пример |
 |---|---|---|
-| Row count | `MetadataValue.int()` | `{"row_count": dg.MetadataValue.int(n_rows)}` |
-| Preview table (markdown) | `MetadataValue.md()` | `{"preview": dg.MetadataValue.md(df.to_markdown())}` |
-| Chart or image | `MetadataValue.md()` | base64 data URI (shown above) |
-| Output file path | `MetadataValue.path()` | `{"output": dg.MetadataValue.path(file_path)}` |
-| External link | `MetadataValue.url()` | `{"dashboard": dg.MetadataValue.url(url)}` |
+| Число строк | `MetadataValue.int()` | `{"row_count": dg.MetadataValue.int(n_rows)}` |
+| Предпросмотр таблицы в Markdown | `MetadataValue.md()` | `{"preview": dg.MetadataValue.md(df.to_markdown())}` |
+| График или изображение | `MetadataValue.md()` | URI данных в base64, как в примере выше |
+| Путь к выходному файлу | `MetadataValue.path()` | `{"output": dg.MetadataValue.path(file_path)}` |
+| Внешняя ссылка | `MetadataValue.url()` | `{"dashboard": dg.MetadataValue.url(url)}` |
 
-You can combine multiple entries in one `metadata` dict:
+В одном словаре `metadata` можно объединять несколько значений:
 
 ```python
 return dg.MaterializeResult(
@@ -189,4 +181,4 @@ return dg.MaterializeResult(
 )
 ```
 
-Note that dbt assets themselves don't use `MaterializeResult`. When you call `yield from dbt.cli([...]).stream()`, the `dagster-dbt` integration yields materialization events automatically for each dbt model. `MaterializeResult` is for the downstream Dagster Python assets (like `airport_trips`) that you write yourself.
+Сами ассеты dbt не используют `MaterializeResult`: при вызове `yield from dbt.cli([...]).stream()` интеграция `dagster-dbt` автоматически передаёт события материализации каждой модели. `MaterializeResult` нужен для написанных вами ассетов Dagster на Python, например `airport_trips`, расположенных ниже по графу зависимостей.

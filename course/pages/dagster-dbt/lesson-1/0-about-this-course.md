@@ -1,36 +1,38 @@
 ---
-title: "Lesson 1: About this course & getting help"
+title: "Урок 1: О курсе и получении помощи"
 module: 'dbt_dagster'
 lesson: '1'
 ---
 
-# About this course
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-This course is geared towards those who have some familiarity with dbt and Dagster. You don't need to be an expert, but you should know your way around a dbt or Dagster project.
+# О курсе
 
-In this course, you'll learn how to integrate and orchestrate dbt projects with Dagster. You'll load dbt models into Dagster as assets, build dependencies, and ready your project for production deployment.
+Курс рассчитан на тех, кто уже немного знаком с dbt и Dagster. Не обязательно быть экспертом, но нужно ориентироваться в проектах dbt или Dagster.
 
----
-
-## Required experience
-
-To successfully complete this course, you'll need:
-
-- **dbt familiarity** - An understanding of the basics of dbt is required to complete this course. We recommend that you first complete [dbt's Fundamentals course](https://courses.getdbt.com/courses/fundamentals) if you're a new dbt user.
-
-- **Dagster familiarity** -  You'll need to know the basics of Dagster to complete this course. **If you've never used Dagster before or want a refresher before getting started**, check out the [Dagster Essentials course](https://courses.dagster.io/courses/dagster-essentials).
-
-- **Python knowledge** - While you don’t need to be a Python expert to get started, you do need some Python familiarity to complete this course and use Dagster. Here are some Pythonic skills that you’ll be using, along with resources to learn about them: 
-
-   - [Functions](https://realpython.com/defining-your-own-python-function/)
-   - [Packages and modules](https://dagster.io/blog/python-packages-primer-1)
-   - [Decorators](https://realpython.com/primer-on-python-decorators/)
-   - [Type hints](https://dagster.io/blog/python-type-hinting).
-
-- **SQL knowledge** - You won’t be writing complex SQL, but you will need to understand the concept of SELECT statements, what tables are, and how to make them. If you’d like a 5-minute crash course, [here’s a short article and cheatsheet on using SQL](https://learnsql.com/blog/sql-basics-cheat-sheet/).
+Вы научитесь интегрировать и оркестрировать проекты dbt с помощью Dagster, загружать модели dbt в Dagster как ассеты, выстраивать зависимости и готовить проект к развёртыванию в production.
 
 ---
 
-## Getting help
+## Необходимый опыт
 
-If you'd like some assistance while working through this course, reach out to the Dagster community on [Slack](https://dagster.io/slack) in the `#dagster-university` channel. **Note**: The Dagster team is generally available during US business hours.
+Для успешного прохождения курса вам понадобятся:
+
+- **Знакомство с dbt** — необходимо понимать основы dbt. Если вы только начинаете работать с dbt, рекомендуем сначала пройти [базовый курс dbt](https://courses.getdbt.com/courses/fundamentals).
+
+- **Знакомство с Dagster** — необходимо знать основы Dagster. **Если вы никогда не пользовались Dagster или хотите освежить знания перед началом**, пройдите [курс Dagster Essentials](https://courses.dagster.io/courses/dagster-essentials).
+
+- **Знание Python** — не обязательно быть экспертом, но для прохождения курса и работы с Dagster необходимо знать Python. Вот навыки, которые пригодятся, и материалы для их изучения:
+
+   - [Функции](https://realpython.com/defining-your-own-python-function/)
+   - [Пакеты и модули](https://dagster.io/blog/python-packages-primer-1)
+   - [Декораторы](https://realpython.com/primer-on-python-decorators/)
+   - [Аннотации типов](https://dagster.io/blog/python-type-hinting).
+
+- **Знание SQL** — сложные SQL-запросы писать не придётся, но необходимо понимать принцип работы SELECT, знать, что такое таблицы и как их создавать. Для быстрого знакомства за пять минут есть [короткая статья и шпаргалка по SQL](https://learnsql.com/blog/sql-basics-cheat-sheet/).
+
+---
+
+## Получение помощи
+
+Если вам нужна помощь при прохождении курса, обратитесь к сообществу Dagster в [Slack](https://dagster.io/slack), в канале `#dagster-university`. **Примечание**: команда Dagster обычно доступна в рабочие часы США.

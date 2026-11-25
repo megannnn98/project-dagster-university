@@ -1,26 +1,28 @@
 ---
-title: "Lesson 2: Set up the dbt project"
+title: "Урок 2: Настройка проекта dbt"
 module: 'dagster_dbt'
 lesson: '2'
 ---
 
-# Set up the dbt project
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Next, you’ll notice that there is a dbt project called `analytics` in the repository you cloned. Throughout the duration of this module, you’ll add new dbt models and see them reflected in Dagster.
+# Настройка проекта dbt
 
-1. Navigate into the directory by running:
-    
+В клонированном репозитории есть проект dbt под названием `analytics`. В ходе курса вы будете добавлять в него модели dbt и видеть их в Dagster.
+
+1. Перейдите в каталог проекта:
+
     ```bash
     cd dagster_university/dagster_and_dbt/src/dagster_and_dbt/analytics
     ```
-    
-2. Next, install dbt package dependencies by running:
-    
+
+2. Установите зависимости из пакетов dbt:
+
     ```bash
     dbt deps
     ```
-    
-3. In a file explorer or IDE, open the `analytics` directory. You should see the following files, which are the models we’ll use to get started:
+
+3. Откройте каталог `analytics` в файловом менеджере или IDE. В нём должны быть следующие файлы — описания источников и начальные модели:
 
     - `models/sources/raw_taxis.yml`
     - `models/staging/staging.yml`

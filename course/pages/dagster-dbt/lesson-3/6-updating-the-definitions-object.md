@@ -1,9 +1,11 @@
 ---
-title: 'Lesson 3: Updating the Definitions object'
+title: "Урок 3: Обновление объекта Definitions"
 module: 'dagster_dbt'
 lesson: '3'
 ---
 
-# Updating the Definitions object
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-Since we established the mapping of the resources in the `defs/resources.py` there is no need to update the `definitions.py` which will automatically load all of our Dagster objects.
+# Обновление объекта Definitions
+
+Мы уже зарегистрировали ресурсы в `defs/resources.py`, поэтому обновлять `definitions.py` не нужно: он автоматически загрузит все объекты Dagster.

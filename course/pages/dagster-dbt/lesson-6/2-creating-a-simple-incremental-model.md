@@ -1,16 +1,18 @@
 ---
-title: 'Lesson 6: Creating an incremental model'
+title: "Урок 6: Создание инкрементальной модели"
 module: 'dagster_dbt'
 lesson: '6'
 ---
 
-# Creating an incremental model
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-As mentioned, partitions don’t *replace* incremental models, but you’ll soon see how you can expand their functionality by partitioning them. In fact, we’ll first write an incremental dbt model and then show you how to use Dagster to partition it.
+# Создание инкрементальной модели
 
-This model will be a series of stats about all New York taxi trips. It would be expensive to compute this every day because of the granularity of the metrics and the fact that some of the measures are computationally expensive to calculate. Therefore, this model will be incremental.
+Партиции расширяют возможности инкрементальных моделей. Сначала напишем инкрементальную модель dbt, затем настроим её партиционирование через Dagster.
 
-In your dbt project, create a new file called `daily_metrics.sql`  in the `defs/analytics/models/marts` directory. Copy and paste the following code into the file:
+Модель будет вычислять статистику поездок на такси в Нью-Йорке. Ежедневно пересчитывать всю историю дорого из-за объёма данных и стоимости вычисления некоторых метрик, поэтому используем инкрементальную материализацию.
+
+В проекте dbt создайте `daily_metrics.sql` в каталоге `src/dagster_and_dbt/analytics/models/marts` и добавьте:
 
 ```sql
 {{
@@ -44,7 +46,7 @@ from daily_summary
 {% endif %}
 ```
 
-This is a standard incremental model that we won’t spend a lot of time going over, but let’s cover the incremental logic here:
+Рассмотрим условие инкрементальной обработки:
 
 ```jsx
 {% if is_incremental() %}
@@ -52,6 +54,6 @@ This is a standard incremental model that we won’t spend a lot of time going o
 {% endif %}
 ```
 
-This `where`  clause is the most common way to define incremental logic. It’s also one of the biggest reasons for the model’s brittleness. 
+Такое условие `where` выбирает только даты позднее максимальной уже обработанной даты. Это распространённый подход, но он затрудняет повторную обработку исторических данных.
 
-What we’d like to do is partition this model and tell dbt to insert only the records that match that partition. For example, if we're running the Dagster partition range of `01/01/24` to`01/22/24`, then dbt should only select and insert records for that date range. Soon, we’ll update this clause to do exactly that!
+Мы настроим партиционирование и передадим dbt явные границы выбираемых записей. Например, при обработке диапазона Dagster с 1 по 22 января 2024 года модель должна выбирать данные только за заданный период. Для этого изменим условие фильтрации.

@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 5: Overview'
+title: "Урок 5: Обзор"
 module: 'dagster_dbt'
 lesson: '5'
 ---
 
-# Overview
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-In Lesson 3, you loaded your dbt project's models as assets into Dagster. You also materialized some of those models.
+# Обзор
 
-In this lesson, we’ll integrate more dbt models with the rest of your Dagster project. You’ll use the existing Dagster assets as sources in your dbt project and learn how to further customize how Dagster maps your dbt project with the `DagsterDbtTranslator` class. To wrap things up, we’ll show you how to automate the running of the dbt models in Dagster.
+В третьем уроке вы загрузили модели проекта dbt в Dagster как ассеты и материализовали часть из них.
+
+Теперь свяжем эти модели с остальным проектом Dagster. Вы используете существующие ассеты Dagster как источники dbt и настроите отображение проекта dbt с помощью класса `DagsterDbtTranslator`. В завершение автоматизируем запуск моделей dbt через Dagster.

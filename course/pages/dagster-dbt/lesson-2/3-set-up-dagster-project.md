@@ -1,20 +1,22 @@
 ---
-title: "Lesson 2: Set up the Dagster project"
+title: "Урок 2: Настройка проекта Dagster"
 module: 'dagster_dbt'
 lesson: '2'
 ---
 
-# Set up the Dagster project
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-To confirm everything works:
+# Настройка проекта Dagster
 
-1. Run `dagster dev`  from the directory `dagster_university/dagster_and_dbt`.
-2. Navigate to the Dagster UI ([`http://localhost:3000`](http://localhost:3000/)) in your browser.
-3. Open the asset graph by clicking **Catalog** (or **Assets** in older versions) in the left sidebar, then click **View global asset lineage**. Confirm the asset graph you see matches the graph below.
+Убедитесь, что всё работает:
 
-   ![The Asset Graph in the Dagster UI](/images/dagster-dbt/lesson-2/asset-graph.png)
+1. Выполните `dagster dev` из каталога `dagster_university/dagster_and_dbt`.
+2. Откройте интерфейс Dagster ([`http://localhost:3000`](http://localhost:3000/)) в браузере.
+3. Нажмите **Catalog** (или **Assets** в старых версиях) на левой боковой панели, затем **View global asset lineage**, чтобы открыть граф ассетов. Убедитесь, что он соответствует изображению ниже.
 
-4. Let's confirm that you can materialize these assets by:
-   1. Navigating to **Overview > Jobs**
-   2. Clicking on the `trip_update_job` job and then **Materialize all...**. 
-   3. When prompted to select a partition, materialize the most recent one (`2023-03-01`). It will start a run/backfill and your assets should materialize successfully.
+   ![Граф ассетов в интерфейсе Dagster](/images/dagster-dbt/lesson-2/asset-graph.png)
+
+4. Проверьте, что ассеты можно материализовать:
+   1. Перейдите в **Overview > Jobs**.
+   2. Выберите задание `trip_update_job`, затем нажмите **Materialize all...**.
+   3. В диалоге выбора партиции материализуйте последнюю доступную в учебном наборе (`2023-03-01`). Начнётся запуск или backfill; ассеты должны успешно материализоваться.
