@@ -1,12 +1,12 @@
 ---
-title: "Lesson 4: API Dagster assets"
+title: 'Урок 4: Ассеты Dagster для API'
 module: 'dagster_etl'
 lesson: '4'
 ---
 
-# API Dagster assets
+# Ассеты Dagster для API
 
-Now that we have a better understanding of how we want to structure data extraction from the API, we can start laying out our Dagster code. Since we want the pipeline to be runnable for any given date, a good first step is to create a run configuration (as we did in the previous lesson) that allows us to specify the target date at execution time. This provides the flexibility to manually trigger runs, automate daily ingestion, or even backfill historical data when needed:
+Теперь, когда мы лучше понимаем, как организовать извлечение данных из API, можно приступить к написанию кода Dagster. Поскольку мы хотим запускать пайплайн для любой заданной даты, хорошим первым шагом будет создание конфигурации запуска (как в предыдущем уроке), позволяющей указывать целевую дату во время выполнения. Это даёт возможность запускать пайплайн вручную, автоматизировать ежедневную загрузку и при необходимости выполнять backfill исторических данных:
 
 ```python
 import dagster as dg
@@ -15,8 +15,7 @@ class NasaDate(dg.Config):
     date: str
 ```
 
-Since Dagster run configurations are built on top of Pydantic models, we can use a `field_validator` to ensure the provided date string is in the correct format (e.g., `YYYY-MM-DD`). This adds a layer of validation that helps catch issues early, before the pipeline begins executing:
-
+Поскольку конфигурации запуска Dagster построены на моделях Pydantic, можно использовать `field_validator`, чтобы убедиться, что переданная строка даты имеет правильный формат (например, `YYYY-MM-DD`). Это добавляет уровень валидации, помогающий обнаруживать проблемы до начала выполнения пайплайна:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -36,11 +35,11 @@ class NasaDate(dg.Config):
         return v
 ```
 
-## Dagster asset
+## Ассет Dagster
 
-With our run configuration in place, we can now define our Dagster assets. Our first asset will be called `asteroids`, and it will use the `NASAResource` we defined earlier to extract asteroid data for a specific day. In this case, the previous day based on the date provided in the run configuration.
+Теперь, когда конфигурация запуска готова, определим ассеты Dagster. Первый ассет будет называться `asteroids`. Он воспользуется ранее определённым ресурсом `NASAResource`, чтобы извлечь данные об астероидах за определённый день. В данном случае — за предыдущий день относительно даты в конфигурации запуска.
 
-To make the correct API call, we’ll need to compute both the start_date and end_date using that input date. The asset will return a list of dictionaries, each representing an asteroid observed during that time period:
+Для корректного вызова API необходимо вычислить start_date и end_date на основе входной даты. Ассет вернёт список словарей, каждый из которых представляет астероид, наблюдавшийся в этот период:
 
 ```python {% obfuscated="true" %}
 # src/dagster_and_etl/defs/assets.py
@@ -63,11 +62,11 @@ def asteroids(
     )
 ```
 
-Now that we’ve fetched the data from the API, the next step is getting that data into DuckDB. One approach would be to run an `INSERT` statement for each record, but that pattern isn’t ideal for OLAP databases like DuckDB, which are optimized for bulk inserts rather than row-by-row operations.
+Теперь, когда данные получены из API, следующим шагом станет их загрузка в DuckDB. Один из подходов — выполнить оператор `INSERT` для каждой записи, но такой шаблон не подходит для OLAP-баз данных вроде DuckDB, оптимизированных для пакетной вставки, а не построчных операций.
 
-A more efficient method, and one that aligns with what we did in the previous lesson, is to write the data to a file and then load that file into DuckDB using a `COPY` statement or a similar bulk load mechanism.
+Более эффективный метод, соответствующий предыдущему уроку, — записать данные в файл, а затем загрузить файл в DuckDB с помощью оператора `COPY` или аналогичного механизма пакетной загрузки.
 
-So, our next asset will take the list of dictionaries returned by the API and save it to a flat file (e.g., a CSV). To simplify the output and avoid dealing with deeply nested JSON structures, we’ll narrow our focus to just the following fields:
+Поэтому следующий ассет возьмёт список словарей, возвращённый API, и сохранит его в плоский файл (например, CSV). Чтобы упростить результат и не работать с глубоко вложенными структурами JSON, ограничимся следующими полями:
 
 - id
 - name
@@ -105,7 +104,7 @@ def asteroids_file(
     return file_path
 ```
 
-The final asset will look very similar to the one we built in the previous lesson. We’ll create a table in DuckDB with the four selected fields and use a `COPY` statement to load the data from the file we just wrote. This approach takes advantage of DuckDB’s efficient bulk loading capabilities and keeps the asset clean and performant. By reusing the same pattern, we maintain consistency across our ETL pipelines, whether the source is a local file or an external API:
+Последний ассет будет очень похож на созданный в предыдущем уроке. Мы создадим таблицу в DuckDB с четырьмя выбранными полями и воспользуемся оператором `COPY` для загрузки данных из только что записанного файла. Такой подход использует возможности эффективной пакетной загрузки DuckDB и позволяет сохранить ассет простым и производительным. Повторно используя один и тот же шаблон, мы обеспечиваем согласованность ETL-пайплайнов независимо от источника — локального файла или внешнего API:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -131,11 +130,11 @@ def duckdb_table(
         conn.execute(f"copy {table_name} from ?", [str(asteroids_file)])
 ```
 
-We can now execute the pipeline for a specific date.
+Теперь можно выполнить пайплайн для конкретной даты.
 
-## Confirm data
+## Проверка данных
 
-To check that everything has loaded correctly, we can connect to the DuckDB database using the [DuckDB CLI](https://duckdb.org/docs/stable/clients/cli/overview.html) and run a query for the table we just made.
+Чтобы убедиться, что всё загрузилось правильно, подключись к базе данных DuckDB с помощью [DuckDB CLI](https://duckdb.org/docs/stable/clients/cli/overview.html) и выполни запрос к только что созданной таблице.
 
 ```bash
 > duckdb data/staging/data.duckdb
@@ -147,3 +146,5 @@ D SELECT * FROM raw_asteroid_data;
 │ 2004034 │ 4034 Vishnu (1986 PA) │                18.49 │ true                              │
 └─────────┴───────────────────────┴──────────────────────┴───────────────────────────────────┘
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

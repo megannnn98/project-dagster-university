@@ -22,14 +22,14 @@ title: Dagster ETL
   - [Запуск партиций](/dagster-etl/lesson-3/5-triggering-partitions)
   - [Облачное хранилище](/dagster-etl/lesson-3/6-cloud-storage)
 
-- Lesson 4: ETL with APIs
-  - [Overview](/dagster-etl/lesson-4/0-overview)
-  - [APIs](/dagster-etl/lesson-4/1-apis)
-  - [API resource](/dagster-etl/lesson-4/2-api-resource)
-  - [ETL with API](/dagster-etl/lesson-4/3-etl-with-api)
-  - [API Dagster assets](/dagster-etl/lesson-4/4-api-dagster-assets)
-  - [Triggering API jobs](/dagster-etl/lesson-4/5-triggering-api-jobs)
-  - [Backfilling from APIs](/dagster-etl/lesson-4/6-backfilling-from-apis)
+- Урок 4: ETL с API
+  - [Обзор](/dagster-etl/lesson-4/0-overview)
+  - [API](/dagster-etl/lesson-4/1-apis)
+  - [Ресурс API](/dagster-etl/lesson-4/2-api-resource)
+  - [ETL с API](/dagster-etl/lesson-4/3-etl-with-api)
+  - [Ассеты Dagster для API](/dagster-etl/lesson-4/4-api-dagster-assets)
+  - [Запуск заданий API](/dagster-etl/lesson-4/5-triggering-api-jobs)
+  - [Backfill данных из API](/dagster-etl/lesson-4/6-backfilling-from-apis)
 
 - Lesson 5: ETL with dlt
   - [Overview](/dagster-etl/lesson-5/0-overview)
