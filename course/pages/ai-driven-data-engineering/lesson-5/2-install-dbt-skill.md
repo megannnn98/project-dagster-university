@@ -1,22 +1,22 @@
 ---
-title: "Lesson 5: Installing the dbt skill"
+title: 'Урок 5: Установка скилла dbt'
 module: 'ai_driven_data_engineering'
 lesson: '5'
 ---
 
-# Installing the dbt skill
+# Установка скилла dbt
 
-All of this can be accomplished using only the `dagster-expert` skill, it knows a good deal about dbt, in particular how dbt relates to Dagster. But the dbt skill gives the agent deeper context about dbt such as model patterns, schema YAML, `ref()` and `source()` usage, dbt commands.
+Всё это можно выполнить только со скиллом `dagster-expert`: он много знает о dbt, в частности о связи dbt с Dagster. Однако скилл dbt даёт агенту более глубокий контекст о шаблонах моделей, YAML-схемах, использовании `ref()` и `source()`, командах dbt.
 
-With both skills, the agent can know about `DbtProjectComponent` for Dagster and dbt specifics when necessary. This will make more sense when we discuss skill chaining.
+С обоими скиллами агент может учитывать `DbtProjectComponent` со стороны Dagster и особенности dbt, когда это необходимо. Это станет понятнее при обсуждении цепочек скиллов.
 
-Installation is the same regardless of which AI coding agent you use and should look familiar from when we discussed [installing the Dagster skill](/ai-driven-data-engineering/lesson-3/0-overview).
+Установка аналогична для разных агентов программирования и должна быть знакома по разделу [установки скилла Dagster](/ai-driven-data-engineering/lesson-3/0-overview).
 
 ---
 
 ## Claude Code
 
-In Claude Code, add the dbt skills from the plugin marketplace and then install the plugin:
+В Claude Code добавь скиллы dbt из каталога плагинов, затем установи плагин:
 
 ```text
 /plugin marketplace add dbt-labs/dbt-agent-skills
@@ -26,37 +26,39 @@ In Claude Code, add the dbt skills from the plugin marketplace and then install 
 /plugin install dbt@dbt-agent-marketplace
 ```
 
-Then reload the plugin registry:
+Затем перезагрузи реестр плагинов:
 
 ```text
 /reload-plugins
 ```
 
-Once installed, confirm it's enabled:
+После установки убедись, что плагин включён:
 
 ```text
 /plugin
 ```
 
-Switch to the **Installed** tab and verify that the dbt skills show as enabled. You should see entries like:
+Перейди на вкладку **Installed** и проверь, что скиллы dbt включены. Должны быть видны записи вроде:
 
-- **dbt:using-dbt-for-analytics-engineering**: enabled
-- **dbt:running-dbt-commands**: enabled
+- **dbt:using-dbt-for-analytics-engineering**: включён.
+- **dbt:running-dbt-commands**: включён.
 
 ---
 
-## Codex, Cursor, Copilot 
+## Codex, Cursor, Copilot
 
-Install using the `npx skills` command:
+Установи с помощью команды `npx skills`:
 
 ```bash
 npx skills add dbt-labs/dbt-agent-skills
 ```
 
-Confirm the dbt skills appear in your skill list and are enabled. You want at least `dbt:using-dbt-for-analytics-engineering` available.
+Убедись, что скиллы dbt присутствуют в списке скиллов и включены. Как минимум должен быть доступен `dbt:using-dbt-for-analytics-engineering`.
 
 ---
 
-## You're set
+## Всё готово
 
-Once the dbt skill is installed, it activates automatically when your prompt is about dbt work -- writing models, updating `schema.yml`, running dbt commands. You don't invoke it with a slash command; it loads based on what you ask. In the next section you'll see it activate as you scaffold the dbt project alongside the Dagster integration.
+После установки скилл dbt автоматически активируется, когда промпт касается работы с dbt: написания моделей, обновления `schema.yml`, выполнения команд dbt. В рабочем процессе курса он загружается на основе содержания запроса, а не через slash-команду. В следующем разделе ты увидишь его активацию при создании структуры проекта dbt вместе с интеграцией Dagster.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

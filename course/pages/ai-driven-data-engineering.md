@@ -32,14 +32,14 @@ title: AI-Driven Data Engineering
   - [Стратегии отладки](/ai-driven-data-engineering/lesson-4/5-debugging-strategies)
   - [Написание эффективных промптов](/ai-driven-data-engineering/lesson-4/6-writing-effective-prompts)
 
-- Lesson 5: Integrations, Components, and AI
-  - [Overview](/ai-driven-data-engineering/lesson-5/0-overview)
-  - [Agents and Components](/ai-driven-data-engineering/lesson-5/1-agents-and-components)
-  - [Installing the dbt skill](/ai-driven-data-engineering/lesson-5/2-install-dbt-skill)
-  - [Adding dbt](/ai-driven-data-engineering/lesson-5/3-adding-dbt)
-  - [Modifying our project](/ai-driven-data-engineering/lesson-5/4-modifying-our-project)
-  - [Additional components](/ai-driven-data-engineering/lesson-5/5-additional-components)
-  - [Skill chaining](/ai-driven-data-engineering/lesson-5/6-when-to-use-each-skill)
+- Урок 5: Интеграции, компоненты и ИИ
+  - [Обзор](/ai-driven-data-engineering/lesson-5/0-overview)
+  - [Агенты и компоненты](/ai-driven-data-engineering/lesson-5/1-agents-and-components)
+  - [Установка скилла dbt](/ai-driven-data-engineering/lesson-5/2-install-dbt-skill)
+  - [Добавление dbt](/ai-driven-data-engineering/lesson-5/3-adding-dbt)
+  - [Изменение проекта](/ai-driven-data-engineering/lesson-5/4-modifying-our-project)
+  - [Дополнительные компоненты](/ai-driven-data-engineering/lesson-5/5-additional-components)
+  - [Цепочки скиллов](/ai-driven-data-engineering/lesson-5/6-when-to-use-each-skill)
 
 - Lesson 6: Code quality with dignified-python
   - [Overview](/ai-driven-data-engineering/lesson-6/0-overview)

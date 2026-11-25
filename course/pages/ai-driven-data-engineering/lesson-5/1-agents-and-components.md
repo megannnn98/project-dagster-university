@@ -1,43 +1,45 @@
 ---
-title: "Lesson 5: Agents and Components"
+title: 'Урок 5: Агенты и компоненты'
 module: 'ai_driven_data_engineering'
 lesson: '5'
 ---
 
-# Agents and Components
+# Агенты и компоненты
 
-Dagster is an orchestrator: it’s meant to span many services and tools. Integrations are a core part of that story. At the same time, the more flexibility you give an agent, the more room there is for inconsistent structure and one-off code. Components are how we keep integrations predictable and agent-friendly.
+Dagster — оркестратор, рассчитанный на взаимодействие со множеством сервисов и инструментов. Интеграции — важнейшая часть этой работы. При этом чем больше свободы предоставляется агенту, тем выше вероятность непоследовательной структуры и одноразового кода. Компоненты позволяют сохранять интеграции предсказуемыми и удобными для агентов.
 
-## Integrations as a core part of Dagster
+## Интеграции как основная часть Dagster
 
-Dagster doesn’t replace your data tools. It orchestrates them. You typically connect:
+Dagster не заменяет твои инструменты обработки данных, а оркестрирует их. Обычно подключаются:
 
-- **Transformations**: e.g. dbt, Pandas, SQL
-- **Storage and movement**: e.g. S3, DuckDB, data lakes, replication tools like Sling
-- **Quality and validation**: e.g. Great Expectations, dbt tests
+- **Преобразования:** например, dbt, Pandas, SQL.
+- **Хранение и перенос:** например, S3, DuckDB, озёра данных, инструменты репликации вроде Sling.
+- **Качество и валидация:** например, Great Expectations, тесты dbt.
 
-So integrations (the libraries and patterns that map these tools into Dagster) are central. The [Dagster Integrations](https://docs.dagster.io/integrations) ecosystem covers 82+ integrations; the `dagster-expert` skill gives the agent the right context to pick, configure, and use them.
+Поэтому интеграции (библиотеки и шаблоны, представляющие эти инструменты в Dagster) играют центральную роль. Экосистема [Dagster Integrations](https://docs.dagster.io/integrations) охватывает более 82 интеграций; скилл `dagster-expert` предоставляет агенту контекст для их выбора, настройки и использования.
 
-## What are Components?
+## Что такое компоненты?
 
-[Components](https://docs.dagster.io/guides/build/components) are predefined layouts for common integrations. They let you map other services (e.g. a dbt project, a Sling replication job) into Dagster in a consistent way: standard file locations, standard config shapes, and standard Dagster objects (assets, resources, jobs).
+[Компоненты](https://docs.dagster.io/guides/build/components) предоставляют предопределённые структуры для распространённых интеграций. Они позволяют единообразно представить сторонние сервисы (например, проект dbt или задание репликации Sling) в Dagster: стандартные расположения файлов, структуры конфигурации и объекты Dagster (ассеты, ресурсы, задания).
 
-A good use case for Components would be [dbt](https://www.getdbt.com/). dbt  is one of the most common integrations for Dagster so we try and make it as easy as possible with a dedicated dbt Component ([`DbtProjectComponent`](https://docs.dagster.io/integrations/libraries/dbt)). The user simply points Dagster at their dbt project and profiles, and the Component turns dbt models (and optionally tests) into Dagster assets with the right dependencies and metadata.
+Хороший пример применения компонентов — [dbt](https://www.getdbt.com/). Это одна из самых распространённых интеграций Dagster, поэтому мы упрощаем её с помощью специального компонента dbt ([`DbtProjectComponent`](https://docs.dagster.io/integrations/libraries/dbt)). Пользователь просто указывает проект dbt и профили, а компонент превращает модели dbt (и, при необходимости, тесты) в ассеты Dagster и связанные проверки с правильными зависимостями и метаданными.
 
-This is very helpful but does require some understanding of the component, or a skill that provides that understanding.
+Это очень полезно, но требует некоторого понимания компонента или скилла, предоставляющего такое понимание.
 
-## Why Components work well with agents
+## Почему компоненты хорошо работают с агентами
 
-Like `dg`, Components reduce the surface area the agent interacts with when generating code. Instead of the agent inferring:
+Как и `dg`, компоненты сокращают область взаимодействия агента при генерации кода. Вместо самостоятельного выяснения:
 
-- Where to put dbt config
-- How to wire dbt models to Dagster assets
-- How to add replication (e.g. DuckDB → S3) and where that config lives
+- Где разместить конфигурацию dbt.
+- Как связать модели dbt с ассетами Dagster.
+- Как добавить репликацию (например, DuckDB → S3) и где хранить её конфигурацию.
 
-The agent can scaffold a Component with `dg` and then fill in the integration-specific bits (dbt models, Sling YAML, etc.). That means:
+Агент может создать заготовку компонента через `dg`, а затем заполнить параметры конкретной интеграции (модели dbt, YAML Sling и т. д.). Это означает:
 
-- **Less ambiguity**: the layout and patterns are fixed; the agent follows them.
-- **Best practices by default**: components encode how we recommend using each integration with Dagster.
-- **Easier iteration**: you can alternate between `dg` / `dbt` / Sling commands and let the agent suggest the next step, with a clear notion of “what good looks like.”
+- **Меньше неоднозначности:** структура и шаблоны фиксированы, агент следует им.
+- **Лучшие практики по умолчанию:** компоненты отражают рекомендуемые способы использования интеграций с Dagster.
+- **Удобство итераций:** можно чередовать команды `dg`, `dbt` и Sling, позволяя агенту предлагать дальнейшие шаги при наличии ясных критериев хорошего результата.
 
-![Prompt with the component](/images/ai-driven-data-engineering/lesson-5/prompt-component.png)
+![Промпт с компонентом](/images/ai-driven-data-engineering/lesson-5/prompt-component.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

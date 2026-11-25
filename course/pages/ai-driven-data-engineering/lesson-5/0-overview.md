@@ -1,11 +1,13 @@
 ---
-title: "Lesson 5: Integrations, Components, and AI"
+title: 'Урок 5: Обзор'
 module: 'ai_driven_data_engineering'
 lesson: '5'
 ---
 
-# Overview
+# Обзор
 
-In the previous lesson you built the foundation: three raw assets loading data into DuckDB with a clean, `dg`-validated project structure. Now we build on that. This lesson adds the transformation and export layers (dbt models that reshape the raw data, and a Sling component that ships the results to S3), completing the end-to-end ELT pipeline from the project preview.
+В предыдущем уроке ты создал основу: три исходных ассета, загружающих данные в DuckDB, и аккуратную структуру проекта, проверенную через `dg`. Теперь будем развивать эту основу. В этом уроке добавим слои преобразования и экспорта (модели dbt, преобразующие исходные данные, и компонент Sling, отправляющий результаты в S3), завершив сквозной ELT-пайплайн из обзора проекта.
 
-Along the way you'll see two important patterns come together. The first is how Dagster Components make integrations tractable for agents: instead of figuring out how to wire dbt or Sling into a project from scratch, the agent scaffolds a predefined Component layout and fills in the specifics. The result is less ambiguity and fewer surprises. The second is skill chaining: the practice of switching between `dagster-expert` and the dbt skill as the nature of the task shifts. Knowing which skill to reach for, and when to switch, is one of the most useful habits you can develop for AI-driven Dagster work.
+Попутно ты увидишь сочетание двух важных шаблонов. Первый — как компоненты Dagster упрощают интеграции для агентов: вместо самостоятельного выяснения, как подключить dbt или Sling к проекту, агент создаёт заготовку компонента с предопределённой структурой и заполняет конкретные параметры. Результат — меньше неоднозначности и неожиданностей. Второй — цепочки скиллов (skill chaining): переключение между `dagster-expert` и скиллом dbt по мере изменения характера задачи. Понимание того, какой скилл выбрать и когда переключаться, — одна из самых полезных привычек при разработке Dagster с ИИ.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
