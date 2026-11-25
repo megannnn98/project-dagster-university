@@ -1,43 +1,43 @@
 ---
-title: "Lesson 8: Working with an existing project"
+title: 'Урок 8: Работа с существующим проектом'
 module: 'ai_driven_data_engineering'
 lesson: '8'
 ---
 
-# Working with an existing project
+# Работа с существующим проектом
 
-This course has been entirely greenfield: start a new project, scaffold assets, add integrations. That's the right way to learn. But most real work happens in projects that already exist, with conventions already established, assets already written, and patterns you didn't choose.
+Весь этот курс был посвящён разработке с нуля (greenfield): созданию нового проекта, заготовок ассетов и добавлению интеграций. Это подходящий способ обучения. Но большая часть реальной работы происходит в существующих проектах: соглашения уже установлены, ассеты написаны, а некоторые шаблоны выбраны не тобой.
 
-Adding an AI-driven workflow to an existing Dagster project -- a brownfield project -- works well, but the approach differs from starting fresh. The agent doesn't arrive knowing your conventions, your naming patterns, or why certain decisions were made. Without that context, it will invent its own.
+Внедрение разработки с ИИ в существующий проект Dagster (brownfield) хорошо работает, но подход отличается от старта с нуля. Агент изначально не знает твоих соглашений, шаблонов именования или причин ранее принятых решений. Без такого контекста он предложит собственные.
 
-## The core challenge
+## Основная проблема
 
-In a greenfield project, the skill provides all the context the agent needs. It knows to use `uv`, to scaffold with `dg`, to use `_make_raw_asset()` factories, to put resources in the right place.
+В проекте с нуля скилл предоставляет агенту необходимый контекст. Он знает, что следует использовать `uv`, создавать заготовки с `dg`, применять фабрики `_make_raw_asset()` и помещать ресурсы в нужные места.
 
-In a brownfield project, the project has its own conventions that may differ from the skill's defaults. Maybe assets use a different factory pattern. Maybe the project uses Poetry instead of `uv`. Maybe resources are structured differently than the skill expects.
+В существующем проекте могут быть собственные соглашения, отличающиеся от стандартных рекомендаций скилла. Возможно, ассеты используют другой фабричный шаблон. Возможно, проект использует Poetry вместо `uv`. Возможно, ресурсы организованы иначе, чем ожидает скилл.
 
-The agent will follow the skill's defaults unless you give it project-specific context. Getting that context in front of the agent before it writes anything is what makes brownfield work productive.
+Агент будет следовать стандартным рекомендациям скилла, если не предоставить ему специфический контекст проекта. Именно предоставление этого контекста до записи кода делает работу с существующим проектом продуктивной.
 
-## Start with a context file
+## Начни с файла контекста
 
-The most effective thing you can do before prompting in a brownfield project is write down the conventions in a file your agent reads automatically. In brownfield work this is even more critical than in a new project.
+Самое эффективное действие перед отправкой промптов в существующем проекте — записать соглашения в файл, который агент читает автоматически. В такой работе это даже важнее, чем в новом проекте.
 
-Each agent has its own convention for this file:
+У каждого агента свои соглашения об этом файле:
 
-- **Claude Code**: `CLAUDE.md` in the project root
-- **Cursor**: `.cursorrules` in the project root
-- **GitHub Copilot**: `.github/copilot-instructions.md`
-- **Codex**: `AGENTS.md` in the project root
+- **Claude Code:** `CLAUDE.md` в корне проекта.
+- **Cursor:** `.cursorrules` в корне проекта (формат, указанный в исходном курсе).
+- **GitHub Copilot:** `.github/copilot-instructions.md`.
+- **Codex:** `AGENTS.md` в корне проекта.
 
-The content is the same regardless of tool. A good context file covers:
+Содержание одинаково независимо от инструмента. Хороший файл контекста охватывает:
 
-- Package manager and how to add dependencies
-- Project structure (where assets, resources, schedules live)
-- Existing patterns (factory functions, naming conventions)
-- Validation commands (`dg check defs`, test runner invocation)
-- What not to change (core abstractions, configuration structure)
+- Менеджер пакетов и способ добавления зависимостей.
+- Структуру проекта (расположение ассетов, ресурсов, расписаний).
+- Существующие шаблоны (фабричные функции, соглашения об именовании).
+- Команды валидации (`dg check defs`, запуск тестов).
+- Что нельзя менять (основные абстракции, структуру конфигурации).
 
-Example:
+Пример:
 
 ```markdown
 # Project conventions
@@ -59,11 +59,11 @@ Run `dg check defs` from the project root after any change.
 Run `pytest` to verify tests pass.
 ```
 
-With this file present, the agent reads it at the start of each session and uses your conventions, not the skill's defaults.
+При наличии такого файла агент читает его в начале сессии согласно правилам своего инструмента и учитывает твои соглашения, а не только стандартные рекомендации скилла.
 
-## Read before you build
+## Сначала изучи, затем создавай
 
-Before adding anything new to an existing project, prompt the agent to explore what's already there:
+Перед добавлением чего-либо нового в существующий проект попроси агента исследовать уже имеющийся код:
 
 ```text
 /dagster-expert Read the existing assets in defs/assets/ and the resource definitions
@@ -71,9 +71,9 @@ in defs/resources.py. Describe the patterns and conventions you see before sugge
 any changes.
 ```
 
-This gives the agent an accurate picture of the codebase and surfaces patterns it should follow. It also gives you a chance to correct any misunderstandings before implementation starts.
+Это даёт агенту точное представление о кодовой базе и выявляет шаблоны, которым нужно следовать. Ты также получаешь возможность устранить недопонимание до начала реализации.
 
-For larger projects, you can scope the reading:
+Для крупных проектов можно ограничить область чтения:
 
 ```text
 /dagster-expert I want to add a new data source. Before writing any code, read the
@@ -81,29 +81,29 @@ three most recently modified files in defs/assets/ and describe the pattern I'm
 following for raw assets.
 ```
 
-## Where AI-driven workflows add the most value in brownfield projects
+## Где разработка с ИИ приносит больше всего пользы в существующих проектах
 
-Not all brownfield work benefits equally. The highest-value applications:
+Не все задачи существующего проекта получают одинаковую пользу. Наиболее ценные применения:
 
-**Adding new assets and integrations**: the shape of the work is the same as greenfield. The agent follows the existing factory pattern, scaffolds files in the right location, and adds dependencies. The only difference is that you need to point it at the existing pattern first.
+**Добавление новых ассетов и интеграций:** характер работы такой же, как при разработке с нуля. Агент следует существующему фабричному шаблону, создаёт заготовки в нужном месте и добавляет зависимости. Разница лишь в том, что сначала нужно указать существующий шаблон.
 
-**Applying dignified-python to legacy code**: `dg check defs` doesn't catch style issues; code that works may still be structured poorly. The `/dignified-python` skill will audit existing files and propose improvements -- repetitive asset functions, missing type hints, side effects at import time -- without changing behavior.
+**Применение dignified-python к старому коду:** `dg check defs` не выявляет проблемы стиля; работающий код может быть плохо структурирован. Скилл `/dignified-python` поможет проверить существующие файлы и предложить улучшения — повторяющиеся функции ассетов, отсутствующие аннотации типов, побочные эффекты при импорте — без изменения поведения.
 
-**Adding tests**: existing assets often have no tests. The TDD approach from Lesson 6 works on existing assets: write a test that describes the expected behavior, prompt the agent to run it and confirm it passes (or fix it if it doesn't).
+**Добавление тестов:** существующие ассеты часто не имеют тестов. Подход TDD из урока 6 можно применить к ним: напиши тест, описывающий ожидаемое поведение, попроси агента выполнить его и убедиться, что он проходит (или исправить код в противном случае).
 
-**Writing schema and documentation**: the dbt skill can add tests, descriptions, and column documentation to existing dbt models without changing the SQL. Prompt it with a dbt-focused request (e.g. "add `not_null` tests to all id columns in schema.yml") and it activates automatically.
+**Написание схем и документации:** скилл dbt может добавить тесты, описания и документацию столбцов существующих моделей dbt без изменения SQL. Дай ему промпт, посвящённый dbt (например, «добавь тесты `not_null` ко всем столбцам id в schema.yml»), и он активируется автоматически.
 
-## Where to be careful
+## Где следует соблюдать осторожность
 
-**Refactoring core abstractions**: if the project has a custom base class, a non-standard resource pattern, or unusual job structure, the agent may not understand why it exists. Prompt it to explain what it sees before asking it to change anything structural.
+**Рефакторинг основных абстракций:** если в проекте есть пользовательский базовый класс, нестандартный шаблон ресурсов или необычная структура заданий, агент может не понимать причины их существования. Попроси объяснить увиденное, прежде чем поручать структурные изменения.
 
-**Migrating patterns**: don't prompt the agent to "update all assets to use the new factory pattern" in a single session. The blast radius is large, the agent will read many files, and context degradation (Lesson 7) will affect the later files in the session. Break pattern migrations into one asset at a time, each in its own session, each validated before the next begins.
+**Миграция шаблонов:** не проси агента «обновить все ассеты для использования нового фабричного шаблона» в одной сессии. Масштаб изменений велик, агент прочитает много файлов, а ухудшение контекста (урок 7) повлияет на поздние файлы сессии. Разбивай миграцию шаблонов на отдельные ассеты, каждый в своей сессии, с валидацией перед переходом к следующему.
 
-**Files not covered by your context file**: if a part of the project has conventions your context file doesn't mention, the agent will invent something. Before prompting in an unfamiliar area, read a representative file and add the relevant conventions to your context file.
+**Файлы, не охваченные файлом контекста:** если в части проекта есть соглашения, не описанные в контексте, агент может предложить свои. Перед постановкой задачи в незнакомой области прочитай показательный файл и добавь соответствующие соглашения в файл контекста.
 
-## The brownfield onboarding prompt
+## Промпт знакомства с существующим проектом
 
-A useful pattern when starting AI-driven work on an unfamiliar existing project: give the agent an explicit onboarding task before any implementation work.
+Полезный шаблон начала работы с ИИ в незнакомом существующем проекте: поручить агенту явную задачу ознакомления до любой реализации.
 
 ```text
 /dagster-expert You're working on an existing Dagster project. Before we add anything new:
@@ -116,4 +116,6 @@ A useful pattern when starting AI-driven work on an unfamiliar existing project:
 Do not make any changes yet. I want to review your understanding before we build.
 ```
 
-This establishes shared context, surfaces any gaps before they affect the implementation, and gives you a baseline of what currently works. Once the agent can accurately describe the project, subsequent prompts will produce code that fits rather than code that needs correcting.
+Это создаёт общий контекст, выявляет пробелы до того, как они повлияют на реализацию, и даёт базовое представление о том, что сейчас работает. Когда агент способен точно описать проект, последующие промпты будут с большей вероятностью приводить к коду, вписывающемуся в него, а не требующему исправлений.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

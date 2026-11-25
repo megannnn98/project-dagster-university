@@ -1,32 +1,32 @@
 ---
-title: "Lesson 5: Modifying our project"
+title: 'Урок 5: Изменение проекта'
 module: 'ai_driven_data_engineering'
 lesson: '5'
 ---
 
-# Modifying our project
+# Изменение проекта
 
-The dbt Component and models are in place, but the project isn't quite right yet. The dbt assets aren't connected to the raw assets in the graph, they're not organized into a group, and we don't have any data quality checks. Each of these is a follow-up prompt, and this is a good opportunity to practice skill chaining: some of these tasks are Dagster wiring, and one is dbt-specific work.
+Компонент и модели dbt готовы, но проект ещё не совсем правильный. Ассеты dbt не связаны с исходными ассетами на графе, не объединены в группу, и у нас нет проверок качества данных. Каждая из этих задач — отдельный следующий промпт. Это хорошая возможность попрактиковаться в цепочках скиллов: часть задач относится к связям Dagster, а одна специфична для dbt.
 
-## Connect dbt assets to the raw assets
+## Связывание ассетов dbt с исходными ассетами
 
-The most important fix is wiring the dependency: dbt models should only materialize after the raw assets have run. Without this connection, Dagster doesn't know the order things need to happen in. Ask the skill to make the connection:
+Самое важное исправление — настройка зависимости: модели dbt должны материализоваться после выполнения исходных ассетов. Без этой связи Dagster не знает требуемый порядок выполнения. Попроси скилл создать связь:
 
 ```text {% obfuscated="true" %}
 /dagster-expert Connect the dbt assets to the raw assets.
 ```
 
-The agent updates the asset graph so the dbt staging models depend on the corresponding raw assets. After this change, materializing `stg_customers` will automatically trigger `raw_customers` first if it's stale. That's the lineage working as intended.
+Агент обновляет граф так, чтобы staging-модели dbt зависели от соответствующих исходных ассетов. После изменения Dagster знает правильный порядок при совместной материализации `raw_customers` и `stg_customers`. Автоматический запуск устаревших вышестоящих ассетов дополнительно зависит от настройки автоматизации и выборки ассетов. Так работает происхождение данных.
 
-## Set a group name for dbt assets
+## Задание группы ассетов dbt
 
-With multiple layers of assets in the catalog (raw tables, staging models, a facts table, eventually an S3 export), organization matters. Putting the dbt-derived assets in a `transformation` group makes the asset graph easier to read and the catalog easier to navigate:
+При наличии нескольких слоёв ассетов в каталоге (исходные таблицы, staging-модели, таблица фактов, впоследствии экспорт S3) организация имеет значение. Помещение ассетов dbt в группу `transformation` упрощает чтение графа и навигацию по каталогу:
 
 ```text {% obfuscated="true" %}
 /dagster-expert The dbt assets should have a group name of "transformation".
 ```
 
-The agent updates the Component configuration. With YAML-based config, this typically means adding a `translation` block that sets the group name for all assets produced by the Component:
+Агент обновляет конфигурацию компонента. При YAML-конфигурации это обычно означает добавление блока `translation`, задающего имя группы всех ассетов, создаваемых компонентом:
 
 ```yaml
 attributes:
@@ -35,31 +35,32 @@ attributes:
     group_name: transformation
 ```
 
-Once applied, all dbt assets appear under the **transformation** group in the Dagster UI, visually separated from the raw ingestion layer.
+После применения все ассеты dbt появляются в группе **transformation** интерфейса Dagster, визуально отделённой от слоя исходной загрузки.
 
-![Asset graph with dbt assets in the transformation group](/images/ai-driven-data-engineering/lesson-5/project-dbt-translator.png)
+![Граф с ассетами dbt в группе transformation](/images/ai-driven-data-engineering/lesson-5/project-dbt-translator.png)
 
-## Extend the dbt project
+## Расширение проекта dbt
 
-With our dbt project successfully configured in Dagster we can work on the dbt project directly. At this point changes in the dbt project will be automatically reflected in Dagster.
+Когда проект dbt успешно настроен в Dagster, можно работать непосредственно с ним. Изменения проекта dbt будут отражаться в Dagster при обновлении определений.
 
-The dbt skill activates automatically when your prompt is clearly about dbt work -- model SQL, `schema.yml`, dbt tests -- so there's no slash command to prefix. Just describe what you want.
+Скилл dbt автоматически активируется, если промпт явно относится к работе с dbt: SQL моделей, `schema.yml`, тестам dbt. Поэтому не нужен префикс slash-команды. Просто опиши, что хочешь получить.
 
-Let's add another model that uses the data from our staging models.
+Добавим ещё одну модель, использующую данные staging-моделей.
 
 ```text {% obfuscated="true" %}
 Add a new dbt model called fct_orders that uses the data from the staging models.
 ```
 
-This will add an additional model to the dbt project, which will be reflected when we reload the Dagster catalog (`dg dev`).
+Это добавит модель в проект dbt, которая отобразится при перезагрузке каталога Dagster (`dg dev`).
 
-
-Next we can add some data quality checks such as adding `not_null` and `unique` tests on id columns for our dbt models. These are low effort and catch a large class of real problems:
+Далее можно добавить проверки качества данных, например тесты `not_null` и `unique` для столбцов идентификаторов моделей dbt. Они требуют немного усилий и обнаруживают широкий класс реальных проблем:
 
 ```text {% obfuscated="true" %}
 Add dbt tests to the schema.yml to ensure that there are not NULLs for the id columns.
 ```
 
-The agent adds the appropriate dbt tests to your models and since our Dagster dbt Component is configured to expose tests as Dagster [asset checks](https://docs.dagster.io/guides/test/asset-checks), those tests run as part of your asset graph and show up in the UI alongside the assets they validate. You get dbt's semantics and Dagster's visibility and dependency tracking at the same time.
+Агент добавляет подходящие тесты dbt к моделям. Поскольку компонент dbt настроен на представление тестов как [проверок ассетов](https://docs.dagster.io/guides/test/asset-checks) Dagster, эти тесты выполняются в рамках графа ассетов и появляются в интерфейсе рядом с проверяемыми ассетами. Ты получаешь одновременно семантику dbt, наблюдаемость и отслеживание зависимостей Dagster.
 
-If anything looks off, that's a prompt away from being fixed.
+Если что-то выглядит неправильно, попроси агента исправить это.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

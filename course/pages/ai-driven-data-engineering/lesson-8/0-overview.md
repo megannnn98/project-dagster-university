@@ -1,13 +1,15 @@
 ---
-title: "Lesson 8: Complex tasks with plan mode and parallel sessions"
+title: 'Урок 8: Обзор'
 module: 'ai_driven_data_engineering'
 lesson: '8'
 ---
 
-# Overview
+# Обзор
 
-The workflow so far has been mostly conversational: describe what you want, let the agent write the code, run `dg check defs` to verify. That pattern works well for focused tasks, such as adding an asset, tweaking a schedule, or fixing a type error. The agent can hold the full picture in a single exchange.
+До сих пор рабочий процесс был преимущественно диалоговым: опиши желаемый результат, позволь агенту написать код, выполни `dg check defs` для проверки. Этот шаблон хорошо работает для конкретных задач, например добавления ассета, изменения расписания или исправления ошибки типов. Агент может удерживать всю картину в рамках одного обмена сообщениями.
 
-But some tasks don't fit that shape. Adding a new data integration might touch 8 files at once. Refactoring the project structure might require making decisions across resources, assets, schedules, and dbt models simultaneously. For tasks like these, jumping straight into code generation creates risk: the agent may make inconsistent choices across files, or you may realize mid-implementation that you wanted a different approach.
+Но некоторые задачи не укладываются в этот формат. Добавление новой интеграции данных может затронуть восемь файлов одновременно. Рефакторинг структуры проекта может потребовать принятия решений о ресурсах, ассетах, расписаниях и моделях dbt одновременно. В таких задачах немедленный переход к генерации кода создаёт риски: агент может принять несогласованные решения в разных файлах или в середине реализации ты можешь обнаружить, что хотел другой подход.
 
-The examples in this lesson use a NewsAPI integration — a hypothetical extension to the pipeline that adds a `trending_events` asset pulling data from a news API. It wasn't built in earlier lessons; it's used here because it's complex enough (8 files, multiple languages, a new resource and dependency) to make plan mode and parallel execution worth demonstrating.
+В примерах этого урока используется интеграция NewsAPI — гипотетическое расширение пайплайна, добавляющее ассет `trending_events`, получающий данные из новостного API. Мы не создавали его в предыдущих уроках; здесь он используется потому, что достаточно сложен (восемь файлов, несколько языков, новый ресурс и зависимость), чтобы наглядно продемонстрировать режим планирования и параллельное выполнение.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

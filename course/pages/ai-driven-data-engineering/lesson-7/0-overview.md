@@ -1,15 +1,17 @@
 ---
-title: "Lesson 7: Managing AI sessions"
+title: 'Урок 7: Обзор'
 module: 'ai_driven_data_engineering'
 lesson: '7'
 ---
 
-# Overview
+# Обзор
 
-AI sessions degrade over time. Context fills with file reads, stack traces, and revised decisions, most of which aren't relevant to the current task. Understanding this gradient, recognizing when it's affecting output, and managing sessions accordingly is what separates productive multi-hour work from sessions that produce inconsistent results.
+Качество работы в ИИ-сессиях со временем ухудшается. Контекст заполняется содержимым прочитанных файлов, стеками вызовов и пересмотренными решениями, большая часть которых не относится к текущей задаче. Понимание постепенности этого процесса, распознавание его влияния на результат и соответствующее управление сессиями отличают продуктивную многочасовую работу от сессий с непоследовательными результатами.
 
-This lesson covers three things. First, how context windows actually work and what accumulates as a session grows. Second, the habits that keep sessions productive: one task per session, short validation loops, and the handoff pattern for carrying context forward without carrying noise. Third, the failure patterns that develop naturally in working sessions (kitchen sink sessions, correction loops, the trust-then-verify gap, and infinite exploration) and how to recognize and reset from each.
+Этот урок охватывает три темы. Первая — как работают контекстные окна и что накапливается по мере роста сессии. Вторая — привычки, сохраняющие продуктивность: одна задача на сессию, короткие циклы проверки и шаблон передачи контекста (handoff), позволяющий переносить важную информацию без шума. Третья — типичные проблемные сценарии (сессия обо всём сразу, циклы исправлений, разрыв между доверием и проверкой, бесконечное исследование) и способы их распознавания и выхода из них.
 
-These habits apply to any AI-assisted development, but they're especially important in Dagster projects where sessions span asset creation, debugging, dbt models, and resource configuration across many files.
+Эти привычки применимы к любой разработке с ИИ, но особенно важны в проектах Dagster, где сессии охватывают создание ассетов, отладку, модели dbt и настройку ресурсов во множестве файлов.
 
-The examples in this lesson extend the pipeline beyond what we built in lessons 4 and 5, using a `trending_events` asset that pulls data from a news API as a hypothetical new integration. You won't build it yourself — it's there to illustrate session patterns in a realistic context.
+Примеры урока расширяют пайплайн, построенный в уроках 4 и 5, используя гипотетическую новую интеграцию — ассет `trending_events`, получающий данные из новостного API. Самостоятельно создавать его не требуется: он иллюстрирует шаблоны работы с сессиями в реалистичном контексте.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

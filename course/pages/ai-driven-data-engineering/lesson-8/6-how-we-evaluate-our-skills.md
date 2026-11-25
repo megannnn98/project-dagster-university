@@ -1,48 +1,49 @@
 ---
-title: 'Extra credit: How we evaluate our skills'
+title: 'Дополнительный раздел: Как мы оцениваем свои скиллы'
 module: 'ai_driven_data_engineering'
 lesson: '8'
 ---
 
-# How we evaluate our skills
+# Как мы оцениваем свои скиллы
 
-Skills need to be maintained. The Dagster library and our recommendations evolve constantly, so we need a way to ensure our skills stay accurate, are actually used by the agent, and produce correct outputs. We built a lightweight evaluation framework to do that. The full story is in the blog post [Evaluating Skills](https://dagster.io/blog/evaluating-agent-skills); here's the summary.
+Скиллы нужно сопровождать. Библиотека Dagster и наши рекомендации постоянно развиваются, поэтому нам необходим способ убедиться, что скиллы сохраняют точность, действительно используются агентом и дают корректные результаты. Для этого мы создали легковесный фреймворк оценки. Подробная история изложена в статье [Оценка скиллов](https://dagster.io/blog/evaluating-agent-skills); здесь приведено краткое описание.
 
+## Почему мы проводим оценку
 
-## Why we evaluate
+Без оценки оставалось в основном надеяться, что контекст скиллов приведёт к правильному поведению. Мы хотели выяснить:
 
-Without evaluation, we were mostly hoping that the context in our skills would lead to the right behavior. We wanted to know:
+- Действительно ли агент использует скилл?
+- Загружает ли он *подходящий* контекст для вопроса?
+- Корректен ли полученный код или поведение?
 
-- Is the agent actually using the skill?
-- Is it pulling the *right* context for the question?
-- Is the resulting code or behavior correct?
+Поэтому мы создали небольшой фреймворк, запускающий агента в неинтерактивном режиме с набором промптов и выбранными скиллами, а затем сохраняющий **снимки (snapshots)**: использованные скиллы и инструменты, расход токенов и результат. Снимки хранятся в системе контроля версий, поэтому можно видеть их изменения при обновлении скиллов.
 
-So we built a small framework that runs the agent headlessly with a set of prompts and a chosen set of skills, then captures **snapshots**: which skills and tools were used, token usage, and the output. Those snapshots live in version control so we can see how they change as we update the skills.
+## Что мы проверяем
 
-## What we validate
+Мы не ограничиваемся вопросом «был ли вызван скилл?». Мы проверяем и *результат*. Например, после промпта «добавь новый ассет с именем `dwh_asset`» мы:
 
-We do more than check "was the skill invoked?" We also validate the *outcome*. For example, after a prompt like "Add a new asset named `dwh_asset`," we:
+- Проверяем, что использовался ожидаемый скилл (например, `dagster-expert`).
+- Выполняем `dg list defs` и убеждаемся, что новый ассет присутствует и корректно загружается.
+- При необходимости проверяем метаданные и структуру.
 
-- Assert that the expected skill (e.g. `dagster-expert`) was used
-- Run `dg list defs` and confirm the new asset appears and is valid
-- Optionally check metadata and structure
+Это даёт гораздо больше уверенности в том, что скиллы не просто упоминаются, а действительно приводят к корректным, пригодным для использования результатам.
 
-That gives us much higher confidence that the skills are not only referenced but actually driving correct, usable results.
+## Что мы выяснили
 
-## Lessons we've learned
+В ходе итераций над скиллами и их оценкой выделилось несколько тем:
 
-From iterating on the skills and their evaluations, a few themes stand out:
+- **Меньше — лучше:** краткие, сфокусированные скиллы обычно работают лучше длинных текстов, похожих на свалку документации. Сначала мы превращали существующую документацию в скиллы; результат был слишком многословным и иногда непоследовательным. Сокращение и структурирование материала для агента улучшили поведение и расход токенов.
 
-- **Less is more**: terse, focused skills tend to perform better than long, document-dump-style content. Our first pass was to turn existing docs into skills; the result was too verbose and sometimes inconsistent. Trimming and structuring for the agent improved both behavior and token use.
+- **Деревья решений:** на верхнем уровне каждого скилла мы определяем простое дерево решений: сопоставляем фразы или намерения (например, «настрой ежедневный запуск», «запускай при поступлении файла») с *подмножеством* справочных материалов. Так агент загружает только необходимое для задачи, а не весь скилл.
 
-- **Decision trees**: at the top level of each skill we define a simple decision tree: map phrases or intents (e.g. "schedule this to run daily", "trigger when file arrives") to a *subset* of references. That way the agent only loads what's needed for the task instead of the whole skill.
+- **Специализированные CLI:** хороший CLI незаменим. Мы используем `dg` для создания заготовок, проверки определений и запуска выполнения. Скиллы направляют агента к этим командам вместо самостоятельных догадок о структуре файлов или использовании API, делая поведение более детерминированным и удобным для оценки.
 
-- **Purpose-built CLIs**: there's no substitute for a good CLI. We use `dg` for scaffolding, checking definitions, and launching runs. The skills direct the agent to these commands instead of having it infer file layout or API usage, which makes behavior more deterministic and easier to evaluate.
+- **Циклы обратной связи:** текстовое резюме действий агента (какие инструменты он вызвал и в каком порядке) позволяет быстро проверить соответствие поведения ожиданиям. Можно также передать резюме агенту для уточнения контекста и инструкций скилла, а затем повторно выполнить оценку для подтверждения улучшений.
 
-- **Feedback loops**: the narrative summary of what the agent did (which tools it called, in what order) lets us quickly see if behavior matches expectations. We can also feed that summary back into an agent to refine the skill's context and instructions, then re-run evaluations to confirm improvements.
+## Почему это важно для тебя
 
-## Why this matters for you
+Оценки заменяют догадки измерениями. Мы можем измерить, помогают ли скиллы, обнаруживать регрессии при изменениях и улучшать их с ясной обратной связью. Так мы сохраняем полезность скиллов Dagster по мере развития продукта и лучших практик.
 
-Evaluations remove guesswork. We can measure whether our skills are helping, spot regressions when we change them, and iterate with clear feedback. That's how we keep the Dagster skills useful as the product and our best practices evolve.
+Подробности реализации, примеры снимков и код см. в статье [Оценка скиллов](https://dagster.io/blog/evaluating-agent-skills) и репозитории [dagster-io/skills](https://github.com/dagster-io/skills) (включая каталог `dagster-skills-evals`).
 
-For implementation details, example snapshots, and code, see the [Evaluating Skills](https://dagster.io/blog/evaluating-agent-skills) blog post and the [dagster-io/skills](https://github.com/dagster-io/skills) repository (including the `dagster-skills-evals` directory).
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

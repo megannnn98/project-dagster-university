@@ -1,58 +1,60 @@
 ---
-title: "Lesson 3: GitHub Copilot"
+title: 'Урок 3: GitHub Copilot'
 module: 'ai_driven_data_engineering'
 lesson: '3'
 ---
 
 # GitHub Copilot
 
-If you're using **GitHub Copilot** as your AI coding agent, follow these steps so the Dagster skills are available. Once they're installed and enabled, you can use prompts like `/dagster-expert` in later lessons.
+Если ты используешь **GitHub Copilot** в качестве агента программирования, выполни следующие шаги, чтобы обеспечить доступность скиллов Dagster. После установки и включения можно будет использовать промпты вроде `/dagster-expert` в следующих уроках.
 
 ---
 
-## 1. Install GitHub Copilot
+## 1. Установи GitHub Copilot
 
-Install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) in VS Code and sign in with your GitHub account. Make sure you also have the [GitHub Copilot Chat extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) installed, which provides the agent interface.
+Установи [расширение GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) в VS Code и войди в аккаунт GitHub. Убедись, что установлено и [расширение GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat), предоставляющее интерфейс агента.
 
-### Enable agent mode
+### Включи режим агента
 
-This course expects the agent to run terminal commands and write files autonomously — not just suggest them. In Copilot Chat, switch to **Agent mode** using the mode selector in the chat input bar (look for the dropdown that says "Ask" or "Edit" and change it to "Agent"). Without agent mode, Copilot will suggest commands for you to run manually rather than executing them itself.
+В этом курсе предполагается, что агент самостоятельно выполняет команды терминала и записывает файлы, а не просто предлагает изменения. В Copilot Chat переключись в **Agent mode** с помощью селектора режима в поле ввода чата (найди раскрывающийся список с надписью «Ask» или «Edit» и выбери «Agent»). Без режима агента Copilot будет предлагать команды для ручного выполнения вместо их самостоятельного запуска.
 
 ---
 
-## 2. Add the Dagster skills
+## 2. Добавь скиллы Dagster
 
-The `npx` command comes with Node.js. If you don't have it installed, [install Node.js](https://nodejs.org) first.
+Команда `npx` поставляется с Node.js. Если он не установлен, сначала [установи Node.js](https://nodejs.org).
 
-Install using the `npx skills` command-line:
+Выполни установку с помощью CLI `npx skills`:
 
 ```bash
 npx skills add dagster-io/skills
 ```
 
-![npx install](/images/ai-driven-data-engineering/lesson-3/npx-install.png)
+![Установка через npx](/images/ai-driven-data-engineering/lesson-3/npx-install.png)
 
 ---
 
-## 3. Ensure the Dagster skills are enabled
+## 3. Убедись, что скиллы Dagster включены
 
-In the Copilot Chat panel, confirm that the Dagster skills are **enabled**. You want at least:
+В панели Copilot Chat убедись, что скиллы Dagster **включены**. Необходимо как минимум:
 
-- `dagster-expert`: for project structure, `dg` CLI, and Dagster patterns
-- `dignified-python`: for Python best practices
+- `dagster-expert`: для структуры проекта, CLI `dg` и шаблонов Dagster.
+- `dignified-python`: для лучших практик Python.
 
-Skills are invoked by typing the skill name prefixed with `/` in the Copilot Chat input:
+Скиллы вызываются вводом их имени с префиксом `/` в поле Copilot Chat:
 
 ```text
 /dagster-expert create a new Dagster project called university
 ```
 
-You'll use this pattern throughout the rest of the course.
+Ты будешь использовать этот шаблон на протяжении оставшейся части курса.
 
-![GitHub Copilot skill](/images/ai-driven-data-engineering/lesson-3/copilot-skill.png)
+![Скилл GitHub Copilot](/images/ai-driven-data-engineering/lesson-3/copilot-skill.png)
 
 ---
 
-## You're set
+## Всё готово
 
-With the Dagster skills installed and enabled, you're ready for Lesson 4. In later lessons you'll use prompts that invoke these skills so the agent follows Dagster best practices and uses `dg` for scaffolding and validation.
+После установки и включения скиллов Dagster можно переходить к уроку 4. В следующих уроках ты будешь использовать промпты, вызывающие эти скиллы, чтобы агент следовал лучшим практикам Dagster и применял `dg` для создания заготовок и валидации.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

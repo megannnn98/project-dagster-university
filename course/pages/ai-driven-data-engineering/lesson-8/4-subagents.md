@@ -1,39 +1,39 @@
 ---
-title: "Lesson 8: Parallel sessions and context isolation"
+title: 'Урок 8: Параллельные сессии и изоляция контекста'
 module: 'ai_driven_data_engineering'
 lesson: '8'
 ---
 
-# Parallel sessions and context isolation
+# Параллельные сессии и изоляция контекста
 
-Every AI agent conversation has a context window -- a limit on how much it can hold in active memory at once. For a long, complex session, earlier details get compressed as the conversation grows. This is fine for most work, but it means that in a large implementation, the agent's recall of decisions made early in the session may be less precise by the end.
+У каждого разговора с ИИ-агентом есть контекстное окно — ограничение на количество информации, которую он может одновременно удерживать в активной памяти. В длительной сложной сессии ранние детали могут сжиматься по мере роста разговора. Это подходит для большинства задач, но при большой реализации точность воспроизведения агентом ранних решений к концу сессии может снизиться.
 
-Parallel sessions solve a different problem than plan mode does. Plan mode handles complexity within a single task. Parallel sessions handle situations where two genuinely independent workstreams would otherwise be sequential: you'd finish one completely before starting the other.
+Параллельные сессии решают другую проблему, нежели режим планирования. Планирование помогает справиться со сложностью одной задачи. Параллельные сессии помогают, когда два действительно независимых направления работы иначе пришлось бы выполнять последовательно: полностью закончить одно, затем начать другое.
 
-## What a parallel session is
+## Что такое параллельная сессия
 
-A parallel session is a separate agent conversation you start alongside your main one. It begins fresh (no prior conversation history) and works on its assigned task independently. When it finishes, you bring the output back into the main session manually.
+Параллельная сессия — отдельный разговор с агентом, который ты начинаешь одновременно с основным. Он начинается без предыдущей истории и независимо выполняет порученную задачу. После его завершения ты вручную переносишь результат в основную сессию.
 
-This has two practical benefits:
+Это даёт два практических преимущества:
 
-**Context isolation**: the parallel session's work doesn't consume the main context window. If it reads 20 files and writes detailed test code, none of that occupies space in the main conversation.
+**Изоляция контекста:** работа параллельной сессии не расходует основное контекстное окно. Если она читает двадцать файлов и пишет подробный тестовый код, это не занимает места в основном разговоре.
 
-**Parallelism**: while the main session is writing implementation files, the parallel session can work simultaneously. Work that would otherwise be sequential becomes concurrent.
+**Параллелизм:** пока основная сессия пишет файлы реализации, параллельная сессия может работать одновременно. То, что иначе выполнялось бы последовательно, становится конкурентным.
 
-## When parallel sessions are worth using
+## Когда стоит использовать параллельные сессии
 
-The right time to open a parallel session is when a workstream is:
+Открывать параллельную сессию имеет смысл, когда направление работы:
 
-- Large enough to meaningfully consume context (reading many files, writing substantial code)
-- Independent enough that it doesn't need the main session's in-progress output
+- Достаточно велико, чтобы существенно расходовать контекст (чтение многих файлов, написание значительного объёма кода).
+- Достаточно независимо, чтобы не нуждаться в ещё не готовых результатах основной сессии.
 
-If a task is small or tightly coupled to what the main session is doing, a second session adds switching overhead without much benefit. The value is specifically in separating workstreams that are genuinely independent.
+Если задача мала или тесно связана с работой основной сессии, второй разговор создаёт накладные расходы на переключение без большой пользы. Ценность заключается именно в разделении действительно независимых направлений работы.
 
-## Example: Implementation and testing in parallel
+## Пример: реализация и тестирование параллельно
 
-Consider asking for the NewsAPI integration *and* tests at the same time. Rather than finishing the implementation and then writing tests sequentially, you can run both simultaneously.
+Рассмотрим запрос на создание интеграции NewsAPI и тестов одновременно. Вместо последовательного завершения реализации и написания тестов можно выполнять обе задачи одновременно.
 
-Open your main session and a parallel session at the same time. Give the main session the full implementation task. Give the parallel session a focused prompt:
+Открой основную и параллельную сессии. Основной передай полную задачу реализации. Параллельной — конкретный промпт:
 
 ```text
 Write pytest tests for `NewsApiResource.get_client()` and the `trending_events` asset,
@@ -42,9 +42,9 @@ field and a `get_client()` method returning an `EventRegistry` instance. The ass
 write to a `trending_events` table in DuckDB with daily partitions.
 ```
 
-The parallel session only needs the *design* to write tests: the interface for `NewsApiResource` and the asset contract, not the implementation files themselves. It can start from the same planning output the main session is working from.
+Параллельной сессии для написания тестов нужна только *спецификация*: интерфейс `NewsApiResource` и контракт ассета, а не сами файлы реализации. Она может начать с того же результата планирования, которым пользуется основная сессия.
 
-What each context holds:
+Что содержит каждый контекст:
 
 ```text
 Main session context                Parallel session context
@@ -56,25 +56,25 @@ dg check defs output                pytest fixtures and mocks
                                     Final test file
 ```
 
-By the time the main session finishes validation, the parallel session has returned a complete test file. You review it, place it in `tests/`, and run `pytest`. No sequential waiting required.
+К моменту завершения валидации в основной сессии параллельная сессия может уже вернуть готовый файл тестов. Ты проверяешь его, помещаешь в `tests/` и запускаешь `pytest`. Нет необходимости ждать последовательного завершения двух задач.
 
-## The core value
+## Основная ценность
 
-Implementation and testing are normally sequential phases: you finish the code, then you write tests for it. With a parallel session, they become concurrent workstreams with isolated contexts. Neither pollutes the other, and the total time is closer to the longer of the two rather than their sum.
+Реализация и тестирование обычно являются последовательными этапами: сначала завершается код, затем пишутся тесты. С параллельной сессией они становятся конкурентными направлениями работы с изолированным контекстом. Ни одно не засоряет другое, а общее время приближается к длительности более долгого из двух направлений вместо их суммы.
 
-This is the same principle as parallel file writes within a single plan, scaled up to entire workstreams. When you can describe the interface clearly enough that a second session can work from the design alone, the two workstreams can proceed simultaneously.
+Это тот же принцип, что и параллельная запись файлов в рамках одного плана, но в масштабе целых направлений работы. Если интерфейс можно описать достаточно ясно, чтобы вторая сессия могла работать только на основе спецификации, оба направления могут выполняться одновременно.
 
-## The writer/reviewer pattern
+## Шаблон автор/ревьюер
 
-Parallel sessions are also useful for a different kind of isolation: code review that carries no bias toward the code being reviewed.
+Параллельные сессии также полезны для другой формы изоляции: независимого ревью кода без привязки к выбранному подходу.
 
-When the agent that wrote the code also reviews it, it tends to find what it was looking for: validation of the approach it already chose. A fresh session, given the same file and no prior involvement, reads it without anchoring to the original intent. It's more likely to catch convention violations, unexpected patterns, or decisions that looked reasonable in context but read strangely from the outside.
+Когда агент, написавший код, сам проводит его ревью, он склонен находить то, что искал: подтверждение уже выбранного подхода. Новая сессия, получившая тот же файл и не участвовавшая в реализации, читает его без привязки к первоначальному замыслу. Она с большей вероятностью обнаружит нарушения соглашений, неожиданные шаблоны или решения, выглядевшие разумно в исходном контексте, но странно со стороны.
 
-The pattern is straightforward:
+Шаблон прост:
 
-**Session A (writer):** implements the feature, validates with `dg check defs`, commits
+**Сессия A (автор):** реализует функциональность, выполняет валидацию через `dg check defs`, коммитит изменения.
 
-**Session B (reviewer):** starts fresh, receives the relevant files and a focused review prompt:
+**Сессия B (ревьюер):** начинается с чистого контекста, получает нужные файлы и конкретный промпт для ревью:
 
 ```text
 Review defs/assets/trending_events.py and defs/resources.py for the following:
@@ -84,8 +84,10 @@ Review defs/assets/trending_events.py and defs/resources.py for the following:
 - Any DuckDB connections instantiated outside of the DuckDBResource?
 ```
 
-The reviewer has no memory of the implementation session, no attachment to any particular approach, and no context noise from debugging rounds. Its only job is to read the code against explicit criteria.
+Ревьюер не помнит сессию реализации, не привязан к конкретному подходу и не несёт шума от циклов отладки. Его единственная задача — изучить код в соответствии с явными критериями.
 
-You can also run a reviewer in parallel with the end of an implementation session: while Session A finishes validation, open Session B to review the already-written files. By the time the main session is ready to commit, the review is complete.
+Можно также запускать ревьюера параллельно с заключительной частью сессии реализации: пока сессия A завершает валидацию, открой сессию B для ревью уже написанных файлов. К моменту готовности основной сессии к коммиту ревью может быть завершено.
 
-The writer/reviewer split is particularly useful in Dagster projects because convention violations are subtle: a raw asset that works correctly but skips the factory pattern, a resource that's structured correctly but uses a different naming convention than the rest. Those won't surface in `dg check defs`. They require deliberate review against project conventions.
+Разделение автора и ревьюера особенно полезно в проектах Dagster, поскольку нарушения соглашений бывают неочевидны: исходный ассет работает правильно, но не использует фабричный шаблон; ресурс имеет правильную структуру, но нарушает соглашения об именовании. Такие проблемы не выявляются `dg check defs`. Необходимо целенаправленное ревью на соответствие соглашениям проекта.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,47 +1,49 @@
 ---
-title: "Lesson 4: Debugging strategies"
+title: 'Урок 4: Стратегии отладки'
 module: 'ai_driven_data_engineering'
 lesson: '4'
 ---
 
-# Debugging strategies
+# Стратегии отладки
 
-The debugging page earlier in this lesson showed one specific pattern: a DuckDB path error, fixed in the resource with the skill's help. That pattern (give the error to the agent, use the right skill, fix in the right place) covers many cases. But debugging goes wrong in predictable ways, and knowing how to handle them keeps the workflow moving.
+В предыдущем разделе об отладке мы рассмотрели конкретный шаблон: ошибка пути DuckDB, исправленная в ресурсе с помощью скилла. Этот подход (передать ошибку агенту, использовать правильный скилл, исправить в правильном месте) охватывает множество случаев. Но отладка может идти не так, как надо, по предсказуемым причинам. Знание этих причин помогает сохранять продуктивность.
 
-## When debugging is circular
+## Когда отладка ходит по кругу
 
-If you've made three different changes and the error hasn't moved, stop and reassess. The problem is probably not where you've been looking.
+Если ты внёс три разных изменения, а ошибка осталась прежней, остановись и пересмотри подход. Вероятно, причина находится не там, где ты её ищешь.
 
-Signs that debugging has become circular:
-- The same error appears after different fixes
-- The agent keeps suggesting variations of approaches that haven't worked
-- You've lost track of which changes are currently in place and which were reverted
+Признаки циклической отладки:
+- Одна и та же ошибка появляется после разных исправлений.
+- Агент постоянно предлагает варианты уже не сработавших подходов.
+- Ты потерял понимание, какие изменения сейчас действуют, а какие отменены.
 
-When this happens, the most effective move is to reset. Undo changes back to the last known-good state (the last `dg check defs` passing), then approach the problem with a fresh diagnostic prompt rather than a fix prompt:
+В таком случае наиболее эффективный шаг — вернуться к последнему известному рабочему состоянию (последней успешной проверке `dg check defs`), а затем подойти к проблеме с новым диагностическим промптом вместо запроса на исправление:
 
 ```text
 /dagster-expert I'm getting this error when I run the trending_events asset.
 Before suggesting any fixes, explain what could cause it and where to look.
 ```
 
-Getting the agent to explain the problem first, rather than jumping to a fix, often surfaces the real cause. Fixes to the wrong place don't surface the right cause.
+Если сначала попросить агента объяснить проблему, а не сразу её исправлять, часто удаётся обнаружить настоящую причину. Исправления не в том месте не помогают выявить правильную причину.
 
-## Revert when an approach makes things worse
+## Отменяй изменения, когда подход ухудшает ситуацию
 
-If the agent takes an approach that introduces new problems or makes the original problem harder to diagnose, revert to the last known-good state rather than continuing to build on a broken foundation. Different tools handle this differently:
+Если подход агента создаёт новые проблемы или затрудняет диагностику исходной ошибки, вернись к последнему известному рабочему состоянию вместо продолжения разработки на сломанной основе. В разных инструментах это делается по-разному:
 
-**Claude Code:** press `Escape` twice, or type `/rewind`. This restores both the conversation history and the file state to before the last action. It only covers changes made within the current session; use `git` to revert across sessions.
+**Claude Code:** дважды нажми `Escape` или введи `/rewind`. Это позволяет восстановить историю разговора и состояние файлов до предыдущего действия. Механизм охватывает только изменения текущей сессии; для отмены изменений между сессиями используй `git`.
 
-**Cursor:** use `Ctrl+Z` / `Cmd+Z` to undo file changes, or open the file's timeline in the Explorer panel to restore a previous version. Start a new chat to clear the conversation history.
+**Cursor:** используй `Ctrl+Z` / `Cmd+Z`, чтобы отменить изменения файлов, или открой историю файла в панели Explorer для восстановления предыдущей версии. Начни новый чат, чтобы очистить историю разговора.
 
-**Copilot / Codex:** undo file edits with `Ctrl+Z` / `Cmd+Z` in the editor. Use `git checkout -- <file>` to revert a file to its last committed state, or `git stash` to shelve all uncommitted changes and return to the last clean commit.
+**Copilot / Codex:** отменяй изменения файлов через `Ctrl+Z` / `Cmd+Z` в редакторе. Используй `git checkout -- <file>` для отмены незакоммиченных изменений файла до состояния индекса либо `git stash`, чтобы сохранить незакоммиченные изменения и вернуться к чистому рабочему дереву. Перед отменой убедись, что не потеряешь нужные правки.
 
-The practical use case in any tool: the agent made a change that seemed reasonable, the error changed but didn't resolve, and you're not sure what's current. Rather than trying to piece together what changed, revert to the last known state and give a better-framed prompt.
+Практический сценарий одинаков для всех инструментов: агент внёс разумное на первый взгляд изменение, ошибка изменилась, но не исчезла, и непонятно, что сейчас в коде. Вместо попыток восстановить всю цепочку изменений вернись к последнему известному состоянию и сформулируй более точный промпт.
 
-## Debugging and session state
+## Отладка и состояние сессии
 
-Long debugging sessions accumulate noise: stack traces, failed attempts, reverted changes, "try this instead" exchanges. That history doesn't help the current fix; it occupies context that the fix needs.
+Длительные сессии отладки накапливают шум: стеки вызовов, неудачные попытки, отменённые изменения, сообщения «попробуй иначе». Эта история не помогает текущему исправлению, а занимает необходимый для него контекст.
 
-Once you've solved a debugging problem, consider whether to continue in the same session or start fresh. If the fix is small and the session is short, continue. If the session has accumulated several rounds of wrong approaches, apply the fix in a fresh session: open new, paste the handoff summary plus the error and its solution, make the targeted change, validate, commit. The fix lands cleanly without carrying the debugging noise into the project history.
+Решив проблему, подумай, продолжать ли ту же сессию или начать новую. Если исправление небольшое, а сессия короткая, продолжай. Если накопилось несколько раундов ошибочных подходов, примени исправление в новой сессии: открой её, передай краткое резюме вместе с ошибкой и решением, внеси точечное изменение, проверь и закоммить. Так исправление будет внесено без переноса шума отладки в дальнейшую работу.
 
-This isn't a rule; it's a cost-benefit judgment the same way all session management decisions are.
+Это не жёсткое правило, а оценка затрат и пользы, как и другие решения об управлении сессиями.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

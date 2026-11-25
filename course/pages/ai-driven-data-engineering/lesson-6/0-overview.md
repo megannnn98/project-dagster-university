@@ -1,11 +1,13 @@
 ---
-title: "Lesson 6: Code quality with dignified-python"
+title: 'Урок 6: Обзор'
 module: 'ai_driven_data_engineering'
 lesson: '6'
 ---
 
-# Overview
+# Обзор
 
-In earlier lessons we improved code quality along the way. The last Dagster skill worth discussing is `dignified-python`: a collection of our internal best practices and philosophies as they relate to Python.
+В предыдущих уроках мы попутно улучшали качество кода. Последний скилл Dagster, который стоит обсудить, — `dignified-python`: набор внутренних лучших практик и принципов нашей команды, связанных с Python.
 
-These patterns influence the Dagster codebase but can be applied to any Python codebase. This lesson covers what the skill does, what some of the rules look like, how to use it on the code you’ve written, how it differs from (and works with) traditional linters like Ruff, and how to apply test-driven development to verify agent output with running assertions rather than visual inspection.
+Эти шаблоны влияют на кодовую базу Dagster, но применимы к любому проекту Python. В этом уроке мы рассмотрим, что делает скилл, как выглядят некоторые его правила, как применять его к написанному коду, чем он отличается от традиционных линтеров вроде Ruff и как работает вместе с ними. Также обсудим разработку через тестирование (TDD), позволяющую проверять результат агента выполнением утверждений, а не визуальным просмотром.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

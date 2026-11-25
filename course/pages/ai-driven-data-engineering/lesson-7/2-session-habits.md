@@ -1,56 +1,56 @@
 ---
-title: "Lesson 7: Session habits"
+title: 'Урок 7: Привычки работы с сессиями'
 module: 'ai_driven_data_engineering'
 lesson: '7'
 ---
 
-# Session habits
+# Привычки работы с сессиями
 
-These habits keep sessions productive by preventing the accumulation patterns that degrade recall. They're not rules. They're the cost-benefit reasoning behind each decision.
+Эти привычки сохраняют продуктивность, предотвращая накопление информации, ухудшающее воспроизведение деталей. Это не жёсткие правила, а оценка затрат и пользы каждого решения.
 
-## One task per session
+## Одна задача на сессию
 
-The most effective habit: finish one task, validate it, commit it, then start fresh.
+Самая эффективная привычка: заверши одну задачу, проверь её, закоммить изменения и начни новую сессию.
 
-A session that starts with "add the `trending_events` asset" should end when `dg check defs` is passing and the changes are committed. The next task (adding a sensor, extending the dbt project, fixing a failing test) belongs in a new session.
+Сессия, начинающаяся с «добавь ассет `trending_events`», должна завершаться после успешной проверки `dg check defs` и коммита изменений. Следующая задача (добавление сенсора, расширение проекта dbt, исправление упавшего теста) относится к новой сессии.
 
-This isn't about being rigid. It's about avoiding the accumulated noise that builds when a session spans multiple tasks: the stack trace from a debug that's now resolved, the file reads for a task that's long done, the revised decisions that don't apply to the current work. None of that helps the current task. It only occupies context that the current task needs. Starting a new session also keeps token usage lower than continuing a long, noisy one, so the habit helps both quality and cost.
+Дело не в жёсткости процесса, а в устранении шума, накапливающегося, когда сессия охватывает несколько задач: стек вызовов уже устранённой ошибки, прочитанные файлы давно завершённой задачи, пересмотренные решения, не относящиеся к текущей работе. Всё это не помогает текущей задаче, а занимает нужное ей место в контексте. Новая сессия также сокращает расход токенов по сравнению с продолжением длинной зашумлённой сессии, улучшая и качество, и стоимость работы.
 
-## Keep validation loops short
+## Сохраняй короткие циклы проверки
 
-Each `dg check defs` cycle is a natural checkpoint. After the agent writes code and you validate it, you have a clean decision point: continue in this session or start a new one.
+Каждый цикл `dg check defs` — естественная контрольная точка. После написания кода агентом и его проверки появляется удобный момент для решения: продолжать текущую сессию или начать новую.
 
-If the validation passes cleanly, the task is probably done. Commit and start fresh.
+Если валидация проходит успешно и выполнены остальные критерии задачи, работа, вероятно, завершена. Закоммить изменения и начни новую сессию.
 
-If the validation fails and the fix is straightforward, stay in the session. The debugging context is exactly what the fix needs.
+Если валидация не проходит, но исправление очевидно, останься в текущей сессии. Контекст отладки — именно то, что нужно для исправления.
 
-If the validation fails and the debugging has been going on for several exchanges without resolution, consider whether starting fresh with a focused prompt ("this specific `dg check defs` error...") would be faster than continuing in a session that's accumulated noise.
+Если валидация не проходит и отладка продолжается несколько сообщений без результата, подумай, не будет ли быстрее начать новую сессию с конкретным промптом («эта конкретная ошибка `dg check defs`...»), чем продолжать работу в сессии, накопившей шум.
 
-## Avoid backtracking in long sessions
+## Избегай возврата к старым решениям в длинных сессиях
 
-Backtracking (reversing a decision made several exchanges ago) is expensive in a long session. The earlier decision is in context, the reversal is in context, and the new approach is building on top of both. That layering makes it harder for the agent to track which version of the decision is current.
+Возврат к решению, принятому несколько сообщений назад, обходится дорого в длинной сессии. Старое решение находится в контексте, его отмена тоже, а новый подход строится поверх обоих. Такое наслоение затрудняет агенту понимание того, какое решение действует сейчас.
 
-If you catch a bad decision early (within a few exchanges), reversal is clean. The session hasn't built much on top of the wrong choice.
+Если ошибочное решение замечено рано (через несколько сообщений), отменить его просто. На неправильном выборе ещё не успело накопиться много последующей работы.
 
-If you're reversing a decision from many exchanges ago, ask: is it cleaner to reverse in this session, or to start fresh and bring only the correct approach forward? Starting fresh doesn't lose progress. It loses noise.
+Если отменяешь решение, принятое много сообщений назад, спроси себя: проще отменить его в текущей сессии или начать заново, перенеся только правильный подход? Новая сессия не уничтожает прогресс. Она избавляет от шума.
 
-## When to start fresh
+## Когда начинать новую сессию
 
-This is a cost-benefit decision, not a rule. Start fresh when:
+Это решение на основе затрат и пользы, а не жёсткое правило. Начинай новую сессию, когда:
 
-**A new unrelated task begins.** If the next thing you're doing has no direct connection to what you just finished, there's no reason to carry the history of the finished task. Start clean.
+**Начинается новая несвязанная задача.** Если следующее действие непосредственно не связано с только что завершённым, нет причин переносить историю прошлой задачи. Начни с чистого контекста.
 
-**You're reversing an early decision.** If the approach from exchange 5 is being undone in exchange 25, the session has accumulated 20 exchanges of context built on a foundation that's being replaced. Starting fresh with the correct approach is usually cleaner.
+**Ты отменяешь раннее решение.** Если подход из пятого сообщения отменяется на двадцать пятом, сессия накопила двадцать сообщений контекста на основе решения, которое теперь заменяется. Обычно проще начать заново с правильным подходом.
 
-**The agent has shown inconsistent recall.** If you've seen two or three of the degradation signals from the first page of this lesson ("What is context"): hedging, regressions, inconsistent descriptions. The session has accumulated enough noise that continuing is likely to produce more of the same. The cost of starting fresh is small; the cost of unreliable output is higher.
+**Агент непоследовательно воспроизводит информацию.** Если замечены два-три признака ухудшения из первого раздела урока («Что такое контекст?») — неуверенность, регрессии, противоречивые описания, — вероятно, накопилось достаточно шума, чтобы дальнейшая работа давала такие же результаты. Стоимость новой сессии мала по сравнению со стоимостью ненадёжных результатов.
 
-**Debugging has generated significant noise.** Stack traces, failed attempts, dead ends. If the debugging session produced a lot of irrelevant history and the issue is now resolved, starting fresh for the fix (rather than applying it in the noisy session) gives the agent a cleaner context for the actual change.
+**Отладка создала значительный шум.** Стеки вызовов, неудачные попытки, тупики. Если сессия отладки накопила много не относящейся к делу истории и проблема уже решена, новая сессия для применения исправления даёт агенту более чистый контекст.
 
-## Carrying context forward: the handoff pattern
+## Перенос контекста: шаблон handoff
 
-Starting fresh doesn't mean losing progress. The handoff pattern lets you compress what matters and bring it forward cleanly.
+Начало новой сессии не означает потерю прогресса. Шаблон handoff позволяет сжать важную информацию и перенести её без лишнего шума.
 
-Before closing a long session, ask the agent to produce a structured summary:
+Перед закрытием длинной сессии попроси агента составить структурированное резюме:
 
 ```text
 Before we close, produce a session handoff summary:
@@ -60,11 +60,11 @@ Before we close, produce a session handoff summary:
 - What the next task is and what context it needs
 ```
 
-Open the new session with that summary as your first message. The new session starts with exactly the context it needs: no noise, no dead ends, no debugging history.
+Открой новую сессию с этим резюме в качестве первого сообщения. Новая сессия начнётся с необходимого контекста без шума, тупиковых подходов и истории отладки.
 
-### Example handoff summary
+### Пример резюме для передачи контекста
 
-This is what a handoff summary looks like using the actual project:
+Вот как может выглядеть резюме на основе нашего проекта:
 
 ```text
 Session handoff — NewsAPI integration
@@ -93,10 +93,12 @@ Next task:
 - Add dbt tests for stg_trending_events beyond the existing not_null checks
 ```
 
-The new session opens with this and immediately has the full picture: what exists, what decisions were made (and which ones were corrected), the current state, and what to do next. No re-reading files to reconstruct project state, no re-explaining conventions.
+Новая сессия начинается с полной картины: что существует, какие решения приняты (и какие были исправлены), текущее состояние и дальнейшая задача. Не нужно заново читать все файлы для восстановления состояния проекта или повторно объяснять соглашения.
 
-## The handoff is a compressed state snapshot
+## Handoff — сжатый снимок состояния
 
-A good handoff isn't a full replay of the session. It's a snapshot of current state: what decisions are in effect, what the project looks like right now, what comes next. The session history that produced that state isn't useful to a new agent. The outcome of that history is.
+Хороший handoff не воспроизводит всю сессию. Это снимок текущего состояния: какие решения действуют, как сейчас выглядит проект и что предстоит. История, приведшая к этому состоянию, новому агенту не нужна. Важен её результат.
 
-Write the handoff to be useful to someone who wasn't in the session. If you can read it and know exactly where to start, it's complete.
+Пиши резюме так, чтобы оно было полезно тому, кто не участвовал в сессии. Если после его чтения понятно, с чего начать, оно достаточно полное.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

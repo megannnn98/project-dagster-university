@@ -1,53 +1,53 @@
 ---
-title: "Lesson 4: Writing effective prompts"
+title: 'Урок 4: Написание эффективных промптов'
 module: 'ai_driven_data_engineering'
 lesson: '4'
 ---
 
-# Writing effective prompts
+# Написание эффективных промптов
 
-The workflow you've seen in this lesson (building assets, debugging failures, adding automation) depends on how well you direct the agent. The mechanics of prompting are simple. The discipline is harder.
+Рабочий процесс этого урока (создание ассетов, отладка ошибок, добавление автоматизации) зависит от того, насколько хорошо ты направляешь агента. Механика промптинга проста, а дисциплина сложнее.
 
-These principles apply across tools, but the examples here are grounded in the Dagster project you've been building.
+Эти принципы применимы к разным инструментам, но примеры здесь основаны на создаваемом проекте Dagster.
 
-## Describe the data product, not the code
+## Описывай продукт данных, а не код
 
-Tell the agent what the pipeline should produce, not which class to instantiate. The agent knows the mechanics; you supply the goal.
+Сообщай агенту, что должен создавать пайплайн, а не экземпляр какого класса нужно создавать. Агент знает механику, ты задаёшь цель.
 
-Instead of:
+Вместо:
 
 ```text
 Write a DbtProjectComponent that points at a dbt project.
 ```
 
-Try:
+Попробуй:
 
 ```text
 Add a dbt project that models the data from the three raw assets.
 Each raw table maps to a stg_ staging model.
 ```
 
-The first version delegates your thinking to the agent and risks getting back boilerplate that doesn't fit your project. The second gives the agent a clear outcome to work toward.
+Первый вариант делегирует агенту слишком много решений и рискует вернуть шаблонный код, не подходящий проекту. Второй задаёт чёткий результат, к которому следует стремиться.
 
-## Use the right skill prefix
+## Используй правильный префикс скилла
 
-The skill prefix determines which context the agent draws from when generating code.
+Префикс скилла определяет, из какого контекста агент черпает информацию при генерации кода.
 
-- `/dagster-expert` - Dagster core concepts: assets, jobs, schedules, resources, debugging
+- `/dagster-expert` — основные понятия Dagster: ассеты, задания, расписания, ресурсы, отладка.
 
-Using the wrong skill doesn't break anything, but the agent is working from thinner context for the task at hand. If you're debugging a partitioned asset, use `/dagster-expert`.
+Использование неподходящего скилла само по себе не ломает проект, но агент работает с менее подходящим контекстом. Если отлаживаешь партиционированный ассет, используй `/dagster-expert`.
 
-## Scope one thing at a time
+## Ограничивай задачу одним изменением за раз
 
-Combining multiple changes into one prompt produces a large, hard-to-debug result.
+Объединение нескольких изменений в одном промпте приводит к большому результату, который трудно отлаживать.
 
-Instead of:
+Вместо:
 
 ```text
 Add a dbt project, connect it to the raw assets, and write tests for the staging models.
 ```
 
-Break it into steps:
+Разбей задачу на шаги:
 
 ```text
 Step 1: Add a dbt project with staging models for the three raw assets.
@@ -55,11 +55,11 @@ Step 2: (after validating) Connect the dbt assets to the raw assets as upstream 
 Step 3: (after validating) Add schema tests to the staging models.
 ```
 
-Each step ends with a `dg check defs` before the next one starts. This keeps the blast radius small and makes failures easy to locate. If something breaks after step 2, you know exactly where to look.
+Каждый шаг завершается выполнением `dg check defs` перед переходом к следующему. Это ограничивает масштаб возможных ошибок и упрощает их локализацию. Если после шага 2 что-то ломается, понятно, где искать причину.
 
-## Lead with context the agent doesn't have
+## Начинай с контекста, которого нет у агента
 
-The agent knows Dagster patterns. It doesn't know your project's specifics. State constraints upfront rather than correcting after the fact.
+Агент знает шаблоны Dagster. Но он не знает особенностей твоего проекта. Указывай ограничения заранее, а не исправляй результат постфактум.
 
 ```text
 The raw CSV is at https://example.com/data/orders.csv.
@@ -68,15 +68,17 @@ Use the _make_raw_asset() factory like the other raw assets in the project.
 Add an asset that ingests this file.
 ```
 
-Compare that to a prompt that leaves out the factory convention and requires a follow-up correction. Context at the start of a prompt is more reliable than correction at the end, especially as a session grows longer and earlier context fades.
+Сравни это с промптом, в котором не указано соглашение о фабриках и требуется дополнительное исправление. Контекст в начале промпта надёжнее, чем корректировка в конце, особенно когда сессия растёт и более ранний контекст теряется.
 
-## Ask for a plan before complex changes
+## Проси план перед сложными изменениями
 
-For tasks that touch more than two or three files, start with a planning step before any code is written:
+Для задач, затрагивающих больше двух-трёх файлов, начинай с этапа планирования до написания кода:
 
 ```text
 Before implementing, draft a plan for adding Sling ingestion for the orders table.
 List each file that will be created or modified.
 ```
 
-Review the plan, ask questions, push back if something looks off. Only then give the go-ahead. This gives you a checkpoint before changes are made and catches misunderstandings early. The planning workflow is covered in more depth in Lesson 8.
+Изучи план, задай вопросы, возрази, если что-то кажется неправильным. Только затем давай разрешение на реализацию. Это создаёт контрольную точку до внесения изменений и помогает обнаруживать недопонимание заранее. Подробнее о планировании поговорим в уроке 8.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

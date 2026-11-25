@@ -1,88 +1,90 @@
 ---
-title: "Lesson 5: Adding dbt"
+title: 'Урок 5: Добавление dbt'
 module: 'ai_driven_data_engineering'
 lesson: '5'
 ---
 
-# Adding dbt
+# Добавление dbt
 
-The raw assets are working: three DuckDB tables with `customer`, `order`, and `payment` data loaded and ready. That's a solid foundation, but it's not useful to anyone yet. Raw data needs cleaning, standardizing, and joining before analysts can work with it. That's what the transformation layer is for, and dbt is the right tool for it.
+Исходные ассеты работают: три таблицы DuckDB с загруженными данными `customer`, `order` и `payment` готовы. Это хорошая основа, но пока она никому не приносит пользы. Прежде чем аналитики смогут работать с исходными данными, их нужно очистить, стандартизировать и объединить. Для этого нужен слой преобразования, и dbt хорошо подходит для этой задачи.
 
-Most of the time you'd integrate an *existing* dbt project into Dagster. Your team already has models, and you're connecting them to an orchestration layer. Here we're generating the entire dbt project from scratch alongside the Dagster integration, which gives you a useful demonstration: with a single prompt, the agent scaffolds both sides of the connection, wired together correctly from the start.
+Чаще всего в Dagster интегрируют *существующий* проект dbt. У команды уже есть модели, которые нужно подключить к слою оркестрации. Здесь мы создаём весь проект dbt с нуля одновременно с интеграцией Dagster. Это полезная демонстрация: с помощью одного промпта агент создаёт структуру обеих сторон интеграции, сразу правильно связывая их.
 
-## The dbt skill in this lesson
+## Скилл dbt в этом уроке
 
-Up to this point you've been using `/dagster-expert` for everything: project structure, assets, resources, the `dg` workflow. That's the right skill for Dagster's core abstractions. But adding dbt introduces dbt-specific questions: what do the models look like, how does the `DbtProjectComponent` expect the project to be laid out, how does `dbt parse` confirm the project is valid?
+До сих пор ты использовал `/dagster-expert` для всего: структуры проекта, ассетов, ресурсов и работы с `dg`. Это подходящий скилл для основных абстракций Dagster. Но при добавлении dbt возникают специфические вопросы: как должны выглядеть модели, какую структуру проекта ожидает `DbtProjectComponent`, как `dbt parse` подтверждает корректность проекта?
 
-The dbt skill has deep context on `DbtProjectComponent`, dbt model patterns, and `dbt_project.yml` layout. Unlike `dagster-expert`, you don't invoke the dbt skill with a slash command -- it activates automatically when the prompt is clearly about dbt work. This is the first example of skill chaining in this lesson: the agent switches between skills at the natural seam between "Dagster structure" and "dbt project."
+Скилл dbt предоставляет глубокий контекст о `DbtProjectComponent`, шаблонах моделей dbt и структуре `dbt_project.yml`. В отличие от `dagster-expert`, в этом рабочем процессе скилл dbt активируется автоматически, когда промпт явно относится к dbt. Это первый пример цепочки скиллов в данном уроке: агент переключается между ними на естественной границе между структурой Dagster и проектом dbt.
 
-## The prompt
+## Промпт
 
-Give the agent a clear goal in terms of data products: what models you want, what format, what dependencies:
+Задай агенту чёткую цель в терминах продуктов данных: какие модели нужны, в каком формате и с какими зависимостями:
 
 ```text {% obfuscated="true" %}
 /dagster-expert Add a dbt project that models the data from the three raw data assets. Each raw asset should map to a corresponding dbt model in the traditional stg_ format, and the dbt models should be dependent on the raw assets.
 ```
 
-Notice that we are using the `dagster-expert` skill. We could use the dbt skills to create the project first and then use the `dagster-expert` skill to define the integration into our project, but we will do both steps together.
+Обрати внимание, что мы используем скилл `dagster-expert`. Можно было бы сначала создать проект с помощью скиллов dbt, а затем использовать `dagster-expert` для интеграции в проект, но мы выполним оба шага вместе.
 
-Note that the prompt describes the asset graph you want, not the code. Staging models for each raw table, with the dependency wiring explicit. The agent figures out the mechanics.
+Промпт описывает требуемый граф ассетов, а не код: staging-модели для каждой исходной таблицы с явно указанными зависимостями. Агент сам определяет механику реализации.
 
-## What the agent does
+## Что делает агент
 
-The workflow for the dbt integration is very similar to our first workflow when defining our assets.
+Рабочий процесс интеграции dbt очень похож на первый процесс определения ассетов.
 
-1. Dependencies: the dbt skill steers the agent toward the `DbtProjectComponent` rather than hand-rolling dbt wiring in Python. So it knows that the `dagster-dbt` library will be necessary.
+1. Зависимости: скилл направляет агента к `DbtProjectComponent` вместо самостоятельной реализации интеграции dbt на Python. Поэтому агент знает, что понадобится библиотека `dagster-dbt`.
 
-`dagster-dbt` does not support Python 3.14. If your project was scaffolded with Python 3.14 (common if Homebrew manages your system Python), pin the version before installing:
+В версии зависимостей, используемой в исходном уроке, `dagster-dbt` не поддерживает Python 3.14. Если проект создан с Python 3.14 (это распространено при использовании Homebrew для системного Python), зафиксируй версию Python перед установкой:
 
 ```bash
 uv python pin 3.13
 uv sync
 ```
 
-Then install the dependency:
+Затем установи зависимость:
 
 ```bash
 uv add dagster-dbt
 ```
 
-2. Scaffolding and Business Logic: it scaffolds the Component with `dg`, which creates the expected layout so Dagster can load the dbt project and turn models into assets:
+2. Создание заготовок и бизнес-логика: агент создаёт заготовку компонента через `dg`, формируя ожидаемую структуру, чтобы Dagster мог загружать проект dbt и превращать модели в ассеты:
 
 ```bash
 dg scaffold defs dagster_dbt.DbtProjectComponent jaffle_shop --project-path dbt_project
 ```
 
-With the Component in place, the agent creates the dbt project itself: `stg_customers`, `stg_orders`, and `stg_payments` in the traditional staging format, each reading from its corresponding raw DuckDB table.
+После создания компонента агент формирует сам проект dbt: `stg_customers`, `stg_orders` и `stg_payments` в традиционном staging-формате, каждая модель читает соответствующую исходную таблицу DuckDB.
 
-3. Validation: throughout this process, the agent will alternate between `dg` and `dbt` CLI commands to verify that the structure confirms at each step rather than all at once at the end:
+3. Валидация: на протяжении процесса агент чередует команды CLI `dg` и `dbt`, проверяя структуру на каждом шаге, а не только в конце:
 
 ```bash
 dbt parse --project-dir dbt_project --profiles-dir dbt_project
 ```
 
-When `dbt parse` succeeds, the project compiles cleanly and Dagster can load it as assets.
+Успешное выполнение `dbt parse` подтверждает, что проект разбирается и Dagster может использовать полученный манифест для загрузки моделей как ассетов. Это не заменяет выполнение SQL-моделей.
 
 ```bash
 dg check defs
 ```
 
-## What you see in the UI
+## Что видно в интерфейсе
 
-Open the asset catalog (you can either ask the agent to do this or run `dg dev` from your Dagster project). You should now see six assets total: the three raw assets on the left (`raw_customers`, `raw_orders`, `raw_payments`) with arrows pointing right to the three dbt staging models (`stg_customers`, `stg_orders`, `stg_payments`).
+Открой каталог ассетов (можно попросить агента или выполнить `dg dev` из проекта Dagster). Теперь должно быть шесть ассетов: три исходных слева (`raw_customers`, `raw_orders`, `raw_payments`) и три staging-модели dbt справа (`stg_customers`, `stg_orders`, `stg_payments`).
 
-![Asset graph with raw assets and dbt models](/images/ai-driven-data-engineering/lesson-5/project-dbt.png)
+![Граф с исходными ассетами и моделями dbt](/images/ai-driven-data-engineering/lesson-5/project-dbt.png)
 
-Each arrow represents a dependency: a staging model can only run after its corresponding raw asset has loaded data. This is the lineage the prompt described, now visible in the graph. A new team member looking at this catalog would immediately understand the pipeline's shape, not from reading the code, but from looking at the graph.
+Каждая стрелка представляет зависимость: staging-модель должна получать данные после загрузки соответствующего исходного ассета. Это происхождение данных, описанное в промпте и теперь видимое на графе. Новый участник команды сразу поймёт структуру пайплайна, просто посмотрев на граф, без чтения кода.
 
-There's still some cleanup to do: the dbt assets and raw assets share the same unlabeled space in the catalog, and the dependency wiring between them could be made more explicit. That's what the next section covers.
+Остаётся немного навести порядок: ассеты dbt и исходные ассеты находятся в одном неподписанном пространстве каталога, а зависимости между ними можно сделать более явными. Это тема следующего раздела.
 
-## If something goes wrong
+## Если что-то пойдёт не так
 
-We can use the `dagster-expert` skill to handle any debugging before moving forward:
+Перед продолжением можно использовать скилл `dagster-expert` для отладки:
 
 ```bash {% obfuscated="true" %}
 > /dagster-expert Help me debug my failed materialization. Share the error and logs, then fix the issue.
 ```
 
-The agent can inspect logs, definitions, and resource config to fix path issues, dependency wiring, or dbt profile problems. That handoff (dbt skill to configure, expert to debug) is itself an example of skill chaining, and a preview of the pattern you'll use throughout this lesson.
+Агент может изучить журналы, определения и конфигурацию ресурсов, чтобы исправить проблемы путей, зависимостей или профилей dbt. Такая передача задачи (скилл dbt для настройки, expert для отладки) сама по себе является примером цепочки скиллов и предваряет шаблон, используемый в оставшейся части урока.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,143 +1,143 @@
 ---
-title: 'Capstone'
+title: 'Итоговый проект'
 module: 'ai_driven_data_engineering'
 lesson: 'capstone'
 ---
 
-# Capstone
+# Итоговый проект
 
-You've built a complete ELT pipeline from scratch: raw data into DuckDB, dbt models transforming it into something useful, a Sling export shipping the results to S3, data quality checks, a daily schedule, and clean Python throughout. All from prompts.
+Ты построил полноценный ELT-пайплайн с нуля: загрузку исходных данных в DuckDB, модели dbt, преобразующие их в полезные данные, экспорт результатов в S3 через Sling, проверки качества данных, ежедневное расписание и аккуратный код Python. Всё это — с помощью промптов.
 
-This capstone doesn't introduce new concepts. It's an open invitation to keep going.
+Этот итоговый проект не вводит новых понятий. Это открытое приглашение продолжить работу.
 
-The best way to solidify an AI-driven workflow is to use it on something you actually care about, or at least something that makes you think. Below is a set of extension ideas and, more importantly, a way of approaching them when you're not sure what to ask for.
+Лучший способ закрепить рабочий процесс с ИИ — применить его к чему-то действительно интересному или хотя бы заставляющему задуматься. Ниже приведены идеи расширения проекта и, что важнее, способ подходить к ним, когда не знаешь, что именно попросить.
 
-## The workflow is the same
+## Рабочий процесс остаётся прежним
 
-Whatever you choose to build next, the approach doesn't change:
+Что бы ты ни решил создавать дальше, подход не меняется.
 
-Describe the data product or behavior you want. Think about whether the task is about Dagster itself (reach for `/dagster-expert`) or about an external tool like dbt (reach for the dbt skill). Let the agent figure out the mechanics. Check the result in the asset catalog.
+Опиши желаемый продукт данных или поведение. Подумай, относится ли задача к самому Dagster (используй `/dagster-expert`) или к внешнему инструменту вроде dbt (используй скилл dbt). Позволь агенту разобраться с механикой. Проверь результат в каталоге ассетов.
 
-The only new challenge is that some of the things you might want to build have names in Dagster that you don't know yet. That's fine.
+Единственная новая сложность — некоторые возможности, которые тебе нужны, могут иметь пока неизвестные тебе названия в Dagster. Это нормально.
 
-## You don't need to know the abstraction to ask for it
+## Не нужно знать название абстракции, чтобы попросить о ней
 
-One of the most useful things you can do with a skill-equipped agent is describe what you want in plain English, without knowing the right Dagster term. The skill will figure it out.
+Одна из самых полезных возможностей агента со скиллами — описать желаемое обычным языком, не зная правильного термина Dagster. Скилл поможет подобрать нужную абстракцию.
 
-For example: say you want your raw assets to process data one month at a time so you can backfill a year of history without running everything in a single job. You might not know that Dagster calls this **partitions**. That's not a problem. Just describe it:
+Например, ты хочешь, чтобы исходные ассеты обрабатывали данные по одному месяцу, чтобы выполнить backfill за год без единого огромного задания. Возможно, ты не знаешь, что Dagster называет это **партициями**. Это не проблема. Просто опиши задачу:
 
 ```text
 /dagster-expert I want each of my raw assets to process data for a specific month, so I can backfill the last 12 months one month at a time. How do I set this up?
 ```
 
-The agent will explain what partitions are, show you how they apply to your project, and scaffold the changes. By the end of the conversation you'll understand the abstraction because you learned it in the context of your actual pipeline, not from a documentation page in the abstract.
+Агент объяснит, что такое партиции, покажет их применение к проекту и создаст заготовки изменений. К концу разговора ты поймёшь абстракцию, изучив её в контексте собственного пайплайна, а не в отрыве от практики.
 
-## Extension ideas
+## Идеи расширения
 
-Here are some directions to take the project. For each one, there's a suggested skill and a prompt you could start with, including examples of how to describe intent without knowing the Dagster term. These are starting points, not prescriptions. Follow the conversation wherever it goes.
+Вот несколько направлений развития проекта. Для каждого предлагаются скилл и начальный промпт, включая примеры описания намерения без знания термина Dagster. Это отправные точки, а не обязательные предписания. Развивай разговор в подходящем направлении.
 
-### Add partitions to the raw assets
+### Добавление партиций к исходным ассетам
 
-Right now the raw assets download the full dataset every time they run. That's fine for small CSVs, but it doesn't scale, and it means you can't backfill specific time ranges without re-running everything.
+Сейчас исходные ассеты скачивают весь набор данных при каждом запуске. Для небольших CSV это нормально, но такой подход плохо масштабируется и не позволяет выполнять backfill отдельных временных диапазонов без повторного запуска всего процесса.
 
-Partitions let each asset run for a specific slice of data (a day, a month, a quarter) independently. You can then backfill the last year one month at a time, or trigger only the partition that covers new data.
+Партиции позволяют независимо выполнять ассет для конкретного среза данных (день, месяц, квартал). Затем можно выполнить backfill за последний год по месяцам или запустить только партицию с новыми данными.
 
-**If you don't know the term:**
+**Если не знаешь термина:**
 ```text
 /dagster-expert I want my raw assets to process data for one month at a time so I can
 backfill the last 12 months without running everything in one big job. How do I do this?
 ```
 
-After adding partitions, open the asset catalog and look at how the partition slice view changes the way the assets are represented. Upstream partitions automatically propagate to downstream assets. Your dbt models and Sling export can be made partition-aware too.
+После добавления партиций открой каталог ассетов и посмотри, как представление срезов меняет отображение ассетов. Dagster учитывает партиции вышестоящих ассетов при сопоставлении зависимостей; нижестоящие ассеты при необходимости тоже нужно настроить для работы с партициями. Модели dbt и экспорт Sling также можно адаптировать к партиционированию.
 
-### Add a sensor to trigger on new data
+### Добавление сенсора для запуска при поступлении данных
 
-The pipeline currently runs on a fixed schedule. But what if you want it to trigger automatically when a new file lands in S3, or when a new row appears in an external database?
+Сейчас пайплайн работает по фиксированному расписанию. Но что, если нужно автоматически запускать его при появлении нового файла в S3 или новой строки во внешней базе данных?
 
-**Sensors** in Dagster poll an external condition and emit run requests when something changes. You don't need to know this term to ask for it.
+**Сенсоры** Dagster периодически проверяют внешнее условие и создают запросы на запуск при изменениях. Для постановки задачи не обязательно знать этот термин.
 
-**If you don't know the term:**
+**Если не знаешь термина:**
 ```text
 /dagster-expert Instead of running on a schedule, I want the pipeline to start automatically
 whenever a new CSV file appears in an S3 bucket. What's the Dagster way to do this?
 ```
 
-**If you know the term:**
+**Если знаешь термин:**
 ```text
 /dagster-expert Replace the daily schedule with a sensor that watches an S3 prefix and
 triggers a run when a new file appears.
 ```
 
-### Bring in a new data source
+### Подключение нового источника данных
 
-The pipeline currently pulls from three static CSV URLs. A natural extension is adding a real integration (a database, an API, or a SaaS tool) as a source.
+Сейчас пайплайн получает данные по трём статическим URL CSV. Естественное расширение — добавить реальную интеграцию (базу данных, API или SaaS-инструмент) в качестве источника.
 
-This is a good place to use `/dagster-expert` to discover what's available before committing to anything. Start by asking what options exist for your source:
+Здесь удобно использовать `/dagster-expert`, чтобы выяснить доступные варианты до принятия решения. Начни с вопроса о вариантах для своего источника:
 
 ```text
 /dagster-expert I want to pull data from Postgres into DuckDB as an additional
 raw asset. What's the best way to set this up with Dagster?
 ```
 
-Or if you're not sure what tools fit:
+Или, если не уверен, какие инструменты подходят:
 
 ```text
 /dagster-expert I want to add another data source to the pipeline. What are good
 open-source options for pulling data from REST APIs with Dagster?
 ```
 
-The skill will suggest options with a comparison and help you scaffold the right Component once you've chosen.
+Скилл предложит варианты с сопоставлением и поможет создать заготовку подходящего компонента после выбора.
 
-### Add a new destination
+### Добавление нового назначения
 
-Instead of (or in addition to) S3, export the `fct_orders` model somewhere else: a data warehouse like BigQuery or Snowflake, a BI tool's embedded database, or a different file format.
+Вместо S3 (или дополнительно к нему) экспортируй модель `fct_orders` в другое место: хранилище данных вроде BigQuery или Snowflake, встроенную базу BI-инструмента либо в другой файловый формат.
 
 ```text
 /dagster-expert I want to export fct_orders to BigQuery instead of (or in addition to) S3.
 What's the recommended way to do this with Dagster?
 ```
 
-If you're not sure what destination fits your use case, describe the constraint:
+Если не уверен, какое назначение подходит твоему сценарию, опиши ограничение:
 
 ```text
 /dagster-expert I need to get fct_orders into something a BI tool can query directly.
 What are my options with open-source Dagster integrations?
 ```
 
-### Enrich the asset catalog with metadata
+### Обогащение каталога ассетов метаданными
 
-The pipeline works, but the asset catalog could tell a richer story. Asset descriptions, owners, tags, and materialization metadata make the catalog useful to people who didn't build the pipeline.
+Пайплайн работает, но каталог ассетов мог бы содержать более полную информацию. Описания, владельцы, теги и метаданные материализации делают каталог полезным для людей, не участвовавших в создании пайплайна.
 
 ```text
 /dagster-expert Add descriptions and owner tags to all three raw assets and the dbt
 staging models so the asset catalog is self-documenting.
 ```
 
-You can also add **materialization metadata** (row counts, file sizes, timestamps) so each asset run records what it produced:
+Можно также добавить **метаданные материализации** (количество строк, размер файлов, временные метки), чтобы каждый запуск ассета записывал информацию о своём результате:
 
 ```text
 /dagster-expert Update the raw assets to emit row counts as materialization metadata
 after each run.
 ```
 
-### Extend the dbt project
+### Расширение проекта dbt
 
-The current dbt project has staging models and a single facts table. A natural next step is adding more analytical models (aggregations, slowly changing dimensions, or mart-level tables designed for specific use cases).
+В текущем проекте dbt есть staging-модели и одна таблица фактов. Естественный следующий шаг — добавление аналитических моделей (агрегаций, медленно изменяющихся измерений или таблиц витрин данных для конкретных сценариев).
 
 ```text
 /dagster-expert Add a dbt model called monthly_revenue that aggregates fct_orders
 by month and customer, and expose it as a Dagster asset dependent on fct_orders.
 ```
 
-This is also a good opportunity to add more dbt tests, not just `not_null` but referential integrity checks, accepted values, or custom tests for your business rules.
+Это также хорошая возможность добавить дополнительные тесты dbt: не только `not_null`, но и проверки ссылочной целостности, допустимых значений или пользовательские тесты бизнес-правил.
 
-### Try test-driven development with the agent
+### Попробуй разработку через тестирование с агентом
 
-The extension ideas above are all feature-first: define what you want to build, then build it. Test-driven development inverts this: you write a failing test first, then prompt the agent to make it pass. The test is both the specification and the exit condition.
+Приведённые выше идеи начинаются с функциональности: сначала определяется желаемый результат, затем он реализуется. Разработка через тестирование (TDD) меняет порядок: сначала пишется падающий тест, затем агент получает задачу сделать его проходящим. Тест одновременно является спецификацией и условием завершения.
 
-For Dagster, this maps naturally to pytest asset tests and asset checks:
+В Dagster это естественно сочетается с тестами ассетов на pytest и проверками ассетов:
 
-**Step 1: Write the test:**
+**Шаг 1: напиши тест:**
 ```python
 # tests/test_raw_assets.py
 def test_raw_payments_has_rows(duckdb_resource):
@@ -147,7 +147,7 @@ def test_raw_payments_has_rows(duckdb_resource):
     assert result[0] > 0
 ```
 
-**Step 2: Prompt the agent to implement until the test passes:**
+**Шаг 2: попроси агента реализовать код, пока тест не пройдёт:**
 ```text
 /dagster-expert Implement the raw_payments asset so this test passes:
 
@@ -157,22 +157,24 @@ The CSV is at [URL]. Use the _make_raw_asset() factory like the other raw assets
 Verify by running: uv run pytest tests/test_raw_assets.py::test_raw_payments_has_rows -x
 ```
 
-The test serves as the specification and the validation. The agent has a concrete target: not "does this look reasonable?" but "does this specific assertion pass?". This also composes with the writer/reviewer pattern from Lesson 8: write the test in Session A, implement in Session B.
+Тест служит спецификацией и средством проверки. У агента есть конкретная цель: не «выглядит ли это разумно?», а «проходит ли это конкретное утверждение?». Это также сочетается с шаблоном автор/ревьюер из урока 8: напиши тест в сессии A, реализуй код в сессии B.
 
-## Getting help
+## Получение помощи
 
-If you get stuck or have questions, you can:
+Если возникнут трудности или вопросы, можно:
 
-- Join the [Dagster Slack](https://dagster.io/community) community and ask a question in our `#ask-community` channel
-- Find solutions and patterns in our [GitHub discussions](https://github.com/dagster-io/dagster/discussions)
-- Check out the [Dagster Docs](https://docs.dagster.io/)
+- Присоединиться к сообществу [Dagster Slack](https://dagster.io/community) и задать вопрос в канале `#ask-community`.
+- Найти решения и шаблоны в [обсуждениях GitHub](https://github.com/dagster-io/dagster/discussions).
+- Обратиться к [документации Dagster](https://docs.dagster.io/).
 
 ---
 
-## Share your work!
+## Поделись своей работой!
 
-We'd love to see what you create! When you're done, you can:
+Нам интересно увидеть, что ты создашь! Когда закончишь, можешь:
 
-- Add the project to a public GitHub repository
-- Tag us on your socials, like Twitter/X or LinkedIn! We're `@dagster` on both platforms.
-- Join the Dagster Slack community and share your work in `#community-showcase`
+- Добавить проект в публичный репозиторий GitHub.
+- Отметить нас в соцсетях, например Twitter/X или LinkedIn! На обеих платформах мы — `@dagster`.
+- Присоединиться к сообществу Dagster Slack и поделиться работой в канале `#community-showcase`.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

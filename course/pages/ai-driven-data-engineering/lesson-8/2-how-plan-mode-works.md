@@ -1,39 +1,41 @@
 ---
-title: "Lesson 8: How plan mode works"
+title: 'Урок 8: Как работает режим планирования'
 module: 'ai_driven_data_engineering'
 lesson: '8'
 ---
 
-# How plan mode works
+# Как работает режим планирования
 
-A plan-mode session has two distinct phases before any code is written: exploration and planning. Understanding what happens in each makes it easier to evaluate whether the plan is good before approving it.
+Сессия в режиме планирования состоит из двух отдельных этапов, предшествующих написанию кода: исследования и планирования. Понимание происходящего на каждом этапе упрощает оценку плана перед его одобрением.
 
-## Phase 1: Exploration
+## Этап 1: исследование
 
-The agent reads the codebase to understand the patterns already in use.
+Агент читает кодовую базу, чтобы понять уже используемые шаблоны.
 
-For a Dagster project, that typically means reading how resources are defined and registered, how existing assets are structured, what the dbt layer looks like, and how schedules reference jobs and assets. This isn't just to understand what exists; it's to ensure new code is consistent with what's already there.
+В проекте Dagster это обычно означает изучение того, как определяются и регистрируются ресурсы, как устроены существующие ассеты, как выглядит слой dbt и как расписания ссылаются на задания и ассеты. Цель не только в понимании существующего кода, но и в обеспечении согласованности нового кода с ним.
 
-A plan built without this exploration risks inventing patterns that conflict with the existing project structure. Exploration is what makes the plan coherent with the codebase rather than coherent in isolation.
+План, составленный без такого исследования, рискует предложить шаблоны, конфликтующие со структурой существующего проекта. Исследование позволяет составить план, согласованный с кодовой базой, а не только логичный сам по себе.
 
-## Phase 2: Planning
+## Этап 2: планирование
 
-With the codebase understood, the agent maps out the full implementation:
+Изучив кодовую базу, агент описывает всю реализацию:
 
-- Every file that needs to change and what changes in each
-- Which changes are independent of each other
-- Which changes must wait for another step to complete
+- Каждый файл, который нужно изменить, и изменения в нём.
+- Какие изменения независимы друг от друга.
+- Какие изменения должны ждать завершения другого шага.
 
-The output is effectively a dependency graph, even when it isn't drawn explicitly. The key distinction is between two kinds of changes:
+Результат по сути представляет собой граф зависимостей, даже если он явно не нарисован. Ключевое различие — между двумя видами изменений:
 
-**Independent changes**: files that don't depend on each other's output can be written simultaneously. If the design is fully known at planning time (the interface for a new resource, the DuckDB table schema, the partition definition), there's no reason to write the files one at a time.
+**Независимые изменения:** файлы, не зависящие от результатов друг друга, можно записывать одновременно. Если проектные решения полностью известны на этапе планирования (интерфейс нового ресурса, схема таблицы DuckDB, определение партиций), нет необходимости записывать файлы строго по одному.
 
-**Sequential changes**: validation steps like `dg check defs` or `dbt compile` must wait until the files they validate are complete. These can't be parallelized with the file writes because they depend on them.
+**Последовательные изменения:** шаги валидации вроде `dg check defs` или `dbt compile` должны ждать завершения файлов, которые они проверяют. Их нельзя выполнять параллельно с записью этих файлов, поскольку они зависят от неё.
 
-## File writes and validation are different phases
+## Запись файлов и валидация — разные этапы
 
-This is the key insight for complex tasks: *writing* files and *validating* files are distinct phases with different dependencies.
+Главная идея для сложных задач: *запись* файлов и их *проверка* — отдельные этапы с различными зависимостями.
 
-All file writes can often happen in parallel: the design is fully known from the plan, so there's nothing to discover mid-write that would change another file. Validation is then a single sequential pass at the end.
+Запись всех файлов часто можно выполнять параллельно: проектные решения полностью известны из плана, поэтому в ходе записи не нужно выяснять новые сведения, которые повлияли бы на другой файл. Затем проводится последовательная итоговая проверка.
 
-This isn't just faster; it's also easier to reason about. If validation fails after all writes are complete, you know exactly which files are in scope. There's no ambiguity about which write introduced the problem.
+Это не только быстрее, но и упрощает рассуждение о работе. Если после завершения всех записей валидация завершается ошибкой, известно, какие файлы входят в область изменений. Для определения конкретной причины всё равно может потребоваться диагностика отдельных файлов.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

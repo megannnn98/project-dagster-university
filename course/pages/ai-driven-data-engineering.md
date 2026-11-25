@@ -2,64 +2,66 @@
 title: AI-Driven Data Engineering
 ---
 
-- Lesson 1: Introduction
-  - [About this course](/ai-driven-data-engineering/lesson-1/0-about-this-course)
-  - [AI-Driven vs. AI Pipelines](/ai-driven-data-engineering/lesson-1/1-ai-driven-vs-ai-pipelines)
-  - [Project preview](/ai-driven-data-engineering/lesson-1/2-project-preview)
+- Урок 1: Введение
+  - [О курсе](/ai-driven-data-engineering/lesson-1/0-about-this-course)
+  - [Разработка с ИИ и ИИ-пайплайны](/ai-driven-data-engineering/lesson-1/1-ai-driven-vs-ai-pipelines)
+  - [Знакомство с проектом](/ai-driven-data-engineering/lesson-1/2-project-preview)
 
-- Lesson 2: AI tools and Dagster skills
-  - [Overview](/ai-driven-data-engineering/lesson-2/0-overview)
-  - [Create a new project (without the skill)](/ai-driven-data-engineering/lesson-2/1-create-project-without-skill)
-  - [What is an MCP server?](/ai-driven-data-engineering/lesson-2/2-what-is-an-mcp-server)
-  - [The dg CLI](/ai-driven-data-engineering/lesson-2/3-dg-cli)
-  - [CLI vs MCPs](/ai-driven-data-engineering/lesson-2/4-cli-vs-mcps)
-  - [How a skill works](/ai-driven-data-engineering/lesson-2/5-how-a-skill-works)
+- Урок 2: ИИ-инструменты и скиллы Dagster
+  - [Обзор](/ai-driven-data-engineering/lesson-2/0-overview)
+  - [Создание проекта без скилла](/ai-driven-data-engineering/lesson-2/1-create-project-without-skill)
+  - [Что такое MCP-сервер?](/ai-driven-data-engineering/lesson-2/2-what-is-an-mcp-server)
+  - [CLI Dagster](/ai-driven-data-engineering/lesson-2/3-dg-cli)
+  - [CLI и MCP](/ai-driven-data-engineering/lesson-2/4-cli-vs-mcps)
+  - [Как работает скилл](/ai-driven-data-engineering/lesson-2/5-how-a-skill-works)
   - [Dagster Skills](/ai-driven-data-engineering/lesson-2/6-dagster-skills)
 
-- Lesson 3: Project setup
-  - [Overview](/ai-driven-data-engineering/lesson-3/0-overview)
+- Урок 3: Настройка проекта
+  - [Обзор](/ai-driven-data-engineering/lesson-3/0-overview)
   - [Claude Code](/ai-driven-data-engineering/lesson-3/1-claude)
   - [Codex](/ai-driven-data-engineering/lesson-3/2-codex)
   - [Cursor](/ai-driven-data-engineering/lesson-3/3-cursor)
   - [GitHub Copilot](/ai-driven-data-engineering/lesson-3/4-github-copilot)
 
-- Lesson 4: Building with the Dagster skill
-  - [Overview](/ai-driven-data-engineering/lesson-4/0-overview)
-  - [Create a new project (with the skill)](/ai-driven-data-engineering/lesson-4/1-create-project-with-skill)
-  - [Debugging](/ai-driven-data-engineering/lesson-4/2-debugging)
-  - [Dagster features](/ai-driven-data-engineering/lesson-4/3-dagster-features)
-  - [Reviewing agent output](/ai-driven-data-engineering/lesson-4/4-reviewing-agent-output)
-  - [Debugging strategies](/ai-driven-data-engineering/lesson-4/5-debugging-strategies)
-  - [Writing effective prompts](/ai-driven-data-engineering/lesson-4/6-writing-effective-prompts)
+- Урок 4: Разработка со скиллом Dagster
+  - [Обзор](/ai-driven-data-engineering/lesson-4/0-overview)
+  - [Создание проекта со скиллом](/ai-driven-data-engineering/lesson-4/1-create-project-with-skill)
+  - [Отладка](/ai-driven-data-engineering/lesson-4/2-debugging)
+  - [Возможности Dagster: автоматизация](/ai-driven-data-engineering/lesson-4/3-dagster-features)
+  - [Проверка результатов работы агента](/ai-driven-data-engineering/lesson-4/4-reviewing-agent-output)
+  - [Стратегии отладки](/ai-driven-data-engineering/lesson-4/5-debugging-strategies)
+  - [Написание эффективных промптов](/ai-driven-data-engineering/lesson-4/6-writing-effective-prompts)
 
-- Lesson 5: Integrations, Components, and AI
-  - [Overview](/ai-driven-data-engineering/lesson-5/0-overview)
-  - [Agents and Components](/ai-driven-data-engineering/lesson-5/1-agents-and-components)
-  - [Installing the dbt skill](/ai-driven-data-engineering/lesson-5/2-install-dbt-skill)
-  - [Adding dbt](/ai-driven-data-engineering/lesson-5/3-adding-dbt)
-  - [Modifying our project](/ai-driven-data-engineering/lesson-5/4-modifying-our-project)
-  - [Additional components](/ai-driven-data-engineering/lesson-5/5-additional-components)
-  - [Skill chaining](/ai-driven-data-engineering/lesson-5/6-when-to-use-each-skill)
+- Урок 5: Интеграции, компоненты и ИИ
+  - [Обзор](/ai-driven-data-engineering/lesson-5/0-overview)
+  - [Агенты и компоненты](/ai-driven-data-engineering/lesson-5/1-agents-and-components)
+  - [Установка скилла dbt](/ai-driven-data-engineering/lesson-5/2-install-dbt-skill)
+  - [Добавление dbt](/ai-driven-data-engineering/lesson-5/3-adding-dbt)
+  - [Изменение проекта](/ai-driven-data-engineering/lesson-5/4-modifying-our-project)
+  - [Дополнительные компоненты](/ai-driven-data-engineering/lesson-5/5-additional-components)
+  - [Цепочки скиллов](/ai-driven-data-engineering/lesson-5/6-when-to-use-each-skill)
 
-- Lesson 6: Code quality with dignified-python
-  - [Overview](/ai-driven-data-engineering/lesson-6/0-overview)
-  - [Our patterns](/ai-driven-data-engineering/lesson-6/1-our-patterns)
-  - [Cleaning up our code](/ai-driven-data-engineering/lesson-6/2-cleaning-up-our-code)
-  - [Dignified Python vs linters](/ai-driven-data-engineering/lesson-6/3-dignified-python-vs-linters)
+- Урок 6: Качество кода с dignified-python
+  - [Обзор](/ai-driven-data-engineering/lesson-6/0-overview)
+  - [Наши шаблоны](/ai-driven-data-engineering/lesson-6/1-our-patterns)
+  - [Приведение кода в порядок](/ai-driven-data-engineering/lesson-6/2-cleaning-up-our-code)
+  - [Dignified Python и линтеры](/ai-driven-data-engineering/lesson-6/3-dignified-python-vs-linters)
 
-- Lesson 7: Managing AI sessions
-  - [Overview](/ai-driven-data-engineering/lesson-7/0-overview)
-  - [What is context](/ai-driven-data-engineering/lesson-7/1-how-context-works)
-  - [Session habits](/ai-driven-data-engineering/lesson-7/2-session-habits)
-  - [Common session failure patterns](/ai-driven-data-engineering/lesson-7/3-failure-patterns)
+- Урок 7: Управление ИИ-сессиями
+  - [Обзор](/ai-driven-data-engineering/lesson-7/0-overview)
+  - [Что такое контекст?](/ai-driven-data-engineering/lesson-7/1-how-context-works)
+  - [Привычки работы с сессиями](/ai-driven-data-engineering/lesson-7/2-session-habits)
+  - [Типичные проблемы сессий](/ai-driven-data-engineering/lesson-7/3-failure-patterns)
 
-- Lesson 8: Complex tasks with plan mode and subagents
-  - [Overview](/ai-driven-data-engineering/lesson-8/0-overview)
-  - [Plan mode](/ai-driven-data-engineering/lesson-8/1-plan-mode)
-  - [How plan mode works](/ai-driven-data-engineering/lesson-8/2-how-plan-mode-works)
-  - [Parallel execution in practice](/ai-driven-data-engineering/lesson-8/3-parallel-execution)
-  - [Subagents](/ai-driven-data-engineering/lesson-8/4-subagents)
-  - [Working with an existing project](/ai-driven-data-engineering/lesson-8/5-brownfield-workflow)
-  - [How we evaluate our skills](/ai-driven-data-engineering/lesson-8/6-how-we-evaluate-our-skills)
+- Урок 8: Сложные задачи, режим планирования и субагенты
+  - [Обзор](/ai-driven-data-engineering/lesson-8/0-overview)
+  - [Режим планирования](/ai-driven-data-engineering/lesson-8/1-plan-mode)
+  - [Как работает режим планирования](/ai-driven-data-engineering/lesson-8/2-how-plan-mode-works)
+  - [Параллельное выполнение на практике](/ai-driven-data-engineering/lesson-8/3-parallel-execution)
+  - [Параллельные сессии и изоляция контекста](/ai-driven-data-engineering/lesson-8/4-subagents)
+  - [Работа с существующим проектом](/ai-driven-data-engineering/lesson-8/5-brownfield-workflow)
+  - [Как мы оцениваем свои скиллы](/ai-driven-data-engineering/lesson-8/6-how-we-evaluate-our-skills)
 
-- [Capstone](/ai-driven-data-engineering/capstone)
+- [Итоговый проект](/ai-driven-data-engineering/capstone)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

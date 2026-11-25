@@ -1,29 +1,31 @@
 ---
-title: "Lesson 6: Our patterns"
+title: 'Урок 6: Наши шаблоны'
 module: 'ai_driven_data_engineering'
 lesson: '6'
 ---
 
-# Our patterns
+# Наши шаблоны
 
-The dignified-python skill encodes a set of Python best practices and philosophies we use at Dagster. The rules cover types, exceptions, API design, naming, and structure: things that make code easier to read, maintain, and reason about. They’re not Dagster-specific; you can apply them to any Python project.
+Скилл dignified-python содержит набор лучших практик и принципов Python, используемых в Dagster. Правила охватывают типы, исключения, проектирование API, именование и структуру — всё, что упрощает чтение, сопровождение и понимание кода. Они не специфичны для Dagster и применимы к любому проекту Python.
 
-## Where to see the patterns
+## Где посмотреть шаблоны
 
-The skills we publish live in the [Dagster Skills repository](https://github.com/dagster-io/skills), under the [plugins/](https://github.com/dagster-io/skills/tree/master/plugins) directory. The dignified-python skill is no longer published there; it is maintained internally at Dagster, so the blog post below is the best public description of its rules.
+Публикуемые нами скиллы находятся в [репозитории Dagster Skills](https://github.com/dagster-io/skills), в каталоге [plugins/](https://github.com/dagster-io/skills/tree/master/plugins). Скилл dignified-python больше не публикуется там: он поддерживается внутри Dagster, поэтому приведённая ниже статья — наиболее полное общедоступное описание его правил.
 
-For a shorter, narrative overview aimed at improving LLM-generated code, see the blog post:
+Для краткого обзора, ориентированного на улучшение кода, генерируемого LLM, см. статью:
 
-- [Dignified Python: 10 rules to improve your LLM agents](https://dagster.io/blog/dignified-python-10-rules-to-improve-your-llm-agents): ten concrete rules (e.g. avoid side effects at import time, prefer small functions, use type hints, handle errors explicitly) with rationale and examples.
+- [Dignified Python: 10 правил для улучшения LLM-агентов](https://dagster.io/blog/dignified-python-10-rules-to-improve-your-llm-agents): десять конкретных правил (например, избегать побочных эффектов при импорте, предпочитать небольшие функции, использовать аннотации типов, явно обрабатывать ошибки) с обоснованиями и примерами.
 
-## What kind of things it covers
+## Какие темы охватывает скилл
 
-Typical themes in dignified-python include:
+Типичные темы dignified-python:
 
-- **Import-time behavior**: avoid doing work (e.g. creating directories, opening connections) at module import; do it when functions are called or when definitions are loaded.
-- **Repetition**: replace repeated logic with helpers or factories (e.g. `_make_raw_asset()` instead of three nearly identical asset functions).
-- **Types**: use type hints for function arguments and return values so the code is easier to understand and navigate with tooling.
-- **Exceptions**: handle errors explicitly; don’t swallow or ignore them.
-- **APIs and naming**: prefer clear, consistent names and small, focused functions.
+- **Поведение при импорте:** не выполнять работу (например, создание каталогов или открытие соединений) при импорте модуля; делать это при вызове функций или загрузке определений.
+- **Повторение:** заменять дублирующуюся логику вспомогательными или фабричными функциями (например, `_make_raw_asset()` вместо трёх почти одинаковых функций ассетов).
+- **Типы:** использовать аннотации типов аргументов и возвращаемых значений функций, чтобы упростить понимание кода и навигацию средствами разработки.
+- **Исключения:** явно обрабатывать ошибки, не подавлять и не игнорировать их.
+- **API и именование:** предпочитать понятные, согласованные имена и небольшие функции с конкретной ответственностью.
 
-When you invoke the `/dignified-python` skill and point the agent at your code, it uses these patterns to suggest improvements. Next we’ll run it on the project we’ve built so far.
+При вызове скилла `/dignified-python` и указании кода агент использует эти шаблоны для предложения улучшений. Далее применим его к созданному проекту. Если скилл недоступен, можно предоставить агенту правила из указанной статьи.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

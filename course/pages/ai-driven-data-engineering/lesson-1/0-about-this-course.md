@@ -1,33 +1,35 @@
 ---
-title: "Lesson 1: About this course"
+title: 'Урок 1: О курсе'
 module: 'ai_driven_data_engineering'
 lesson: '1'
 ---
 
-# About this course
+# О курсе
 
-This course is devoted to getting the most out of Dagster through AI-driven workflows. You'll learn how to use AI tools to write better code that adheres to Dagster best practices, ship features faster, and build data applications with confidence, even as you're still learning the fundamentals.
+Этот курс посвящён эффективному использованию Dagster с помощью рабочих процессов на основе ИИ. Ты научишься применять ИИ-инструменты для написания качественного кода, соответствующего лучшим практикам Dagster, ускорять выпуск новых возможностей и уверенно создавать приложения обработки данных, даже если ещё изучаешь основы.
 
-Here you'll get an overview of the AI tool landscape, why Dagster has chosen to invest in the AI tools we provide, and how those tools can assist you day to day.
-
----
-
-## What you'll learn
-
-By the end of this course, you will:
-
-- See how AI can accelerate and improve how you build Dagster applications
-- Use the correct AI tools and patterns so you can be productive without memorizing every Dagster abstraction
-- Jumpstart your developer workflow and take advantage of the AI tools Dagster maintains
+Мы рассмотрим экосистему ИИ-инструментов, объясним, почему Dagster вкладывает ресурсы в их развитие, и покажем, как они помогают в повседневной работе.
 
 ---
 
-## Required experience
+## Чему ты научишься
 
-Dagster knowledge is not necessary to complete this course. The AI tools we cover can help you build Dagster applications even as you learn. If you'd like to learn more about Dagster first, check out the [Dagster Essentials course](https://courses.dagster.io/courses/dagster-essentials).
+К концу курса ты сможешь:
+
+- Понять, как ИИ ускоряет и улучшает разработку приложений Dagster.
+- Использовать подходящие ИИ-инструменты и шаблоны, чтобы продуктивно работать без необходимости запоминать каждую абстракцию Dagster.
+- Ускорить процесс разработки, используя ИИ-инструменты, которые поддерживает Dagster.
 
 ---
 
-## Getting help
+## Необходимый опыт
 
-If you'd like assistance while working through this course, reach out to the Dagster community on [Slack](https://dagster.io/community) in the `#dagster-university` channel. **Note**: The Dagster team is generally available during US business hours.
+Для прохождения этого курса предварительные знания Dagster не требуются. Рассматриваемые ИИ-инструменты помогают создавать приложения Dagster даже в процессе обучения. Если хочешь сначала подробнее познакомиться с Dagster, пройди [курс Dagster Essentials](https://courses.dagster.io/courses/dagster-essentials).
+
+---
+
+## Получение помощи
+
+Если нужна помощь при прохождении курса, обратись к сообществу Dagster в [Slack](https://dagster.io/community), в канале `#dagster-university`. **Примечание:** команда Dagster обычно доступна в рабочие часы США.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

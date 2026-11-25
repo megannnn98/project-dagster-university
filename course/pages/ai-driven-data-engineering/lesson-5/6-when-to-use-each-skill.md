@@ -1,64 +1,66 @@
 ---
-title: "Lesson 5: Skill chaining"
+title: 'Урок 5: Цепочки скиллов'
 module: 'ai_driven_data_engineering'
 lesson: '5'
 ---
 
-# Skill chaining
+# Цепочки скиллов
 
-If you look back at this lesson, you'll notice you didn't use just one skill. You used the `dagster-expert` skill to scaffold and build the dbt project and Dagster Component, and the dbt skill activated automatically for more detailed work with the actual dbt project.
+Если оглянуться на урок, заметишь, что использовал не один скилл. Скилл `dagster-expert` применялся для создания структуры и построения проекта dbt и компонента Dagster, а скилл dbt автоматически активировался при более детальной работе с самим проектом dbt.
 
-This is skill chaining: switching skills as the nature of your task shifts. Each skill has a different knowledge domain. Using the right one at the right time is what keeps the agent's output trustworthy.
+Это цепочка скиллов: переключение между скиллами по мере изменения характера задачи. У каждого скилла своя область знаний. Использование правильного скилла в нужный момент помогает сохранять надёжность результатов агента.
 
-## How to think about it
+## Как об этом думать
 
-Use `/dagster-expert` when you're working with Dagster itself:
+Используй `/dagster-expert`, когда работаешь с самим Dagster:
 
-- Creating or scaffolding assets, schedules, sensors, jobs
-- Understanding project structure and definitions
-- Running or materializing assets (`dg launch`, `dg list`)
-- Debugging failed runs
-- Automation: conditions, partitions, backfills
-- Any general Dagster concept, including asset checks and resources
+- Создание ассетов, расписаний, сенсоров и заданий или их заготовок.
+- Понимание структуры проекта и определений.
+- Запуск или материализация ассетов (`dg launch`, `dg list`).
+- Отладка неудачных запусков.
+- Автоматизация: условия, партиции, backfill.
+- Любые общие понятия Dagster, включая проверки ассетов и ресурсы.
 
-The dbt skill activates automatically when you're doing dbt-specific work:
+Скилл dbt автоматически активируется при выполнении специфических задач dbt:
 
-- Writing or modifying dbt models
-- Creating or updating `schema.yml` with tests and documentation
-- Using `ref()` and `source()` correctly
-- Running `dbt parse`, `dbt compile`, or `dbt test`
-- Configuring `dbt_project.yml` and profiles
+- Написание или изменение моделей dbt.
+- Создание или обновление `schema.yml` с тестами и документацией.
+- Корректное использование `ref()` и `source()`.
+- Выполнение `dbt parse`, `dbt compile` или `dbt test`.
+- Настройка `dbt_project.yml` и профилей.
 
-Rule of thumb: if the task is about dbt (models, schema, dbt commands), describe the task and the dbt skill will load. If it's about Dagster (structure, definitions, dg workflow, debugging), use `/dagster-expert`.
+Правило: если задача относится к dbt (модели, схема, команды), опиши её, и скилл dbt загрузится. Если задача относится к Dagster (структура, определения, работа с dg, отладка), используй `/dagster-expert`.
 
-## The chaining pattern
+## Шаблон цепочки
 
-Look at the switches that happened as we built this lesson:
+Посмотрим, как происходили переключения в ходе урока:
 
-1. `/dagster-expert` scaffolded the dbt project, created the staging models, and validated with `dbt parse`. This is a case where the Dagster skill is enough: creating the `DbtProjectComponent`, scaffolding the project layout, and wiring it into Dagster are all Dagster questions. The dbt skill adds value when you're writing or modifying dbt models directly — that comes later in the chaining sequence.
+1. `/dagster-expert` создал заготовку проекта dbt, staging-модели и выполнил проверку через `dbt parse`. Здесь достаточно скилла Dagster: создание `DbtProjectComponent`, структуры проекта и подключение к Dagster — вопросы Dagster. Скилл dbt особенно полезен при непосредственном написании или изменении моделей dbt, что происходит дальше в цепочке.
 
-2. `/dagster-expert` handled wiring the dbt assets to the raw assets, setting group names, and validating with `dg check defs`. Once the dbt project existed as a Dagster entity, questions like "which group should these assets be in?" or "how do I make the raw assets upstream of the dbt models?" are core Dagster questions.
+2. `/dagster-expert` связал ассеты dbt с исходными ассетами, задал имена групп и выполнил валидацию через `dg check defs`. После появления проекта dbt как сущности Dagster вопросы вроде «в какой группе должны находиться эти ассеты?» или «как сделать исходные ассеты вышестоящими для моделей dbt?» относятся к основам Dagster.
 
-3. The dbt skill activated automatically to add schema tests to the staging models. Writing `not_null` and `unique` tests in `schema.yml` is dbt work, not Dagster work.
+3. Скилл dbt автоматически активировался для добавления тестов схемы staging-моделей. Написание тестов `not_null` и `unique` в `schema.yml` — работа с dbt, а не с Dagster.
 
-4. `/dagster-expert` handled debugging when a materialization failed. Reading the run logs, tracing the error to a resource misconfiguration, and fixing it is Dagster debugging.
+4. `/dagster-expert` обеспечил отладку неудачной материализации. Чтение журналов запуска, поиск ошибки в конфигурации ресурса и её исправление — отладка Dagster.
 
-![chaining](/images/ai-driven-data-engineering/lesson-5/chaining.png)
+![Цепочка скиллов](/images/ai-driven-data-engineering/lesson-5/chaining.png)
 
-Each switch happens at a natural seam: when the task shifts from "build this dbt project" to "wire this into Dagster" and back again.
+Каждое переключение происходит на естественной границе: когда задача меняется с «построй проект dbt» на «подключи его к Dagster» и обратно.
 
-## The natural seam
+## Естественная граница
 
-The seam between the two skills usually corresponds to a real boundary in the work. dbt models are SQL files with dbt-specific conventions. Dagster assets are Python definitions. The `DbtProjectComponent` is the bridge between them, and setting it up touches both sides.
+Граница между двумя скиллами обычно соответствует реальной границе в работе. Модели dbt — SQL-файлы со специфичными для dbt соглашениями. Ассеты Dagster — определения Python. `DbtProjectComponent` связывает эти стороны, а его настройка затрагивает обе.
 
-Skill chaining isn't overhead. Each skill has deep context about its domain, and shallow context about the other's. When you're writing dbt models, the dbt skill knows far more about dbt conventions than the expert skill does. When you're debugging a failed Dagster run, the expert skill knows far more about Dagster's execution model.
+Цепочки скиллов — не лишние накладные расходы. Каждый скилл обладает глубоким контекстом своей области и поверхностным контекстом другой. При написании моделей dbt скилл dbt знает гораздо больше о соглашениях dbt, чем expert. При отладке неудачного запуска Dagster экспертный скилл гораздо лучше знает модель выполнения Dagster.
 
-## Invocation cadence
+## Частота вызова
 
-Use `/dagster-expert` once at the start of a Dagster-focused task or when you shift back to Dagster work. You don't need to prefix every subsequent message — the agent carries the context forward through the session. Repeatedly invoking the same skill doesn't improve output; the first invocation is what primes the behavior.
+Используй `/dagster-expert` один раз в начале задачи, относящейся к Dagster, или при возвращении к работе с ним. Не нужно добавлять префикс в каждое последующее сообщение: агент переносит контекст в пределах сессии. Повторный вызов того же скилла сам по себе не улучшает результат; первый вызов задаёт поведение. Если контекст был сжат или потерян, повторная загрузка может понадобиться.
 
-The dbt skill doesn't need explicit invocation at all. Write a dbt-focused prompt and it loads. Write a Dagster-focused prompt and use `/dagster-expert`. That's the full pattern.
+Скилл dbt не требует явного вызова. Напиши промпт о dbt — скилл загрузится. Напиши промпт о Dagster и используй `/dagster-expert`. Это весь шаблон.
 
-## Explicit vs. implicit invocation
+## Явный и неявный вызов
 
-The two skills have different invocation models. The `dagster-expert` skill supports explicit invocation with `/dagster-expert`, which is what the course examples show -- it makes the skill boundary visible and ensures the right context is loaded. The dbt skill is trigger-based only: it loads automatically when the prompt is clearly about dbt work (model SQL, `schema.yml`, dbt commands). You cannot invoke it with a slash command; write a dbt-focused prompt and it activates on its own.
+У двух скиллов разные модели вызова. `dagster-expert` поддерживает явный вызов через `/dagster-expert`, показанный в примерах курса: он делает границу скилла видимой и обеспечивает загрузку нужного контекста. В описанной настройке скилл dbt работает по триггеру: загружается автоматически, если промпт явно относится к dbt (SQL моделей, `schema.yml`, команды dbt). В этом рабочем процессе вместо slash-команды нужно написать промпт о dbt, и скилл активируется самостоятельно.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

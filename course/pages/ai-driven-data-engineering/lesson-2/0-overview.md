@@ -1,11 +1,13 @@
 ---
-title: "Lesson 2: AI tools and Dagster skills"
+title: 'Урок 2: Обзор'
 module: 'ai_driven_data_engineering'
 lesson: '2'
 ---
 
-# Overview
+# Обзор
 
-This lesson gives you the conceptual foundation for AI-driven Dagster development. You'll first see what building a Dagster project looks like without any Dagster-specific guidance, then work through the tools and ideas that make skill-driven development better.
+Этот урок закладывает концептуальную основу разработки Dagster с помощью ИИ. Сначала ты увидишь, как выглядит создание проекта Dagster без специальных рекомендаций, затем познакомишься с инструментами и идеями, улучшающими разработку на основе скиллов.
 
-By the end of this lesson you'll understand why the Dagster skill leads to different, more consistent agent behavior, and you'll be ready to set up your tool in Lesson 3.
+К концу урока ты поймёшь, почему скилл Dagster приводит к более последовательному поведению агента, и будешь готов настроить свой инструмент в уроке 3.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
