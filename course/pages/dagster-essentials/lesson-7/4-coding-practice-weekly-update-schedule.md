@@ -9,7 +9,7 @@ lesson: '7'
 Чтобы закрепить изученное, добавь в `src/dagster_essentials/defs/schedules.py` расписание, которое:
 
 - Называется `weekly_update_schedule`.
-- Материализует актив `trips_by_week`.
+- Материализует ассет `trips_by_week`.
 - Выполняется каждый понедельник в полночь.
 
 ---

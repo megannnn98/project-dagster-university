@@ -6,7 +6,7 @@
   - [Что такое инженерия данных?](course/pages/dagster-essentials/lesson-1/0-whats-data-engineering.md)
   - [Что такое оркестратор?](course/pages/dagster-essentials/lesson-1/1-whats-an-orchestrator.md)
   - [Подходы к оркестрации](course/pages/dagster-essentials/lesson-1/2-orchestration-approaches.md)
-  - [Чем оркестрация, ориентированная на активы, полезна для инженерии данных?](course/pages/dagster-essentials/lesson-1/3-why-is-asset-centric-orchestration-good-for-data-engineering.md)
+  - [Чем оркестрация, ориентированная на ассеты, полезна для инженерии данных?](course/pages/dagster-essentials/lesson-1/3-why-is-asset-centric-orchestration-good-for-data-engineering.md)
   - [Знакомство с проектом](course/pages/dagster-essentials/lesson-1/4-project-preview.md)
 
 - Урок 2: Требования и установка
@@ -15,24 +15,24 @@
   - [Настройка Codespace](course/pages/installation/set-up-codespace.md)
   - [Файлы проекта](course/pages/dagster-essentials/lesson-2/3-project-files.md)
 
-- Урок 3: Программно определяемые активы (SDA)
+- Урок 3: Программно определяемые ассеты (SDA)
   - [Обзор](course/pages/dagster-essentials/lesson-3/0-overview.md)
-  - [Что такое актив?](course/pages/dagster-essentials/lesson-3/1-whats-an-asset.md)
-  - [Определение первого актива](course/pages/dagster-essentials/lesson-3/2-defining-your-first-asset.md)
-  - [Материализация актива](course/pages/dagster-essentials/lesson-3/3-asset-materialization.md)
+  - [Что такое ассет?](course/pages/dagster-essentials/lesson-3/1-whats-an-asset.md)
+  - [Определение первого ассета](course/pages/dagster-essentials/lesson-3/2-defining-your-first-asset.md)
+  - [Материализация ассета](course/pages/dagster-essentials/lesson-3/3-asset-materialization.md)
   - [Просмотр сведений о запуске](course/pages/dagster-essentials/lesson-3/4-viewing-run-details.md)
   - [Устранение ошибок запуска](course/pages/dagster-essentials/lesson-3/5-troubleshooting-failed-runs.md)
-  - [Практика: создание актива taxi_zones_file](course/pages/dagster-essentials/lesson-3/6-coding-practice-taxi-zones-file-asset.md)
+  - [Практика: создание ассета taxi_zones_file](course/pages/dagster-essentials/lesson-3/6-coding-practice-taxi-zones-file-asset.md)
   - [Итоги](course/pages/dagster-essentials/lesson-3/7-recap.md)
 
-- Урок 4: Зависимости активов
+- Урок 4: Зависимости ассетов
   - [Обзор](course/pages/dagster-essentials/lesson-4/0-overview.md)
   - [Что такое зависимость?](course/pages/dagster-essentials/lesson-4/1-whats-a-dependency.md)
-  - [Активы и вычисления в базе данных](course/pages/dagster-essentials/lesson-4/2-assets-and-database-execution.md)
+  - [Ассеты и вычисления в базе данных](course/pages/dagster-essentials/lesson-4/2-assets-and-database-execution.md)
   - [Загрузка данных в базу данных](course/pages/dagster-essentials/lesson-4/3-loading-data-into-a-database.md)
-  - [Практика: создание актива taxi_zones](course/pages/dagster-essentials/lesson-4/4-coding-practice-taxi-zones-asset.md)
-  - [Активы с вычислениями в оперативной памяти](course/pages/dagster-essentials/lesson-4/5-assets-with-in-memory-computations.md)
-  - [Практика: создание актива trips_by_week](course/pages/dagster-essentials/lesson-4/6-coding-practice-trips-by-week-asset.md)
+  - [Практика: создание ассета taxi_zones](course/pages/dagster-essentials/lesson-4/4-coding-practice-taxi-zones-asset.md)
+  - [Ассеты с вычислениями в оперативной памяти](course/pages/dagster-essentials/lesson-4/5-assets-with-in-memory-computations.md)
+  - [Практика: создание ассета trips_by_week](course/pages/dagster-essentials/lesson-4/6-coding-practice-trips-by-week-asset.md)
 
 - Урок 5: Definitions и расположения кода
   - [Обзор](course/pages/dagster-essentials/lesson-5/0-overview.md)
@@ -44,8 +44,8 @@
   - [Обзор](course/pages/dagster-essentials/lesson-6/0-overview.md)
   - [Что такое ресурс?](course/pages/dagster-essentials/lesson-6/1-whats-a-resource.md)
   - [Настройка ресурса базы данных](course/pages/dagster-essentials/lesson-6/2-setting-up-a-database-resource.md)
-  - [Использование ресурсов в активах](course/pages/dagster-essentials/lesson-6/3-using-resources-in-assets.md)
-  - [Практика: рефакторинг активов для использования ресурсов](course/pages/dagster-essentials/lesson-6/4-coding-practice-refactoring-assets.md)
+  - [Использование ресурсов в ассетах](course/pages/dagster-essentials/lesson-6/3-using-resources-in-assets.md)
+  - [Практика: рефакторинг ассетов для использования ресурсов](course/pages/dagster-essentials/lesson-6/4-coding-practice-refactoring-assets.md)
   - [Анализ использования ресурсов через интерфейс Dagster](course/pages/dagster-essentials/lesson-6/5-analyzing-resources-dagster-ui.md)
   - [Итоги урока](course/pages/dagster-essentials/lesson-6/6-recap.md)
 
@@ -63,18 +63,18 @@
   - [Что такое партиции и backfill?](course/pages/dagster-essentials/lesson-8/1-what-are-partitions-and-backfills.md)
   - [Создание партиции](course/pages/dagster-essentials/lesson-8/2-creating-a-partition.md)
   - [Практика: создание недельной партиции](course/pages/dagster-essentials/lesson-8/3-coding-practice-weekly-partition.md)
-  - [Добавление партиций к активам](course/pages/dagster-essentials/lesson-8/4-adding-partitions-to-assets.md)
-  - [Практика: партиционирование актива taxi_trips](course/pages/dagster-essentials/lesson-8/5-coding-practice-partition-taxi-trips.md)
+  - [Добавление партиций к ассетам](course/pages/dagster-essentials/lesson-8/4-adding-partitions-to-assets.md)
+  - [Практика: партиционирование ассета taxi_trips](course/pages/dagster-essentials/lesson-8/5-coding-practice-partition-taxi-trips.md)
   - [Создание расписания с партициями по дате](course/pages/dagster-essentials/lesson-8/6-creating-a-schedule-with-a-date-based-partition.md)
-  - [Практика: партиционирование актива trips_by_week](course/pages/dagster-essentials/lesson-8/7-coding-practice-partition-trips-by-week.md)
+  - [Практика: партиционирование ассета trips_by_week](course/pages/dagster-essentials/lesson-8/7-coding-practice-partition-trips-by-week.md)
   - [Партиции и backfill в интерфейсе Dagster](course/pages/dagster-essentials/lesson-8/8-partitions-backfills-dagster-ui.md)
   - [Итоги](course/pages/dagster-essentials/lesson-8/9-recap.md)
 
 - Урок 9: Сенсоры
   - [Обзор](course/pages/dagster-essentials/lesson-9/0-overview.md)
   - [Что такое сенсор?](course/pages/dagster-essentials/lesson-9/1-whats-a-sensor.md)
-  - [Настройка создания актива](course/pages/dagster-essentials/lesson-9/2-configuring-asset-creation.md)
-  - [Создание актива, запускаемого сенсором](course/pages/dagster-essentials/lesson-9/3-creating-an-asset-triggered-by-a-sensor.md)
+  - [Настройка создания ассета](course/pages/dagster-essentials/lesson-9/2-configuring-asset-creation.md)
+  - [Создание ассета, запускаемого сенсором](course/pages/dagster-essentials/lesson-9/3-creating-an-asset-triggered-by-a-sensor.md)
   - [Создание задания](course/pages/dagster-essentials/lesson-9/4-creating-a-job.md)
   - [Создание сенсора](course/pages/dagster-essentials/lesson-9/5-building-the-sensor.md)
   - [Обновление объекта Definitions](course/pages/dagster-essentials/lesson-9/6-updating-the-definitions-object.md)
@@ -89,11 +89,11 @@
 - Дополнительный раздел: Метаданные
   - [Обзор](course/pages/dagster-essentials/extra-credit/0-overview.md)
   - [Что такое метаданные?](course/pages/dagster-essentials/extra-credit/1-whats-metadata.md)
-  - [Метаданные определения — описания активов](course/pages/dagster-essentials/extra-credit/2-definition-metadata-asset-descriptions.md)
-  - [Метаданные определения — группы активов](course/pages/dagster-essentials/extra-credit/3-definition-metadata-asset-groups.md)
-  - [Практика: группировка активов](course/pages/dagster-essentials/extra-credit/4-coding-practice-grouping-assets.md)
+  - [Метаданные определения — описания ассетов](course/pages/dagster-essentials/extra-credit/2-definition-metadata-asset-descriptions.md)
+  - [Метаданные определения — группы ассетов](course/pages/dagster-essentials/extra-credit/3-definition-metadata-asset-groups.md)
+  - [Практика: группировка ассетов](course/pages/dagster-essentials/extra-credit/4-coding-practice-grouping-assets.md)
   - [Метаданные материализации](course/pages/dagster-essentials/extra-credit/5-materialization-metadata.md)
   - [Практика: добавление метаданных в taxi_zones_file](course/pages/dagster-essentials/extra-credit/6-coding-practice-metadata-taxi-zones-file.md)
-  - [Метаданные актива в формате Markdown](course/pages/dagster-essentials/extra-credit/7-asset-metadata-as-markdown.md)
+  - [Метаданные ассета в формате Markdown](course/pages/dagster-essentials/extra-credit/7-asset-metadata-as-markdown.md)
 
 _Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,20 +1,20 @@
 ---
-title: 'Дополнительный раздел: Метаданные актива в формате Markdown'
+title: 'Дополнительный раздел: Метаданные ассета в формате Markdown'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Метаданные актива в формате Markdown
+# Метаданные ассета в формате Markdown
 
-В уроке 9 ты создал актив `adhoc_request`. При материализации актив строит столбчатую диаграмму и сохраняет её в хранилище. Такой подход удобен, если нужно обратиться к диаграмме позже. Но что делать, если хочется увидеть результат сразу после материализации? С помощью метаданных диаграмму можно просматривать непосредственно в интерфейсе Dagster!
+В уроке 9 ты создал ассет `adhoc_request`. При материализации ассет строит столбчатую диаграмму и сохраняет её в хранилище. Такой подход удобен, если нужно обратиться к диаграмме позже. Но что делать, если хочется увидеть результат сразу после материализации? С помощью метаданных диаграмму можно просматривать непосредственно в интерфейсе Dagster!
 
 ---
 
-## Добавление метаданных к активу
+## Добавление метаданных к ассету
 
 1. Открой файл `assets/requests.py`.
 
-2. На данном этапе курса актив `adhoc_request` должен выглядеть так:
+2. На данном этапе курса ассет `adhoc_request` должен выглядеть так:
 
    ```python
    # src/dagster_essentials/defs/assets/requests.py
@@ -102,7 +102,7 @@ lesson: 'extra-credit'
    import dagster as dg
    ```
 
-4. После последней строки актива добавь следующий код:
+4. После последней строки ассета добавь следующий код:
 
    ```python
    with open(file_path, 'rb') as file:
@@ -132,10 +132,10 @@ lesson: 'extra-credit'
    2. Функция `base64.b64encode` кодирует двоичные данные изображения (`image_data`) в формат base64.
    3. Затем закодированные данные изображения преобразуются в строку UTF-8 с помощью функции `decode`.
    4. Создаётся переменная `md_content`. Её значение — строка в формате Markdown со встроенным JPEG-изображением, представленным в base64.
-   5. Чтобы добавить метаданные к активу, возвращаем экземпляр `MaterializeResult`, передавая изображение в метаданных. В интерфейсе Dagster метаданные будут иметь метку `preview`.
+   5. Чтобы добавить метаданные к ассету, возвращаем экземпляр `MaterializeResult`, передавая изображение в метаданных. В интерфейсе Dagster метаданные будут иметь метку `preview`.
    6. С помощью `MetadataValue.md` для `md_content` указывается тип Markdown. Это обеспечивает корректное отображение диаграммы в Dagster.
 
-На этом этапе код актива `adhoc_request` должен выглядеть так:
+На этом этапе код ассета `adhoc_request` должен выглядеть так:
 
 ```python
 # src/dagster_essentials/defs/assets/requests.py
@@ -243,11 +243,11 @@ def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource) -> dg.Ma
 
 В правой части экрана ты увидишь `preview` — метку, заданную для диаграммы в формате Markdown:
 
-![Страница Global Asset Lineage с выбранным активом adhoc_request](/images/dagster-essentials/extra-credit/ui-selected-adhoc-request-asset.png)
+![Страница Global Asset Lineage с выбранным ассетом adhoc_request](/images/dagster-essentials/extra-credit/ui-selected-adhoc-request-asset.png)
 
 Чтобы отобразить диаграмму, нажми **\[Show Markdown]**:
 
-![Диаграмма, отображаемая в результате материализации актива adhoc_request](/images/dagster-essentials/extra-credit/ui-markdown-chart.png)
+![Диаграмма, отображаемая в результате материализации ассета adhoc_request](/images/dagster-essentials/extra-credit/ui-markdown-chart.png)
 
 Также можно нажать **View in Asset Catalog**, чтобы просмотреть диаграмму.
 

@@ -15,11 +15,11 @@ lesson: '9'
 ---
 
 - {% width="60%" %}
-  Перейди на страницу **Global Asset Lineage**, где должен отображаться новый актив `adhoc_request`.
+  Перейди на страницу **Global Asset Lineage**, где должен отображаться новый ассет `adhoc_request`.
 
-  **Примечание:** если актив не виден, сначала нажми **Reload definitions**.
+  **Примечание:** если ассет не виден, сначала нажми **Reload definitions**.
 
-- ![Новый актив adhoc_request в интерфейсе Dagster](/images/dagster-essentials/lesson-9/ui-asset-lineage-with-sensors.png) {% rowspan=2 %}
+- ![Новый ассет adhoc_request в интерфейсе Dagster](/images/dagster-essentials/lesson-9/ui-asset-lineage-with-sensors.png) {% rowspan=2 %}
 
 {% /table %}
 
