@@ -1,30 +1,30 @@
 ---
-title: 'Lesson 6: Anti-patterns to avoid'
+title: 'Урок 6: Антипаттерны, которых следует избегать'
 module: 'dagster_testing'
 lesson: '6'
 ---
 
-# Anti-patterns to avoid
+# Антипаттерны, которых следует избегать
 
-As you build out your test suite, there are some common mistakes that can reduce the effectiveness of your tests or make them harder to maintain. Here are some anti-patterns to watch out for.
+При создании набора тестов распространённые ошибки могут снижать их эффективность или усложнять сопровождение. Вот несколько антипаттернов, на которые стоит обратить внимание.
 
-| Anti-Pattern | Better Approach |
+| Антипаттерн | Более удачный подход |
 | ------------ | --------------- |
-| Testing in production | Use staging or mock resources |
-| No assertions beyond `success` | Use `output_for_node()` to verify outputs |
-| Ignoring test isolation | Each test should be independent |
-| Hardcoded test data paths | Use fixtures and relative paths |
-| Skipping asset check tests | Test checks like any other function |
+| Тестирование в production | Используй staging или подменённые ресурсы |
+| Нет проверок кроме `success` | Используй `output_for_node()` для проверки результатов |
+| Игнорирование изоляции тестов | Каждый тест должен быть независимым |
+| Жёстко заданные пути к тестовым данным | Используй фикстуры и относительные пути |
+| Отсутствие тестов проверок ассетов | Тестируй проверки как любые другие функции |
 
-## Testing in production
+## Тестирование в production
 
-Never run tests against production systems unless you have a read-only, isolated subset. Production testing risks data corruption and may introduce unexpected costs.
+Никогда не выполняй тесты на production-системах, если у тебя нет изолированного подмножества с доступом только для чтения. Тестирование в production создаёт риск повреждения данных и может привести к непредвиденным расходам.
 
-**Instead**: Use mock resources for unit tests and staging/Docker environments for integration tests.
+**Вместо этого**: используй подменённые ресурсы для модульных тестов и staging-окружения или Docker для интеграционных тестов.
 
-## Only checking `success`
+## Проверка только `success`
 
-A test that only asserts `result.success` doesn't verify that your asset produced the correct output:
+Тест, проверяющий только `result.success`, не подтверждает, что ассет вернул правильный результат:
 
 ```python
 # Anti-pattern: Only checks that it ran
@@ -33,7 +33,7 @@ def test_my_asset():
     assert result.success  # This doesn't test the actual output!
 ```
 
-**Instead**: Use `output_for_node()` to verify the asset produced the expected result:
+**Вместо этого**: используй `output_for_node()`, чтобы проверить соответствие результата ассета ожиданиям:
 
 ```python
 # Better: Verify the actual output
@@ -43,15 +43,15 @@ def test_my_asset():
     assert result.output_for_node("my_asset") == expected_data
 ```
 
-## Ignoring test isolation
+## Игнорирование изоляции тестов
 
-Tests that depend on shared state or execution order are fragile and difficult to debug.
+Тесты, зависящие от общего состояния или порядка выполнения, ненадёжны и сложны в отладке.
 
-**Instead**: Each test should be completely independent. Use fixtures to set up test data and tear it down afterward.
+**Вместо этого**: каждый тест должен быть полностью независимым. Используй фикстуры для подготовки тестовых данных и последующей очистки.
 
-## Hardcoded paths
+## Жёстко заданные пути
 
-Hardcoding absolute paths makes tests fail when run on different machines or CI environments:
+Жёстко заданные абсолютные пути приводят к сбоям тестов на других машинах или в окружениях CI:
 
 ```python
 # Anti-pattern: Hardcoded path
@@ -59,7 +59,7 @@ def test_data_loading():
     data = load_data("/Users/john/project/data/test.csv")
 ```
 
-**Instead**: Use relative paths or fixtures:
+**Вместо этого**: используй относительные пути или фикстуры:
 
 ```python
 # Better: Use Path relative to the test file
@@ -70,11 +70,11 @@ def test_data_loading():
     data = load_data(test_dir / "data/test.csv")
 ```
 
-## Skipping asset check tests
+## Отсутствие тестов проверок ассетов
 
-Asset checks contain validation logic that can have bugs just like any other code. Don't assume they work correctly just because they're "simple".
+Проверки ассетов содержат логику валидации, в которой могут быть ошибки, как и в любом другом коде. Не предполагай, что они работают правильно только потому, что выглядят простыми.
 
-**Instead**: Test your asset checks with both passing and failing inputs:
+**Вместо этого**: тестируй проверки ассетов и с корректными, и с некорректными входными данными:
 
 ```python
 def test_non_negative_check():
@@ -87,6 +87,8 @@ def test_non_negative_check():
     assert not result_fail.passed
 ```
 
-## Summary
+## Итоги
 
-Writing good tests is as much about avoiding bad practices as it is about following good ones. Keep your tests focused, isolated, and thorough. When in doubt, ask yourself: "Would this test catch a real bug in my code?" If the answer is no, the test may need improvement.
+Написание хороших тестов требует не только соблюдения лучших практик, но и избегания плохих. Тесты должны быть целенаправленными, изолированными и тщательными. Если сомневаешься, спроси себя: «Обнаружит ли этот тест реальную ошибку в моём коде?» Если нет, тест, возможно, нужно улучшить.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

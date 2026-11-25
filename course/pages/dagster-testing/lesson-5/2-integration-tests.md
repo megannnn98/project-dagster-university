@@ -1,22 +1,22 @@
 ---
-title: 'Lesson 5: Integration tests'
+title: 'Урок 5: Интеграционные тесты'
 module: 'dagster_testing'
 lesson: '5'
 ---
 
-# Integration tests
+# Интеграционные тесты
 
-We can begin by defining a new asset similar to `state_population_file` that retrieves city population data from a database.
+Начнём с определения нового ассета, аналогичного `state_population_file`, который получает данные о населении городов из базы данных.
 
-Assume a table exists in our production data warehouse, `data.city_population`, that contains all the different cities in all states. The table has the following schema.
+Предположим, что в нашем рабочем хранилище данных существует таблица `data.city_population`, содержащая все города всех штатов. Таблица имеет следующую схему.
 
-| Name | Type | Description |
+| Имя | Тип | Описание |
 | --- | --- | --- |
-| state_name | VARCHAR(100) | The name of the state |
-| city_name | VARCHAR(100) | The name of the city |
-| population | INT | The city population |
+| state_name | VARCHAR(100) | Название штата |
+| city_name | VARCHAR(100) | Название города |
+| population | INT | Население города |
 
-We will hardcode our asset to look for the cities in New York and return the results from Snowflake using a resource.
+В коде ассета явно укажем поиск городов штата Нью-Йорк и будем возвращать результаты запроса к Snowflake с помощью ресурса.
 
 ```python
 @dg.asset
@@ -34,7 +34,7 @@ def state_population_database(database: SnowflakeResource) -> list[tuple]:
         return cur.fetchall()
 ```
 
-When we run this asset, we need to supply a Snowflake resource. The connection to Snowflake is defined with environmental variables when initializing the Snowflake resource and is set in the Definition for the resources.
+При запуске этого ассета необходимо передать ресурс Snowflake. Подключение к Snowflake определяется переменными окружения при инициализации ресурса и задаётся в Definitions для ресурсов.
 
 ```python
 @dg.definitions
@@ -46,9 +46,9 @@ def resources():
     )
 ```
 
-This is a good way to structure the code. We separate the application code from the configuration code in proper [Twelve-Factor](https://12factor.net/) fashion.
+Это хороший способ структурирования кода. Мы отделяем код приложения от конфигурации в соответствии с методологией [Twelve-Factor](https://12factor.net/).
 
-This means we could write an integration test that uses Snowflake but uses a different configuration to connect to a different database. Perhaps we have a staging database in our Snowflake account as well.
+Это означает, что можно написать интеграционный тест, использующий Snowflake, но с другой конфигурацией для подключения к другой базе данных. Например, в нашей учётной записи Snowflake может существовать отдельная staging-база.
 
 ```python
 def test_snowflake_staging():
@@ -63,8 +63,10 @@ def test_snowflake_staging():
     lesson_5.state_population_database(snowflake_staging_resource)
 ```
 
-This is an integration test. We are executing our asset and ensuring it works with an actual connection to Snowflake. This is a good step but may not be what we always want for testing.
+Это интеграционный тест: мы выполняем ассет и проверяем, что он работает с настоящим подключением к Snowflake. Это хороший шаг, но такой подход не всегда подходит для тестирования.
 
-There are a few problems with doing integration tests like the one above. Because Snowflake is consumption based, it means we will have to pay a small amount every time we execute a test. Also since we are querying a cloud OLAP system there is no guarantee on the time the test might take. It might take only a second or two but it could take a minute depending on warehouse allocation. Finally this assumes there is an equivalent staging environment in Snowflake. Perhaps we do not have an staging database with similar data for testing.
+У подобных интеграционных тестов есть несколько недостатков. Поскольку Snowflake использует оплату по потреблению, каждый запуск теста будет стоить денег. Кроме того, при запросах к облачной OLAP-системе нет гарантий относительно времени выполнения теста: он может занять одну-две секунды или целую минуту в зависимости от выделенных вычислительных ресурсов. Наконец, предполагается наличие эквивалентного staging-окружения в Snowflake. Возможно, у нас нет staging-базы с подходящими для тестирования данными.
 
-One way to avoid these concerns is to maintain a separate environment just for integration tests. We will then need to substitute that connection into our asset. This is where Dagster can help and allow us to do some very interesting things with integration testing.
+Один из способов избежать этих проблем — поддерживать отдельное окружение специально для интеграционных тестов. Тогда потребуется подставить это подключение в наш ассет. Именно здесь Dagster помогает реализовывать интересные сценарии интеграционного тестирования.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

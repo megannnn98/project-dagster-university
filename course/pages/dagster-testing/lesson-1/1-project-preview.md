@@ -1,11 +1,13 @@
 ---
-title: "Lesson 1: Project preview"
+title: 'Урок 1: Знакомство с проектом'
 module: 'dagster_testing'
 lesson: '1'
 ---
 
-# Project preview
+# Знакомство с проектом
 
-In this course, we’ll focus on the craft of testing and how to maintain test coverage for a production Dagster platform.
+В этом курсе мы сосредоточимся на искусстве тестирования и поддержании тестового покрытия платформы Dagster в рабочем окружении.
 
-If you get stuck or want to jump ahead, check out the [finished project here on GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_testing).
+Если возникнут трудности или захочется забежать вперёд, посмотри [готовый проект на GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_testing).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

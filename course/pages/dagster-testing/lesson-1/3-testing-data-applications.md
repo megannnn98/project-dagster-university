@@ -1,19 +1,19 @@
 ---
-title: "Lesson 1: Testing data applications"
+title: 'Урок 1: Тестирование приложений обработки данных'
 module: 'dagster_testing'
 lesson: '1'
 ---
 
-# Testing data applications
+# Тестирование приложений обработки данных
 
-Testing is particularly important in data applications, but unfortunately, many data engineers do not always keep testing in mind, partly because writing proper tests for data applications can be difficult. But avoiding tests leads to problems:
+Тестирование особенно важно в приложениях обработки данных, однако многие инженеры данных не всегда уделяют ему внимание, отчасти потому, что писать качественные тесты для таких приложений бывает сложно. Но отсутствие тестов приводит к проблемам:
 
-- **Slow feature development** - When data applications do not have proper testing in place, it becomes much riskier to make changes. Given the complexity of modern data systems, many users avoid making any changes rather than risk making a breaking change.
+- **Медленная разработка новых возможностей** — если приложения обработки данных не покрыты должными тестами, вносить изменения гораздо рискованнее. Из-за сложности современных систем данных многие пользователи предпочитают вообще ничего не менять, чем рисковать нарушить работу системы.
+- **Сложные внешние зависимости и последствия** — приложения обработки данных взаимодействуют с большим количеством различных систем. Если не понимать все зависимости между ними, сложно предсказать все побочные эффекты.
+- **Рискованный цикл тестирования** — без подходящего тестового окружения изменения приходится вносить непосредственно в рабочее окружение. Такой процесс разработки обычно характеризуется медленной обратной связью, поскольку для каждой итерации требуется полное развёртывание. К этому добавляются риски работы непосредственно в production.
 
-- **Complex externalities** - Data applications touch a large number of different systems. If you don't fully understand all the dependencies across these systems, it can be hard to know all the externalities.
+Хорошая новость в том, что многих из этих проблем можно избежать. Тесты в Dagster помогают выявлять проблемы на ранних этапах в изолированном окружении, не подвергая рабочие данные риску повреждения.
 
-- **Risky testing life cycle** - Without a proper testing environment, changes need to be made in production environments. Developing this way tends to have a poor feedback loop as entire deployments are necessary to iterate. Coupled with the risks associated with working directly in production.
+Мы покажем, что написание тестов для Dagster очень похоже на написание обычных тестов Python. Кроме того, некоторые возможности Dagster упрощают тестирование типичных ситуаций инженерии данных, которые трудно проверять в других фреймворках.
 
-The good news is that a lot of these issues can be avoided. Writing tests in Dagster can help catch issues early on in a safe environment with no risk of data corruption.
-
-We will show how writing tests around Dagster is very similar to writing tests in standard Python. There are also aspects of Dagster that make it easier to handle situations that are common in data engineering that are difficult to test when using other frameworks.
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,18 +1,18 @@
 ---
-title: 'Lesson 6: Dagster objects'
+title: 'Урок 6: Тестирование других объектов Dagster'
 module: 'dagster_testing'
 lesson: '6'
 ---
 
-# Testing other Dagster objects
+# Тестирование других объектов Dagster
 
-The majority of your tests will involve assets as they comprise the majority of your organizational logic. You should not focus as much on testing the other Dagster objects with your tests outside of the definition test. However here are some tips if you would like to test the other Dagster objects in more detail.
+Большинство тестов будет связано с ассетами, поскольку в них сосредоточена основная логика обработки данных организации. Помимо теста Definitions, не стоит уделять столько же внимания тестированию остальных объектов Dagster. Однако вот несколько рекомендаций, если нужно протестировать их более подробно.
 
-## Jobs
+## Задания
 
-Jobs are a collection of assets grouped together in a specific way. Generally these are used to run a subset of your asset graph in a predetermined way.
+Задания представляют собой набор ассетов, сгруппированных определённым образом. Обычно они используются для выполнения подмножества графа ассетов заранее заданным способом.
 
-Here are two jobs, both using the same subset of the asset graph though `my_job_configured` also supplies a run configuration.
+Вот два задания, использующие одно и то же подмножество графа ассетов, хотя `my_job_configured` также передаёт конфигурацию запуска.
 
 ```python
 # src/dagster_testing/defs/jobs.py
@@ -39,9 +39,9 @@ my_job_configured = dg.define_asset_job(
 )
 ```
 
-If we consider the aspects of our job we would like to test, most of it is the specifics we set such as the asset selection or the configuration. There is no need to write tests to ensure that jobs work as that is the responsibility of Dagster.
+Если подумать, какие аспекты задания нужно проверить, большинство из них относятся к заданным нами параметрам, например выборке ассетов или конфигурации. Нет необходимости писать тесты, проверяющие сам механизм выполнения заданий: это ответственность Dagster.
 
-To test our jobs, we can write tests around their configurations by accessing elements of the object. For example, the `my_job_configured` is configured by a yaml and we might want to ensure that the asset is always using a certain file path.
+Для тестирования заданий можно писать тесты их конфигураций, обращаясь к элементам объекта. Например, `my_job_configured` настраивается через YAML, и мы можем захотеть убедиться, что ассет всегда использует определённый путь к файлу.
 
 ```python
 # tests/test_lesson_6.py
@@ -58,11 +58,11 @@ def test_job_config():
 tests/test_lesson_6.py .                                                          [100%]
 ```
 
-Tests like this may not always be necessary but you may have Dagster projects where you need to ensure all aspects.
+Подобные тесты нужны не всегда, но могут быть полезны в проектах Dagster, где необходимо гарантировать корректность всех аспектов конфигурации.
 
-## Schedules
+## Расписания
 
-Like jobs, schedules allow you to access the internals of the object. Given a schedule like the following.
+Как и задания, расписания позволяют обращаться к внутренним свойствам объекта. Рассмотрим следующее расписание.
 
 ```python
 # src/dagster_testing/defs/schedules.py
@@ -80,7 +80,7 @@ my_schedule = dg.ScheduleDefinition(
 )
 ```
 
-You can write tests to verify the schedule fires at the correct times and is using the correct job. Asserting against the cron string directly only checks the value you typed — it will pass even if the cron expression fires on the wrong day. Using `croniter` to generate actual fire times catches that class of bug.
+Можно написать тесты, проверяющие, что расписание срабатывает в нужное время и использует правильное задание. Проверка только значения строки cron подтверждает лишь введённую строку. Если ожидаемое значение скопировано из той же ошибочной конфигурации, такая проверка не обнаружит запуск в неправильный день. Использование `croniter` для вычисления фактического времени срабатывания помогает выявить этот класс ошибок.
 
 ```python
 # tests/test_lesson_6.py
@@ -106,13 +106,13 @@ def test_schedule():
 tests/test_lesson_6.py .                                                          [100%]
 ```
 
-If the cron expression were accidentally written as `"0 0 6 * *"` (6th instead of 5th), `croniter` would compute a fire time of `datetime(2024, 1, 6, 0, 0)` and the assertion would fail — a bug that string comparison would miss entirely.
+Если выражение cron случайно записать как `"0 0 6 * *"` (шестое число вместо пятого), `croniter` вычислит время срабатывания `datetime(2024, 1, 6, 0, 0)`, и проверка завершится ошибкой.
 
-## Sensors
+## Сенсоры
 
-Custom sensors are one Dagster object were it might be worthwhile to include custom tests. Unlike jobs and schedules, sensors allow for far more customization and we may need to ensure that they trigger as expected.
+Пользовательские сенсоры — один из объектов Dagster, для которых может быть полезно написать отдельные тесты. В отличие от заданий и расписаний, сенсоры допускают гораздо больше настроек и пользовательской логики, поэтому может потребоваться убедиться, что они срабатывают ожидаемым образом.
 
-For our example we have a simple sensor that checks for new files (though it does so based on `random.random()` for the purposes of this lesson) and executes a run or skip based on the result.
+В нашем примере есть простой сенсор, проверяющий наличие новых файлов (для целей урока он делает это на основе `random.random()`) и в зависимости от результата запрашивающий запуск или пропускающий выполнение.
 
 ```python
 # src/dagster_testing/defs/sensors.py
@@ -138,11 +138,11 @@ def my_sensor():
         yield dg.SkipReason("No new files found")
 ```
 
-A good test for this sensor would be to check that it does indeed trigger when a new file is present and does not trigger if no new files are found. To do that we need to see what the main trigger logic is. In this case it is when new files are returned by the `check_for_new_files` function.
+Хороший тест этого сенсора должен проверять, что он действительно срабатывает при появлении нового файла и не запускает задание, если новых файлов нет. Для этого нужно определить основную логику срабатывания. В данном случае это возврат новых файлов функцией `check_for_new_files`.
 
-In order to write a reliable test for this sensor, we will go back to our lesson on mocking. We want to patch and set the return value for the `check_for_new_files` function to ensure when new files are and are not produced.
+Чтобы написать надёжный тест сенсора, вернёмся к уроку о mock-объектах. Подменим функцию `check_for_new_files` и зададим её возвращаемое значение, чтобы проверить оба случая — появление и отсутствие новых файлов.
 
-First we can set a test where our sensor will skip.
+Сначала напишем тест, в котором сенсор пропускает запуск.
 
 ```python
 # tests/test_lesson_6.py
@@ -159,14 +159,14 @@ def test_sensor_skip(mock_check_new_files):
 tests/test_lesson_6.py .                                                          [100%]
 ```
 
-The code above:
+Приведённый код:
 
-1. Patches `check_for_new_files` and sets a return value of an empty list.
-2. Initializes an ephemeral Dagster instance which is necessary when testing aspects of Dagster that use the daemon.
-3. Builds the sensor context using that instance.
-4. Executes the sensor. This returns a generator where we access the first element with `__next__()` and ensure it matches our `SkipReason`.
+1. Подменяет `check_for_new_files` и задаёт возвращаемое значение в виде пустого списка.
+2. Инициализирует временный экземпляр Dagster, необходимый при тестировании аспектов Dagster, использующих демон.
+3. Создаёт контекст сенсора с этим экземпляром.
+4. Выполняет сенсор. Он возвращает генератор, из которого мы получаем первый элемент через `__next__()` и проверяем его соответствие `SkipReason`.
 
-What would it look like to write a test to ensure the sensor picks up a new file? Click **View answer** to view it.
+Как будет выглядеть тест, проверяющий обнаружение сенсором нового файла? Нажми **View answer**, чтобы посмотреть ответ.
 
 ```python {% obfuscated="true" %}
 # tests/test_lesson_6.py
@@ -179,3 +179,5 @@ def test_sensor_run(mock_check_new_files):
     context = dg.build_sensor_context(instance=instance)
     assert sensors.my_sensor(context).__next__() == dg.RunRequest(run_key="test_file")
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

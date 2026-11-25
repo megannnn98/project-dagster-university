@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 6: Overview'
+title: 'Урок 6: Обзор'
 module: 'dagster_testing'
 lesson: '6'
 ---
 
-# Overview
+# Обзор
 
-So far everything we have learned applies to general best practices in Python testing. We have learned how to apply unit testing, mocks and integration testing in the context of Dagster but these apply universally to almost any code you could write.
+Всё, что мы изучили до сих пор, относится к общим лучшим практикам тестирования на Python. Мы научились применять модульное тестирование, mock-объекты и интеграционное тестирование в контексте Dagster, но эти подходы универсальны и применимы практически к любому коду.
 
-In this final lesson we will discuss some Dagster specific elements of testing. This will cover Dagster features to help you run your platform in production and some tips on tests you should add to your project to make sure you can always build with confidence.
+В этом заключительном уроке мы обсудим специфичные для Dagster аспекты тестирования. Рассмотрим возможности Dagster, помогающие эксплуатировать платформу в production, и тесты, которые стоит добавить в проект, чтобы уверенно развивать его.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

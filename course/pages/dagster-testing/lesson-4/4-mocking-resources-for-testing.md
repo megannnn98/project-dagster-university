@@ -1,21 +1,21 @@
 ---
-title: 'Lesson 4: Mocking resources for testing'
+title: 'Урок 4: Подмена ресурсов при тестировании'
 module: 'dagster_testing'
 lesson: '4'
 ---
 
-# Mocking resources for testing
+# Подмена ресурсов при тестировании
 
-When using mocks and resources together, it can sometimes be easier to mock the resource itself rather than the underlying function. We can avoid patching `requests.get` altogether and instead mock the `StatePopulation` resource.
+При совместном использовании mock-объектов и ресурсов иногда проще подменить сам ресурс, а не лежащую в его основе функцию. Можно вообще не подменять `requests.get`, а вместо этого имитировать ресурс `StatePopulation`.
 
-Think back to the two questions to consider when mocking a service:
+Вспомним два вопроса, которые нужно учитывать при подмене сервиса:
 
-1. What service you are trying to emulate.
-2. How the emulated service should function in order to satisfy the test.
+1. Какой сервис нужно имитировать.
+2. Как имитируемый сервис должен работать, чтобы удовлетворить требованиям теста.
 
-Now we want to emulate `StatePopulation`. In terms of what functionality we need, we need to mock the response of the `get_cities` method. This means we do not have to worry about `requests`. 
+Теперь нужно имитировать `StatePopulation`. Что касается необходимой функциональности, нам требуется подменить ответ метода `get_cities`. Значит, можно не заботиться о `requests`.
 
-First we will create another `pytest.fixture` for an example response from `get_cities`.
+Сначала создадим ещё одну `pytest.fixture` с примером ответа `get_cities`.
 
 ```python
 # tests/test_lesson_4.py
@@ -27,14 +27,14 @@ def fake_city():
     }
 ```
 
-Next we will set a mock for the return value.
+Затем настроим mock-объект, задав возвращаемое значение.
 
 ```python
 mocked_resource = Mock()
 mocked_resource.get_cities.return_value = [fake_city]
 ```
 
-This is everything we need to write a new test for the `state_population_api_resource` asset. Remember there is no need for the patch decorator anymore because `requests` is not needed. What would the test look like? Click **View answer** to view it.
+Это всё, что нужно для написания нового теста ассета `state_population_api_resource`. Помни, что декоратор patch больше не требуется, поскольку `requests` не нужен. Как будет выглядеть тест? Нажми **View answer**, чтобы посмотреть ответ.
 
 ```python {% obfuscated="true" %}
 # tests/test_lesson_4.py
@@ -48,9 +48,9 @@ def test_state_population_api_mocked_resource(fake_city):
     assert result[0] == fake_city
 ```
 
-# Mocked resources with materialization
+# Материализация с подменёнными ресурсами
 
-The mocked resource can also be used with `dg.materialize()` if we wanted to run multiple assets in a single test:
+Подменённый ресурс можно также использовать в `dg.materialize()`, если нужно выполнить несколько ассетов в одном тесте:
 
 ```python
 # tests/test_lesson_4.py
@@ -80,19 +80,21 @@ def test_state_population_api_assets_mocked_resource(fake_city):
 tests/test_lesson_4.py .                                                          [100%]
 ```
 
-## When to mock a resource
+## Когда подменять ресурс
 
-You might be wondering when you should mock a resource as opposed to mocking the functions used within the resource. Generally you should mock the methods used by the resource if you are more concerned about testing the functionality of the resource and can mock the methods of the resource if you are more concerned with testing the functionality of the assets.
+Возможно, ты задаёшься вопросом, когда следует подменять ресурс, а когда — используемые им функции. Как правило, функции внутри ресурса следует подменять, если тебя интересует тестирование реализации самого ресурса. Методы ресурса можно подменять, когда основная цель — тестирование функциональности ассетов.
 
-Mocking the resource itself can also help give you more control over the specific output expected for certain functions. This will make it easier when writing tests for assets that use multiple resources or resources that maintain state.
+Подмена самого ресурса также даёт больше контроля над ожидаемыми результатами конкретных функций. Это облегчает написание тестов для ассетов, использующих несколько ресурсов или ресурсы с состоянием.
 
-Use this table as a quick reference:
+Используй эту таблицу как краткую памятку:
 
-| Mock Functions When | Mock Resources When |
+| Подменяй функции, когда | Подменяй ресурсы, когда |
 | ------------------- | ------------------- |
-| Testing resource implementation | Testing asset logic |
-| Need to verify call parameters | Testing asset graph |
-| Resource has simple interface | Resource has multiple methods |
-| Testing error handling | Testing happy path |
+| Тестируешь реализацию ресурса | Тестируешь логику ассета |
+| Нужно проверить параметры вызова | Тестируешь граф ассетов |
+| Ресурс имеет простой интерфейс | Ресурс имеет несколько методов |
+| Тестируешь обработку ошибок | Тестируешь успешный сценарий |
 
-In practice, mocking resources is often the cleaner approach for asset tests because it keeps the test focused on what the asset does, not how the resource works internally.
+На практике подмена ресурсов часто оказывается более чистым подходом для тестирования ассетов, поскольку тест сосредоточен на том, что делает ассет, а не на внутренней реализации ресурса.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

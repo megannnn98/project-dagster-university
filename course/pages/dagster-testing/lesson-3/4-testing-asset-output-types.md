@@ -1,12 +1,12 @@
 ---
-title: 'Lesson 3: Testing asset output types'
+title: 'Урок 3: Тестирование типов выходных данных ассетов'
 module: 'dagster_testing'
 lesson: '3'
 ---
 
-# Testing asset output types
+# Тестирование типов выходных данных ассетов
 
-In standard Python, a function does not need to match its type annotation in order to execute properly. For example:
+В обычном Python функция может успешно выполняться, даже если её результат не соответствует аннотации типа. Например:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_3.py
@@ -20,12 +20,11 @@ def test_func_wrong_type():
     assert lesson_3.func_wrong_type() == 2
 ```
 
-The test above will pass even though the function is marked as producing a `str` while an `int` is returned.
+Приведённый тест пройдёт, хотя функция аннотирована как возвращающая `str`, а фактически возвращает `int`.
 
-A benefit of Dagster is that it enforces type checking when you annotate the function attached to an asset. This helps improve data quality and the integrity of your pipelines by ensuring the output always matches its expected type.
+Одно из преимуществ Dagster — проверка типов при выполнении ассетов с аннотациями типов. Это помогает повысить качество данных и целостность пайплайнов, проверяя соответствие выходных данных ожидаемому типу.
 
-
-Let's try the same example with Dagster:
+Попробуем тот же пример с Dagster:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_3.py
@@ -40,7 +39,7 @@ def test_wrong_type_annotation():
     assert lesson_3.wrong_type_annotation() == 2
 ```
 
-Will this pass? Click **View answer** to view it.
+Пройдёт ли тест? Нажми **View answer**, чтобы посмотреть ответ.
 
 ```bash {% obfuscated="true" %}
 > pytest tests/test_lesson_3.py::test_wrong_type_annotation
@@ -52,13 +51,13 @@ E           dagster._core.errors.DagsterTypeCheckDidNotPass: Type check failed f
 FAILED tests/test_lesson_3.py::test_wrong_type_annotation - dagster._core.errors.DagsterTypeCheckDidNotPass: Type check failed...
 ```
 
-Because Dagster enforces types as part of its execution, we will never need to write a tests around type check. Just make sure that your annotate any assets where you care about types.
+Поскольку Dagster проверяет типы в рамках собственного выполнения, обычно не нужно писать отдельные тесты, дублирующие эту проверку. Указывай аннотации типов для ассетов, где типы важны. Помни, что прямой вызов функции в обход материализации не обязательно выполняет проверку типов Dagster.
 
-## Exception handling
+## Обработка исключений
 
-While we will not need to write tests to ensure our data types, it can be beneficial to write tests that catch exceptions. For example if we wanted to make sure our asset fails correct when it cannot connect to a database or we have exceeded the rate limit for an API.
+Хотя отдельно проверять встроенный механизм контроля типов обычно не требуется, полезно писать тесты, проверяющие исключения. Например, можно убедиться, что ассет корректно завершается ошибкой, если не удаётся подключиться к базе данных или превышен лимит запросов API.
 
-With `pytest`, handling exceptions within Dagster is the same as exception handling with other standard Python functions. If we wanted to write a test to ensure that the `wrong_type_annotation` asset would raise an error, it would look like this:
+В `pytest` обработка исключений при тестировании Dagster происходит так же, как при тестировании обычных функций Python. Если бы мы хотели написать тест, проверяющий, что ассет `wrong_type_annotation` вызывает ошибку, он выглядел бы так:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_3.py
@@ -79,3 +78,5 @@ def test_wrong_type_annotation_error():
 ...
 tests/test_lesson_3.py .                                                          [100%]
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

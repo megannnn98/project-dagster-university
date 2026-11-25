@@ -1,12 +1,12 @@
 ---
-title: 'Lesson 4: Materializing resource tests'
+title: 'Урок 4: Тестирование материализации с ресурсами'
 module: 'dagster_testing'
 lesson: '4'
 ---
 
-# Materializing resource tests
+# Тестирование материализации с ресурсами
 
-When we discussed unit tests we showed how you can execute one or more assets together using `dg.materialize()`. We can still materialize our assets this way using mocks.
+При обсуждении модульных тестов мы показали, как выполнять один или несколько ассетов вместе с помощью `dg.materialize()`. Мы по-прежнему можем материализовать ассеты таким способом, используя mock-объекты.
 
 ```python
 # /tests/test_lesson_4.py
@@ -37,11 +37,11 @@ def test_state_population_api_assets(mock_get, example_response, api_output):
 tests/test_lesson_4.py .                                                          [100%]
 ```
 
-This uses the same patch and mocked object as before. The only difference is that because there is an asset that requires a resource, it must be initialized and set within `dg.materialize()`.
+Здесь используются те же подмена и mock-объект, что и раньше. Единственное отличие: поскольку ассету необходим ресурс, его нужно инициализировать и передать в `dg.materialize()`.
 
-## Testing with materialize and config
+## Тестирование с materialize и конфигурацией
 
-We can also materialize resources and configs together. We will make a slight modification to our `state_population_api_resource_config` so it can take in a run configuration.
+При материализации можно одновременно использовать ресурсы и конфигурации. Немного изменим ассет `state_population_api_resource_config`, чтобы он принимал конфигурацию запуска.
 
 ```python
 # src/dagster_testing/defs/assets/lesson_4.py
@@ -56,9 +56,9 @@ def state_population_api_resource_config(
     return state_population_resource.get_cities(config.name)
 ```
 
-Now it can be executed with the name of any state.
+Теперь его можно выполнять с именем любого штата.
 
-If we wanted to make a test using this new asset, we will need to specify both the `resource` and the `run_config` in `dg.materialize()`.
+Чтобы написать тест с этим новым ассетом, необходимо указать и ресурсы, и `run_config` в `dg.materialize()`.
 
 ```python
 # tests/test_lesson_4.py
@@ -91,4 +91,6 @@ def test_state_population_api_assets_config(mock_get, example_response, api_outp
 tests/test_lesson_4.py .                                                          [100%]
 ```
 
-`dg.materialize()` is very flexible for testing and allows us to do almost anything that is possible in the Dagster UI when executing assets.
+Функция `dg.materialize()` очень гибкая при тестировании и позволяет выполнить почти всё, что доступно при запуске ассетов в интерфейсе Dagster.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

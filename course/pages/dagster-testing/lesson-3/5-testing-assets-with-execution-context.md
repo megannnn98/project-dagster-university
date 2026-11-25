@@ -1,16 +1,16 @@
 ---
-title: 'Lesson 3: Testing assets with execution context'
+title: 'Урок 3: Тестирование ассетов с контекстом выполнения'
 module: 'dagster_testing'
 lesson: '3'
 ---
 
-# Testing assets with execution context
+# Тестирование ассетов с контекстом выполнения
 
-In Dagster, assets can optionally take a special argument of `context`. This argument accesses the `AssetExecutionContext` object in Dagster that exposes relevant APIs for systems such as resources, configuration, and logging.
+В Dagster ассеты могут принимать специальный необязательный аргумент `context`. Он предоставляет доступ к объекту `AssetExecutionContext`, открывающему соответствующие API ресурсов, конфигурации и логирования.
 
-If your assets do not access any of the context APIs, you will not need to worry about `context` for testing.
+Если ассеты не используют API контекста, при тестировании не нужно заботиться о `context`.
 
-However if we rewrite the `state_population_file` asset to include context logging, we will need to update our tests:
+Однако если переписать ассет `state_population_file`, добавив логирование через контекст, потребуется обновить тесты:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_3.py
@@ -25,7 +25,7 @@ def state_population_file_logging(context: dg.AssetExecutionContext) -> list[dic
         return [row for row in reader]
 ```
 
-Now when we write a test for this asset, it must include the context object. The following test that worked for our asset that did not include `context` will now fail:
+Теперь тест этого ассета должен включать объект контекста. Следующий тест, работавший для ассета без `context`, завершится ошибкой:
 
 ```python
 # tests/test_lesson_3.py
@@ -34,7 +34,7 @@ def test_state_population_file_logging_no_context(file_output):
     assert result == file_output
 ```
 
-We can set the context object for testing by using the Dagster function `build_asset_context`. Using this function, we can set the `context` parameter:
+Задать объект контекста для тестирования можно с помощью функции Dagster `build_asset_context`. Она позволяет установить параметр `context`:
 
 ```python
 # tests/test_lesson_3.py
@@ -44,7 +44,7 @@ def test_state_population_file_logging(file_output):
     assert result == file_output
 ```
 
-The test above should now pass.
+Теперь тест должен пройти.
 
 ```bash
 > pytest tests/test_lesson_3.py::test_state_population_file_logging
@@ -52,9 +52,9 @@ The test above should now pass.
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-## Handling context with materialize()
+## Работа с контекстом при materialize()
 
-You can also handle context with `materialize()`. We already saw that this executes the assets directly and supplies the necessary run information:
+Контекст можно обрабатывать и с помощью `materialize()`. Мы уже видели, что эта функция выполняет ассеты и предоставляет необходимые сведения о запуске:
 
 ```python
 # tests/test_lesson_3.py
@@ -67,11 +67,11 @@ def test_assets_context(file_output):
     assert result.output_for_node("state_population_file_logging") == file_output
 ```
 
-When using `dg.materialize()`, context does not need to be explicitly passed in.
+При использовании `dg.materialize()` не нужно явно передавать контекст.
 
-### Supplying context for partitioned assets
+### Передача контекста для партиционированных ассетов
 
-Another situations where we may need to supply context is when testing partitioned asset. We will rewrite the `state_population_file` asset once again into a partitioned asset. We will define three different static partitions for the asset for each of the state files that exists in the `data` directory:
+Ещё одна ситуация, в которой может потребоваться контекст, — тестирование партиционированного ассета. Снова перепишем ассет `state_population_file`, теперь сделав его партиционированным. Определим три статические партиции, по одной для каждого файла штата в каталоге `data`:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_3.py
@@ -86,7 +86,7 @@ def state_population_file_partition(context: dg.AssetExecutionContext) -> list[d
         return [row for row in reader]
 ```
 
-Now in order to execute this asset we need to provide one of the three partitions. We can use `build_asset_context()` to create the context object and set a partition key for testing:
+Для выполнения этого ассета нужно передать одну из трёх партиций. Можно использовать `build_asset_context()` для создания объекта контекста и задания ключа партиции при тестировании:
 
 ```python
 # tests/test_lesson_3.py
@@ -101,7 +101,7 @@ def test_state_population_file_partition(file_output):
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-We can still use `materialize()` to execute our assets that use context, though we will need to set the specific partition:
+По-прежнему можно выполнять ассеты с контекстом через `materialize()`, но потребуется указать конкретную партицию:
 
 ```python
 # tests/test_lesson_3.py
@@ -123,7 +123,7 @@ def test_assets_partition(file_output):
 tests/test_lesson_3.py .                                                          [100%]
 ```
 
-It's important to remember that when materializing multiple partitioned assets, just like when launching a run in the Dagster UI, you cannot use `materialize()` to execute multiple partitioned assets if they do not share the same partition. For example, if we try to run the following materialization with an additional asset, the test will fail:
+Важно помнить, что при материализации нескольких партиционированных ассетов через `materialize()`, как и при запуске в интерфейсе Dagster, нельзя выполнять их вместе, если они не имеют совместимого определения партиций для данного запуска. Например, если попытаться выполнить следующую материализацию с дополнительным ассетом, тест завершится ошибкой:
 
 ```python
 # tests/test_lesson_3.py
@@ -140,3 +140,5 @@ def test_assets_multiple_partition() -> None:
     result.output_for_node("state_population_file_partition") == 1
     result.output_for_node("partition_asset_letter") == "A"
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
