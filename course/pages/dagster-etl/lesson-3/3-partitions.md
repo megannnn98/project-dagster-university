@@ -1,30 +1,30 @@
 ---
-title: "Lesson 3: Partitions"
+title: 'Урок 3: Партиции'
 module: 'dagster_etl'
 lesson: '3'
 ---
 
-# Partitions
+# Партиции
 
-When running ETL pipelines in production, it's important to have a reliable way to track what data has been loaded, especially when a pipeline has matured and contains a longer execution history.
+При выполнении ETL-пайплайнов в рабочем окружении важно надёжно отслеживать, какие данные загружены, особенно когда пайплайн работает уже давно и имеет большую историю запусков.
 
-Without a structured approach, it can become difficult to manage which data has been processed. How do we know which files have yet to be processed? Dagster addresses this challenge with partitions. Partitions allow you to break down your data into smaller, logical segments: such as date, region, or category. Each segment can then be treated and tacked as an independent unit tied to a specific execution.
+Без структурированного подхода становится сложно управлять обработанными данными. Как узнать, какие файлы ещё нужно обработать? Dagster решает эту задачу с помощью партиций. Партиции позволяют разбить данные на более мелкие логические сегменты: например, по дате, региону или категории. Каждый сегмент можно рассматривать и отслеживать как отдельную единицу, связанную с конкретным выполнением.
 
-Partitions can then be tied to assets. Configured an asset with partitions allows you to:
+Партиции можно привязывать к ассетам. Настройка ассета с партициями позволяет:
 
-- Materialize and update only specific partitions, avoiding unnecessary reprocessing of unchanged data.
-- Launch targeted backfills to reprocess historical data or recover from failures without rerunning the entire pipeline.
-- Track the status and lineage of each partition independently, giving you better visibility and control over your data workflows.
+- Материализовывать и обновлять только определённые партиции, избегая повторной обработки неизменившихся данных.
+- Запускать целевые backfill для повторной обработки исторических данных или восстановления после сбоев без повторного запуска всего пайплайна.
+- Независимо отслеживать состояние и происхождение данных каждой партиции, улучшая прозрачность и контроль рабочих процессов.
 
-## Creating partitions
+## Создание партиций
 
-Let's go back to our `import_file` asset. What is a logical way to divide that data if our three files look like this?
+Вернёмся к ассету `import_file`. Как логично разделить данные, если у нас три файла со следующими именами?
 
 - 2018-01-22.csv
 - 2018-01-23.csv
 - 2018-01-24.csv
 
-Based on these files, it would be safe to assume that each corresponds to a specific day. This lends itself to a daily partition which we can configure with Dagster like so:
+Судя по именам, каждый файл соответствует определённому дню. Это подходящий случай для дневных партиций, которые можно настроить в Dagster следующим образом:
 
 ```python
 partitions_def = dg.DailyPartitionsDefinition(
@@ -33,13 +33,13 @@ partitions_def = dg.DailyPartitionsDefinition(
 )
 ```
 
-This creates a partition specifically for the dates 2018-01-22 to 20218-01-24. If we removed the upper bound (`end_date`) this partition would include all days from 2018-01-22 to present. This can be useful for new incoming files but for this example we will limit our partition to only include the days contained in our local files.
+Это определение создаёт партиции для заданного диапазона дат января 2018 года. Если убрать верхнюю границу (`end_date`), оно будет охватывать дни начиная с 2018-01-22 до настоящего времени. Это полезно при поступлении новых файлов, но в данном примере ограничимся днями, соответствующими локальным файлам.
 
-## Partitioned assets
+## Партиционированные ассеты
 
-Now that we’ve defined our partition, we can use the partition in a new asset called `import_partition_file`. This asset will rely on the partition key instead of the `FilePath` run configuration to determine which file should be processed.
+Теперь, когда определение партиций готово, используем его в новом ассете `import_partition_file`. Этот ассет будет использовать ключ партиции вместо конфигурации запуска `FilePath`, чтобы определить обрабатываемый файл.
 
-The core logic of the asset remains the same but now you can run the pipeline for each day between 2018-01-21 and 2018-01-23, with each partition corresponding to a file for that date. This allows you to scale execution, track progress per partition, and reprocess specific days as needed:
+Основная логика ассета остаётся прежней, но теперь можно запускать пайплайн для каждого дня заданного диапазона, причём каждой партиции соответствует файл за эту дату. Это позволяет масштабировать выполнение, отслеживать прогресс по партициям и при необходимости повторно обрабатывать отдельные дни:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -54,7 +54,7 @@ def import_partition_file(context: dg.AssetExecutionContext) -> str:
     return str(file_path.resolve())
 ```
 
-Finally we can create a new downstream asset that relies on the partitioned data:
+Наконец, создадим новый нижестоящий ассет, зависящий от партиционированных данных:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -86,13 +86,15 @@ def duckdb_partition_table(
         conn.execute(f"copy {table_name} from ?;", [import_partition_file])
 ```
 
-This is very similar to our original logic except for are two key differences:
+Это очень похоже на исходную логику, за исключением двух ключевых отличий:
 
-1. We now include the partition (`partitions_def`) in the `@dg.asset decorator`.
-2. We add a `delete from...` SQL statement targeting the table for the specific partition date. This ensures the pipeline is idempotent, allowing us to run backfills without the risk of data duplication.
+1. Теперь в декораторе `@dg.asset decorator` указывается определение партиций (`partitions_def`).
+2. Добавлен SQL-оператор `delete from...`, удаляющий из таблицы записи для конкретной даты партиции. Это обеспечивает идемпотентность повторной загрузки и позволяет выполнять backfill без дублирования данных.
 
-A quick not that deleting from the table before loading new data is one strategy for achieving idempotence. Another approach is to import the incoming data into a staging location and then upsert the new data into the final table. This method has the advantage of preserving existing data in the final table in case an error occurs during the copy process. And while the staging strategy is generally more resilient, we will use the simpler `delete from...` method for the purposes of this course.
+Удаление данных из таблицы перед загрузкой новых — один из способов достижения идемпотентности. Другой подход заключается в импорте поступающих данных в промежуточное хранилище с последующим выполнением upsert в итоговую таблицу. Его преимущество — сохранение существующих данных в итоговой таблице при ошибке копирования. Хотя промежуточное хранилище обычно обеспечивает большую устойчивость, в этом курсе мы используем более простой метод `delete from...`.
 
-## Executing partitions
+## Выполнение партиций
 
-Similar to the file import, we can trigger executions for specific partitions. If we wanted to ingest the same data as previously, we would simply select the partition for "2018-01-22".
+Как и при импорте файлов, можно инициировать выполнение конкретных партиций. Чтобы загрузить те же данные, что и ранее, достаточно выбрать партицию "2018-01-22".
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

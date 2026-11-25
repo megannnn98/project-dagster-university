@@ -1,15 +1,17 @@
 ---
-title: "Lesson 3: Overview"
+title: 'Урок 3: Обзор'
 module: 'dagster_etl'
 lesson: '3'
 ---
 
-# Overview
+# Обзор
 
-We'll begin by loading data from an external system into a data warehouse. In production, this source might be something like S3 or Azure Blob Storage, but for now, we’ll keep things simple by using the local filesystem.
+Начнём с загрузки данных из внешней системы в хранилище данных. В рабочем окружении источником может быть S3 или Azure Blob Storage, но пока для простоты воспользуемся локальной файловой системой.
 
-This is one of the most common ETL use cases, and many data warehouses support it natively. For example, loading data from S3 can often be accomplished by executing a SQL command directly within the warehouse. However, there are also situations where some level of custom processing is needed before the data can be ingested.
+Это один из наиболее распространённых сценариев ETL, который многие хранилища данных поддерживают напрямую. Например, загрузку данных из S3 часто можно выполнить SQL-командой непосредственно в хранилище. Однако бывают ситуации, когда перед загрузкой требуется дополнительная обработка данных.
 
-In either case, this provides a solid starting point to explore the different ways ETL can be implemented in Dagster.
+В любом случае это хорошая отправная точка для изучения разных способов реализации ETL в Dagster.
 
-![API ETL](/images/dagster-etl/lesson-3/csv-etl.png)
+![ETL из CSV](/images/dagster-etl/lesson-3/csv-etl.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

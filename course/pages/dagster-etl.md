@@ -13,14 +13,14 @@ title: Dagster ETL
   - [Локальная настройка](/installation/set-up-local)
   - [Настройка Codespace](/installation/set-up-codespace)
 
-- Lesson 3: Loading static data
-  - [Overview](/dagster-etl/lesson-3/0-overview)
-  - [File import](/dagster-etl/lesson-3/1-file-import)
-  - [Data integrity](/dagster-etl/lesson-3/2-data-integrity)
-  - [Partitions](/dagster-etl/lesson-3/3-partitions)
-  - [Complex partitions](/dagster-etl/lesson-3/4-complex-partitions)
-  - [Triggering partitions](/dagster-etl/lesson-3/5-triggering-partitions)
-  - [Cloud storage](/dagster-etl/lesson-3/6-cloud-storage)
+- Урок 3: Загрузка статических данных
+  - [Обзор](/dagster-etl/lesson-3/0-overview)
+  - [Импорт файлов](/dagster-etl/lesson-3/1-file-import)
+  - [Целостность данных](/dagster-etl/lesson-3/2-data-integrity)
+  - [Партиции](/dagster-etl/lesson-3/3-partitions)
+  - [Сложные партиции](/dagster-etl/lesson-3/4-complex-partitions)
+  - [Запуск партиций](/dagster-etl/lesson-3/5-triggering-partitions)
+  - [Облачное хранилище](/dagster-etl/lesson-3/6-cloud-storage)
 
 - Lesson 4: ETL with APIs
   - [Overview](/dagster-etl/lesson-4/0-overview)
