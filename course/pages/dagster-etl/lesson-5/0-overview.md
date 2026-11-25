@@ -1,11 +1,13 @@
 ---
-title: "Lesson 5: Overview"
+title: 'Урок 5: Обзор'
 module: 'dagster_etl'
 lesson: '5'
 ---
 
-# Overview
+# Обзор
 
-The pipelines we've built so far are great for learning the foundations of ETL pipeline construction and exploring how to apply various Dagster features. However, these aren't necessarily the kinds of pipelines you’d want to deploy directly to production. The main issue is that we're reinventing too many parts of the ETL process, developing logic and handling edge cases that could be handled more efficiently with existing tools.
+Пайплайны, построенные до сих пор, отлично подходят для изучения основ построения ETL и возможностей Dagster. Однако такие пайплайны не обязательно стоит сразу развёртывать в рабочем окружении. Основная проблема заключается в том, что мы заново изобретаем слишком много частей ETL-процесса, самостоятельно реализуя логику и обрабатывая граничные случаи, с которыми эффективнее справляются существующие инструменты.
 
-The good news is that ETL is a universal problem, one that nearly every data-driven organization faces. As a result, a wide range of tools and frameworks have emerged to simplify and standardize ETL workflows, from data extraction and transformation to orchestration and monitoring. Leveraging these tools not only reduces boilerplate and bugs, but also allows you to focus on the parts of the pipeline that are unique to your business logic.
+Хорошая новость в том, что ETL — универсальная задача, с которой сталкивается практически каждая организация, работающая с данными. Поэтому появилось множество инструментов и фреймворков, упрощающих и стандартизирующих ETL-процессы — от извлечения и преобразования данных до оркестрации и мониторинга. Использование этих инструментов не только сокращает количество шаблонного кода и ошибок, но и позволяет сосредоточиться на частях пайплайна, специфичных для твоей бизнес-логики.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

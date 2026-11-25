@@ -4,60 +4,62 @@ title: Dagster + dbt
 
 # Dagster + dbt
 
-- Lesson 1: Introduction
-  - [Deprecation](/dagster-dbt/lesson-1/deprecation)
-  - [About this course](/dagster-dbt/lesson-1/0-about-this-course)
-  - [What's dbt?](/dagster-dbt/lesson-1/1-whats-dbt)
-  - [Why use dbt and Dagster together?](/dagster-dbt/lesson-1/2-why-use-dbt-and-dagster-together)
-  - [How do dbt models relate to Dagster assets?](/dagster-dbt/lesson-1/3-how-do-dbt-models-relate-to-dagster-assets)
-  - [Project preview](/dagster-dbt/lesson-1/4-project-preview)
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-- Lesson 2: Installation & Setup
-  - [Requirements](/installation/requirements)
-  - [Set up local](/installation/set-up-local)
-  - [Set up Codespace](/installation/set-up-codespace)
-  - [Set up the Dagster project](/dagster-dbt/lesson-2/3-set-up-dagster-project)
-  - [Set up the dbt project](/dagster-dbt/lesson-2/4-set-up-the-dbt-project)
-  - [dbt project files](/dagster-dbt/lesson-2/5-dbt-project-files)
-  - [Verify dbt installation](/dagster-dbt/lesson-2/6-verify-dbt-installation)
+- Урок 1: Введение
+  - [Устаревание курса](/dagster-dbt/lesson-1/deprecation)
+  - [О курсе и получении помощи](/dagster-dbt/lesson-1/0-about-this-course)
+  - [Что такое dbt?](/dagster-dbt/lesson-1/1-whats-dbt)
+  - [Зачем использовать dbt и Dagster вместе?](/dagster-dbt/lesson-1/2-why-use-dbt-and-dagster-together)
+  - [Как модели dbt связаны с ассетами Dagster?](/dagster-dbt/lesson-1/3-how-do-dbt-models-relate-to-dagster-assets)
+  - [Обзор проекта](/dagster-dbt/lesson-1/4-project-preview)
 
-- Lesson 3: Connecting dbt to Dagster
-  - [Overview](/dagster-dbt/lesson-3/1-overview)
-  - [Constructing the dbt project](/dagster-dbt/lesson-3/2-constructing-the-dbt-project)
-  - [Defining the dbt project location in Dagster](/dagster-dbt/lesson-3/3-representing-the-dbt-project-in-dagster)
-  - [Creating a dbt resource in Dagster](/dagster-dbt/lesson-3/4-creating-a-dbt-resource-in-dagster)
-  - [Loading dbt models into Dagster as assets](/dagster-dbt/lesson-3/5-loading-dbt-models-into-dagster-as-assets)
-  - [Updating the Definitions object](/dagster-dbt/lesson-3/6-updating-the-definitions-object)
-  - [Viewing dbt models in the Dagster UI](/dagster-dbt/lesson-3/7-viewing-dbt-models-in-the-dagster-ui)
-  - [Knowledge check](/dagster-dbt/lesson-3/knowledge-check)
-- Lesson 4: Improving development
-  - [Overview](/dagster-dbt/lesson-4/1-overview)
-  - [Speeding up the development cycle](/dagster-dbt/lesson-4/2-speeding-up-the-development-cycle)
-  - [Debugging failed runs](/dagster-dbt/lesson-4/3-debugging-failed-runs)
-  - [Customizing your execution](/dagster-dbt/lesson-4/4-customizing-your-execution)
+- Урок 2: Установка и настройка
+  - [Требования](/installation/requirements)
+  - [Локальная настройка](/installation/set-up-local)
+  - [Настройка Codespace](/installation/set-up-codespace)
+  - [Настройка проекта Dagster](/dagster-dbt/lesson-2/3-set-up-dagster-project)
+  - [Настройка проекта dbt](/dagster-dbt/lesson-2/4-set-up-the-dbt-project)
+  - [Файлы проекта dbt](/dagster-dbt/lesson-2/5-dbt-project-files)
+  - [Проверка установки dbt](/dagster-dbt/lesson-2/6-verify-dbt-installation)
 
-- Lesson 5: Adding dependencies and automation to dbt models
-  - [Overview](/dagster-dbt/lesson-5/1-overview)
-  - [Connecting dbt models to Dagster assets](/dagster-dbt/lesson-5/2-connecting-dbt-models-to-dagster-assets)
-  - [Creating assets that depend on dbt models](/dagster-dbt/lesson-5/3-creating-assets-that-depend-on-dbt-models)
-  - [Automating dbt models in Dagster](/dagster-dbt/lesson-5/4-automating-dbt-models-in-dagster)
-  - [Practice: Grouping dbt models by layer](/dagster-dbt/lesson-5/coding-practice-grouping-models)
+- Урок 3: Подключение dbt к Dagster
+  - [Обзор](/dagster-dbt/lesson-3/1-overview)
+  - [Подготовка проекта dbt](/dagster-dbt/lesson-3/2-constructing-the-dbt-project)
+  - [Представление проекта dbt в Dagster](/dagster-dbt/lesson-3/3-representing-the-dbt-project-in-dagster)
+  - [Создание ресурса Dagster для запуска dbt](/dagster-dbt/lesson-3/4-creating-a-dbt-resource-in-dagster)
+  - [Загрузка моделей dbt в Dagster как ассетов](/dagster-dbt/lesson-3/5-loading-dbt-models-into-dagster-as-assets)
+  - [Обновление объекта Definitions](/dagster-dbt/lesson-3/6-updating-the-definitions-object)
+  - [Просмотр моделей dbt в интерфейсе Dagster](/dagster-dbt/lesson-3/7-viewing-dbt-models-in-the-dagster-ui)
+  - [Проверка знаний](/dagster-dbt/lesson-3/knowledge-check)
+- Урок 4: Улучшение процесса разработки
+  - [Обзор](/dagster-dbt/lesson-4/1-overview)
+  - [Ускорение цикла разработки](/dagster-dbt/lesson-4/2-speeding-up-the-development-cycle)
+  - [Отладка неудачных запусков](/dagster-dbt/lesson-4/3-debugging-failed-runs)
+  - [Настройка выполнения](/dagster-dbt/lesson-4/4-customizing-your-execution)
 
-- Lesson 6: Using Dagster to partition dbt models
-  - [Overview](/dagster-dbt/lesson-6/1-overview)
-  - [Creating an incremental model](/dagster-dbt/lesson-6/2-creating-a-simple-incremental-model)
-  - [Creating a partitioned dbt asset](/dagster-dbt/lesson-6/3-creating-a-partitioned-dbt-asset)
-  - [Lesson recap](/dagster-dbt/lesson-6/4-lesson-recap)
+- Урок 5: Зависимости и автоматизация моделей dbt
+  - [Обзор](/dagster-dbt/lesson-5/1-overview)
+  - [Связывание моделей dbt с ассетами Dagster](/dagster-dbt/lesson-5/2-connecting-dbt-models-to-dagster-assets)
+  - [Создание ассетов, зависящих от моделей dbt](/dagster-dbt/lesson-5/3-creating-assets-that-depend-on-dbt-models)
+  - [Автоматизация моделей dbt в Dagster](/dagster-dbt/lesson-5/4-automating-dbt-models-in-dagster)
+  - [Практика: Группировка моделей dbt по слоям](/dagster-dbt/lesson-5/coding-practice-grouping-models)
 
-- Lesson 7: Deploying to Production
-  - [Overview](/dagster-dbt/lesson-7/1-overview)
-  - [Pushing the project to GitHub](/dagster-dbt/lesson-7/2-pushing-the-project-to-github)
-  - [Setting up Dagster+](/dagster-dbt/lesson-7/3-setting-up-dagster-cloud)
-  - [Creating the manifest during deployment](/dagster-dbt/lesson-7/4-creating-the-manifest-during-deployment)
-  - [Preparing for a successful run](/dagster-dbt/lesson-7/5-preparing-for-a-successful-run)
-  - [Using dbt Cloud](/dagster-dbt/lesson-7/6-using-dbt-cloud)
+- Урок 6: Партиционирование моделей dbt через Dagster
+  - [Обзор](/dagster-dbt/lesson-6/1-overview)
+  - [Создание инкрементальной модели](/dagster-dbt/lesson-6/2-creating-a-simple-incremental-model)
+  - [Создание партиционированного ассета dbt](/dagster-dbt/lesson-6/3-creating-a-partitioned-dbt-asset)
+  - [Итоги](/dagster-dbt/lesson-6/4-lesson-recap)
 
-- Lesson 8: Dagster Skills
-  - [Dagster Skills](/shared/dagster-skills.md)
+- Урок 7: Развёртывание в production
+  - [Обзор](/dagster-dbt/lesson-7/1-overview)
+  - [Отправка проекта на GitHub](/dagster-dbt/lesson-7/2-pushing-the-project-to-github)
+  - [Настройка Dagster+](/dagster-dbt/lesson-7/3-setting-up-dagster-cloud)
+  - [Создание манифеста при развёртывании](/dagster-dbt/lesson-7/4-creating-the-manifest-during-deployment)
+  - [Подготовка к успешному запуску](/dagster-dbt/lesson-7/5-preparing-for-a-successful-run)
+  - [Использование dbt Cloud](/dagster-dbt/lesson-7/6-using-dbt-cloud)
 
-- [Capstone](/dagster-dbt/capstone)
+- Урок 8: Dagster Skills
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
+
+- [Итоговый проект](/dagster-dbt/capstone)

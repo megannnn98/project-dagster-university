@@ -1,16 +1,16 @@
 ---
-title: "Lesson 4: Backfilling from APIs"
+title: 'Урок 4: Backfill данных из API'
 module: 'dagster_etl'
 lesson: '4'
 ---
 
-# Backfilling from APIs
+# Backfill данных из API
 
-Our ETL pipeline is now set up to ingest new data from the API on an ongoing basis. But what about historical data? The NASA dataset goes back several years, and we may want to load that full history into our data warehouse.
+Наш ETL-пайплайн настроен на постоянную загрузку новых данных из API. Но что насчёт исторических данных? Набор данных NASA охватывает несколько лет, и мы можем захотеть загрузить всю историю в наше хранилище данных.
 
-The best strategy for this is to use a Dagster feature we’ve already worked with: partitions. By partitioning the data by date, we can use Dagster’s built-in backfill functionality to launch jobs that process data across specific date ranges. This is a far more elegant and manageable approach than writing custom scripts or triggering a massive, monolithic run that pages through years of API results.
+Лучшая стратегия в этом случае — воспользоваться уже знакомой возможностью Dagster: партициями. Разделив данные по датам, можно использовать встроенную функциональность backfill в Dagster для запуска заданий, обрабатывающих определённые диапазоны дат. Это гораздо более удобный и управляемый подход, чем написание собственных скриптов или запуск огромного монолитного процесса, перебирающего результаты API за несколько лет.
 
-To begin, let’s define a daily partition for our asteroid ingestion pipeline. This will allow us to backfill one day at a time and track progress across the full history:
+Для начала определим дневные партиции пайплайна загрузки данных об астероидах. Это позволит выполнять backfill по одному дню и отслеживать прогресс за весь исторический период:
 
 ```python
 nasa_partitions_def = dg.DailyPartitionsDefinition(
@@ -18,8 +18,7 @@ nasa_partitions_def = dg.DailyPartitionsDefinition(
 )
 ```
 
-Next we can update the `asteroids` asset to use a partition instead of a run configuration. We will create a separate asset for this.
-
+Далее обновим ассет `asteroids`, чтобы он использовал партицию вместо конфигурации запуска. Для этого создадим отдельный ассет.
 
 ```python {% obfuscated="true" %}
 # src/dagster_and_etl/defs/assets.py
@@ -40,15 +39,15 @@ def asteroids_partition(
     )
 ```
 
-This asset returns the raw asteroid data for its partition date. In a complete pipeline you would add downstream assets that accept `asteroids_partition` as an input and write the data to a file and then to DuckDB, mirroring the `asteroids_file` and `duckdb_table` assets from earlier in the lesson. For now we focus on a single partitioned asset to demonstrate how backfilling and retry work with partitions.
+Этот ассет возвращает исходные данные об астероидах за дату своей партиции. В полноценном пайплайне нужно добавить нижестоящие ассеты, принимающие `asteroids_partition` на вход и записывающие данные сначала в файл, а затем в DuckDB, по аналогии с ассетами `asteroids_file` и `duckdb_table` из предыдущей части урока. Пока сосредоточимся на одном партиционированном ассете, чтобы показать, как работают backfill и повторные попытки с партициями.
 
-## Rate limits
+## Ограничения частоты запросов
 
-Another reason partitions are well-suited for API-based backfills is because of rate limiting. APIs, especially those that return large volumes of data, often enforce limits to prevent excessive load on their systems.
+Ещё одна причина, по которой партиции хорошо подходят для backfill через API, — ограничения частоты запросов (rate limits). API, особенно возвращающие большие объёмы данных, часто устанавливают ограничения для предотвращения чрезмерной нагрузки на свои системы.
 
-While partitions don't eliminate rate limits, they make it much easier to track progress and recover gracefully. Since each partition represents a discrete time window (like a single day), if a request fails due to a rate limit, only that partition is affected. This avoids losing the entire job and allows you to retry just the failed partitions, rather than restarting the entire ingestion process. It also makes it easy to throttle or space out runs as needed.
+Хотя партиции не устраняют ограничения частоты запросов, они значительно упрощают отслеживание прогресса и восстановление после сбоев. Поскольку каждая партиция представляет отдельное временное окно (например, один день), при ошибке запроса из-за превышения лимита затрагивается только эта партиция. Это позволяет не терять результат всего задания и повторно запускать только завершившиеся ошибкой партиции вместо перезапуска всей загрузки. Кроме того, при необходимости проще ограничивать частоту или разносить запуски во времени.
 
-If we wanted to include rate limiting functionality into our `NASAResource` what might it look like?
+Как мог бы выглядеть наш `NASAResource`, если добавить в него функциональность ограничения частоты запросов?
 
 ```python {% obfuscated="true" %}
 # src/dagster_and_etl/defs/resources.py
@@ -83,3 +82,5 @@ class NASAResource(dg.ConfigurableResource):
         resp = session.get(url, params=params)
         return resp.json()["near_earth_objects"][start_date]
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

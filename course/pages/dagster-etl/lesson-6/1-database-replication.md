@@ -1,29 +1,30 @@
 ---
-title: "Lesson 6: Database replication"
+title: 'Урок 6: Репликация баз данных'
 module: 'dagster_etl'
 lesson: '6'
 ---
 
-# Database replication
+# Репликация баз данных
 
-Despite being a very common workflow, database replication is nuanced and full of potential pitfalls.
+Несмотря на распространённость репликации баз данных, у неё много нюансов и потенциальных подводных камней.
 
-## Understanding your source
-Just like with APIs, replicating data from a database starts with understanding the system you're pulling from. Databases vary widely in structure, capabilities, and query patterns.
+## Изучение источника
 
-| Database Type | Query | Examples |
+Как и при работе с API, репликация данных из базы начинается с понимания системы, из которой мы получаем данные. Базы данных сильно различаются по структуре, возможностям и способам выполнения запросов.
+
+| Тип базы данных | Запросы | Примеры |
 | --- | --- | --- |
-| Relational | SQL | Postgres, MySQL, Oracle, SQLite |
-| NoSQL | Varies | MongoDB, Redis, DynamoDB |
-| Graph | Neo4j, Gremlin | Neo4j, Neptune, ArangoDB |
-| Vector | Semantic | FAISS, Pinecone, Weaviate |
-| Time-series | SQL-like | InfluxDB, Prometheus |
+| Реляционные | SQL | Postgres, MySQL, Oracle, SQLite |
+| NoSQL | Различаются | MongoDB, Redis, DynamoDB |
+| Графовые | Neo4j, Gremlin | Neo4j, Neptune, ArangoDB |
+| Векторные | Семантические | FAISS, Pinecone, Weaviate |
+| Временные ряды | SQL-подобные | InfluxDB, Prometheus |
 
-Since it's too much to cover all of these in a single course, we’ll focus on relational databases, specifically Postgres (it is also the most common form of replication). And even limiting it to just that, there are multiple strategies on how to sync data.
+Поскольку охватить всё в одном курсе невозможно, сосредоточимся на реляционных базах, в частности Postgres: это также распространённый сценарий репликации. Даже при таком ограничении существует несколько стратегий синхронизации данных.
 
-## Full refresh replication
+## Репликация с полным обновлением
 
-Relational databases store data in tables. Imagine a customers table with the following data:
+Реляционные базы хранят данные в таблицах. Представь таблицу customers со следующими данными:
 
 | customer_id | first_name | last_name | email                        | created_at          |
 |-------------|------------|-----------|------------------------------|---------------------|
@@ -33,48 +34,48 @@ Relational databases store data in tables. Imagine a customers table with the fo
 | 4           | Dana       | Martinez  | dana.martinez@example.com    | 2024-05-04 09:50:00 |
 | 5           | Evan       | Thompson  | evan.thompson@example.com    | 2024-05-05 11:22:00 |
 
-The most straightforward way to extract this data is to query the entire contents of the table:
+Самый простой способ извлечь данные — запросить всё содержимое таблицы:
 
 ```sql
 SELECT * FROM customers;
 ```
 
-This method is known as full refresh or snapshot replication. It’s simple and works with just about any database (as long as the database is not append only) that supports `SELECT` queries. But as you can imagine, there’s a major drawback: how do we keep the source and destination in sync?
+Этот метод называется полным обновлением (full refresh) или репликацией снимка (snapshot replication). Он прост и работает практически с любой базой данных, поддерживающей запросы `SELECT` (если данные доступны для полного чтения). Однако у него есть существенный недостаток: как поддерживать синхронизацию источника и назначения?
 
-If we rely solely on full refreshes, we have to run the entire extraction process every time. This can be prohibitively expensive for large tables and can strain the source database, impacting performance during the sync.
+Если полагаться только на полное обновление, каждый раз придётся выполнять процесс извлечения целиком. Для больших таблиц это может быть слишком затратно и создавать значительную нагрузку на исходную базу, снижая её производительность во время синхронизации.
 
-## Incremental replication
+## Инкрементальная репликация
 
-You can optimize full refreshes by filtering the data. Usually this involves querying based on time columns or incrementing ids. The checkpoint of the last query is then maintained by the ETL service so it knows where begin replication.
+Полное обновление можно оптимизировать фильтрацией данных. Обычно для этого используют запросы по столбцам времени или возрастающим идентификаторам. ETL-сервис хранит контрольную точку последнего запроса, чтобы знать, с какого места продолжать репликацию.
 
-This helps limit the strain on ingestion because much less data needs to be queried and transferred. To perform incremental replication with our customers table, we could add in the created_at column to only pull new records:
+Это снижает нагрузку при загрузке, поскольку приходится запрашивать и передавать гораздо меньше данных. Для инкрементальной репликации таблицы customers можно добавить условие по столбцу created_at, чтобы получать только новые записи:
 
 ```sql
 CREATE OR REPLACE ...
     SELECT * FROM customers WHERE created_at > '2024-05-01';
 ```
 
-This is helpful though adds some complexity and raises some additional questions:
+Это полезно, однако усложняет процесс и поднимает дополнительные вопросы:
 
-1. What happens if a row is updated, not just newly created?
-2. How do you track deletions?
-3. What if a row is delayed in appearing in the database?
-4. What if there’s no timestamp column to filter on?
+1. Что произойдёт, если строка будет обновлена, а не просто создана?
+2. Как отслеживать удаления?
+3. Что делать, если строка появляется в базе с задержкой?
+4. Что делать, если нет столбца времени, по которому можно фильтровать?
 
-Most ETL services that do incremental replication can address these issues though they still require a table schema that has some way of tracking new records. If the customers table did not include the created_at column, it would be much harder to perform incremental updates.
+Большинство ETL-сервисов с инкрементальной репликацией умеет решать эти задачи, однако схема таблицы всё равно должна предоставлять способ отслеживания новых записей. Если бы в таблице customers не было столбца created_at, выполнять инкрементальные обновления было бы значительно сложнее.
 
-## Change data capture (CDC)
+## Захват изменений данных (CDC)
 
-The final strategy we will cover is Change Data Capture (CDC). Relational databases like Postgres maintain a log of changes, in Postgres, this is the Write-Ahead Log (WAL), which records inserts, updates, and deletes for recovery and replication purposes.
+Последняя стратегия, которую мы рассмотрим, — Change Data Capture (CDC), или захват изменений данных. Реляционные базы вроде Postgres ведут журнал изменений. В Postgres это Write-Ahead Log (WAL) — журнал предзаписи, фиксирующий вставки, обновления и удаления для восстановления и репликации.
 
-CDC is more efficient and much less taxing on the source database. But it comes with trade-offs:
+CDC эффективнее и создаёт значительно меньшую нагрузку на исходную базу. Но есть компромиссы:
 
-1. CDC logs are not retained forever, typically only for a few days. This means that brings in new records must complete before those records are removed.
-2. CDC doesn’t provide full historical context, so it can’t be used alone to initialize a replica.
+1. Журналы CDC не хранятся вечно, обычно лишь несколько дней. Поэтому потребитель должен успеть обработать изменения до удаления соответствующих записей журнала.
+2. CDC не предоставляет полного исторического контекста, поэтому одного CDC недостаточно для инициализации реплики.
 
-You need to apply the log events in order to reconstruct the current state of the data.
+Для восстановления текущего состояния данных необходимо применять события журнала в правильном порядке.
 
-Here’s what a stream of CDC events might look like:
+Поток событий CDC может выглядеть следующим образом:
 
 | Event Type | Timestamp           | customer_id | first_name | last_name | email                       | created_at          |
 |------------|---------------------|-------------|------------|-----------|-----------------------------|---------------------|
@@ -82,10 +83,12 @@ Here’s what a stream of CDC events might look like:
 | UPDATE     | 2024-05-02 14:30:00 | 101         | Alicia     | Johnson   | alice.johnson@example.com   | 2024-05-01 10:00:00 |
 | UPDATE     | 2024-05-03 09:10:00 | 101         | Alicia     | Thompson  | alicia.thompson@example.com | 2024-05-01 10:00:00 |
 
-## Building database replication systems
+## Построение систем репликации баз данных
 
-Most modern ETL tools that handle database replication use one or more of these approaches. For example a tool may perform a full refresh to establish the initial snapshot of the table and then switch to CDC to capture all changes moving forward.
+Большинство современных ETL-инструментов для репликации баз данных использует один или несколько таких подходов. Например, инструмент может выполнить полное обновление для создания начального снимка таблицы, а затем переключиться на CDC для захвата всех последующих изменений.
 
-This combined approach provides both completeness and efficiency but requires careful coordination during the cut over to ensure that no data is lost or duplicated.
+Комбинированный подход обеспечивает полноту и эффективность, но требует тщательной координации при переключении, чтобы не потерять и не продублировать данные.
 
-If this sounds complex, that’s because it is. Replicating data between databases is challenging and full of edge cases, which is why we strongly recommend using a dedicated framework instead of trying to build one from scratch.
+Репликация данных между базами действительно сложна и содержит множество граничных случаев. Поэтому мы настоятельно рекомендуем использовать специализированный фреймворк вместо самостоятельной реализации с нуля.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

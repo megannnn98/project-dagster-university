@@ -1,37 +1,37 @@
 ---
-title: 'Lesson 4: Speeding up the development cycle'
+title: "Урок 4: Ускорение цикла разработки"
 module: 'dagster_dbt'
 lesson: '4'
 ---
 
-# Speeding up the development cycle
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
 
-By now, you’ve had to run `dbt parse` to create the manifest file and reload your code location quite frequently, which doesn’t feel like the cleanest developer experience.
+# Ускорение цикла разработки
 
-Before we move on, we’ll reduce the number of steps in the feedback loop. We'll automate the creation of the manifest file by taking advantage of the `dbt_project` representation that we wrote earlier.
+До сих пор приходилось часто вручную выполнять `dbt parse`, чтобы создать манифест, и перезагружать расположение кода. Сократим число действий с помощью представления `dbt_project`, созданного ранее.
 
 ---
 
-## Automating creating the manifest file in development
+## Автоматическое создание манифеста при разработке
 
-The first detail is that the `dbt_project` doesn’t need to be part of an asset to be executed. This means that once a `dbt_project` is defined, you can use it to execute commands when your code location is being built. Rather than manually running `dbt parse`, let’s use the `dbt_project` to prepare the manifest file for us.
+Для вызова методов `dbt_project` не нужно помещать его в ассет. После создания объекта его можно использовать при загрузке расположения кода. Вместо ручного запуска `dbt parse` поручим подготовку манифеста объекту `dbt_project`.
 
-In `project.py`, after the code initializing `dbt_project`, add the following code:
+В `project.py`, после инициализации `dbt_project`, добавьте:
 
 ```python
 dbt_project.prepare_if_dev()
 ```
 
-If you look at the dbt project’s `/target` directory, you’ll see it stores the artifacts. When you use `dagster dev` in local development and you reload your code, you'll see that a new manifest file is generated.
+В каталоге `target` проекта dbt хранятся артефакты. При локальной разработке через `dagster dev` перезагрузка кода теперь будет создавать новый манифест.
 
-The `prepare_if_dev()` method automatically prepares your dbt project at run time during development, meaning you no longer have to run `dbt parse`! The preparation process works by pulling the dbt project's dependencies and reloading the manifest file to detect any changes.
+Метод `prepare_if_dev()` подготавливает проект dbt при загрузке кода в режиме разработки: устанавливает зависимости и обновляет манифест, чтобы учесть изменения. Вручную выполнять `dbt parse` больше не нужно.
 
-Reload your code location in the Dagster UI, and you’ll see that everything should still work: the dbt models are still shown as assets and you can manually materialize any of the models. 
+Перезагрузите расположение кода через интерфейс Dagster. Модели dbt должны по-прежнему отображаться как ассеты и быть доступны для ручной материализации.
 
 ---
 
-## Creating the manifest for production
+## Создание манифеста для production
 
-This is great, however, it only handles the preparation of a new manifest file in local development. In production, where a dbt project is stable, we may want to prepare a new manifest file only at build time, during the deployment process. This can be done using the command line interface (CLI) available in the `dagster_dbt` package.
+Этот подход подготавливает манифест при локальной разработке. В production, где проект dbt стабилен, удобно создавать манифест один раз при сборке в процессе развёртывания. Для этого в пакете `dagster_dbt` есть интерфейс командной строки (CLI).
 
-Don't worry about the details for now! In Lesson 7, we’ll discuss the details on how to create a manifest file programmatically during deployment using the `dagster_dbt` CLI.
+В седьмом уроке подробно рассмотрим автоматическое создание манифеста при развёртывании с помощью CLI `dagster_dbt`.

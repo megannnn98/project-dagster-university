@@ -1,32 +1,32 @@
 ---
-title: "Lesson 3: Complex partitions"
+title: 'Урок 3: Сложные партиции'
 module: 'dagster_etl'
 lesson: '3'
 ---
 
-# Complex partitions
+# Сложные партиции
 
-Time based partitions are usually easy to implement. They follow consistent patterns, such as daily, weekly, or monthly, and have predictable boundaries.
+Партиции по времени обычно легко реализовать. Они следуют регулярным закономерностям (день, неделя, месяц) и имеют предсказуемые границы.
 
-But what about cases where the upstream data doesn’t follow a fixed pattern? For example, what if the data is grouped by something like customer name? In this case, the set of partitions may evolve over time as new customers are added.
+Но что делать, если поступающие данные не следуют фиксированному шаблону? Например, если данные сгруппированы по имени клиента? В таком случае набор партиций может меняться со временем по мере появления новых клиентов.
 
-How could we handle this with partitions to ensure we can still track our inputs if they follow an irregular pattern.
+Как организовать партиции, чтобы отслеживать входные данные даже при нерегулярном поступлении?
 
-## Dynamic partitions
+## Динамические партиции
 
-As well as time-based partitions, Dagster also supports dynamic partitions. These  allow for more flexibility. Unlike time-based partitions, dynamic partitions let you control exactly what values are included and grow the partition set as new data categories (like customer names) appear.
+Помимо партиций по времени Dagster поддерживает динамические партиции. Они обеспечивают большую гибкость. В отличие от временных партиций, динамические позволяют точно управлять включаемыми значениями и расширять набор партиций по мере появления новых категорий данных (например, имён клиентов).
 
-Creating a dynamic partition is simple. All you need is a name:
+Создать динамическое определение партиций просто. Нужно только имя:
 
 ```python
 dynamic_partitions_def = dg.DynamicPartitionsDefinition(name="dynamic_partition")
 ```
 
-This defines a dynamic partition set named "dynamic_partition", which you can configure with whatever partitions we want.
+Так определяется набор динамических партиций с именем "dynamic_partition", в который можно добавить любые необходимые партиции.
 
-## Dynamic partitioned assets
+## Ассеты с динамическими партициями
 
-Similar to our time based partition, let's create a new set of assets. Once again the the logic of our asset will remain the same except it uses the dynamic partition:
+По аналогии с временными партициями создадим новый набор ассетов. Логика ассета вновь остаётся прежней, но используется динамическое определение партиций:
 
 ```python {% obfuscated="true" %}
 # src/dagster_and_etl/defs/assets.py
@@ -41,9 +41,9 @@ def import_dynamic_partition_file(context: dg.AssetExecutionContext) -> str:
     return str(file_path.resolve())
 ```
 
-Now, if we attempted to execute this asset in Dagster, you’d notice that it cannot be materialized. That is because no partitions have been added to `dynamic_partitions_def`. This makes sense as dynamic partitions are empty by default and have no built-in logic to determine which partition keys should exist. It’s up to us to register the partition values we want to execute.
+Если теперь попробовать выполнить этот ассет в Dagster, окажется, что его нельзя материализовать. Причина в том, что в `dynamic_partitions_def` ещё не добавлены партиции. Это ожидаемо: по умолчанию динамические партиции пусты и не имеют встроенной логики определения допустимых ключей. Мы сами регистрируем значения партиций, которые хотим выполнить.
 
-Before we execute the pipeline, let’s define the downstream asset that loads data into DuckDB, using the values from our dynamic partition:
+Перед запуском пайплайна определим нижестоящий ассет, загружающий данные в DuckDB с использованием значений динамических партиций:
 
 ```python {% obfuscated="true" %}
 # src/dagster_and_etl/defs/assets.py
@@ -75,4 +75,6 @@ def duckdb_dynamic_partition_table(
         conn.execute(f"copy {table_name} from ?;", [import_dynamic_partition_file])
 ```
 
-This setup should look very similar to the daily partition we created earlier. But how does it play out in practice? To better understand the distinction, let’s dive into the differences in how partitioned pipelines are triggered. Each type requires a different approach to scheduling and orchestration, depending on how and when new data becomes available.
+Эта настройка очень похожа на ранее созданные дневные партиции. Но как это работает на практике? Для понимания различий рассмотрим способы запуска партиционированных пайплайнов. Каждый тип требует своего подхода к расписаниям и оркестрации в зависимости от того, как и когда появляются новые данные.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

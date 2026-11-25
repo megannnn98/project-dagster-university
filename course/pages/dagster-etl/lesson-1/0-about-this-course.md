@@ -1,29 +1,30 @@
 ---
-title: "Lesson 1: About this course & getting help"
+title: 'Урок 1: О курсе и получении помощи'
 module: 'dagster_etl'
 lesson: '1'
 ---
 
-# About this course
+# О курсе
 
-This course is geared towards those who have some familiarity Dagster and want to learn move about ETL. You don't need to be an expert, but you should know your way around a Dagster project.
+Этот курс предназначен для тех, кто уже немного знаком с Dagster и хочет подробнее изучить ETL. Необязательно быть экспертом, но нужно ориентироваться в структуре проекта Dagster.
 
-In this course, you’ll learn how to orchestrate ETL pipelines. We will discuss common ETL situations and some of their pitfalls and how to effectively layer in Dagster to make managing these pipelines easier.
+В этом курсе ты научишься оркестрировать ETL-пайплайны. Мы рассмотрим типичные сценарии ETL, их подводные камни и способы эффективного применения Dagster для упрощения управления такими пайплайнами.
 
-You’ll load static files into a data warehouse using schedules, sensors, and partitions. You'll explore the nuances of extracting data from APIs, streamline your workflows with ETL frameworks (dlt), and replicate data across databases. Finally, you'll see how Dagster Components can help you build production-quality ETL solutions with just a few lines of code.
-
----
-
-## Required experience
-
-To successfully complete this course, you’ll need:
-
-- **Dagster familiarity** - You'll need to know the basics of Dagster to complete this course. **If you've never used Dagster before or want a refresher before getting started**, check out the [Dagster Essentials course](https://courses.dagster.io/courses/dagster-essentials).
-
-- **Docker knowledge** - We will provide you with everything you need to run everything around Docker. But being able to navigate around the basics of Docker will be helpful.
+Ты будешь загружать статические файлы в хранилище данных с помощью расписаний, сенсоров и партиций. Изучишь особенности извлечения данных из API, упростишь рабочие процессы с помощью ETL-фреймворка dlt и освоишь репликацию данных между базами. Наконец, увидишь, как компоненты Dagster помогают создавать ETL-решения производственного качества всего несколькими строками кода.
 
 ---
 
-## Getting help
+## Необходимый опыт
 
-If you'd like some assistance while working through this course, reach out to the Dagster community on [Slack](https://dagster.io/slack) in the `#dagster-university` channel. **Note**: The Dagster team is generally available during US business hours.
+Для успешного прохождения курса тебе понадобится:
+
+- **Знание Dagster** — необходимо знать основы Dagster. **Если ты никогда не использовал Dagster или хочешь освежить знания**, пройди [курс Dagster Essentials](https://courses.dagster.io/courses/dagster-essentials).
+- **Знание Docker** — мы предоставим всё необходимое для запуска компонентов Docker, но понимание его основ будет полезно.
+
+---
+
+## Получение помощи
+
+Если нужна помощь при прохождении курса, обратись к сообществу Dagster в [Slack](https://dagster.io/slack), в канале `#dagster-university`. **Примечание:** команда Dagster обычно доступна в рабочие часы США.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

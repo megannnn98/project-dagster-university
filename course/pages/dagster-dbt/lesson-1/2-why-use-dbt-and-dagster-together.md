@@ -14,11 +14,11 @@ lesson: '1'
 
 Чтобы все компоненты работали вместе, нужен оркестратор. Здесь на помощь приходит Dagster.
 
-Цитата из оригинала:
+Перевод цитаты из оригинала:
 
-> Dagster’s core design principles go really well together with dbt. The similarities between the way that Dagster thinks about data pipelines and the way that dbt thinks about data pipelines means that Dagster can orchestrate dbt much more faithfully than other general-purpose orchestrators like Airflow.
+> Основные принципы Dagster хорошо сочетаются с dbt. Сходство в представлении пайплайнов данных позволяет Dagster оркестрировать dbt с большим учётом его устройства, чем универсальные оркестраторы вроде Airflow.
 >
-> At the same time, Dagster is able to compensate for dbt’s biggest limitations. dbt is rarely used in a vacuum: the data transformed using dbt needs to come from somewhere and go somewhere. When a data platform needs more than just dbt, Dagster is a better fit than dbt-specific orchestrators, like the job scheduling system inside dbt Cloud. ([source](https://dagster.io/blog/orchestrating-dbt-with-dagster))
+> При этом Dagster компенсирует основные ограничения dbt. dbt редко используется изолированно: преобразуемые данные откуда-то поступают и куда-то передаются. Когда платформе данных требуется больше, чем dbt, Dagster подходит лучше узкоспециализированных средств оркестрации dbt, например планировщика заданий dbt Cloud. ([Источник](https://dagster.io/blog/orchestrating-dbt-with-dagster))
 
 Совместное использование dbt и Dagster даёт инженерам аналитики и инженерам данных преимущества обоих подходов:
 

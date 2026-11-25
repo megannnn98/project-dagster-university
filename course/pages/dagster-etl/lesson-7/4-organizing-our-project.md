@@ -1,20 +1,20 @@
 ---
-title: "Lesson 7: Organizing our project"
+title: 'Урок 7: Организация проекта'
 module: 'dagster_etl'
 lesson: '7'
 ---
 
-# Organizing our project
+# Организация проекта
 
-Organizing your Dagster project with components brings structure, scalability, and clarity to your data platform. Instead of building one large codebase where assets, resources, and configurations are tightly coupled, components allow you to break your project into self-contained modules. Each component bundles together related logic—such as a data source, transformation, or model training step—along with its resources and config schemas. This modular layout makes it easier to onboard new team members, reuse functionality across pipelines, and iterate on parts of your system without risking unrelated functionality.
+Организация проекта Dagster с помощью компонентов придаёт платформе данных структуру, масштабируемость и прозрачность. Вместо одной большой кодовой базы, где ассеты, ресурсы и конфигурации тесно связаны, компоненты позволяют разделить проект на самостоятельные модули. Каждый компонент объединяет связанную логику — например, источник данных, преобразование или этап обучения модели — с ресурсами и схемами конфигурации. Такая модульная структура упрощает знакомство новых участников команды с проектом, повторное использование функциональности в разных пайплайнах и развитие отдельных частей системы без риска для несвязанных функций.
 
-A well-organized component-based project typically follows a pattern where each component lives in its own directory or package, complete with its own virtual environment, tests, and documentation. For example, you might have components/snowflake_ingestion, components/ml_training, and components/reporting_pipeline, each representing a logical slice of your platform. This structure encourages encapsulation and reduces dependency sprawl, allowing individual components to evolve at their own pace. By centralizing composition in your definitions.py file (or similar), you can declaratively stitch components together to build end-to-end workflows without compromising maintainability. As your team and projects grow, components provide the foundation for a scalable and collaborative development model.
+Хорошо организованный проект на основе компонентов обычно следует шаблону, при котором каждый компонент находится в собственном каталоге или пакете, имеет собственное виртуальное окружение, тесты и документацию. Например, могут существовать каталоги components/snowflake_ingestion, components/ml_training и components/reporting_pipeline, каждый из которых представляет логическую часть платформы. Такая структура способствует инкапсуляции и ограничивает разрастание зависимостей, позволяя отдельным компонентам развиваться в своём темпе. Централизовав композицию в файле definitions.py (или аналогичном), можно декларативно объединять компоненты в сквозные рабочие процессы без ущерба для сопровождаемости. По мере роста команды и проектов компоненты обеспечивают основу масштабируемой совместной разработки.
 
-## Navigating a large asset graph
+## Навигация по большому графу ассетов
 
-As your project grows, the asset graph in the Dagster UI can become crowded. Asset groups and tags let you filter the graph without restructuring your code.
+По мере роста проекта граф ассетов в интерфейсе Dagster может стать перегруженным. Группы ассетов и теги позволяют фильтровать граф без изменения структуры кода.
 
-**Asset groups** assign a set of assets to a named category, which appears as a filter in the UI. You can set a group on any asset with the `group_name` parameter:
+**Группы ассетов** объединяют набор ассетов в именованную категорию, доступную в интерфейсе как фильтр. Для любого ассета можно задать группу параметром `group_name`:
 
 ```python
 @dg.asset(group_name="ingestion")
@@ -24,20 +24,20 @@ def raw_orders(): ...
 def orders_by_customer(): ...
 ```
 
-You can then click a group name in the asset graph to show only the assets in that group.
+Затем можно нажать на имя группы в графе ассетов, чтобы отобразить только ассеты этой группы.
 
-**Tags** offer finer-grained filtering. Any key-value pair works:
+**Теги** позволяют выполнять более детальную фильтрацию. Можно использовать произвольные пары ключ-значение:
 
 ```python
 @dg.asset(tags={"layer": "staging", "source": "postgres"})
 def staging_orders(): ...
 ```
 
-Use tags to filter by team, environment, data domain, or any dimension that makes sense for your project. Groups and tags compose: you can narrow the graph to a group and then filter further by tag.
+Используй теги для фильтрации по команде, окружению, предметной области данных или любому другому подходящему для проекта признаку. Группы и теги можно комбинировать: сначала ограничить граф одной группой, а затем дополнительно отфильтровать по тегу.
 
-## Grouping assets hierarchically
+## Иерархическая группировка ассетов
 
-As the number of groups grows, a flat list of names becomes hard to scan. Group names can use `/` as a separator to express hierarchy, so related groups nest under a common prefix:
+По мере увеличения количества групп плоский список имён становится неудобным для просмотра. Имена групп могут использовать `/` в качестве разделителя для выражения иерархии, чтобы связанные группы располагались под общим префиксом:
 
 ```python
 @dg.asset(group_name="ingestion/postgres")
@@ -50,23 +50,25 @@ def raw_nasa_neo(): ...
 def orders_by_customer(): ...
 ```
 
-Each segment may contain only letters, numbers, and underscores, and a separator cannot lead, trail, or repeat. `ingestion/postgres` is valid; `/ingestion` and `ingestion//postgres` are not.
+Каждый сегмент может содержать только буквы, цифры и символы подчёркивания. Разделитель не может находиться в начале или конце имени либо повторяться подряд. Имя `ingestion/postgres` допустимо, а `/ingestion` и `ingestion//postgres` — нет.
 
-## Filtering with the selection syntax
+## Фильтрация с помощью синтаксиса выбора
 
-Beyond clicking a single group, the asset graph and catalog accept a selection syntax in the filter input. You can match a whole hierarchy of groups with a wildcard, where `*` matches any sequence of characters including `/`:
+Помимо выбора отдельной группы нажатием, граф и каталог ассетов поддерживают синтаксис выбора в поле фильтра. Можно выбрать целую иерархию групп с помощью подстановочного символа `*`, соответствующего любой последовательности символов, включая `/`:
 
 ```
 group:"ingestion/*"
 ```
 
-This selects every asset under `ingestion`, including `ingestion/postgres` and `ingestion/apis`.
+Это выбирает все ассеты внутри `ingestion`, включая `ingestion/postgres` и `ingestion/apis`.
 
-You can also select assets by structural type with the `is:` filter:
+Также можно выбирать ассеты по структурному типу с помощью фильтра `is:`:
 
 ```
 is:external
 is:materializable
 ```
 
-`is:external` matches assets Dagster observes but does not materialize, such as source tables, while `is:materializable` matches assets Dagster executes. These filters compose with `group:`, `tag:`, and `kind:` selections, letting you narrow a large graph down to exactly the assets you care about.
+Фильтр `is:external` соответствует ассетам, за которыми Dagster наблюдает, но которые не материализует, например исходным таблицам. Фильтр `is:materializable` соответствует ассетам, которые Dagster выполняет. Эти фильтры можно комбинировать с условиями `group:`, `tag:` и `kind:`, чтобы ограничить большой граф именно теми ассетами, которые тебе нужны.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

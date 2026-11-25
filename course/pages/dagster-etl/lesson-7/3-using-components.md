@@ -1,12 +1,12 @@
 ---
-title: "Lesson 7: Using components"
+title: 'Урок 7: Использование компонентов'
 module: 'dagster_etl'
 lesson: '7'
 ---
 
-# Using components
+# Использование компонентов
 
-When using Dagster Components, one best practice is to treat each component as an isolated, testable, and versioned unit of logic. This means encapsulating not just asset definitions, but their dependencies, such as resources, config schemas, and even environment setup—within the component itself.
+Одна из лучших практик работы с компонентами Dagster — рассматривать каждый компонент как изолированную, тестируемую и версионируемую единицу логики. Это означает, что внутри компонента необходимо инкапсулировать не только определения ассетов, но и их зависимости: ресурсы, схемы конфигурации и даже настройку окружения.
 
 ```
 .
@@ -22,8 +22,10 @@ When using Dagster Components, one best practice is to treat each component as a
                 └── defs.yaml
  ```
 
-To ensure maintainability, avoid having components implicitly rely on external context or shared state unless explicitly passed in. It’s also important to define clear interfaces. Use typed config models and input/output schemas so that consumers of a component understand how to configure and integrate it without digging into the internals.
+Для упрощения сопровождения избегай неявной зависимости компонентов от внешнего контекста или общего состояния, если они не передаются явно. Также важно определять чёткие интерфейсы. Используй типизированные модели конфигурации и схемы входных и выходных данных, чтобы потребители компонента понимали, как его настроить и интегрировать, не изучая внутреннюю реализацию.
 
-## Reuse
+## Повторное использование
 
-Another best practice is to design for composability and reuse, much like you would with modules or packages in traditional software engineering. components should be small enough to be meaningful on their own (e.g., a set of assets to extract data from a specific source), but flexible enough to be combined with others in different DAGs or projects. Use version control and semantic naming to track changes, and maintain compatibility boundaries when updating shared components. When possible, validate components independently through unit tests or local runs before integrating them into larger pipelines, ensuring that failures are caught early and in isolation.
+Ещё одна хорошая практика — проектировать компоненты с учётом компонуемости и повторного использования, как модули или пакеты в традиционной разработке программного обеспечения. Компоненты должны быть достаточно небольшими, чтобы иметь самостоятельное назначение (например, набор ассетов для извлечения данных из конкретного источника), но достаточно гибкими для объединения с другими компонентами в разных DAG или проектах. Используй систему контроля версий и осмысленные имена для отслеживания изменений, а при обновлении общих компонентов соблюдай границы совместимости. По возможности проверяй компоненты независимо с помощью модульных тестов или локальных запусков, прежде чем интегрировать их в более крупные пайплайны. Это позволяет выявлять ошибки на ранних этапах и в изоляции.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

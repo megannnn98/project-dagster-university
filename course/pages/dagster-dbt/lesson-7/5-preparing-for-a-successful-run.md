@@ -1,47 +1,49 @@
 ---
-title: "Lesson 7: Preparing for a successful run"
+title: "Урок 7: Подготовка к успешному запуску"
 module: 'dbt_dagster'
 lesson: '7'
 ---
 
-# Preparing for a successful run
+<!-- Неофициальный русский перевод; исходный материал изменён. -->
+
+# Подготовка к успешному запуску
 
 {% callout %}
->💡 **Heads up! This section is optional.** The goal of this lesson was to teach you how to successfully **deploy** to Dagster+, which you completed in the last section. Preparing for a successful run in Dagster+ requires using some external services, which may not translate to the external services you prefer to use. As such, we’ve opted to make this section optional.
+>💡 **Этот раздел необязателен.** Цель урока — научиться развёртывать проект в Dagster+ — достигнута на предыдущем шаге. Для выполнения пайплайна понадобятся внешние сервисы; вы можете предпочесть другие, поэтому этот раздел вынесен отдельно.
 {% /callout %}
 
-In previous lessons, you followed along by adding our example code to your local project. You successfully materialized the assets in the project and stored the resulting data in a local DuckDB database.
+В прошлых уроках вы добавляли примеры в локальный проект, материализовали ассеты и сохраняли результаты в локальной базе DuckDB.
 
-**This section will be a little different.** Production deployment can be complicated and require a lot of setup. To keep things simple we’ll walk you through the steps required to set up the pipeline for a successful run, but not how to set up external services. For this lesson, assume we already have our storage set up and ready to go.
-
----
-
-## Deployment overview
-
-Since you'll be deploying your project in production, you'll need production systems to read and write your assets. In this case, we'll use:
-
-- **Amazon S3** to store the files we were saving to our local file system. The data will be small enough to fit within AWS's free tier. For more information on how to set up an S3 bucket, see [this guide](https://www.gormanalysis.com/blog/connecting-to-aws-s3-with-python/).
-- **Motherduck** to replace our local DuckDB instance and query the data in our S3 bucket. Motherduck is a cloud-based data warehouse that can be used to store and query data that is currently free to setup. For more information on how to set up Motherduck, see [their documentation](https://motherduck.com/docs/getting-started), along with how to [connect it to your AWS S3 bucket](https://motherduck.com/docs/integrations/amazon-s3).
-
-The code you cloned in the starter project already has some logic to dynamically switch between local and cloud storage, along with the paths to reference. To trigger the switch, you can set an environment variable called `DAGSTER_ENVIRONMENT` and set it to `prod`. This will tell the pipeline to use the production paths and storage.
-
-In summary, before you can run this pipeline in Dagster+, you’ll need to:
-
-1. Set up an S3 bucket to store the files/assets that we download and generate
-2. Sign up for a free Motherduck account to replace our local DuckDB instance
-3. Connect an S3 user with access to the S3 bucket to the Motherduck account
-4. Add a new production target to the dbt project
-5. Add the environment variables for the S3 user and Motherduck token to Dagster+
-
-We’ll show you how to do 4 and 5 so you can do this with your credentials when you’re ready.
+Настройка production сложнее. Здесь разберём изменения в пайплайне, необходимые для успешного запуска, предполагая, что внешние хранилища уже настроены и готовы к работе. Сам процесс их создания в раздел не входит.
 
 ---
 
-## Adding a production target to profiles.yml
+## Обзор развёртывания
 
-The first step we’ll take is to add a second target to the `dagster_dbt_university` profile in our project’s `analytics/profiles.yml`. A [‘target’ in dbt](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles#understanding-targets-in-profiles) describes a connection to a data warehouse, which up until this point in the course, has been a local DuckDB instance.
+Для чтения и записи ассетов в production используем:
 
-To maintain the separation of our development and production environments, we’ll add a `prod` target to our project’s profiles:
+- **Amazon S3** вместо локальной файловой системы. В оригинале предполагается небольшой объём данных, укладывающийся в бесплатный тариф AWS; актуальные лимиты и стоимость зависят от условий вашего аккаунта. Пример настройки бакета — в [этом руководстве](https://www.gormanalysis.com/blog/connecting-to-aws-s3-with-python/).
+- **MotherDuck** вместо локальной базы DuckDB, в том числе для запросов к данным в S3. Это облачное хранилище данных; в оригинале предлагается бесплатный вариант регистрации. Настройка описана в [документации](https://motherduck.com/docs/getting-started), а подключение S3 — в [отдельном руководстве](https://motherduck.com/docs/integrations/amazon-s3).
+
+В начальном проекте уже есть логика переключения локальных и облачных хранилищ и путей. Переменная окружения `DAGSTER_ENVIRONMENT=prod` включает пути и ресурсы production.
+
+Перед запуском в Dagster+ нужно:
+
+1. Настроить бакет S3 для скачиваемых и создаваемых файлов ассетов.
+2. Создать аккаунт MotherDuck для замены локальной базы DuckDB.
+3. Настроить в MotherDuck доступ к бакету S3 с помощью учётных данных AWS с нужными правами.
+4. Добавить целевое окружение production в проект dbt.
+5. Добавить в Dagster+ переменные окружения с параметрами AWS и токеном MotherDuck.
+
+Далее рассмотрим шаги 4 и 5.
+
+---
+
+## Целевое окружение production в profiles.yml
+
+Добавим второе целевое окружение в профиль `dagster_dbt_university` файла `analytics/profiles.yml`. [Target в dbt](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles#understanding-targets-in-profiles) описывает подключение к хранилищу данных. До сих пор это была локальная база DuckDB.
+
+Чтобы разделить разработку и production, добавьте `prod`:
 
 ```yaml
 dagster_dbt_university:
@@ -55,29 +57,29 @@ dagster_dbt_university:
       path: '{{ env_var("DUCKDB_DATABASE", "") }}'
 ```
 
-Because we’re still using a DuckDB-backed database, our `type` will also be `duckdb` for `prod`. Save and commit the file to git before continuing.
+MotherDuck использует DuckDB, поэтому тип подключения `prod` тоже будет `duckdb`. Сохраните файл и закоммитьте его.
 
-**Note:** While dbt supports more platforms than just DuckDB, our project is set up to only work with this database type. If you use a different platform `type` for future projects, the configuration will vary depending on the platform being connected. Refer to [dbt’s documentation](https://docs.getdbt.com/docs/supported-data-platforms) for more information and examples.
+**Примечание:** dbt поддерживает и другие платформы, но учебный проект рассчитан на DuckDB. Настройки другого `type` будут отличаться. Примеры — в [документации dbt](https://docs.getdbt.com/docs/supported-data-platforms).
 
 ---
 
-## Adding a prod target to DbtProject
+## Целевое окружение prod в DbtProject
 
-Next, we need to update the `DbtProject` object in `dagster_university/project.py` to specify what profile to target. To optimize the developer experience, let’s use an environment variable to specify the profile to target.
+Обновим объект `DbtProject` в `src/dagster_and_dbt/defs/project.py`, чтобы выбирать target через переменную окружения.
 
-1. In the `.env` file, define an environment variable named `DBT_TARGET` and set it to `dev`:
+1. В `.env` задайте `DBT_TARGET=dev`:
 
    ```python
    DBT_TARGET=dev
    ```
 
-2. Next, import the `os` module at the top of the `project.py` file so the environment variable is accessible:
+2. В начало `project.py` добавьте импорт `os`:
 
    ```python
    import os
    ```
 
-3. Finally, scroll to the initialization of the `DbtProject` object, and use the new environment variable to access the profile to target. This should be on or around line 11:
+3. При инициализации `DbtProject` задайте target из переменной окружения:
 
 ```python
 dbt_project = DbtProject(
@@ -88,11 +90,11 @@ dbt_project = DbtProject(
 
 ---
 
-## Adding a prod target to deploy.yml
+## Целевое окружение prod в deploy.yml
 
-Next, we need to update the dbt commands in the `.github/workflows/deploy.yml` file to target the new `prod` profile. This will ensure that dbt uses the correct connection details when the GitHub Action runs as part of our Dagster+ deployment.
+В `.github/workflows/deploy.yml` укажите `DBT_TARGET=prod`, чтобы при подготовке проекта в GitHub Actions dbt использовал нужное подключение.
 
-Open the file, scroll to the environment variable section, and set an environment variable named `DBT_TARGET` to `prod`. This should be on or around line 12:
+Найдите раздел переменных окружения (в оригинале примерно строка 12) и добавьте значение:
 
 ```bash
 env:
@@ -104,74 +106,72 @@ env:
   DBT_TARGET: 'prod'
 ```
 
-Save and commit the file to git. Don’t forget to push to remote!
+Сохраните файл, закоммитьте и отправьте изменения в удалённый репозиторий.
 
 ---
 
-## Adding environment variables to Dagster+
+## Переменные окружения в Dagster+
 
-The last step in preparing for a successful run is to move environment variables to Dagster+. These variables were available to us via the `.env` file while we were working locally, but now that we’ve moved to a different environment, we’ll need to make them accessible again.
+При локальной работе переменные были доступны через `.env`. В новом окружении их нужно настроить заново.
 
-### Environment variables
-
-The following table contains the environment variables we need to create in Dagster+:
+### Необходимые переменные
 
 {% table %}
 
-- Variable {% width="30%" %}
-- Description
+- Переменная {% width="30%" %}
+- Описание
 
 ---
 
 - `DUCKDB_DATABASE`
-- The service token for a Motherduck database, formatted as `md:?motherduck_token=<insert_token_here>`. Refer to the [Motherduck documentation](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token) for more info.
+- Строка подключения MotherDuck с сервисным токеном: `md:?motherduck_token=<insert_token_here>`. Подробнее — в [документации MotherDuck](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
 
 ---
 
 - `DAGSTER_ENVIRONMENT`
-- Set this to `prod`. This will be used by your resources and constants.
+- Установите `prod`. Используется ресурсами и константами проекта.
 
 ---
 
 - `DBT_TARGET`
-- Set this to `prod`. This will be used by your dbt project and dbt resource to decide which target to use.
+- Установите `prod`. Указывает проекту и ресурсу dbt, какое целевое окружение использовать.
 
 ---
 
 - `AWS_ACCESS_KEY_ID`
-- The access key ID for the S3 bucket.
+- Идентификатор ключа доступа AWS с правами на нужный бакет S3.
 
 ---
 
 - `AWS_SECRET_ACCESS_KEY`
-- The secret access key associated with the S3 bucket.
+- Секретный ключ доступа AWS, соответствующий этому идентификатору.
 
 ---
 
 - `AWS_REGION`
-- The region the S3 bucket is located in.
+- Регион, в котором находится бакет S3.
 
 ---
 
 - `S3_BUCKET_PREFIX`
-- The name of the S3 bucket, by default `"s3://dagster-university/"`, for the S3 bucket where your taxi data will be stored.
+- URI бакета S3 для данных такси. Значение по умолчанию в примере — `"s3://dagster-university/"`; укажите свой бакет.
 
 {% /table %}
 
-### Creating environment variables
+### Создание переменных окружения
 
-1. In the Dagster+ UI, click **Deployment > Environment variables**.
-2. Click the **Add environment variable** button on the right side of the screen.
-3. In the **Create environment variable** window, fill in the following:
-    1. **Name** - The name of the environment variable. For example: `DUCKDB_DATABASE`
-    2. **Value** - The value of the environment variable.
-    3. **Code location scope**  - Deselect the **All code locations** option and check only the code location for this course’s project.
-4. Click **Save.**
+1. В интерфейсе Dagster+ откройте **Deployment > Environment variables**.
+2. Нажмите **Add environment variable** справа.
+3. В окне **Create environment variable** заполните:
+    1. **Name** — имя переменной, например `DUCKDB_DATABASE`.
+    2. **Value** — её значение.
+    3. **Code location scope** — снимите **All code locations** и выберите только расположение кода учебного проекта.
+4. Нажмите **Save**.
 
-Repeat these steps until all the environment variables have been added.
+Повторите действия для всех переменных.
 
 ---
 
-## Running the pipeline
+## Запуск пайплайна
 
-At this point, you're ready to run the pipeline in production! Navigate to the asset graph, click **Materialize all**, and watch as it all comes together.
+Теперь пайплайн готов к выполнению в production. Откройте граф ассетов, нажмите **Materialize all** и наблюдайте за запуском.

@@ -1,12 +1,12 @@
 ---
-title: "Lesson 5: Refactoring apis with dlt"
+title: 'Урок 5: Рефакторинг API с dlt'
 module: 'dagster_etl'
 lesson: '5'
 ---
 
-# Refactoring APIs with dlt
+# Рефакторинг API с dlt
 
-Next we can reconfigure our API pipeline with dlt. This is a much more custom implementation than loading data from a CSV so the `@dlt.source` will contain more code. However, we can simply reuse most of the logic from the previous lesson.
+Далее можно перенастроить API-пайплайн с помощью dlt. Это более специализированная реализация, чем загрузка данных из CSV, поэтому функция `@dlt.source` будет содержать больше кода. Однако большую часть логики можно повторно использовать из предыдущего урока.
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -39,7 +39,7 @@ def nasa_neo_source(start_date: str, end_date: str, api_key: str):
     return fetch_neo_data
 ```
 
-This gives us the ability to pull in any date range from the NASA api using dlt. Rather than using the `dlt_assets` decorator. We can also nest this code directly in a dg asset. We can then update the `nasa_neo_source` function to use the values from the run configuration.
+Теперь с помощью dlt можно получать данные из API NASA за любой диапазон дат. Вместо декоратора `dlt_assets` можно также поместить этот код непосредственно в ассет dg. Затем обновим функцию `nasa_neo_source`, чтобы она использовала значения конфигурации запуска.
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -89,7 +89,7 @@ def dlt_nasa(context: dg.AssetExecutionContext, config: NasaDate):
     return load_info
 ```
 
-Writing the function this way also makes it easy to include partitions as we would for any other asset.
+Такая реализация функции также позволяет легко добавить партиции, как и для любого другого ассета.
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -141,3 +141,5 @@ def dlt_nasa_partition(context: dg.AssetExecutionContext):
 
     return load_info
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

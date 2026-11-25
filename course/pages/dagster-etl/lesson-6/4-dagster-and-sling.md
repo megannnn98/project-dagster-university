@@ -1,14 +1,14 @@
 ---
-title: "Lesson 6: Dagster and Sling"
+title: 'Урок 6: Dagster и Sling'
 module: 'dagster_etl'
 lesson: '6'
 ---
 
-# Dagster and Sling
+# Dagster и Sling
 
-When defining assets with Sling, you will first have to define your source and target. In this case our source is Postgres and the destination is still our DuckDB database.
+При определении ассетов с помощью Sling сначала нужно задать источник и назначение. В данном случае источник — Postgres, а назначение — наша база DuckDB.
 
-To define the source and destination, we will use the `SlingConnectionResource`. The source POstgres instance will use the connection details from our Docker Compose.
+Для определения источника и назначения воспользуемся `SlingConnectionResource`. Для исходного экземпляра Postgres используем параметры подключения из Docker Compose.
 
 ```python
 # src/dagster_and_etl/defs/resources.py
@@ -26,7 +26,7 @@ source = SlingConnectionResource(
 )
 ```
 
-The destination has fewer attributes as it is just the file path to our local DuckDB database:
+У назначения меньше параметров, поскольку достаточно указать путь к локальному файлу базы DuckDB:
 
 ```python
 # src/dagster_and_etl/defs/resources.py
@@ -37,7 +37,7 @@ destination = SlingConnectionResource(
 )
 ```
 
-With the source and destination defined, we can combine them together in the `SlingResource`:
+Определив источник и назначение, объединим их в `SlingResource`:
 
 ```python
 # src/dagster_and_etl/defs/resources.py
@@ -49,7 +49,7 @@ sling = SlingResource(
 )
 ```
 
-Finally, expose `sling` through the `Definitions` object:
+Наконец, зарегистрируем `sling` через объект `Definitions`:
 
 ```python
 # src/dagster_and_etl/defs/resources.py
@@ -62,16 +62,16 @@ def resources():
     )
 ```
 
-## Replication yaml
+## YAML-конфигурация репликации
 
-Our connections are set but we still need to set what we are replicating. Sling handles this with a replication yaml file. This determines which connection is our source and target:
+Подключения настроены, но ещё нужно определить, что именно мы реплицируем. Sling использует для этого YAML-файл репликации. Он определяет, какое подключение является источником, а какое — назначением:
 
 ```yaml
 source: MY_POSTGRES
 target: MY_DUCKDB
 ```
 
-More importantly we need to decide which of our tables to replicate between Postgres and DuckDB. We only need the `data.customers`, `data.products` and `data.orders` tables so can set those in the `streams`.
+Ещё важнее решить, какие таблицы реплицировать из Postgres в DuckDB. Нам нужны только таблицы `data.customers`, `data.products` и `data.orders`, поэтому укажем их в `streams`.
 
 ```yaml
 defaults:
@@ -85,12 +85,11 @@ streams:
   data.orders:
 ```
 
-This will replicate our 3 tables into DuckDB.
+Так мы настроим репликацию трёх таблиц в DuckDB.
 
-## Sling assets
+## Ассеты Sling
 
-Now we can generate our Dagster assets. Since we have already done most of the work in defining our source and destination in the `SlingResource` and the replication information in the `replication.yaml`, Dagster can automatically generate the assets with the `sling_assets` decorator:
-
+Теперь можно сгенерировать ассеты Dagster. Поскольку мы уже выполнили большую часть работы, определив источник и назначение в `SlingResource` и параметры репликации в `replication.yaml`, Dagster может автоматически сгенерировать ассеты с помощью декоратора `sling_assets`:
 
 ```python
 # src/dagster_and_etl/defs/assets.py
@@ -105,13 +104,13 @@ def postgres_sling_assets(context, sling: SlingResource):
     yield from sling.replicate(context=context).fetch_column_metadata()
 ```
 
-That is everything we need. Now when we launch `dg dev` we will see six new assets in the asset graph.
+Это всё, что необходимо. Теперь при запуске `dg dev` на графе ассетов появится шесть новых ассетов.
 
-First there are the three source assets representing the raw tables that exist in our Postgres database (customers, products, orders). Connected to each of these sources are our Dagster assets. Each of these individually.
+Сначала идут три исходных ассета, представляющих необработанные таблицы в Postgres (customers, products, orders). С каждым из этих источников связан соответствующий ассет Dagster.
 
-## Confirm data
+## Проверка данных
 
-To check that everything has loaded correctly, we can connect to the DuckDB database using the [DuckDB CLI](https://duckdb.org/docs/stable/clients/cli/overview.html) and run a query for the table we just made.
+Чтобы убедиться, что всё загрузилось правильно, подключись к базе DuckDB с помощью [DuckDB CLI](https://duckdb.org/docs/stable/clients/cli/overview.html) и выполни запрос к только что созданной таблице.
 
 ```bash
 > duckdb data/staging/data.duckdb
@@ -126,4 +125,6 @@ D SELECT * FROM data_customers;
 └─────────────┴────────────┴───────────┴───────────────────────────┘
 ```
 
-You can also view the `data_products` or `data_orders` tables.
+Также можно посмотреть таблицы `data_products` или `data_orders`.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
