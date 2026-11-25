@@ -40,14 +40,14 @@ title: Dagster Essentials
   - [Что такое расположение кода?](/dagster-essentials/lesson-5/2-whats-a-code-location)
   - [Расположения кода в интерфейсе Dagster](/dagster-essentials/lesson-5/3-code-locations-dagster-ui)
 
-- Lesson 6: Resources
-  - [Overview](/dagster-essentials/lesson-6/0-overview)
-  - [What's a resource?](/dagster-essentials/lesson-6/1-whats-a-resource)
-  - [Setting up a database resource](/dagster-essentials/lesson-6/2-setting-up-a-database-resource)
-  - [Using resources in assets](/dagster-essentials/lesson-6/3-using-resources-in-assets)
-  - [Practice: Refactoring assets to use resources](/dagster-essentials/lesson-6/4-coding-practice-refactoring-assets)
-  - [Analyzing resource usage using the Dagster UI](/dagster-essentials/lesson-6/5-analyzing-resources-dagster-ui)
-  - [Lesson recap](/dagster-essentials/lesson-6/6-recap)
+- Урок 6: Ресурсы
+  - [Обзор](/dagster-essentials/lesson-6/0-overview)
+  - [Что такое ресурс?](/dagster-essentials/lesson-6/1-whats-a-resource)
+  - [Настройка ресурса базы данных](/dagster-essentials/lesson-6/2-setting-up-a-database-resource)
+  - [Использование ресурсов в активах](/dagster-essentials/lesson-6/3-using-resources-in-assets)
+  - [Практика: рефакторинг активов для использования ресурсов](/dagster-essentials/lesson-6/4-coding-practice-refactoring-assets)
+  - [Анализ использования ресурсов через интерфейс Dagster](/dagster-essentials/lesson-6/5-analyzing-resources-dagster-ui)
+  - [Итоги урока](/dagster-essentials/lesson-6/6-recap)
 
 - Lesson 7: Schedules
   - [Overview](/dagster-essentials/lesson-7/0-overview)

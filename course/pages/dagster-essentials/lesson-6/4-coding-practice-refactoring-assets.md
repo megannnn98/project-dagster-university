@@ -1,28 +1,28 @@
 ---
-title: 'Lesson 6: Practice: Refactoring assets to use resources'
+title: 'Урок 6: Практика: рефакторинг активов для использования ресурсов'
 module: 'dagster_essentials'
 lesson: '6'
 ---
 
-# Practice: Refactoring assets to use resources
+# Практика: рефакторинг активов для использования ресурсов
 
-The following assets use the DuckDB database:
+Следующие активы используют базу данных DuckDB:
 
 - `taxi_zones`
 - `manhattan_stats`
 - `trips_by_week`
 
-Update these assets to use the `DuckDBResource`.
+Обнови эти активы, чтобы они использовали `DuckDBResource`.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The updated assets should look similar to the following code snippets. Click **View answer** to view them.
+Обновлённые активы должны выглядеть примерно как в следующих фрагментах кода. Нажми **View answer**, чтобы посмотреть ответы.
 
-We’ll assume your code looks like the following for the rest of the module. If your solution and the code provided have differences, update your code to match the answers and re-materialize these assets to prepare for the next part of this lesson.
+В оставшейся части курса мы будем предполагать, что твой код выглядит как приведённый ниже. Если твой вариант отличается от предоставленных решений, приведи код в соответствие с ответами и повторно материализуй эти активы, чтобы подготовиться к следующей части урока.
 
-### In assets/trips.py:
+### В файле assets/trips.py:
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/trips.py
@@ -49,9 +49,9 @@ def taxi_zones(database: DuckDBResource) -> None:
         conn.execute(query)
 ```
 
-### In assets/metrics.py:
+### В файле assets/metrics.py:
 
-Update the imports in `defs/assets/metrics.py` to the following:
+Обнови импорты в файле `defs/assets/metrics.py` следующим образом:
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/metrics.py
@@ -66,7 +66,7 @@ import matplotlib.pyplot as plt
 from dagster_essentials.defs.assets import constants
 ```
 
-Update the `manhattan_stats` asset:
+Обнови актив `manhattan_stats`:
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/metrics.py
@@ -100,7 +100,7 @@ def manhattan_stats(database: DuckDBResource) -> None:
         output_file.write(trips_by_zone.to_json())
 ```
 
-Update the `trips_by_week` asset:
+Обнови актив `trips_by_week`:
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/metrics.py
@@ -151,3 +151,5 @@ def trips_by_week(database: DuckDBResource) -> None:
 
     result.to_csv(constants.TRIPS_BY_WEEK_FILE_PATH, index=False)
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

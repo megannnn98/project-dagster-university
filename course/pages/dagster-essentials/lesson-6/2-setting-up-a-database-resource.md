@@ -1,12 +1,12 @@
 ---
-title: 'Lesson 6: Setting up a database resource'
+title: 'Урок 6: Настройка ресурса базы данных'
 module: 'dagster_essentials'
 lesson: '6'
 ---
 
-# Setting up a database resource
+# Настройка ресурса базы данных
 
-Throughout this module, you’ve used DuckDB to store and transform your data. Each time you’ve used DuckDB in an asset, you’ve needed to make a connection to it. For example:
+На протяжении курса ты использовал DuckDB для хранения и преобразования данных. Каждый раз, когда DuckDB использовалась в активе, требовалось установить подключение к ней. Например:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -26,26 +26,26 @@ def taxi_trips() -> None:
     ...
 ```
 
-Every asset that queries DuckDB contains the `duckdb.connect` line. As previously mentioned, this can become brittle and error-prone as your project grows, whether in the number of assets that use it or the complexity of the connections. For example, to MotherDuck, a specific S3 bucket, or loading an extension. To be exact, this brittleness is shared across the following assets:
+Каждый актив, выполняющий запросы к DuckDB, содержит строку `duckdb.connect`. Как уже отмечалось, с ростом проекта такой код становится хрупким и подверженным ошибкам: увеличивается число использующих его активов или сложность подключений, например к MotherDuck, определённому бакету S3, либо возникает необходимость загрузить расширение. В частности, проблема затрагивает следующие активы:
 
 - `taxi_zones`
 - `taxi_trips`
 - `manhattan_stats`
 - `trips_by_week`
 
-Let’s use a Dagster resource to manage this connection and share it across all the assets using it.
+Воспользуемся ресурсом Dagster для управления этим подключением и его совместного использования всеми соответствующими активами.
 
 ---
 
-## Defining a resource
+## Определение ресурса
 
-We can scaffold our resources with `dg` in a way similar to the how we scaffolded assets in lesson 3.
+С помощью `dg` можно создать каркас ресурса примерно так же, как мы создавали каркасы активов в уроке 3.
 
 ```bash
 dg scaffold defs dagster.resources resources.py
 ```
 
-This adds a `resources.py` file within the `dagster_essentials` module.
+Эта команда добавляет файл `resources.py` внутри модуля `dagster_essentials`.
 
 ```
 .
@@ -55,7 +55,7 @@ This adds a `resources.py` file within the `dagster_essentials` module.
             └── resources.py
 ```
 
-Within this newly created file, add the following code:
+В только что созданный файл добавь следующий код:
 
 ```python
 # src/dagster_essentials/defs/resources.py
@@ -67,19 +67,19 @@ database_resource = DuckDBResource(
 )
 ```
 
-This code snippet imports a resource called `DuckDBResource` from Dagster’s `dagster_duckdb` integration library. Next, it creates an instance of that resource and stores it in `database_resource`.
+Этот фрагмент кода импортирует ресурс `DuckDBResource` из библиотеки интеграции Dagster `dagster_duckdb`. Затем создаётся экземпляр этого ресурса и сохраняется в переменной `database_resource`.
 
 ---
 
-## Using environment variables
+## Использование переменных окружения
 
-When working across different settings or with secure values like passwords, environment variables are a standardized way to store configurations and credentials. Not specific to Python, environment variables are values that are saved outside of software and used within it. For a primer on environment variables in Python, check out [this post from our blog](https://dagster.io/blog/python-environment-variables).
+При работе в разных окружениях или с конфиденциальными значениями, такими как пароли, переменные окружения представляют собой стандартный способ хранения конфигурации и учётных данных. Переменные окружения не являются особенностью Python: это значения, хранящиеся вне программного обеспечения и используемые внутри него. Для знакомства с переменными окружения в Python прочитай [эту статью в нашем блоге](https://dagster.io/blog/python-environment-variables).
 
-When configuring resources, it’s best practice to load your configurations and secrets into your programs from environment variables. You’ve been following this pattern by using `os.getenv` to fetch environment variables from the `.env` that is part of this project. A `.env` file is a standard for project-level environment variables and should **not** be committed to git, as they often contain passwords and sensitive information.
+При настройке ресурсов рекомендуется загружать конфигурацию и секреты в программы из переменных окружения. Ты уже следовал этому подходу, используя `os.getenv` для получения переменных окружения из файла `.env`, входящего в состав проекта. Файл `.env` — распространённый способ определения переменных окружения на уровне проекта. Его **не следует** добавлять в git, поскольку такие файлы часто содержат пароли и конфиденциальную информацию.
 
-However, in this project, our `.env` file only contains one environment variable: `DUCKDB_DATABASE`. This variable contains the hard-coded path to the DuckDB database file, which is `data/staging/data.duckdb`. Let’s clean up this code by using Dagster’s `EnvVar` utility.
+Однако в этом проекте файл `.env` содержит только одну переменную окружения: `DUCKDB_DATABASE`. В ней задан путь к файлу базы данных DuckDB — `data/staging/data.duckdb`. Упростим код с помощью вспомогательного класса Dagster `EnvVar`.
 
-In `resources.py`, replace the value of the `database` with an `EnvVar` as shown below:
+В файле `resources.py` замени значение параметра `database` на `EnvVar`, как показано ниже:
 
 ```python
 # src/dagster_essentials/defs/resources.py
@@ -91,22 +91,22 @@ database_resource = DuckDBResource(
 )
 ```
 
-`EnvVar` is similar to the `os.getenv` method that you’ve been using, but there is a key difference:
+`EnvVar` похож на метод `os.getenv`, который ты использовал ранее, но есть важное различие при конфигурировании ресурса:
 
-- `EnvVar` fetches the environmental variable’s value **every time a run starts**
-- `os.getenv` fetches the environment variable **when the code location is loaded**
+- `EnvVar` получает значение переменной окружения **при запуске выполнения**.
+- `os.getenv`, вызванный в определении ресурса, получает значение переменной окружения **при загрузке расположения кода**.
 
-By using `EnvVar` instead of `os.getenv`, you can dynamically customize a resource’s configuration. For example, you can change which DuckDB database is being used without having to restart Dagster’s web server.
+Используя `EnvVar` вместо `os.getenv`, можно динамически изменять конфигурацию ресурса. Например, изменить используемую базу DuckDB без перезапуска веб-сервера Dagster, если новое значение доступно окружению процесса выполнения.
 
 ---
 
-## Updating the Definitions object
+## Обновление объекта Definitions
 
-In the previous lesson, you learned about code locations, how they work, and how to collect assets and other Dagster definitions using the `Definitions` object.
+В предыдущем уроке ты узнал, что такое расположения кода, как они работают и как объединять активы и другие определения Dagster с помощью объекта `Definitions`.
 
-You saw that using `dg` to scaffold our project, the `Definitions` will automatically load any assets within the module. The same is true for resources however there is one additional step we need to make to the `resources.py`.
+Ты видел, что при создании каркаса проекта с помощью `dg` объект `Definitions` автоматически загружает активы внутри модуля. То же самое справедливо для ресурсов, однако в файл `resources.py` необходимо внести ещё одно изменение.
 
-1. In the `resources.py` add the following line:
+1. Добавь в файл `resources.py` следующий код:
 
    ```python
    # src/dagster_essentials/defs/resources.py
@@ -117,9 +117,9 @@ You saw that using `dg` to scaffold our project, the `Definitions` will automati
        return dg.Definitions(resources={"database": database_resource})
    ```
 
-   This tells Dagster how to map the resources to specific key names. In this case the `database_resource` resource just defined is mapped to the key name `database`.
+   Это сообщает Dagster, как сопоставлять ресурсы с конкретными именами ключей. В данном случае только что определённый ресурс `database_resource` сопоставляется с ключом `database`.
 
-   The `resources.py` file should now look like:
+   Теперь файл `resources.py` должен выглядеть так:
 
    ```python
    # src/dagster_essentials/defs/resources.py
@@ -135,16 +135,18 @@ You saw that using `dg` to scaffold our project, the `Definitions` will automati
        return dg.Definitions(resources={"database": database_resource})
    ```
 
-2. In the Dagster UI, click **Deployment.**
+2. В интерфейсе Dagster нажми **Deployment**.
 
-3. In the **Code locations** tab, click the **Reload** button next to the `dagster_essentials` code location.
+3. На вкладке **Code locations** нажми кнопку **Reload** рядом с расположением кода `dagster_essentials`.
 
-4. Click the code location to open it.
+4. Нажми на расположение кода, чтобы открыть его.
 
-5. In the code location page that displays, click the **Definitions tab.**.
+5. На открывшейся странице расположения кода перейди на вкладку **Definitions**.
 
-6. Click **Resources** on the left side panel and select the resource named **database**.
+6. Нажми **Resources** на левой боковой панели и выбери ресурс с именем **database**.
 
-   Notice that the **Uses** tab at the top is currently **0.** This is because while the resource has been defined and loaded, none of the assets in the code location are currently using it.
+   Обрати внимание, что вкладка **Uses** вверху пока показывает **0**. Ресурс уже определён и загружен, но ни один из активов в расположении кода пока его не использует.
 
-Now that you've set up the resource, it's time to use it in your project. In the next section, you'll learn how to refactor your assets to use resources.
+Теперь, когда ресурс настроен, пора использовать его в проекте. В следующем разделе ты узнаешь, как отрефакторить активы для работы с ресурсами.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
