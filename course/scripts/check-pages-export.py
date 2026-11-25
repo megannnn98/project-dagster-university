@@ -34,6 +34,22 @@ def check(root, base):
             errors.add(f"Missing course: {course}")
 
     def check_url(file, value):
+        parsed = urlsplit(value)
+        # Keep external docs and untranslated material external. A course link
+        # with a local exported equivalent must stay on the translated site.
+        original_route = None
+        if parsed.hostname == "courses.dagster.io" and parsed.path.startswith("/courses/"):
+            original_route = parsed.path.removeprefix("/courses/")
+        elif parsed.hostname == "dagster-university.dagster-docs.io":
+            original_route = parsed.path.lstrip("/")
+        if original_route is not None:
+            relative_route = unquote(original_route).rstrip("/")
+            # Only treat safe, actual exported pages as translated equivalents.
+            if ".." not in Path(relative_route).parts and not relative_route.startswith("/"):
+                local_page = root / relative_route
+                if (local_page / "index.html").is_file():
+                    errors.add(f"{file.relative_to(root)}: link to original course: {value}")
+            return
         if not value.startswith("/") or value.startswith("//"):
             return
         path = unquote(urlsplit(value).path)
