@@ -55,6 +55,6 @@ def cookie_dough(dry_ingredients, wet_ingredients):
 Подробнее о практическом применении компонентов:
 
 * [Учебный пайплайн ETL](https://docs.dagster.io/etl-pipeline-tutorial/)
-* [Dagster & ETL](https://courses.dagster.io/courses/dagster-etl)
+* [Dagster & ETL](/dagster-etl)
 
 _Русский перевод оригинального материала Dagster University; текст изменён при переводе._

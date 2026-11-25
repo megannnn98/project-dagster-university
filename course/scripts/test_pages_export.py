@@ -53,6 +53,33 @@ class ExportCheckTests(unittest.TestCase):
                           "missing target: /project/missing.png"):
                 self.assertIn(error, stderr.getvalue())
 
+    def test_translated_course_links_must_be_local(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for course in ("dagster-essentials", "dagster-etl", "dagster-dbt",
+                           "dagster-testing", "ai-driven-data-engineering"):
+                (root / course).mkdir()
+                (root / course / "index.html").write_text("", encoding="utf-8")
+            lesson = root / "dagster-etl" / "lesson-1"
+            lesson.mkdir()
+            (lesson / "index.html").write_text("", encoding="utf-8")
+            index = root / "index.html"
+            index.write_text(
+                '<a href="/project/dagster-etl/">Russian course</a>'
+                '<a href="https://docs.dagster.io/guides/build/components/">Docs</a>'
+                '<a href="https://courses.dagster.io/courses/untranslated">Other course</a>',
+                encoding="utf-8"
+            )
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(checker.check(root, "/project"), 0)
+            with index.open("a", encoding="utf-8") as f:
+                f.write('<a href="https://courses.dagster.io/courses/dagster-etl">Original</a>'
+                        '<a href="https://dagster-university.dagster-docs.io/dagster-etl/lesson-1/">Original lesson</a>')
+            stderr = io.StringIO()
+            with contextlib.redirect_stderr(stderr):
+                self.assertEqual(checker.check(root, "/project"), 1)
+            self.assertEqual(stderr.getvalue().count("link to original course:"), 2)
+
 
 if __name__ == "__main__":
     unittest.main()
