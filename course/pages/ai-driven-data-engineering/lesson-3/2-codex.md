@@ -1,54 +1,56 @@
 ---
-title: "Lesson 3: Codex"
+title: 'Урок 3: Codex'
 module: 'ai_driven_data_engineering'
 lesson: '3'
 ---
 
 # Codex
 
-If you’re using **Codex** as your AI coding agent, follow these steps so the Dagster skills are available. Once they’re installed and enabled, you can use prompts like `/dagster-expert` in later lessons.
+Если ты используешь **Codex** в качестве агента программирования, выполни следующие шаги, чтобы обеспечить доступность скиллов Dagster. После установки и включения можно будет использовать промпты вроде `/dagster-expert` в следующих уроках.
 
 ---
 
-## 1. Install Codex
+## 1. Установи Codex
 
-Install [Codex](https://openai.com/codex/) from the official setup guide for your environment and sign in.
+Установи [Codex](https://openai.com/codex/) согласно официальной инструкции для своего окружения и войди в аккаунт.
 
 ---
 
-## 2. Add the Dagster skills
+## 2. Добавь скиллы Dagster
 
-The `npx` command comes with Node.js. If you don't have it installed, [install Node.js](https://nodejs.org) first.
+Команда `npx` поставляется с Node.js. Если он не установлен, сначала [установи Node.js](https://nodejs.org).
 
-Install using the `npx skills` command-line:
+Выполни установку с помощью CLI `npx skills`:
 
 ```bash
 npx skills add dagster-io/skills
 ```
 
-![npx install](/images/ai-driven-data-engineering/lesson-3/npx-install.png)
+![Установка через npx](/images/ai-driven-data-engineering/lesson-3/npx-install.png)
 
 ---
 
-## 3. Ensure the Dagster skills are enabled
+## 3. Убедись, что скиллы Dagster включены
 
-In Codex settings or the skill list, confirm that the Dagster-related skills are **enabled**. You want at least:
+В настройках Codex или списке скиллов убедись, что скиллы Dagster **включены**. Необходимо как минимум:
 
-- `dagster-expert`: for project structure, `dg` CLI, and Dagster patterns
-- `dignified-python`: for general Python quality
+- `dagster-expert`: для структуры проекта, CLI `dg` и шаблонов Dagster.
+- `dignified-python`: для общего качества кода Python.
 
-Once they’re enabled, you can invoke them in your prompts. Type the skill name prefixed with `/` at the start of your message:
+После включения можно вызывать их в промптах. В исходном курсе предлагается вводить имя скилла с префиксом `/` в начале сообщения:
 
 ```text
 /dagster-expert create a new Dagster project called university
 ```
 
-You’ll use this pattern throughout the rest of the course.
+Используй этот шаблон или доступный в твоей версии Codex способ явного выбора скилла.
 
-![Codex skill](/images/ai-driven-data-engineering/lesson-3/codex-skill.png)
+![Скилл Codex](/images/ai-driven-data-engineering/lesson-3/codex-skill.png)
 
 ---
 
-## You’re set
+## Всё готово
 
-With the Dagster skills installed and enabled, you’re ready for Lesson 4. In later lessons you’ll use the skills so the agent follows Dagster best practices and uses `dg` for scaffolding and validation.
+После установки и включения скиллов Dagster можно переходить к уроку 4. В следующих уроках ты будешь использовать скиллы, чтобы агент следовал лучшим практикам Dagster и применял `dg` для создания заготовок и валидации.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

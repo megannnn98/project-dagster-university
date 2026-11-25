@@ -16,8 +16,8 @@ title: AI-Driven Data Engineering
   - [Как работает скилл](/ai-driven-data-engineering/lesson-2/5-how-a-skill-works)
   - [Dagster Skills](/ai-driven-data-engineering/lesson-2/6-dagster-skills)
 
-- Lesson 3: Project setup
-  - [Overview](/ai-driven-data-engineering/lesson-3/0-overview)
+- Урок 3: Настройка проекта
+  - [Обзор](/ai-driven-data-engineering/lesson-3/0-overview)
   - [Claude Code](/ai-driven-data-engineering/lesson-3/1-claude)
   - [Codex](/ai-driven-data-engineering/lesson-3/2-codex)
   - [Cursor](/ai-driven-data-engineering/lesson-3/3-cursor)

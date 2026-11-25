@@ -1,32 +1,32 @@
 ---
-title: "Lesson 3: Claude Code"
+title: 'Урок 3: Claude Code'
 module: 'ai_driven_data_engineering'
 lesson: '3'
 ---
 
 # Claude Code
 
-If you’re using **Claude Code** as your AI coding agent, follow these steps so the Dagster skills are available. Once they’re installed and enabled, you can use prompts like `/dagster-expert` in later lessons.
+Если ты используешь **Claude Code** в качестве агента программирования, выполни следующие шаги, чтобы обеспечить доступность скиллов Dagster. После установки и включения можно будет использовать промпты вроде `/dagster-expert` в следующих уроках.
 
 ---
 
-## 1. Install Claude Code
+## 1. Установи Claude Code
 
-Install and sign in to [Claude Code](https://docs.anthropic.com/en/docs/claude-code/setup) using the setup guide.
+Установи [Claude Code](https://docs.anthropic.com/en/docs/claude-code/setup) и войди в аккаунт согласно инструкции по настройке.
 
 ---
 
-## 2. Install the Dagster skill
+## 2. Установи скиллы Dagster
 
-In Claude Code, add the Dagster skills from the plugin marketplace:
+В Claude Code добавь скиллы Dagster через каталог плагинов:
 
 ```text
 /plugin marketplace add dagster-io/skills
 ```
 
-![Claude marketplace](/images/ai-driven-data-engineering/lesson-3/claude-marketplace.png)
+![Каталог плагинов Claude](/images/ai-driven-data-engineering/lesson-3/claude-marketplace.png)
 
-Then install both Dagster skills:
+Затем установи оба скилла Dagster:
 
 ```text
 /plugin install dagster-expert@dagster-skills
@@ -38,9 +38,9 @@ Then install both Dagster skills:
 
 ---
 
-## 3. Reload plugins
+## 3. Перезагрузи плагины
 
-After installing, reload the plugin registry so Claude Code picks up the new skills:
+После установки перезагрузи реестр плагинов, чтобы Claude Code обнаружил новые скиллы:
 
 ```text
 /reload-plugins
@@ -48,20 +48,20 @@ After installing, reload the plugin registry so Claude Code picks up the new ski
 
 ---
 
-## 4. Ensure the Dagster skills are enabled
+## 4. Убедись, что скиллы Dagster включены
 
-Open the plugin list and confirm the Dagster skills are enabled:
+Открой список плагинов и проверь, что скиллы Dagster включены:
 
 ```text
 /plugin
 ```
 
-Switch to the **Installed** tab and verify that the Dagster skills show as enabled. You should see something like:
+Перейди на вкладку **Installed** и убедись, что скиллы Dagster отмечены как включённые. Ты должен увидеть примерно следующее:
 
-- **dagster-expert**: enabled
-- **dignified-python**: enabled
+- **dagster-expert**: включён.
+- **dignified-python**: включён.
 
-If a skill is missing from the list, install it individually:
+Если скилл отсутствует в списке, установи его отдельно:
 
 ```text
 /plugin install dagster-expert@dagster-skills
@@ -71,26 +71,28 @@ If a skill is missing from the list, install it individually:
 /plugin install dignified-python@dagster-skills
 ```
 
-Then run `/reload-plugins` again before continuing.
+Затем снова выполни `/reload-plugins`, прежде чем продолжить.
 
-If a skill is listed but disabled, enable it so the agent can use Dagster best practices and the `dg` CLI when you invoke the skill in your prompts.
+Если скилл присутствует, но отключён, включи его, чтобы агент мог использовать лучшие практики Dagster и CLI `dg` при вызове скилла в промптах.
 
-![Claude plugin](/images/ai-driven-data-engineering/lesson-3/claude-plugin.png)
+![Плагин Claude](/images/ai-driven-data-engineering/lesson-3/claude-plugin.png)
 
 ---
 
-## How to invoke skills
+## Как вызывать скиллы
 
-In Claude Code, skills are invoked as slash commands. Type the skill name prefixed with `/` at the start of your prompt:
+В Claude Code скиллы вызываются через slash-команды. Введи имя скилла с префиксом `/` в начале промпта:
 
 ```text
 /dagster-expert create a new Dagster project called university
 ```
 
-Claude Code loads that skill’s context before responding. You’ll use this pattern throughout the rest of the course.
+Claude Code загружает контекст этого скилла перед ответом. Ты будешь использовать этот шаблон на протяжении оставшейся части курса.
 
 ---
 
-## You’re set
+## Всё готово
 
-With the Dagster skills installed and enabled, you’re ready for Lesson 4. In later lessons you’ll use the skills so the agent follows Dagster best practices and uses `dg` for scaffolding and validation.
+После установки и включения скиллов Dagster можно переходить к уроку 4. В следующих уроках ты будешь использовать скиллы, чтобы агент следовал лучшим практикам Dagster и применял `dg` для создания заготовок и валидации.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

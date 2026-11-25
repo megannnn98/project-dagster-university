@@ -1,60 +1,62 @@
 ---
-title: "Lesson 3: Cursor"
+title: 'Урок 3: Cursor'
 module: 'ai_driven_data_engineering'
 lesson: '3'
 ---
 
 # Cursor
 
-If you’re using **Cursor** as your AI coding agent, follow these steps so the Dagster skills are available. Once they’re installed and enabled, you can use prompts like `/dagster-expert` in later lessons.
+Если ты используешь **Cursor** в качестве агента программирования, выполни следующие шаги, чтобы обеспечить доступность скиллов Dagster. После установки и включения можно будет использовать промпты вроде `/dagster-expert` в следующих уроках.
 
 ---
 
-## 1. Install Cursor
+## 1. Установи Cursor
 
-Install Cursor from [cursor.com](https://cursor.com) and sign in.
+Установи Cursor с сайта [cursor.com](https://cursor.com) и войди в аккаунт.
 
 ---
 
-## 2. Add the Dagster skills
+## 2. Добавь скиллы Dagster
 
-The `npx` command comes with Node.js. If you don't have it installed, [install Node.js](https://nodejs.org) first.
+Команда `npx` поставляется с Node.js. Если он не установлен, сначала [установи Node.js](https://nodejs.org).
 
-Install using the `npx skills` command-line:
+Выполни установку с помощью CLI `npx skills`:
 
 ```bash
 npx skills add dagster-io/skills
 ```
 
-![npx install](/images/ai-driven-data-engineering/lesson-3/npx-install.png)
+![Установка через npx](/images/ai-driven-data-engineering/lesson-3/npx-install.png)
 
 ---
 
-## 3. Ensure the Dagster skills are enabled
+## 3. Убедись, что скиллы Dagster включены
 
-Confirm that the Dagster skills are **enabled**. You want at least:
+Убедись, что скиллы Dagster **включены**. Необходимо как минимум:
 
-- `dagster-expert`: for project structure, `dg` CLI, and Dagster patterns
-- `dignified-python`: for Python best practices
+- `dagster-expert`: для структуры проекта, CLI `dg` и шаблонов Dagster.
+- `dignified-python`: для лучших практик Python.
 
-Skills are often invoked by typing `/` in the chat and selecting the skill, or by including the skill name in your prompt.
+Скиллы часто вызываются вводом `/` в чате и выбором скилла либо упоминанием его имени в промпте.
 
-![Cursor skill](/images/ai-driven-data-engineering/lesson-3/cursor-skill.png)
+![Скилл Cursor](/images/ai-driven-data-engineering/lesson-3/cursor-skill.png)
 
 ---
 
-## How to invoke skills
+## Как вызывать скиллы
 
-In Cursor’s Agent panel, skills installed via `npx skills` are available as slash commands. Type the skill name prefixed with `/` at the start of your prompt in the Agent chat:
+В панели Agent в Cursor скиллы, установленные через `npx skills`, доступны как slash-команды. Введи имя скилла с префиксом `/` в начале промпта в чате Agent:
 
 ```text
 /dagster-expert create a new Dagster project called university
 ```
 
-Cursor loads that skill’s context before responding. You’ll use this pattern throughout the rest of the course.
+Cursor загружает контекст этого скилла перед ответом. Ты будешь использовать этот шаблон на протяжении оставшейся части курса.
 
 ---
 
-## You’re set
+## Всё готово
 
-Once the Dagster skills are installed and enabled, you’re ready for Lesson 4. In later lessons you’ll use prompts that invoke these skills so the agent follows Dagster best practices and uses `dg` for scaffolding and validation.
+После установки и включения скиллов Dagster можно переходить к уроку 4. В следующих уроках ты будешь использовать промпты, вызывающие эти скиллы, чтобы агент следовал лучшим практикам Dagster и применял `dg` для создания заготовок и валидации.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
