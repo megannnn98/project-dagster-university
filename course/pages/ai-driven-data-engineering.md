@@ -53,13 +53,15 @@ title: AI-Driven Data Engineering
   - [Привычки работы с сессиями](/ai-driven-data-engineering/lesson-7/2-session-habits)
   - [Типичные проблемы сессий](/ai-driven-data-engineering/lesson-7/3-failure-patterns)
 
-- Lesson 8: Complex tasks with plan mode and subagents
-  - [Overview](/ai-driven-data-engineering/lesson-8/0-overview)
-  - [Plan mode](/ai-driven-data-engineering/lesson-8/1-plan-mode)
-  - [How plan mode works](/ai-driven-data-engineering/lesson-8/2-how-plan-mode-works)
-  - [Parallel execution in practice](/ai-driven-data-engineering/lesson-8/3-parallel-execution)
-  - [Subagents](/ai-driven-data-engineering/lesson-8/4-subagents)
-  - [Working with an existing project](/ai-driven-data-engineering/lesson-8/5-brownfield-workflow)
-  - [How we evaluate our skills](/ai-driven-data-engineering/lesson-8/6-how-we-evaluate-our-skills)
+- Урок 8: Сложные задачи, режим планирования и субагенты
+  - [Обзор](/ai-driven-data-engineering/lesson-8/0-overview)
+  - [Режим планирования](/ai-driven-data-engineering/lesson-8/1-plan-mode)
+  - [Как работает режим планирования](/ai-driven-data-engineering/lesson-8/2-how-plan-mode-works)
+  - [Параллельное выполнение на практике](/ai-driven-data-engineering/lesson-8/3-parallel-execution)
+  - [Параллельные сессии и изоляция контекста](/ai-driven-data-engineering/lesson-8/4-subagents)
+  - [Работа с существующим проектом](/ai-driven-data-engineering/lesson-8/5-brownfield-workflow)
+  - [Как мы оцениваем свои скиллы](/ai-driven-data-engineering/lesson-8/6-how-we-evaluate-our-skills)
 
-- [Capstone](/ai-driven-data-engineering/capstone)
+- [Итоговый проект](/ai-driven-data-engineering/capstone)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,45 +1,45 @@
 ---
-title: "Lesson 8: Parallel execution in practice"
+title: 'Урок 8: Параллельное выполнение на практике'
 module: 'ai_driven_data_engineering'
 lesson: '8'
 ---
 
-# Parallel execution in practice
+# Параллельное выполнение на практике
 
-The best way to see what plan mode produces is to look at a concrete example. Adding a NewsAPI integration to the project involved changes across 8 files.
+Лучший способ увидеть результат режима планирования — рассмотреть конкретный пример. Добавление интеграции NewsAPI в проект затронуло восемь файлов.
 
-## The scope
+## Объём изменений
 
-The full change set for the integration:
+Полный набор изменений интеграции:
 
-| File | What changed |
+| Файл | Что изменилось |
 |---|---|
-| `pyproject.toml` | Added `eventregistry` dependency |
-| `defs/resources.py` | Added `NewsApiResource` class + registered `"newsapi"` |
-| `defs/assets/trending_events.py` | New partitioned asset |
-| `defs/schedules/daily_raw.py` | Split raw job, added partitioned schedule |
-| `.env.example` | Added `NEWS_API_KEY` |
-| `dbt_project/models/staging/sources.yml` | Registered `trending_events` source |
-| `dbt_project/models/staging/stg_trending_events.sql` | New staging model |
-| `dbt_project/models/staging/schema.yml` | Added `not_null` tests |
+| `pyproject.toml` | Добавлена зависимость `eventregistry` |
+| `defs/resources.py` | Добавлен класс `NewsApiResource` и зарегистрирован ресурс `"newsapi"` |
+| `defs/assets/trending_events.py` | Новый партиционированный ассет |
+| `defs/schedules/daily_raw.py` | Разделено задание исходных данных, добавлено расписание с партициями |
+| `.env.example` | Добавлена переменная `NEWS_API_KEY` |
+| `dbt_project/models/staging/sources.yml` | Зарегистрирован источник `trending_events` |
+| `dbt_project/models/staging/stg_trending_events.sql` | Новая staging-модель |
+| `dbt_project/models/staging/schema.yml` | Добавлены тесты `not_null` |
 
-Eight files, spanning Python, dbt SQL, dbt YAML, and project config.
+Восемь файлов, охватывающих Python, SQL и YAML dbt, а также конфигурацию проекта.
 
-## Why all 8 can be written simultaneously
+## Почему все восемь можно записывать одновременно
 
-Because the plan was complete before any file was written, the design was fully known at write time:
+Поскольку план был завершён до записи любого файла, к моменту реализации все проектные решения были известны:
 
-- The interface for `NewsApiResource`: an `api_key` field, a `get_client()` method returning an `EventRegistry` instance
-- The DuckDB table schema: what columns `trending_events` would land in
-- The partition definition: daily partitions, how they'd be referenced in the schedule
+- Интерфейс `NewsApiResource`: поле `api_key`, метод `get_client()`, возвращающий экземпляр `EventRegistry`.
+- Схема таблицы DuckDB: в какие столбцы будут попадать данные `trending_events`.
+- Определение партиций: дневные партиции и способ обращения к ним из расписания.
 
-None of these files needed to wait for another to be written first. A resource definition doesn't depend on the asset file being complete; the dbt source registration doesn't depend on the Python asset existing yet. All 8 can be written in a single message.
+Ни один из файлов не должен был ждать завершения другого. Определение ресурса не зависит от завершения файла ассета; регистрация источника dbt не зависит от наличия уже написанного ассета Python. Все восемь файлов можно записать за один обмен сообщениями.
 
-![Agent flow 4](/images/ai-driven-data-engineering/lesson-8/agent-flow-4.png)
+![Рабочий процесс агента: параллельная запись](/images/ai-driven-data-engineering/lesson-8/agent-flow-4.png)
 
-## Validation as the final sequential step
+## Валидация как заключительный последовательный этап
 
-After the parallel writes, validation runs in sequence:
+После параллельной записи выполняется последовательная валидация:
 
 ```bash
 uv sync                                      # install eventregistry
@@ -47,16 +47,18 @@ dg check defs                                # validates Python + Dagster defini
 dbt compile --select stg_trending_events     # validates the SQL model
 ```
 
-`dg check defs` is particularly useful here because it validates the full integration in one command: `NewsApiResource` is correctly defined, `trending_events` loads without import errors, and the schedule referencing both is valid. If any of the parallel writes had an error, `dg check` surfaces it immediately.
+`dg check defs` особенно полезна здесь, поскольку одной командой проверяет загрузку всей интеграции: определение `NewsApiResource`, загрузку `trending_events` без ошибок импорта и корректность расписания, ссылающегося на эти определения. Если в параллельно записанных файлах есть ошибка загрузки определений, `dg check` поможет сразу её обнаружить.
 
-The total sequence (plan, 8 parallel writes, 3 sequential validation steps) is faster than writing and validating each file one at a time, and it's easier to debug because there's a clear boundary between "writing phase" and "checking phase."
+Полная последовательность (план, восемь параллельных записей, три последовательных шага валидации) быстрее, чем запись и проверка каждого файла по одному. Её также проще отлаживать, поскольку между этапом записи и этапом проверки проходит чёткая граница.
 
-## Applying this pattern yourself
+## Как самостоятельно применять этот шаблон
 
-When you're about to start a task that touches multiple files, ask:
+Перед началом задачи, затрагивающей несколько файлов, спроси себя:
 
-1. Is the full design knowable before I write the first file?
-2. If yes, can all the files be written simultaneously once the design is settled?
-3. What validation steps run after, and in what order?
+1. Можно ли полностью определить проектные решения до записи первого файла?
+2. Если да, можно ли записать все файлы одновременно после согласования этих решений?
+3. Какие проверки выполняются после записи и в каком порядке?
 
-If you can answer those three questions, you have the structure of a plan. Giving the agent this framing ("design first, then write everything, then validate") produces more consistent results than letting it discover the design file-by-file as it writes.
+Если можешь ответить на три вопроса, у тебя есть структура плана. Такая постановка задачи агенту («сначала спроектируй, затем запиши всё, затем проверь») обеспечивает более согласованные результаты, чем постепенное определение архитектуры по мере записи каждого файла.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -2,7 +2,7 @@
 
 Неофициальный русскоязычный перевод [Dagster University](https://courses.dagster.io/). Репозиторий содержит учебные материалы, исходные проекты и готовый код для каждого урока. Подробнее о каждом проекте см. в README соответствующего курса.
 
-**[Начать обучение: Dagster Essentials на русском](DAGSTER_ESSENTIALS_RU.md)** · [Статус перевода и словарь](TRANSLATION_STATUS.md)
+**[Начать обучение: Dagster Essentials на русском](DAGSTER_ESSENTIALS_RU.md)** · [AI-driven Data Engineering на русском](AI_DRIVEN_DATA_ENGINEERING_RU.md) · [Статус перевода и словарь](TRANSLATION_STATUS.md)
 
 ## Курсы
 

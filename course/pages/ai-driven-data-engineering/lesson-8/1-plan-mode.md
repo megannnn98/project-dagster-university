@@ -1,46 +1,48 @@
 ---
-title: "Lesson 8: Plan mode"
+title: 'Урок 8: Режим планирования'
 module: 'ai_driven_data_engineering'
 lesson: '8'
 ---
 
-# Plan mode
+# Режим планирования
 
-Plan mode is an explicit instruction to the agent: design the approach first, don't write code yet. You enter it by asking:
+Режим планирования (plan mode) — явная инструкция агенту: сначала спроектируй подход, пока не пиши код. Чтобы перейти к нему, попроси:
 
 ```text
 Before implementing, draft a plan for adding a NewsAPI integration.
 ```
 
-The agent will read the relevant files, identify everything that needs to change, and present a step-by-step implementation strategy. It waits for your approval before writing anything.
+Агент прочитает относящиеся к задаче файлы, определит необходимые изменения и представит пошаговую стратегию реализации. В этом рабочем процессе он ждёт твоего одобрения, прежде чем записывать изменения.
 
-## When to use it
+## Когда использовать
 
-Not every task needs a plan. For small, reversible changes (renaming a variable, fixing a typo, adding a single field), plan mode adds overhead without value.
+Не для каждой задачи нужен план. Для небольших обратимых изменений (переименование переменной, исправление опечатки, добавление одного поля) планирование создаёт лишние затраты без существенной пользы.
 
-The signal is complexity and reversibility. Use plan mode when:
+Главные признаки — сложность и обратимость. Используй режим планирования, когда:
 
-- **The task touches more than 2-3 files**: the more files involved, the more likely an inconsistent choice in one propagates to others
-- **Multiple approaches are valid**: if there are real trade-offs between approaches, you want to choose before implementation is underway
-- **Architectural decisions are involved**: new resources, new integration patterns, schema changes that affect downstream models
-- **You want to understand the blast radius**: before committing to changes that are hard to undo
+- **Задача затрагивает больше двух-трёх файлов:** чем больше файлов задействовано, тем вероятнее, что несогласованное решение в одном распространится на остальные.
+- **Допустимы несколько подходов:** если между ними существуют существенные компромиссы, лучше выбрать подход до начала реализации.
+- **Необходимы архитектурные решения:** новые ресурсы, новые шаблоны интеграции, изменения схемы, влияющие на нижестоящие модели.
+- **Нужно понять масштаб последствий:** прежде чем приступать к изменениям, которые трудно отменить.
 
-The harder something is to reverse, the more valuable upfront planning becomes.
+Чем труднее отменить изменение, тем ценнее предварительное планирование.
 
-## What it looks like in practice
+## Как это выглядит на практике
 
-A typical plan-mode session has a clear shape:
+Типичная сессия в режиме планирования имеет ясную структуру:
 
-1. You describe the task and ask for a plan first
-2. The agent reads the relevant files (resources, assets, schedules, dbt models) without changing any of them
-3. It produces a structured plan: every file that needs to change, what changes in each, and any dependencies between them
-4. You review, ask questions, or redirect if the approach isn't what you wanted
-5. You approve, and the agent begins implementation
+1. Ты описываешь задачу и просишь сначала составить план.
+2. Агент читает нужные файлы (ресурсы, ассеты, расписания, модели dbt), не изменяя их.
+3. Он создаёт структурированный план: каждый изменяемый файл, изменения в нём и зависимости между изменениями.
+4. Ты изучаешь план, задаёшь вопросы или корректируешь направление, если подход не соответствует ожиданиям.
+5. Ты одобряешь план, и агент начинает реализацию.
 
-This upfront review is valuable precisely because it happens before anything is written. If the plan surfaces a decision you hadn't considered (do we want daily or hourly partitions? should the new resource go in `resources.py` or a new file?), resolve it at planning time, not mid-implementation when reverting is messier.
+Предварительное ревью ценно именно потому, что проводится до записи кода. Если план выявляет решение, о котором ты не подумал (дневные или часовые партиции? поместить новый ресурс в `resources.py` или отдельный файл?), прими его на этапе планирования, а не в середине реализации, когда отменять изменения сложнее.
 
-## The key constraint
+## Ключевое ограничение
 
-Plan mode only works if you ask for it explicitly. The agent won't automatically pause before complex tasks; it will proceed with implementation unless you tell it otherwise.
+Чтобы гарантировать отдельный этап планирования, запроси его явно или включи соответствующий режим инструмента. Не рассчитывай, что агент самостоятельно остановится перед сложной задачей: без такой инструкции он может сразу приступить к реализации.
 
-Treat it as a habit for any task where you'd feel uncomfortable if the agent just started writing. If you wouldn't want to see the code before reviewing the approach, ask for the plan first.
+Возьми это за привычку при любой задаче, где немедленная запись кода вызвала бы у тебя сомнения. Если хочешь сначала проверить подход, попроси план.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
