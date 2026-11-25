@@ -38,6 +38,7 @@ jobs:
         run: cd course && yarn linkcheck
 
   deploy:
+    if: github.repository == 'dagster-io/project-dagster-university'
     needs: linkcheck
     runs-on: ubuntu-latest
     steps:

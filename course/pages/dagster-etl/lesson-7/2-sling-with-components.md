@@ -96,7 +96,7 @@ attributes:
 
 Обрати внимание: имена подключений в `defs.yaml` по-прежнему должны соответствовать именам в `replication.yaml` (`MY_DUCKDB` и `MY_POSTGRES`).
 
-![Сравнение компонента и ассетов Sling](/images/dagster-etl/extra-credit/components-vs-asset.png.png)
+![Сравнение компонента и ассетов Sling](/images/dagster-etl/extra-credit/components-vs-asset.png)
 
 ## Просмотр ассетов
 

@@ -60,6 +60,6 @@ title: Dagster + dbt
   - [Использование dbt Cloud](/dagster-dbt/lesson-7/6-using-dbt-cloud)
 
 - Урок 8: Dagster Skills
-  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills)
 
 - [Итоговый проект](/dagster-dbt/capstone)

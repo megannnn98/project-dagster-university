@@ -55,6 +55,6 @@ title: Dagster ETL
   - [Организация проекта](/dagster-etl/lesson-7/4-organizing-our-project)
 
 - Урок 8: Dagster Skills
-  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills)
 
 _Русский перевод оригинального материала Dagster University; текст изменён при переводе._

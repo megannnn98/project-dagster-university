@@ -47,7 +47,7 @@ title: Testing with Dagster
   - [Антипаттерны, которых следует избегать](/dagster-testing/lesson-6/5-anti-patterns)
 
 - Урок 7: Dagster Skills
-  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills)
 
 
 _Русский перевод оригинального материала Dagster University; текст изменён при переводе._

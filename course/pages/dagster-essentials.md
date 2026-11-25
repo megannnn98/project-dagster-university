@@ -82,7 +82,7 @@ title: Dagster Essentials
   - [Включение сенсора](/dagster-essentials/lesson-9/8-enabling-the-sensor)
 
 - Урок 10: Dagster Skills
-  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills)
 
 - [Итоговый проект](/dagster-essentials/capstone)
 
