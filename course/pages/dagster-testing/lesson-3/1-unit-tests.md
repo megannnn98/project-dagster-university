@@ -1,22 +1,22 @@
 ---
-title: 'Lesson 3: Unit tests'
+title: 'Урок 3: Модульные тесты'
 module: 'dagster_testing'
 lesson: '3'
 ---
 
-# Unit tests
+# Модульные тесты
 
-Unit tests are small, isolated tests that check individual pieces of code (usually functions or methods). They focus on testing one unit of functionality at a time, ensuring that each component behaves correctly in isolation.
+Модульные тесты — небольшие изолированные тесты, проверяющие отдельные части кода (обычно функции или методы). Они проверяют по одной единице функциональности за раз, чтобы убедиться в корректной работе каждого компонента в изоляции.
 
-Unit testing can help you:
+Модульное тестирование помогает:
 
-* Catch bugs early to identify issues before they become bigger problems.
-* Write reliable code to maintain functionality when making changes.
-* Safely modify code knowing tests will catch regressions.
-* Speed up development and deployment with Continuous Integration (CI).
-* Improve documentation. Since unit tests are tied directly to the code itself, they can serve as a great form of documentation.
+* Выявлять ошибки на ранних этапах, прежде чем они перерастут в более серьёзные проблемы.
+* Писать надёжный код, сохраняющий функциональность при изменениях.
+* Безопасно изменять код, зная, что тесты обнаружат регрессии.
+* Ускорять разработку и развёртывание с помощью непрерывной интеграции (CI).
+* Улучшать документацию: поскольку модульные тесты непосредственно связаны с кодом, они могут служить хорошей формой документации.
 
-Unit tests in Python generally focus on a single function and ensure it works as expected:
+Модульные тесты Python обычно проверяют отдельную функцию и убеждаются, что она работает ожидаемым образом:
 
 ```python
 def my_func():
@@ -27,11 +27,11 @@ def test_my_func():
    assert my_func() == 5
 ```
 
-### Asset tests
+### Тестирование ассетов
 
-Dagster assets are good candidates for unit tests. Since an asset is responsible for one aspect or node in the overall graph, by writing unit tests for a given asset, we can ensure that that isolated node is working as expected.
+Ассеты Dagster хорошо подходят для модульного тестирования. Поскольку ассет отвечает за один аспект или узел общего графа, модульные тесты конкретного ассета позволяют проверить корректность работы этого узла в изоляции.
 
-We will begin with the following asset:
+Начнём со следующего ассета:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_3.py
@@ -43,14 +43,14 @@ def state_population_file() -> list[dict]:
         return [row for row in reader]
 ```
 
-The code above:
+Приведённый код:
 
-1. Determines the directory of the Python script being executed and appends `../data/ny.csv`.
-2. Opens the `ny.csv` file.
-3. Parses each row of the csv into dictionaries with `csv.DictReader`.
-4. Returns the contents of that file as a `list[dict]`.
+1. Определяет каталог выполняемого скрипта Python и добавляет к пути `../data/ny.csv`.
+2. Открывает файл `ny.csv`.
+3. Разбирает каждую строку CSV в словарь с помощью `csv.DictReader`.
+4. Возвращает содержимое файла как `list[dict]`.
 
-The `ny.csv` file contains the population for three cities in New York. So what would a unit test for this asset look like? Let's think about the test function above. Tests should be deterministic. Given the same input, we should always expect the same output. In this case our input will always be the same file. And based on the type annotations, we can always expect the same list of dictionaries:
+Файл `ny.csv` содержит данные о населении трёх городов штата Нью-Йорк. Как будет выглядеть модульный тест этого ассета? Вспомним приведённую выше тестовую функцию. Тесты должны быть детерминированными: при одинаковых входных данных мы всегда ожидаем одинаковый результат. В данном случае входом всегда будет один и тот же файл, а согласно аннотациям типов результатом будет один и тот же список словарей:
 
 ```python
 [
@@ -69,7 +69,7 @@ The `ny.csv` file contains the population for three cities in New York. So what 
 ]
 ```
 
-So what would a good test look like? Click **View answer** to view it.
+Как будет выглядеть хороший тест? Нажми **View answer**, чтобы посмотреть ответ.
 
 ```python {% obfuscated="true" %}
 # tests/test_lesson_3.py
@@ -90,12 +90,14 @@ def test_state_population_file():
     ]
 ```
 
-If you are familiar with Python testing, writing a test for an asset should look the same testing a standard Python function. We can use `pytest` library to execute this specific test to ensure everything works as intended.
+Если ты знаком с тестированием Python, тест ассета будет выглядеть так же, как тест обычной функции Python. Для выполнения этого теста и проверки корректности работы воспользуемся библиотекой `pytest`.
 
-To run this test, use the pytest CLI from the virtual environment:
+Запусти тест через CLI pytest из виртуального окружения:
 
 ```bash
 > pytest tests/test_lesson_3.py::test_state_population_file
 ...
 tests/test_lesson_3.py .                                                          [100%]
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

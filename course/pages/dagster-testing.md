@@ -15,13 +15,13 @@ title: Testing with Dagster
   - [Локальная настройка](/installation/set-up-local)
   - [Настройка Codespace](/installation/set-up-codespace)
 
-- Lesson 3: Testing fundamentals
-  - [Overview](/dagster-testing/lesson-3/0-overview)
-  - [Unit tests](/dagster-testing/lesson-3/1-unit-tests)
-  - [Testing dependencies](/dagster-testing/lesson-3/2-testing-dependencies)
-  - [Testing assets with run configurations](/dagster-testing/lesson-3/3-testing-assets-with-run-configurations)
-  - [Testing asset output types](/dagster-testing/lesson-3/4-testing-asset-output-types)
-  - [Testing assets with execution context](/dagster-testing/lesson-3/5-testing-assets-with-execution-context)
+- Урок 3: Основы тестирования
+  - [Обзор](/dagster-testing/lesson-3/0-overview)
+  - [Модульные тесты](/dagster-testing/lesson-3/1-unit-tests)
+  - [Тестирование зависимостей](/dagster-testing/lesson-3/2-testing-dependencies)
+  - [Тестирование ассетов с конфигурациями запуска](/dagster-testing/lesson-3/3-testing-assets-with-run-configurations)
+  - [Тестирование типов выходных данных ассетов](/dagster-testing/lesson-3/4-testing-asset-output-types)
+  - [Тестирование ассетов с контекстом выполнения](/dagster-testing/lesson-3/5-testing-assets-with-execution-context)
 
 - Lesson 4: Mocking
   - [Overview](/dagster-testing/lesson-4/0-overview)

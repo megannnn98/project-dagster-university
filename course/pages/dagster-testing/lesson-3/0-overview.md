@@ -1,18 +1,18 @@
 ---
-title: 'Lesson 3: Overview'
+title: 'Урок 3: Обзор'
 module: 'dagster_testing'
 lesson: '3'
 ---
 
-# Overview
+# Обзор
 
-In the previous lesson, you learned that there are many different types of testing. This lesson will focus on unit tests and creating the fundamental tests for your Dagster assets. We will discuss the various aspects of writing tests for your assets before we cover other Dagster concepts in future lessons.
+В предыдущем уроке ты узнал, что существует множество видов тестирования. В этом уроке мы сосредоточимся на модульных тестах и создании базовых тестов для ассетов Dagster. Рассмотрим различные аспекты написания тестов для ассетов, прежде чем перейти к другим концепциям Dagster.
 
-Tests in Dagster leverage conventional Python tooling and methodology. Learning about tests in Python generally is relevant to implementing tests in Dagster. The Dagster-specific learning curve is limited to efficiently using Dagster’s built-in tests features and a practical working knowledge of which tests to use when with reference examples. If this is your first time writing tests in Python, most of this lesson will carry over to your general Python knowledge.
+Тестирование в Dagster опирается на обычные инструменты и методологию Python. Общие знания о тестировании Python пригодятся и в Dagster. Специфика Dagster сводится к эффективному использованию встроенных возможностей тестирования и практическому пониманию того, какие тесты применять в конкретных ситуациях. Если ты впервые пишешь тесты на Python, большая часть материала этого урока будет полезна и за пределами Dagster.
 
-## Decision tree: Where should my test go?
+## Дерево решений: куда поместить тест?
 
-When writing a test, use this decision tree to determine the appropriate testing approach:
+При написании теста воспользуйся этим деревом решений, чтобы выбрать подходящий способ тестирования:
 
 ```
 ┌─ I need to test...
@@ -30,6 +30,8 @@ When writing a test, use this decision tree to determine the appropriate testing
    └─> Integration test (use sparingly)
 ```
 
-**Default**: Start with a direct function test. Only use `dg.materialize()` when you need to test Dagster-specific behavior. Only use integration tests for critical paths where mock behavior might diverge from reality.
+**По умолчанию**: начни с прямого тестирования функции. Используй `dg.materialize()` только тогда, когда нужно проверить поведение, специфичное для Dagster. Интеграционные тесты применяй для критических сценариев, в которых поведение mock-объектов может отличаться от реального.
 
-This lesson will cover direct function tests and asset graph tests. Integration tests are covered in Lesson 5.
+В этом уроке мы рассмотрим прямое тестирование функций и тестирование графа ассетов. Интеграционные тесты рассматриваются в уроке 5.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
