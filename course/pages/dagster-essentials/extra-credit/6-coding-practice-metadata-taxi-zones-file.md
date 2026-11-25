@@ -1,18 +1,18 @@
 ---
-title: 'Extra credit: Practice: Add metadata to taxi_zones_file'
+title: 'Дополнительный раздел: Практика: добавление метаданных в taxi_zones_file'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Practice: Add metadata to taxi_zones_file
+# Практика: добавление метаданных в taxi_zones_file
 
-To practice what you’ve learned, add the record counts to the metadata for `taxi_zones_file`.
+Чтобы закрепить изученное, добавь количество записей в метаданные актива `taxi_zones_file`.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The metadata you built should look similar to the code contained in the **View answer** toggle. Click to open it.
+Созданные метаданные должны выглядеть примерно как код, скрытый под переключателем **View answer**. Нажми на него, чтобы открыть ответ.
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/trips.py
@@ -39,3 +39,5 @@ def taxi_zones_file() -> dg.MaterializeResult:
         }
     )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

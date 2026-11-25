@@ -1,34 +1,34 @@
 ---
-title: 'Extra credit: Definition metadata - Asset groups'
+title: 'Дополнительный раздел: Метаданные определения — группы активов'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Definition metadata - Asset groups
+# Метаданные определения — группы активов
 
-As you add more assets over time, it’s likely that similarities between assets will become more obvious. For example, several assets may be related to dbt or data transformation, while others may be focused on extracting raw CSV data. These could logically be classified into **asset groups.**
+По мере добавления новых активов сходство между ними становится более заметным. Например, несколько активов могут быть связаны с dbt или преобразованием данных, тогда как другие сосредоточены на извлечении исходных данных CSV. Их можно логически объединить в **группы активов**.
 
-An asset group is a way you can keep your assets tidy and simplify keeping track of them in the UI. Additionally, asset groups can make selecting assets for a job easier, as you can refer to an asset group instead of specifying a list of assets.
+Группа активов позволяет поддерживать порядок среди активов и упрощает наблюдение за ними в интерфейсе. Кроме того, группы упрощают выбор активов для задания, поскольку вместо перечисления отдельных активов можно сослаться на группу.
 
-There are two ways to specify asset groups in Dagster:
+В Dagster группы активов можно задавать двумя способами:
 
-- On all assets in a module
-- On individual assets
-
----
-
-## Things to note
-
-When adding assets to groups, keep the following in mind:
-
-- If an asset isn’t a member of a group, it will be placed into a group named `default`
-- A single asset can only belong to one group at a time
+- Для всех активов модуля.
+- Для отдельных активов.
 
 ---
 
-## Grouping individual assets using the asset decorator
+## Что нужно учитывать
 
-You can also specify groups on individual assets by using the `group_name` parameter in the asset decorator. For example:
+При добавлении активов в группы помни:
+
+- Если актив не входит ни в одну группу, он будет помещён в группу с именем `default`.
+- Один актив может одновременно принадлежать только одной группе.
+
+---
+
+## Группировка отдельных активов с помощью декоратора
+
+Для отдельных активов можно задать группу с помощью параметра `group_name` декоратора актива. Например:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -49,16 +49,18 @@ def taxi_zones_file() -> None:
         output_file.write(raw_taxi_zones.content)
 ```
 
-In this example, the `taxi_zones_file` asset is grouped into the `raw_files` asset group.
+В этом примере актив `taxi_zones_file` входит в группу `raw_files`.
 
 ---
 
-## Asset groups in the Dagster UI
+## Группы активов в интерфейсе Dagster
 
-When asset groups are defined, the **Global Asset Lineage** page will place group members into separate grey boxes. For example, the following image shows three asset groups:
+Когда группы определены, страница **Global Asset Lineage** помещает их участников в отдельные серые прямоугольники. Например, на следующем изображении показаны три группы:
 
-- `raw_files`, which currently includes only `taxi_zones_file`
-- `metrics`, which includes all assets from the `metrics` submodule
-- `default`, which includes the assets that don’t currently belong to a group. **Note**: If no other asset groups are defined, the `default` group won’t display here.
+- `raw_files`, которая сейчас содержит только `taxi_zones_file`.
+- `metrics`, включающая все активы подмодуля `metrics`.
+- `default`, содержащая активы, пока не входящие в другие группы. **Примечание:** если другие группы не определены, группа `default` здесь не отображается.
 
-![The Global Asset Lineage page with three defined asset groups](/images/dagster-essentials/extra-credit/ui-asset-groups.png)
+![Страница Global Asset Lineage с тремя определёнными группами активов](/images/dagster-essentials/extra-credit/ui-asset-groups.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

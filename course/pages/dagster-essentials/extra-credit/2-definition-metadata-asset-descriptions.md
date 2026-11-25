@@ -1,23 +1,23 @@
 ---
-title: 'Extra credit: Definition metadata - Asset descriptions'
+title: 'Дополнительный раздел: Метаданные определения — описания активов'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Definition metadata - Asset descriptions
+# Метаданные определения — описания активов
 
-When defined, asset descriptions will be displayed in the Dagster UI alongside the asset. There are two ways to add an asset description:
+Если для актива задано описание, оно отображается рядом с ним в интерфейсе Dagster. Добавить описание можно двумя способами:
 
-- Using Python docstrings
-- Using the asset decorator’s `description` parameter
+- С помощью строк документации Python.
+- С помощью параметра `description` декоратора актива.
 
 ---
 
-## Using docstrings
+## Использование строк документации
 
-As you went through this course, you might have noticed that the assets all contain **docstrings.** A [Python docstring, or documentation string](https://peps.python.org/pep-0257/), embeds documentation about a class, module, function, or method definition in the code itself. While code comments serve a similar purpose, docstrings support built-in Python functionality, like [`help`](https://docs.python.org/3/library/functions.html#help).
+По мере прохождения курса ты мог заметить, что активы содержат **строки документации (docstrings)**. [Строка документации Python](https://peps.python.org/pep-0257/) позволяет включить документацию о классе, модуле, функции или методе непосредственно в код. Хотя комментарии служат похожей цели, строки документации поддерживаются встроенными средствами Python, например [`help`](https://docs.python.org/3/library/functions.html#help).
 
-Docstrings are defined by including a string, surrounded by triple quotes (`"""`) as the first statement in an object’s definition. For example:
+Строку документации задают как первую инструкцию в определении объекта, заключая её в тройные кавычки (`"""`). Например:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -38,11 +38,11 @@ def taxi_zones_file() -> None:
 
 ---
 
-## Using the description parameter
+## Использование параметра description
 
-Another way to add a description to an asset is to use the asset decorator with the `description` parameter. **Note:** This will override any docstrings in the Dagster UI.
+Другой способ добавить описание актива — использовать параметр `description` декоратора актива. **Примечание:** в интерфейсе Dagster такое описание имеет приоритет над строкой документации.
 
-For example:
+Например:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -65,17 +65,19 @@ def taxi_zones_file() -> None:
 
 ---
 
-## Asset descriptions in the Dagster UI
+## Описания активов в интерфейсе Dagster
 
-Now that you understand how to define asset descriptions, let’s take a look at them in the Dagster UI.
+Теперь, когда ты знаешь, как задавать описания активов, посмотрим на них в интерфейсе Dagster.
 
 {% table %}
 
-- The Assets page
+- Страница активов
 
 ---
 
 - {% width="60%" %}
-  For each asset in the **Lineage** tab, the description will display under each asset key.
+  Для каждого актива на вкладке **Lineage** описание отображается под ключом актива.
 
 {% /table %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

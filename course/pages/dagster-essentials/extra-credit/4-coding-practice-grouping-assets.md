@@ -1,27 +1,27 @@
 ---
-title: 'Extra credit: Practice: Grouping assets'
+title: 'Дополнительный раздел: Практика: группировка активов'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Practice: Grouping assets
+# Практика: группировка активов
 
-To practice what you’ve learned about asset groups, organize the assets in your project by:
+Чтобы закрепить знания о группах активов, организуй активы своего проекта следующим образом:
 
-- **Using the asset decorator method to**:
-  - Add `taxi_trips_file` to the `raw_files` group
-  - Add the `taxi_zones` and `taxi_trips` assets to an `ingested` group
-  - Add the `adhoc_request` asset to a `requests` group
+- **С помощью декоратора активов**:
+  - Добавь `taxi_trips_file` в группу `raw_files`.
+  - Добавь активы `taxi_zones` и `taxi_trips` в группу `ingested`.
+  - Добавь актив `adhoc_request` в группу `requests`.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The asset groups you built should look similar to the code contained in the **View answer** toggle. Click to open it.
+Созданные группы активов должны выглядеть примерно как код, скрытый под переключателем **View answer**. Нажми на него, чтобы открыть ответ.
 
-### For the asset decorator method:
+### Для способа с декоратором активов:
 
-For the assets in the `raw_files` and `ingested` groups, your assets should look like this:
+Активы групп `raw_files` и `ingested` должны выглядеть так:
 
 ```python {% obfuscated="true" %}
 @dg.asset(
@@ -30,8 +30,10 @@ For the assets in the `raw_files` and `ingested` groups, your assets should look
 def name_of_asset():
 ```
 
-### The Dagster UI:
+### Интерфейс Dagster:
 
-After adding the assets to the groups, the asset graph should look like this:
+После добавления активов в группы граф активов должен выглядеть следующим образом:
 
-![The updated asset graph in the Dagster UI](/images/dagster-essentials/extra-credit/ui-asset-groups-practice-answer.png)
+![Обновлённый граф активов в интерфейсе Dagster](/images/dagster-essentials/extra-credit/ui-asset-groups-practice-answer.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

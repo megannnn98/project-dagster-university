@@ -86,14 +86,14 @@ title: Dagster Essentials
 
 - [Итоговый проект](/dagster-essentials/capstone)
 
-- Extra credit: Metadata
-  - [Overview](/dagster-essentials/extra-credit/0-overview)
-  - [What's metadata?](/dagster-essentials/extra-credit/1-whats-metadata)
-  - [Definition metadata - Asset descriptions](/dagster-essentials/extra-credit/2-definition-metadata-asset-descriptions)
-  - [Definition metadata - Asset groups](/dagster-essentials/extra-credit/3-definition-metadata-asset-groups)
-  - [Practice: Grouping assets](/dagster-essentials/extra-credit/4-coding-practice-grouping-assets)
-  - [Materialization metadata](/dagster-essentials/extra-credit/5-materialization-metadata)
-  - [Practice: Add metadata to taxi_zones_file](/dagster-essentials/extra-credit/6-coding-practice-metadata-taxi-zones-file)
-  - [Asset metadata as Markdown](/dagster-essentials/extra-credit/7-asset-metadata-as-markdown)
+- Дополнительный раздел: Метаданные
+  - [Обзор](/dagster-essentials/extra-credit/0-overview)
+  - [Что такое метаданные?](/dagster-essentials/extra-credit/1-whats-metadata)
+  - [Метаданные определения — описания активов](/dagster-essentials/extra-credit/2-definition-metadata-asset-descriptions)
+  - [Метаданные определения — группы активов](/dagster-essentials/extra-credit/3-definition-metadata-asset-groups)
+  - [Практика: группировка активов](/dagster-essentials/extra-credit/4-coding-practice-grouping-assets)
+  - [Метаданные материализации](/dagster-essentials/extra-credit/5-materialization-metadata)
+  - [Практика: добавление метаданных в taxi_zones_file](/dagster-essentials/extra-credit/6-coding-practice-metadata-taxi-zones-file)
+  - [Метаданные актива в формате Markdown](/dagster-essentials/extra-credit/7-asset-metadata-as-markdown)
 
 _Русский перевод оригинального материала Dagster University; текст изменён при переводе._

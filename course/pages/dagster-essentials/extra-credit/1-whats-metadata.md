@@ -1,51 +1,53 @@
 ---
-title: "Extra credit: What's metadata?"
+title: 'Дополнительный раздел: Что такое метаданные?'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# What's metadata?
+# Что такое метаданные?
 
-Two of the core benefits of Dagster are collaboration between engineers and cross-functionally sharing assets. Even if you’re a team of one, the documentation of your pipelines will help with debugging and providing context for code a few months after you write it.
+Два ключевых преимущества Dagster — совместная работа инженеров и обмен активами между подразделениями. Даже если ты работаешь один, документация пайплайнов поможет при отладке и позволит восстановить контекст кода спустя несколько месяцев после его написания.
 
-In this lesson, we’ll cover two types of metadata: definition and **materialization.** We’ll go back to our cookie example to explain each type.
+В этом уроке мы рассмотрим два типа метаданных: метаданные определения и **материализации**. Вернёмся к примеру с печеньем, чтобы объяснить каждый тип.
 
 ---
 
-## Definition metadata
+## Метаданные определения
 
 {% table %}
 
 - {% width="60%" %}
-  _Definition_ metadata is, by definition, information that is fixed or doesn’t frequently change.
+  Метаданные _определения_ — это информация, которая фиксирована или меняется нечасто.
 
-  In the context of cookies, a piece of definition metadata might be a serving suggestion like the following.
+  В примере с печеньем такими метаданными может быть рекомендация по подаче, как показано ниже.
 
-- ![This serving suggestion, a piece of definition metadata, will help you enjoy cookies in the best way](/images/dagster-essentials/extra-credit/definition-cookies.png) {% rowspan=2 %}
+- ![Рекомендация по подаче — пример метаданных определения, помогающих лучше насладиться печеньем](/images/dagster-essentials/extra-credit/definition-cookies.png) {% rowspan=2 %}
 
 {% /table %}
 
 ---
 
-## Materialization metadata
+## Метаданные материализации
 
 {% table %}
 
 - {% width="60%" %}
-  _Materialization_ metadata is dynamic, meaning the information changes after an action occurs.
+  Метаданные _материализации_ динамические: информация меняется после выполнения действия.
 
-  In the context of cookies, materialization metadata could be the date a batch of cookies was baked, who baked them, and how many cookies are in the batch.
+  В примере с печеньем такими метаданными могут быть дата выпечки партии, имя пекаря и количество печенья в партии.
 
-- ![This information, collected after cookies were baked, is an example of materialization metadata](/images/dagster-essentials/extra-credit/materialization-cookies.png) {% rowspan=2 %}
+- ![Информация, собранная после выпечки печенья, — пример метаданных материализации](/images/dagster-essentials/extra-credit/materialization-cookies.png) {% rowspan=2 %}
 
 {% /table %}
 
 ---
 
-## How does this fit in with Dagster?
+## Как это связано с Dagster?
 
-Using definition metadata to describe assets can make it easy to provide context for your team and your future self. This metadata could be descriptions of the assets, the types of assets, and how they fit into the larger picture of your organization’s data.
+Использование метаданных определения для описания активов позволяет легко предоставить контекст твоей команде и тебе самому в будущем. К таким метаданным относятся описания активов, их типы и роль в общей системе данных организации.
 
-Then, at runtime, you can use metadata to surface information about the materialization such as how many records were processed or when the materialization occurred.
+Затем во время выполнения можно использовать метаданные для отображения информации о материализации, например о количестве обработанных записей или времени материализации.
 
-We'll start by discussing definition metadata, where we'll walk you through adding descriptions to assets and adding them to groups.
+Начнём с метаданных определения: рассмотрим добавление описаний к активам и объединение активов в группы.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
