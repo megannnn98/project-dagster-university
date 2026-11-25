@@ -24,6 +24,19 @@ yarn dev
 
 Открой [http://localhost:3000](http://localhost:3000) в браузере, чтобы увидеть результат.
 
+### Публикация на GitHub Pages
+
+В [Settings → Pages](https://github.com/megannnn98/project-dagster-university/settings/pages) выбери **Source → GitHub Actions**. Если Actions отключены в форке, сначала включи их на вкладке Actions. Затем запусти workflow **Russian Dagster University — GitHub Pages** из ветки `main`. При изменениях в каталоге `course` сайт будет автоматически пересобираться и публиковаться.
+
+Локальная проверка того же статического экспорта (Linux/macOS):
+
+```bash
+DAGSTER_STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH=/project-dagster-university yarn build
+python3 scripts/check-pages-export.py out /project-dagster-university
+```
+
+Результат находится в `course/out`. Для локальной разработки через `yarn dev` эти переменные не нужны.
+
 ### Проверка ссылок
 
 Чтобы проверить корректность внутренних и внешних ссылок в Markdown-файлах курса:

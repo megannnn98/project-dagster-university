@@ -24,6 +24,8 @@
 
 ## Учебный сайт
 
+Адрес для публикации на GitHub Pages: [megannnn98.github.io/project-dagster-university/](https://megannnn98.github.io/project-dagster-university/). Сайт станет доступен после включения GitHub Actions в настройках Pages и успешного развёртывания.
+
 Для корректного отображения разметки Markdoc, изображений и скрытых решений используй локальную версию сайта по [инструкции](course/README.md). Оглавление на GitHub позволяет перейти к исходным страницам уроков, но GitHub не поддерживает все возможности Markdoc.
 
 ## Лицензия
