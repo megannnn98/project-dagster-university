@@ -1,45 +1,47 @@
 ---
-title: 'AI-assisted development with Dagster Skills'
+title: 'Разработка с ИИ с помощью Dagster Skills'
 ---
 
-# AI-assisted development with Dagster Skills
+# Разработка с ИИ с помощью Dagster Skills
 
-Building data pipelines involves many patterns and best practices that can be tedious to implement from scratch. The [Dagster Skills](https://github.com/dagster-io/skills) project accelerates your development workflow by providing AI assistant skills that generate Dagster code following best practices.
+Построение пайплайнов данных включает множество шаблонов и практик, которые бывает утомительно реализовывать с нуля. Проект [Dagster Skills](https://github.com/dagster-io/skills) ускоряет разработку, предоставляя навыки для ИИ-ассистентов, генерирующих код Dagster с соблюдением лучших практик.
 
-## Why learn the fundamentals first?
+## Зачем сначала изучать основы?
 
-The patterns and best practices covered in Dagster University courses—assets, resources, partitions, ingestion, testing, and more—are programmed directly into Dagster Skills. When you use these AI tools, they apply the same principles you've learned here.
+Шаблоны и лучшие практики из курсов Dagster University — активы, ресурсы, партиции, загрузка данных, тестирование и многое другое — непосредственно заложены в Dagster Skills. Когда ты используешь эти ИИ-инструменты, они применяют те же принципы, которые ты изучил здесь.
 
-Understanding these fundamentals helps you:
+Понимание основ помогает:
 
-- **Review AI-generated code effectively** — You'll know what good Dagster code looks like and can spot issues
-- **Customize code for your needs** — AI provides a starting point, but business logic nuances require human judgment
-- **Debug when things go wrong** — Knowing how Dagster concepts work under the hood helps you troubleshoot
+- **Эффективно проверять сгенерированный ИИ код** — ты будешь знать, как выглядит хороший код Dagster, и сможешь замечать проблемы.
+- **Адаптировать код под свои задачи** — ИИ даёт отправную точку, но нюансы бизнес-логики требуют человеческого суждения.
+- **Отлаживать код при сбоях** — понимание внутренней работы концепций Dagster помогает устранять неполадки.
 
-Once you understand the fundamentals, Dagster Skills can significantly accelerate your workflow by generating scaffolding and boilerplate for you.
+После освоения основ Dagster Skills может значительно ускорить разработку, генерируя каркас проекта и шаблонный код.
 
-## Compatible tools
+## Совместимые инструменты
 
-Dagster Skills is compatible with:
+Dagster Skills совместим с:
 
 - Claude Code
 - Cursor
 - Windsurf
 - Codex
-- Other Agent Skills-compatible tools
+- Другими инструментами, поддерживающими Agent Skills.
 
-## What Dagster Skills can help with
+## Чем может помочь Dagster Skills
 
-Once [installed](https://github.com/dagster-io/skills?tab=readme-ov-file#installation), you can ask your AI assistant to help with a variety of Dagster tasks. The AI will analyze your code and generate code that follows the patterns from Dagster University courses:
+После [установки](https://github.com/dagster-io/skills?tab=readme-ov-file#installation) можно просить ИИ-ассистента о помощи с различными задачами Dagster. ИИ проанализирует твой код и сгенерирует код, следующий шаблонам из курсов Dagster University:
 
-- Creating and structuring assets with proper dependencies
-- Configuring resources for external systems
-- Setting up partitions for time-based or categorical data
-- Configuring schedules and sensors for automation
-- Adding asset checks for data quality validation
-- Leveraging integrations in your stack
-- Implementing tests with `materialize()` and mock resources
+- Создание и структурирование активов с корректными зависимостями.
+- Настройка ресурсов для внешних систем.
+- Настройка партиций для временных или категориальных данных.
+- Настройка расписаний и сенсоров для автоматизации.
+- Добавление проверок активов для контроля качества данных.
+- Использование интеграций в твоём стеке.
+- Реализация тестов с `materialize()` и имитациями ресурсов (mock resources).
 
-Dagster Skills helps you integrate best practices into your workflow by generating code that follows the same patterns taught in Dagster University. While AI accelerates the process, the fundamentals you've learned ensure you can review, customize, and maintain that code effectively.
+Dagster Skills помогает внедрять лучшие практики в процесс разработки, генерируя код по тем же шаблонам, которые преподаются в Dagster University. ИИ ускоряет работу, а изученные основы позволяют эффективно проверять, адаптировать и сопровождать этот код.
 
-For more information, visit the [Dagster Skills repository](https://github.com/dagster-io/skills).
+Подробнее см. [репозиторий Dagster Skills](https://github.com/dagster-io/skills).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

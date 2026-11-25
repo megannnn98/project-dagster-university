@@ -1,18 +1,20 @@
 ---
-title: 'Extra credit: Overview'
+title: 'Дополнительный раздел: Обзор'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Overview
+# Обзор
 
-Welcome to extra credit, ambitious student!
+Добро пожаловать в дополнительный раздел, любознательный студент!
 
-By this point, you have two working data pipelines: one you built progressively throughout this course’s lessons, and the other during the course capstone. Building a data pipeline from end-to-end is a useful skill, but there’s still another skill you can learn to level up. Using **metadata**, or data that provides information about other data, you can document your pipeline and make it easy for others to understand.
+К этому моменту у тебя есть два работающих пайплайна данных: один ты последовательно построил в ходе уроков, второй — в рамках итогового проекта. Умение построить пайплайн данных от начала до конца очень полезно, но можно освоить ещё один навык. С помощью **метаданных**, то есть данных, предоставляющих информацию о других данных, можно документировать пайплайн и облегчить его понимание другими людьми.
 
-In this lesson, we’ll cover:
+В этом уроке мы рассмотрим:
 
-- What’s metadata and the benefits of using it
-- Definition metadata
-- Materialization metadata
-- How to locate metadata in the UI
+- Что такое метаданные и чем они полезны.
+- Метаданные определения.
+- Метаданные материализации.
+- Как найти метаданные в интерфейсе.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

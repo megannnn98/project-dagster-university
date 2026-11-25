@@ -1,21 +1,21 @@
 ---
-title: 'Lesson 9: Enabling the sensor'
+title: 'Урок 9: Включение сенсора'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# Enabling the sensor
+# Включение сенсора
 
-As sensors are turned off by default, you'll need to enable the sensor to be able to use it. In this section, we'll walk you through turning the sensor on in the Dagster UI.
+Поскольку сенсоры по умолчанию выключены, для использования сенсора его необходимо включить. В этом разделе рассмотрим работу с сенсором в интерфейсе Dagster.
 
 {% table %}
 
-- Step one
+- Шаг 1
 
 ---
 
 - {% width="60%" %}
-  In `data/requests`, you’ll find a `README` that contains instructions for triggering the sensor. Use the example `.json` in the `README` to create a new file named `january-staten-island.json` that contains the code on the right.
+  В каталоге `data/requests` находится файл `README` с инструкциями по запуску сенсора. Используй пример `.json` из README, чтобы создать новый файл `january-staten-island.json` с кодом справа.
 
 - {% rowspan=2 %}
   ```json
@@ -30,58 +30,60 @@ As sensors are turned off by default, you'll need to enable the sensor to be abl
 
 {% table %}
 
-- Step two
+- Шаг 2
 
 ---
 
 - {% width="60%" %}
-  Dagster provides the ability to test sensors directly from the UI, which can be helpful with simulating sensors that are triggered either too frequently or not frequently enough.
+  Dagster позволяет проверять сенсоры непосредственно через интерфейс. Это удобно для моделирования ситуаций, когда сенсоры срабатывают слишком часто или недостаточно часто.
 
-  1. If you navigated away from the **Sensor details** page for the `adhoc_request_sensor`, navigate back to it before continuing.
+  1. Если ты ушёл со страницы **Sensor details** сенсора `adhoc_request_sensor`, вернись на неё.
 
-  2. On this page, click the **Preview tick result** button near the top-right of the page. This allows you to produce a single tick without turning the sensor on.
+  2. На этой странице нажми **Preview tick result** в правом верхнем углу. Это позволяет выполнить один тик без включения сенсора.
 
-  3. Click **Continue**, then click **Apply requests & commit tick result** to begin the test.
+  3. Нажми **Continue**, затем **Apply requests & commit tick result**, чтобы начать проверку.
 
-- ![The Test Sensor dialog in the Dagster UI](/images/dagster-essentials/lesson-9/ui-test-sensor-dialog.png) {% rowspan=2 %}
+- ![Диалог проверки сенсора в интерфейсе Dagster](/images/dagster-essentials/lesson-9/ui-test-sensor-dialog.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step three
+- Шаг 3
 
 ---
 
 - {% width="60%" %}
-  When the test completes, the results will display. Click the **Open in Launchpad** button to navigate to the `adhoc_request_job`.
+  После завершения проверки отобразятся результаты. Нажми **Open in Launchpad**, чтобы перейти к заданию `adhoc_request_job`.
 
 {% /table %}
 
 {% table %}
 
-- Step four
+- Шаг 4
 
 ---
 
 - {% width="60%" %}
-  Notice how the launchpad has been pre-populated with the config from the `january-staten-island.json` file.
+  Обрати внимание, что в Launchpad уже подставлена конфигурация из файла `january-staten-island.json`.
 
-  Click **Launch Run** at the bottom of the page to submit the run.
+  Нажми **Launch Run** внизу страницы, чтобы отправить запрос на запуск.
 
-- ![Pre-populated Launchpad for the adhoc_request_job job, using config from the january-staten-island.json file](/images/dagster-essentials/lesson-9/ui-launchpad.png) {% rowspan=2 %}
+- ![Launchpad задания adhoc_request_job с конфигурацией из файла january-staten-island.json](/images/dagster-essentials/lesson-9/ui-launchpad.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step five
+- Шаг 5
 
 ---
 
 - {% width="60%" %}
-  After the run completes, navigate to `data/outputs` in the project directory, where the asset saved the output file. You should see a bar chart like the one on the right.
+  После завершения запуска перейди в каталог `data/outputs` проекта, куда актив сохранил выходной файл. Ты должен увидеть столбчатую диаграмму, подобную показанной справа.
 
-- ![Bar chart showing the number of trips by the hour of day in Staten Island in January 2023](/images/dagster-essentials/lesson-9/trips-graph.png) {% rowspan=2 %}
+- ![Столбчатая диаграмма количества поездок по часам суток на Статен-Айленде в январе 2023 года](/images/dagster-essentials/lesson-9/trips-graph.png) {% rowspan=2 %}
 
 {% /table %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

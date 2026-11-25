@@ -1,17 +1,19 @@
 ---
-title: 'Lesson 6: Overview'
+title: 'Урок 6: Обзор'
 module: 'dagster_essentials'
 lesson: '6'
 ---
 
-# Overview
+# Обзор
 
-In previous lessons, you learned about assets, how to connect assets to represent a data pipeline, and how to start a run that materializes the assets.
+В предыдущих уроках ты познакомился с активами, научился связывать их для представления пайплайна данных и запускать их материализацию.
 
-Dagster’s role is to be the single pane of glass across all data pipelines in an organization. To make this possible, Dagster needs to know about the services and systems used in your data pipelines, such as cloud storage or a data warehouse. In this lesson, we’ll show you how to accomplish this using software engineering best practices.
+Dagster служит единым окном для наблюдения за всеми пайплайнами данных в организации. Для этого Dagster должен знать о сервисах и системах, используемых в твоих пайплайнах, например об облачном хранилище или хранилище данных. В этом уроке мы покажем, как этого добиться с помощью лучших практик разработки программного обеспечения.
 
-With this in mind, the best practice we’ll focus on in this lesson is called **Don’t Repeat Yourself**, or **DRY** for short. This principle recommends that engineers do something once and only once, thereby reducing duplication and redundancy. By being intentional and writing DRY code, you can reduce the number of bugs, increase the ability to understand the project’s codebase, and improve observability over how logic and functionality are used.
+В частности, мы сосредоточимся на принципе **Don't Repeat Yourself (DRY)** — «не повторяйся». Согласно этому принципу, разработчики должны определять каждую часть функциональности только один раз, сокращая дублирование и избыточность. Осознанное применение DRY помогает уменьшить количество ошибок, облегчить понимание кодовой базы проекта и сделать более прозрачным использование логики и функциональности.
 
-Another way Dagster embraces software engineering best practices is by enabling testing in development. Developing and changing pipelines get more daunting as complexity increases. Testing in development and having a place to test changes is critical to building confidence in the code before it gets to production. This has been a challenge in data engineering with the code and environments tightly coupled.
+Ещё одна практика разработки, которую поддерживает Dagster, — тестирование в процессе разработки. По мере усложнения пайплайнов создавать и изменять их становится труднее. Тестирование в ходе разработки и наличие отдельного окружения для проверки изменений критически важны для уверенности в коде перед его развёртыванием в рабочей среде. В инженерии данных это традиционно было сложной задачей из-за тесной связи кода и окружения.
 
-In Dagster, connections to databases can be swapped with local databases and external connections can be represented differently for each environment. A replica of a production environment can be modeled and used in development to take the guessing out of building and making changes to your pipelines.
+В Dagster подключения к базам данных можно заменять подключениями к локальным базам, а внешние подключения настраивать по-разному для каждого окружения. Можно воспроизвести рабочее окружение в среде разработки, чтобы создавать и изменять пайплайны без необходимости полагаться на догадки.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

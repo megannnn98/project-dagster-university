@@ -1,16 +1,16 @@
 ---
-title: 'Lesson 8: Creating a schedule with a date-based partition'
+title: 'Урок 8: Создание расписания с партициями по дате'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Creating a schedule with a date-based partition
+# Создание расписания с партициями по дате
 
-In the previous lesson, you created the `trip_update_job` job that updates most of your assets. The job was put on a schedule that updates the assets on the fifth day of every month at midnight.
+В предыдущем уроке ты создал задание `trip_update_job`, которое обновляет большинство активов. Для него настроено расписание обновления активов в полночь пятого числа каждого месяца.
 
-Now that you’ve partitioned the relevant assets, the schedule can be changed to only get the latest month’s data and not refresh the entirety of the asset. This is best practice and saves time on compute to limit intake of only new data.
+Теперь, когда соответствующие активы разделены на партиции, можно изменить расписание так, чтобы получать только данные за последний месяц, не обновляя весь актив. Это хорошая практика: обработка только новых данных экономит вычислительное время.
 
-Currently, `trip_update_job` in `jobs.py` should look like this:
+Сейчас `trip_update_job` в файле `jobs.py` должно выглядеть так:
 
 ```python
 # src/dagster_essentials/defs/jobs.py
@@ -22,21 +22,21 @@ trip_update_job = dg.define_asset_job(
 )
 ```
 
-To add a partition to the job, make the following changes:
+Чтобы добавить партиционирование к заданию, внеси следующие изменения:
 
-1. Import the `monthly_partition` from `partitions`:
+1. Импортируй `monthly_partition` из модуля `partitions`:
 
    ```python
    from dagster_essentials.defs.partitions import monthly_partition
    ```
 
-2. In the job, add a `partitions_def` parameter equal to `monthly_partition`:
+2. Добавь к заданию параметр `partitions_def`, равный `monthly_partition`:
 
    ```python
    partitions_def=monthly_partition,
    ```
 
-The job should now look like this:
+Теперь задание должно выглядеть так:
 
 ```python
 # src/dagster_essentials/defs/jobs.py
@@ -51,3 +51,5 @@ trip_update_job = dg.define_asset_job(
     selection=dg.AssetSelection.all() - trips_by_week
 )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,20 +1,20 @@
 ---
-title: 'Lesson 8: Practice: Create a weekly partition'
+title: 'Урок 8: Практика: создание недельной партиции'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Practice: Create a weekly partition
+# Практика: создание недельной партиции
 
-To practice what you’ve learned, create a `weekly_partition` using Dagster’s `WeeklyPartitionsDefinition` with the same start and end dates.
+Чтобы закрепить изученное, создай `weekly_partition` с помощью `WeeklyPartitionsDefinition` Dagster, используя те же начальную и конечную даты.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The partition you built should look similar to the following code. Click **View answer** to view it.
+Созданное определение партиций должно выглядеть примерно как следующий код. Нажми **View answer**, чтобы посмотреть ответ.
 
-**If there are differences**, compare what you wrote to the partition below and change them, as this partition will be used as-is in future lessons.
+**Если есть различия**, сравни свой код с определением ниже и внеси изменения: в следующих уроках оно будет использоваться в таком виде.
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/partitions.py
@@ -29,3 +29,5 @@ weekly_partition = dg.WeeklyPartitionsDefinition(
     end_date=end_date
 )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

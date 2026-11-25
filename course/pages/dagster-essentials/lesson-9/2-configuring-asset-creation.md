@@ -1,38 +1,38 @@
 ---
-title: 'Lesson 9: Configuring asset creation'
+title: 'Урок 9: Настройка создания актива'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# Configuring asset creation
+# Настройка создания актива
 
-Configuring asset creation is not specific to sensors, but when materializing assets, you may want to customize some parts of the logic depending on how it’s run. For example, you may want to customize an email to address the reader by their name and send it to their address.
+Настройка создания активов не является особенностью сенсоров. Однако при материализации активов может потребоваться настраивать часть логики в зависимости от способа запуска. Например, можно персонализировать письмо, обращаясь к читателю по имени, и отправить его на его адрес.
 
-In this context, you will want to customize the asset materialization based on the borough and date range that the stakeholder requested.
+В данном случае необходимо настраивать материализацию актива в зависимости от района города и диапазона дат, указанных в запросе.
 
-These configurations are most commonly added at the run-level and can be passed into schedules and sensors. In addition, runs can be customized in the Dagster UI when manually launching runs.
+Такие настройки чаще всего задаются на уровне запуска и могут передаваться из расписаний и сенсоров. Кроме того, при ручном запуске их можно настраивать через интерфейс Dagster.
 
-Let’s write a new configuration that we can use to customize the asset materialization.
+Напишем новую конфигурацию, которую сможем использовать для настройки материализации актива.
 
-1. Use `dg` to scaffold a new asset location:
+1. Используй `dg` для создания каркаса файла нового актива:
 
    ```bash
    dg scaffold defs dagster.asset assets/requests.py
    ```
 
-2. Add the following import to the top of the file (`defs/assets/requests.py`):
+2. Добавь следующий импорт в начало файла (`defs/assets/requests.py`):
 
    ```python
    import dagster as dg
    ```
 
-3. Next, define a new subclass called `AdhocRequestsConfig` that takes in the following `str` attributes:
-   - `filename`: the name of the request’s JSON file
-   - `borough`: the New York City borough to be analyzed. The value should be one of `Manhattan`, `Brooklyn`, `Queens`, `Bronx`, or `Staten Island`
-   - `start_date`: The beginning of the date range of the request, in the format `YYYY-MM-DD`
-   - `end_date`: The end of the date range of the request, in the format `YYYY-MM-DD`
+3. Определи новый подкласс конфигурации `AdhocRequestsConfig` со следующими атрибутами типа `str`:
+   - `filename`: имя JSON-файла запроса.
+   - `borough`: анализируемый район Нью-Йорка. Значение должно быть одним из следующих: `Manhattan`, `Brooklyn`, `Queens`, `Bronx` или `Staten Island`.
+   - `start_date`: начало диапазона дат запроса в формате `YYYY-MM-DD`.
+   - `end_date`: конец диапазона дат запроса в формате `YYYY-MM-DD`.
 
-The `requests.py` file should look like the code snippet below:
+Файл `requests.py` должен выглядеть примерно так:
 
 ```python
 # src/dagster_essentials/defs/assets/requests.py
@@ -44,4 +44,6 @@ class AdhocRequestConfig(dg.Config):
     start_date: str
     end_date: str
 ```
-   `Config` is used as the base class when making custom configurations.
+   При создании пользовательских конфигураций в качестве базового класса используется `Config`.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

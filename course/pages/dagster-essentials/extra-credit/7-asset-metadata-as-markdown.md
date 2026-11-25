@@ -1,20 +1,20 @@
 ---
-title: 'Extra credit: Asset metadata as Markdown'
+title: 'Дополнительный раздел: Метаданные актива в формате Markdown'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Asset metadata as Markdown
+# Метаданные актива в формате Markdown
 
-In Lesson 9, you created the `adhoc_request` asset. During materialization, the asset generates and saves a bar graph to storage. This setup is great for referring to the chart at a later time, but what about what’s generated right after a materialization? By using metadata, you can view the chart right in the Dagster UI!
+В уроке 9 ты создал актив `adhoc_request`. При материализации актив строит столбчатую диаграмму и сохраняет её в хранилище. Такой подход удобен, если нужно обратиться к диаграмме позже. Но что делать, если хочется увидеть результат сразу после материализации? С помощью метаданных диаграмму можно просматривать непосредственно в интерфейсе Dagster!
 
 ---
 
-## Adding the metadata to the asset
+## Добавление метаданных к активу
 
-1. Navigate to and open `assets/requests.py`.
+1. Открой файл `assets/requests.py`.
 
-2. At this point in the course, the `adhoc_request` asset should look like this:
+2. На данном этапе курса актив `adhoc_request` должен выглядеть так:
 
    ```python
    # src/dagster_essentials/defs/assets/requests.py
@@ -95,28 +95,28 @@ In Lesson 9, you created the `adhoc_request` asset. During materialization, the 
        plt.close(fig)
    ```
 
-3. Add the `base64` import to the top of the file:
+3. Добавь импорт `base64` в начало файла:
 
    ```python
    import base64
    import dagster as dg
    ```
 
-4. After the last line in the asset, add the following code:
+4. После последней строки актива добавь следующий код:
 
    ```python
    with open(file_path, 'rb') as file:
        image_data = file.read()
    ```
 
-5. Next, we’ll use base64 encoding to convert the chart to Markdown. After the `image_data` line, add the following code:
+5. Далее воспользуемся кодированием base64, чтобы встроить диаграмму в Markdown. После строки с `image_data` добавь следующий код:
 
    ```python
    base64_data = base64.b64encode(image_data).decode('utf-8')
    md_content = f"![Image](data:image/jpeg;base64,{base64_data})"
    ```
 
-6. Finally, we'll return a `MaterializeResult` object with the metadata specified as a parameter:
+6. Наконец, вернём объект `MaterializeResult` с метаданными в качестве параметра:
 
    ```python
    return dg.MaterializeResult(
@@ -126,16 +126,16 @@ In Lesson 9, you created the `adhoc_request` asset. During materialization, the 
    )
    ```
 
-   Let’s break down what’s happening here:
+   Разберём, что происходит:
 
-   1. A variable named `base64_data` is created.
-   2. `base64.b64encode` encodes the image’s binary data (`image_data`) into base64 format.
-   3. Next, the encoded image data is converted to a UTF-8 encoded string using the `decode` function.
-   4. Next, a variable named `md_content` is created. The value of this variable is a Markdown-formatted string containing a JPEG image, where the base64 representation of the image is inserted.
-   5. To include the metadata on the asset, we returned a `MaterializeResult` instance with the image passed in as metadata. The metadata will have a `preview` label in the Dagster UI.
-   6. Using `MetadataValue.md`, the `md_content` is typed as Markdown. This ensures Dagster will correctly render the chart.
+   1. Создаётся переменная `base64_data`.
+   2. Функция `base64.b64encode` кодирует двоичные данные изображения (`image_data`) в формат base64.
+   3. Затем закодированные данные изображения преобразуются в строку UTF-8 с помощью функции `decode`.
+   4. Создаётся переменная `md_content`. Её значение — строка в формате Markdown со встроенным JPEG-изображением, представленным в base64.
+   5. Чтобы добавить метаданные к активу, возвращаем экземпляр `MaterializeResult`, передавая изображение в метаданных. В интерфейсе Dagster метаданные будут иметь метку `preview`.
+   6. С помощью `MetadataValue.md` для `md_content` указывается тип Markdown. Это обеспечивает корректное отображение диаграммы в Dagster.
 
-At this point, the code for the `adhoc_request` asset should look like this:
+На этом этапе код актива `adhoc_request` должен выглядеть так:
 
 ```python
 # src/dagster_essentials/defs/assets/requests.py
@@ -231,22 +231,24 @@ def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource) -> dg.Ma
 
 ---
 
-## Viewing the metadata in the Dagster UI
+## Просмотр метаданных в интерфейсе Dagster
 
-After all that work, let’s check out what this looks like in the UI!
+После всей проделанной работы посмотрим, как это выглядит в интерфейсе!
 
-1. Navigate to the **Global Asset Lineage** page.
-2. Click **Reload definitions.**
-3. After the metadata code is updated, simulate a tick of the sensor.
+1. Перейди на страницу **Global Asset Lineage**.
+2. Нажми **Reload definitions**.
+3. После обновления кода метаданных смоделируй тик сенсора.
 
 <!-- TODO: Add link to Thinkific sensors lesson here? -->
 
-On the right-hand side of the screen, you’ll see `preview`, which was the label given to the Markdown plot value:
+В правой части экрана ты увидишь `preview` — метку, заданную для диаграммы в формате Markdown:
 
-![The Global Asset Lineage page with the adhoc_request asset selected](/images/dagster-essentials/extra-credit/ui-selected-adhoc-request-asset.png)
+![Страница Global Asset Lineage с выбранным активом adhoc_request](/images/dagster-essentials/extra-credit/ui-selected-adhoc-request-asset.png)
 
-To display the chart, click **\[Show Markdown]** :
+Чтобы отобразить диаграмму, нажми **\[Show Markdown]**:
 
-![The chart rendered as a result of materializing the adhoc_request asset](/images/dagster-essentials/extra-credit/ui-markdown-chart.png)
+![Диаграмма, отображаемая в результате материализации актива adhoc_request](/images/dagster-essentials/extra-credit/ui-markdown-chart.png)
 
-You can also click **View in Asset Catalog** to view the chart.
+Также можно нажать **View in Asset Catalog**, чтобы просмотреть диаграмму.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

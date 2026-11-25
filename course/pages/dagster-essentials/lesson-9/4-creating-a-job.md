@@ -1,14 +1,14 @@
 ---
-title: 'Lesson 9: Creating a job'
+title: 'Урок 9: Создание задания'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# Creating a job
+# Создание задания
 
-Next, you’ll create a job that materializes the new `adhoc_request` asset. This job will be nearly identical to the jobs from Lesson 7.
+Далее создай задание для материализации нового актива `adhoc_request`. Оно будет практически идентично заданиям из урока 7.
 
-Navigate to the `defs/jobs.py` file and add the following lines above the `trip_update_job` to create a job for your ad-hoc requests
+Открой файл `defs/jobs.py` и добавь следующие строки перед `trip_update_job`, чтобы создать задание для разовых запросов:
 
 ```python
 # src/dagster_essentials/defs/jobs.py
@@ -20,7 +20,7 @@ adhoc_request_job = dg.define_asset_job(
 )
 ```
 
-You’ll also have to update an existing job, `trip_update_job`. The initial `AssetSelection.all()` this job uses will select the new `adhoc_request` asset, but we don’t want that. Just like how you omitted the `trips_by_week` asset in the asset selection, let’s also omit the `adhoc_request` asset, as shown below:
+Также необходимо обновить существующее задание `trip_update_job`. Используемая в нём исходная выборка `AssetSelection.all()` выберет и новый актив `adhoc_request`, но нам это не нужно. Как и в случае исключения актива `trips_by_week`, исключим из выборки актив `adhoc_request`, как показано ниже:
 
 ```python
 # src/dagster_essentials/defs/jobs.py
@@ -30,3 +30,5 @@ trip_update_job = dg.define_asset_job(
     selection=dg.AssetSelection.all() - trips_by_week - adhoc_request
 )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

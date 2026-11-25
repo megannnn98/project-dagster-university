@@ -1,22 +1,22 @@
 ---
-title: 'Lesson 8: Practice: Partition the trips_by_week asset'
+title: 'Урок 8: Практика: партиционирование актива trips_by_week'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Practice: Partition the trips_by_week asset
+# Практика: партиционирование актива trips_by_week
 
-To practice what you’ve learned, update `weekly_update_job` and `trips_by_week` to be partitioned weekly. Use your existing `weekly_partition` definition from the previous practice problem.
+Чтобы закрепить изученное, обнови `weekly_update_job` и `trips_by_week`, разделив их на недельные партиции. Используй существующее определение `weekly_partition` из предыдущего практического задания.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The updated asset and job should look similar to the following code. Click **View answer** to view it.
+Обновлённый актив и задание должны выглядеть примерно как следующий код. Нажми **View answer**, чтобы посмотреть ответ.
 
-**If there are differences**, compare what you wrote to the code below and change them, as they will be used as-is in future lessons.
+**Если есть различия**, сравни свой код с приведённым ниже и внеси изменения: в следующих уроках он будет использоваться в таком виде.
 
-### In assets/metrics.py:
+### В файле assets/metrics.py:
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/assets/metrics.py
@@ -71,7 +71,7 @@ def trips_by_week(context: dg.AssetExecutionContext, database: DuckDBResource) -
         aggregate.to_csv(constants.TRIPS_BY_WEEK_FILE_PATH, index=False)
 ```
 
-### In `jobs.py`:
+### В файле `jobs.py`:
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/jobs.py
@@ -86,3 +86,5 @@ weekly_update_job = dg.define_asset_job(
     selection=trips_by_week,
 )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

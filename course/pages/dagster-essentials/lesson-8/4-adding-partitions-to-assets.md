@@ -1,14 +1,14 @@
 ---
-title: 'Lesson 8: Adding partitions to assets'
+title: 'Урок 8: Добавление партиций к активам'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Adding partitions to assets
+# Добавление партиций к активам
 
-In this section, you’ll update the assets in `src/dagster_essentials/defs/assets/trips.py` to use the partitions.
+В этом разделе ты обновишь активы в файле `src/dagster_essentials/defs/assets/trips.py`, чтобы использовать партиции.
 
-Starting with `taxi_trips_file`, the asset code should currently look like this:
+Начнём с `taxi_trips_file`. Сейчас код актива должен выглядеть следующим образом:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -26,17 +26,17 @@ def taxi_trips_file() -> None:
         output_file.write(raw_trips.content)
 ```
 
-In this asset, `month_to_fetch` is set to `2023-03` to retrieve trip data for March 2023. Using the `monthly_partition`, you can update the asset to use the partition to retrieve three months of data.
+В этом активе `month_to_fetch` задан как `2023-03` для получения данных за март 2023 года. С помощью `monthly_partition` можно обновить актив так, чтобы получать данные за три месяца по отдельным партициям.
 
-To add the partition to the asset:
+Чтобы добавить партиции к активу:
 
-1. Import the `monthly_partition` from the `partitions` folder by adding the following to the top of `src/dagster_essentials/defs/assets/trips.py`:
+1. Импортируй `monthly_partition` из модуля `partitions`, добавив следующий код в начало файла `src/dagster_essentials/defs/assets/trips.py`:
 
    ```python
    from dagster_essentials.defs.partitions import monthly_partition
    ```
 
-2. In the asset decorator (`@dg.asset`), add a `partitions_def` parameter equal to `monthly_partition`:
+2. В декораторе актива (`@dg.asset`) добавь параметр `partitions_def`, равный `monthly_partition`:
 
    ```python
    @dg.asset(
@@ -44,7 +44,7 @@ To add the partition to the asset:
    )
    ```
 
-3. In Dagster, the `context` argument provides you with metadata about the current materialization. To access it, include it as the first argument in the asset definition function. You can enable type hinting for this by adding `dg.AssetExecutionContext` to the function signature. For example, the updated asset definition should look like this:
+3. В Dagster аргумент `context` предоставляет метаданные о текущей материализации. Чтобы получить к ним доступ, добавь его первым аргументом функции определения актива. Для аннотации типа укажи `dg.AssetExecutionContext` в сигнатуре функции. Например, обновлённое определение актива должно выглядеть так:
 
    ```python
    @dg.asset(
@@ -53,9 +53,9 @@ To add the partition to the asset:
    def taxi_trips_file(context: dg.AssetExecutionContext) -> None:
    ```
 
-   **Note**: The `context` argument isn’t specific to partitions. However, this is the first time you've used it in Dagster University. The `context` argument provides information about how Dagster is running and materializing your asset. For example, you can use it to find out which partition Dagster is materializing, which job triggered the materialization, or what metadata was attached to its previous materializations.
+   **Примечание:** аргумент `context` не является специфичным для партиций. Однако в Dagster University ты используешь его впервые. Он предоставляет информацию о том, как Dagster выполняет и материализует актив. Например, можно узнать, какую партицию Dagster материализует, какое задание инициировало материализацию или какие метаданные были добавлены при предыдущих материализациях.
 
-4. In the original asset code, the logic was hard-coded to specifically fetch data for March 2023 (`'2023-03'`). Use the `context` argument’s `partition_key` property to dynamically fetch a specific partition’s month of data:
+4. В исходном коде актива логика получения данных за март 2023 года была жёстко задана (`'2023-03'`). Используй свойство `partition_key` аргумента `context`, чтобы динамически получать данные за месяц конкретной партиции:
 
    ```python
    @dg.asset(
@@ -65,7 +65,7 @@ To add the partition to the asset:
        partition_date_str = context.partition_key
    ```
 
-5. In the NYC OpenData source system, the taxi trip files are structured in a `YYYY-MM` format. However, `context.partition_key` supplies the materializing partition’s date as a string in the `YYYY-MM-DD` format. Slice the string to make it match the format expected by our source system and replace our existing declaration of the `month_to_fetch` variable:
+5. В источнике NYC OpenData имена файлов поездок содержат даты в формате `YYYY-MM`. Однако `context.partition_key` возвращает дату материализуемой партиции в виде строки формата `YYYY-MM-DD`. Возьми срез строки, чтобы привести её к формату источника, и замени существующее объявление переменной `month_to_fetch`:
 
    ```python
    @dg.asset(
@@ -76,7 +76,7 @@ To add the partition to the asset:
        month_to_fetch = partition_date_str[:-3]
    ```
 
-After following the steps above, the `taxi_trips_file` asset should look similar to the code snippet below:
+После выполнения этих шагов актив `taxi_trips_file` должен выглядеть примерно как следующий фрагмент:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -100,3 +100,5 @@ def taxi_trips_file(context: dg.AssetExecutionContext) -> None:
   with open(constants.TAXI_TRIPS_TEMPLATE_FILE_PATH.format(month_to_fetch), "wb") as output_file:
       output_file.write(raw_trips.content)
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

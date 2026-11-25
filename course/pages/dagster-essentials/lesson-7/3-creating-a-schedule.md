@@ -1,20 +1,20 @@
 ---
-title: 'Lesson 7: Creating a schedule'
+title: 'Урок 7: Создание расписания'
 module: 'dagster_essentials'
 lesson: '7'
 ---
 
-# Creating a schedule
+# Создание расписания
 
-Now that you know what makes up a schedule, let’s create one. To do this, we’ll use the `ScheduleDefinition` class.
+Теперь, когда ты знаешь, из чего состоит расписание, создадим его. Для этого воспользуемся классом `ScheduleDefinition`.
 
-We can use `dg` again to scaffold our schedules. So first run:
+Снова используем `dg` для создания каркаса расписаний. Сначала выполни:
 
 ```bash
 dg scaffold defs dagster.schedule schedules.py
 ```
 
-This will create a file in `src/dagster_essentials/defs/schedules.py` where we can add the following schedule code:
+Будет создан файл `src/dagster_essentials/defs/schedules.py`, в который можно добавить следующий код расписания:
 
 ```python
 # src/dagster_essentials/defs/schedules.py
@@ -27,10 +27,12 @@ trip_update_schedule = dg.ScheduleDefinition(
 )
 ```
 
-Let’s look at what this code does:
+Разберём, что делает этот код:
 
-1. Imports the `ScheduleDefinition` class
-2. From the `jobs` module, import the `trip_update_job` job
-3. Used `ScheduleDefinition` to create a schedule that:
-   - Is attached to the `trip_update_job` job
-   - Has a cron expression of `0 0 5 * *`
+1. Импортирует класс `ScheduleDefinition`.
+2. Импортирует задание `trip_update_job` из модуля `jobs`.
+3. Использует `ScheduleDefinition` для создания расписания, которое:
+   - Связано с заданием `trip_update_job`.
+   - Имеет выражение cron `0 0 5 * *`.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

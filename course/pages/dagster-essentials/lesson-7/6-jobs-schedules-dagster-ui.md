@@ -1,148 +1,150 @@
 ---
-title: 'Lesson 7: Jobs and schedules in the Dagster UI'
+title: 'Урок 7: Задания и расписания в интерфейсе Dagster'
 module: 'dagster_essentials'
 lesson: '7'
 ---
 
-# Jobs and schedules in the Dagster UI
+# Задания и расписания в интерфейсе Dagster
 
-Like other Dagster definitions, jobs and schedules can be viewed and managed in the Dagster UI. The UI contains information about where the jobs and schedules are used, as well as the ability to toggle them on and off.
+Как и другие определения Dagster, задания и расписания можно просматривать и администрировать через интерфейс Dagster. В нём можно узнать, где они используются, а также включать и отключать расписания.
 
-In addition to viewing and managing jobs and schedules in the UI, running `dg dev` also spins up the `dagster-daemon`. The `dagster-daemon` is a long-running process that does things like check the time to see if a schedule should be run or if a sensor should be ticked, which we’ll cover more in a later lesson.
+Помимо просмотра и управления заданиями и расписаниями, команда `dg dev` запускает процесс `dagster-daemon`. Это длительно работающий процесс, который, например, проверяет время и определяет, нужно ли выполнить расписание или вычислить сенсор. Подробнее о сенсорах поговорим позже.
 
-To ensure the jobs and schedules are visible, **reload the definitions** before continuing.
+Чтобы задания и расписания появились в интерфейсе, **перезагрузи определения** перед продолжением.
 
 ---
 
-## Jobs in the UI
+## Задания в интерфейсе
 
 {% table %}
 
-- Accessing jobs
+- Открытие списка заданий
 
 ---
 
 - {% width="60%" %}
-  To view the jobs in the UI, you can:
+  Чтобы просмотреть задания в интерфейсе, можно:
 
-  - Click **Jobs** in the side navigation bar, or
-  - Click **Deployment**, then click on a code location. Click the **Definitions** tab, then click **Jobs** on the side navigation bar.
+  - Нажать **Jobs** на боковой панели навигации, или
+  - Нажать **Deployment**, выбрать расположение кода, перейти на вкладку **Definitions** и нажать **Jobs** на боковой панели.
 
-  The table in the **Jobs** tab contains the following info:
+  Таблица на вкладке **Jobs** содержит следующие сведения:
 
-  - **Name** - The name of the job
-  - **Schedules/sensors** - The schedules and/or sensors attached to the job, including whether they’re enabled
-  - **Latest run** - When the job last ran
-  - **Run history** - Historical information about the job’s runs
+  - **Name** — имя задания.
+  - **Schedules/sensors** — связанные с заданием расписания и сенсоры, включая состояние их включения.
+  - **Latest run** — время последнего запуска задания.
+  - **Run history** — история запусков задания.
 
-- ![The Jobs tab in the Dagster UI](/images/dagster-essentials/lesson-7/ui-jobs-tab.png) {% rowspan=2 %}
+- ![Вкладка Jobs в интерфейсе Dagster](/images/dagster-essentials/lesson-7/ui-jobs-tab.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Viewing a job's assets
+- Просмотр активов задания
 
 ---
 
 - {% width="60%" %}
-  By selecting a specific job, you will be able to see the asset graph containing the job's assets.
+  Выбрав конкретное задание, ты увидишь граф активов, входящих в него.
 
-- ![The asset graph for the trip_update_job in the Dagster UI](/images/dagster-essentials/lesson-7/ui-trip-update-job-asset-graph.png) {% rowspan=2 %}
+- ![Граф активов trip_update_job в интерфейсе Dagster](/images/dagster-essentials/lesson-7/ui-trip-update-job-asset-graph.png) {% rowspan=2 %}
 
 {% /table %}
 
 ---
 
-## Schedules in the UI
+## Расписания в интерфейсе
 
 {% table %}
 
-- Accessing schedules
+- Открытие списка расписаний
 
 ---
 
 - {% width="60%" %}
-  To view the schedules in the UI, you can:
+  Чтобы просмотреть расписания в интерфейсе, можно:
 
-  - Click **Automation** in the side navigation bar, or
-  - Click **Deployment**, then click on a code location. Click the **Definitions** tab, then click **Schedules** on the side navigation bar.
+  - Нажать **Automation** на боковой панели навигации, или
+  - Нажать **Deployment**, выбрать расположение кода, перейти на вкладку **Definitions** и нажать **Schedules** на боковой панели.
 
-  The table in the **Automation** tab contains the following info:
+  Таблица на вкладке **Automation** содержит следующие сведения:
 
-  - **Name -** The name of the schedule, with a toggle to indicate whether the schedule is currently on or off
-  - **Type -** The frequency of the schedule
-  - **Target -** The job that the schedule will run
-  - **Last tick -** When the schedule was last started
-  - **Last run -** When the schedule was last run
+  - **Name** — имя расписания с переключателем, показывающим, включено ли оно.
+  - **Type** — периодичность расписания.
+  - **Target** — задание, запускаемое расписанием.
+  - **Last tick** — время последнего тика расписания.
+  - **Last run** — время последнего запуска по расписанию.
 
-- ![The Schedules tab in the Dagster UI](/images/dagster-essentials/lesson-7/ui-schedules-tab.png) {% rowspan=2 %}
-
-{% /table %}
-
-{% table %}
-
-- Viewing schedule details
-
----
-
-- {% width="60%" %}
-  To view historical information about a schedule, click a schedule in the **Schedules** tab. The **Schedule details** page contains a view of the schedule’s tick and run history.
-
-- ![The Schedule details page in the Dagster UI](/images/dagster-essentials/lesson-7/ui-schedule-details.png) {% rowspan=2 %}
+- ![Вкладка Schedules в интерфейсе Dagster](/images/dagster-essentials/lesson-7/ui-schedules-tab.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Starting and stopping schedules
+- Просмотр сведений о расписании
 
 ---
 
 - {% width="60%" %}
-  To start or stop a schedule, use the **toggle next to the schedule’s name** in the upper-left corner of the page. When the schedule is on, its **Next tick** will also be visible.
+  Чтобы посмотреть историю расписания, нажми на него на вкладке **Schedules**. На странице **Schedule details** отображается история тиков и запусков.
 
-- ![An enabled schedule in the Schedule details page](/images/dagster-essentials/lesson-7/ui-enabled-schedule.png) {% rowspan=2 %}
+- ![Страница Schedule details в интерфейсе Dagster](/images/dagster-essentials/lesson-7/ui-schedule-details.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Testing schedules
+- Включение и отключение расписаний
 
 ---
 
 - {% width="60%" %}
-  To test a schedule, use the **Preview tick result** button in the upper-right corner of the page. This can be handy when a schedule doesn’t run very often or you want to make sure a schedule is working correctly.
+  Чтобы включить или отключить расписание, воспользуйся **переключателем рядом с именем расписания** в верхнем левом углу страницы. Когда расписание включено, отображается также время следующего тика — **Next tick**.
 
-- ![The Test Schedule button highlighted in the Schedule details page](/images/dagster-essentials/lesson-7/ui-test-schedule.png) {% rowspan=2 %}
+- ![Включённое расписание на странице Schedule details](/images/dagster-essentials/lesson-7/ui-enabled-schedule.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Selecting a mock evaluation time
+- Проверка расписаний
 
 ---
 
 - {% width="60%" %}
-  After the button is clicked, you’ll be prompted to select a mock evaluation time.
+  Чтобы проверить расписание, нажми **Preview tick result** в верхнем правом углу страницы. Это удобно, когда расписание выполняется редко или нужно убедиться в его корректной работе.
 
-  Click **Evaluate** to run the test.
-
-- ![Mock evaluation time selection](/images/dagster-essentials/lesson-7/ui-mock-evaluation-time.png) {% rowspan=2 %}
+- ![Выделенная кнопка проверки расписания на странице Schedule details](/images/dagster-essentials/lesson-7/ui-test-schedule.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Viewing schedule test results
+- Выбор условного времени вычисления
 
 ---
 
 - {% width="60%" %}
-  After the test completes, the results of the evaluation will be displayed.
+  После нажатия кнопки будет предложено выбрать условное время вычисления.
 
-- ![Schedule test results](/images/dagster-essentials/lesson-7/ui-schedule-test-results.png) {% rowspan=2 %}
+  Нажми **Evaluate**, чтобы выполнить проверку.
+
+- ![Выбор условного времени вычисления](/images/dagster-essentials/lesson-7/ui-mock-evaluation-time.png) {% rowspan=2 %}
 
 {% /table %}
+
+{% table %}
+
+- Просмотр результатов проверки расписания
+
+---
+
+- {% width="60%" %}
+  После завершения проверки будут показаны результаты вычисления.
+
+- ![Результаты проверки расписания](/images/dagster-essentials/lesson-7/ui-schedule-test-results.png) {% rowspan=2 %}
+
+{% /table %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

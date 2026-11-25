@@ -1,54 +1,56 @@
 ---
-title: 'Lesson 9: Sensors in the Dagster UI'
+title: 'Урок 9: Сенсоры в интерфейсе Dagster'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# Sensors in the Dagster UI
+# Сенсоры в интерфейсе Dagster
 
-Now that the sensor is built, let's take a look around the Dagster UI.
+Теперь, когда сенсор создан, изучим интерфейс Dagster.
 
 {% table %}
 
-- Step one
+- Шаг 1
 
 ---
 
 - {% width="60%" %}
-  Navigate to the **Global Asset Lineage** page, where you should see the new asset, `adhoc_request`.
+  Перейди на страницу **Global Asset Lineage**, где должен отображаться новый актив `adhoc_request`.
 
-  **Note:** If you don’t see the asset, click **Reload definitions** first.
+  **Примечание:** если актив не виден, сначала нажми **Reload definitions**.
 
-- ![The new adhoc_request asset in the Dagster UI](/images/dagster-essentials/lesson-9/ui-asset-lineage-with-sensors.png) {% rowspan=2 %}
+- ![Новый актив adhoc_request в интерфейсе Dagster](/images/dagster-essentials/lesson-9/ui-asset-lineage-with-sensors.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step two
+- Шаг 2
 
 ---
 
 - {% width="60%" %}
-  Click **Automation**. In this tab, you’ll see the `adhoc_request_sensor` alongside the previously created schedules.
+  Нажми **Automation**. На этой вкладке ты увидишь `adhoc_request_sensor` вместе с ранее созданными расписаниями.
 
-  Notice that the **Running** toggle button has the sensor marked as turned off. By default, all sensors and schedules are off when first loaded.
+  Обрати внимание, что переключатель **Running** показывает, что сенсор выключен. По умолчанию при первой загрузке сенсоры и расписания выключены.
 
-- ![The Sensors tab in the Dagster UI](/images/dagster-essentials/lesson-9/ui-sensors-tab.png) {% rowspan=2 %}
+- ![Вкладка сенсоров в интерфейсе Dagster](/images/dagster-essentials/lesson-9/ui-sensors-tab.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Step three
+- Шаг 3
 
 ---
 
 - {% width="60%" %}
-  Click `adhoc_request_sensor` to open the **Sensor details** page.
+  Нажми `adhoc_request_sensor`, чтобы открыть страницу **Sensor details**.
 
-  On this page, you’ll find detailed information about the sensor including the jobs that use it, its tick and run history, and more.
+  Здесь можно найти подробные сведения о сенсоре, в том числе связанные задания, историю тиков и запусков и другую информацию.
 
-- ![The Sensor details tab in the Dagster UI](/images/dagster-essentials/lesson-9/ui-sensor-details.png) {% rowspan=2 %}
+- ![Страница сведений о сенсоре в интерфейсе Dagster](/images/dagster-essentials/lesson-9/ui-sensor-details.png) {% rowspan=2 %}
 
 {% /table %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

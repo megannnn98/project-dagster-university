@@ -1,38 +1,40 @@
 ---
-title: "Lesson 6: What's a resource?"
+title: "Урок 6: Что такое ресурс?"
 module: 'dagster_essentials'
 lesson: '6'
 ---
 
-# What's a resource?
+# Что такое ресурс?
 
-Resources are the tools and services you use to make assets. Let’s go back to our example about cookies to help contextualize this.
+Ресурсы — это инструменты и сервисы, которые ты используешь для создания активов. Для наглядности вернёмся к примеру с печеньем.
 
-Multiple kitchen utensils and appliances are used when baking. When making cookies, you’ll need a bowl and spoon to hold and mix ingredients, a tray to put the cookies on, and an oven to bake them. These can be considered **resources.**
+При выпечке используются различные кухонные принадлежности и приборы. Для приготовления печенья тебе понадобятся миска и ложка, чтобы смешивать ингредиенты, противень, чтобы разложить печенье, и духовка, чтобы его испечь. Всё это можно считать **ресурсами**.
 
-If we add these resources to our kitchen, our cookie pipeline would look like this:
+Если добавить эти ресурсы на нашу кухню, пайплайн приготовления печенья будет выглядеть так:
 
-![Newly added resources, pictured in dark green, added to the cookie pipeline](/images/dagster-essentials/lesson-6/resources-not-dry.png)
+![Новые ресурсы, выделенные тёмно-зелёным цветом, добавлены в пайплайн приготовления печенья](/images/dagster-essentials/lesson-6/resources-not-dry.png)
 
-In this case, the bowl and spoon, baking tray, and oven are used multiple times by different assets. Not only is it difficult to answer how many times you need a baking tray or which assets need an oven, it’s **repetitive.** Instead of needing multiples of these resources, we can have one of each and re-use them.
+В данном случае миска и ложка, противень и духовка многократно используются разными активами. Не только сложно определить, сколько раз понадобится противень или какие активы требуют духовку, но и возникает **дублирование**. Вместо нескольких экземпляров каждого ресурса можно иметь по одному и использовать их повторно.
 
-If we alter our approach to be more DRY we can simplify our pipeline and centralize our configurations. To do this, we’ll define the resources in one place and add references where they’re used:
+Если изменить подход в соответствии с принципом DRY, можно упростить пайплайн и централизовать конфигурацию. Для этого определим ресурсы в одном месте и добавим ссылки на них там, где они используются:
 
-![A DRY pipeline is a simple, efficient pipeline](/images/dagster-essentials/lesson-6/cookie-resources-dry.png)
+![Пайплайн, построенный по принципу DRY, прост и эффективен](/images/dagster-essentials/lesson-6/cookie-resources-dry.png)
 
 ---
 
-## Resources in Dagster
+## Ресурсы в Dagster
 
-Much like baking, making data pipelines also requires resources. For example, a simple ETL (Extract Transform Load) pipeline fetches data from an API, ingests it into a database, and updates a dashboard. External tools and services this pipeline uses could be:
+Как и выпечка, построение пайплайнов данных требует ресурсов. Например, простой ETL-пайплайн (Extract, Transform, Load — извлечение, преобразование и загрузка) получает данные из API, загружает их в базу данных и обновляет дашборд. Такой пайплайн может использовать следующие внешние инструменты и сервисы:
 
-- The API the data is fetched from
-- The AWS S3 bucket where the API’s response is stored
-- The Snowflake/Databricks/BigQuery account the data is ingested into
-- The BI tool the dashboard was made in
+- API, из которого получаются данные.
+- Бакет AWS S3, в котором сохраняется ответ API.
+- Учётную запись Snowflake, Databricks или BigQuery, в которую загружаются данные.
+- BI-инструмент, в котором создан дашборд.
 
-All of the above are resources. In data engineering, resources are the external services, tools, and storage you use to do your job. A data orchestrator should be aware of the different tools used, where they’re used, and how they’re used.
+Всё перечисленное — ресурсы. В инженерии данных ресурсами называют внешние сервисы, инструменты и хранилища, используемые для выполнения работы. Оркестратор данных должен знать, какие инструменты используются, где и каким образом.
 
-With this in mind, Dagster resources promote standardizing your connections and integrations to these tools. The Dagster UI also details where and how resources are used and configured.
+Поэтому ресурсы Dagster помогают стандартизировать подключения к этим инструментам и интеграции с ними. В интерфейсе Dagster также можно увидеть, где и как используются и настраиваются ресурсы.
 
-In this lesson, you’ll lightly refactor the project you have so far to manage your DuckDB connections with a resource.
+В этом уроке ты немного отрефакторишь существующий проект, чтобы управлять подключениями к DuckDB с помощью ресурса.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

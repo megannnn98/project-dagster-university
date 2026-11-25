@@ -1,20 +1,20 @@
 ---
-title: 'Lesson 6: Using resources in assets'
+title: 'Урок 6: Использование ресурсов в активах'
 module: 'dagster_essentials'
 lesson: '6'
 ---
 
-# Using resources in assets
+# Использование ресурсов в активах
 
-Now that you’ve defined a resource, let’s refactor the `taxi_trips` asset to use it.
+Теперь, когда ресурс определён, отрефакторим актив `taxi_trips`, чтобы использовать его.
 
-Let’s start by looking at the before and after.
+Для начала сравним код до и после изменения.
 
 ---
 
-## Before adding a resource
+## До добавления ресурса
 
-The following code shows what the `taxi_trips` asset currently looks like, without a resource:
+Следующий код показывает, как сейчас выглядит актив `taxi_trips` без использования ресурса:
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -60,9 +60,9 @@ def taxi_trips() -> None:
 
 ---
 
-## After adding a resource
+## После добавления ресурса
 
-And now, after adding a resource, the `taxi_trips` asset looks like the following code.
+После добавления ресурса актив `taxi_trips` выглядит следующим образом.
 
 ```python
 # src/dagster_essentials/defs/assets/trips.py
@@ -98,11 +98,11 @@ def taxi_trips(database: DuckDBResource) -> None:
         conn.execute(query)
 ```
 
-To refactor `taxi_trips` to use the `database` resource, we had to:
+Чтобы отрефакторить `taxi_trips` для использования ресурса `database`, необходимо было:
 
-1. Replace the `duckdb` import with `from dagster_duckdb import DuckDBResource`, which we used to add type hints to the Dagster project
-2. Update the `taxi_trips` asset’s function definition to include `database: DuckDBResource`. This type hint is required to tell Dagster that the dependency is a resource and not an asset.
-3. Replace the lines that connect to DuckDB and execute a query:
+1. Заменить импорт `duckdb` на `from dagster_duckdb import DuckDBResource`, чтобы добавить аннотации типов в проект Dagster.
+2. Обновить определение функции актива `taxi_trips`, добавив параметр `database: DuckDBResource`. Эта аннотация типа нужна, чтобы Dagster понимал, что зависимость является ресурсом, а не активом.
+3. Заменить строки, устанавливающие подключение к DuckDB и выполняющие запрос:
 
    ```python
    conn = backoff(
@@ -116,21 +116,23 @@ To refactor `taxi_trips` to use the `database` resource, we had to:
    conn.execute(query)
    ```
 
-   With these, which uses the `database` resource:
+   На следующие строки, использующие ресурс `database`:
 
    ```python
    with database.get_connection() as conn:
        conn.execute(query)
    ```
 
-   Notice that we no longer need to use the `backoff` function. The Dagster `DuckDBResource` handles this functionality for us.
+   Обрати внимание, что больше не нужно использовать функцию `backoff`. Ресурс Dagster `DuckDBResource` берёт эту функциональность на себя.
 
 ---
 
-## Before you continue
+## Перед продолжением
 
-Before continuing, make sure you:
+Прежде чем двигаться дальше, убедись, что ты:
 
-1. Update `defs/asset/trips.py` with the refactored `taxi_trips` asset code
-2. Reload the definitions in the Dagster UI
-3. Rematerialize the `taxi_trips` asset
+1. Обновил файл `defs/assets/trips.py`, добавив отрефакторенный код актива `taxi_trips`.
+2. Перезагрузил определения в интерфейсе Dagster.
+3. Повторно материализовал актив `taxi_trips`.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

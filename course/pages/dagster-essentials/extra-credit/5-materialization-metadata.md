@@ -1,27 +1,27 @@
 ---
-title: 'Extra credit: Materialization metadata'
+title: 'Дополнительный раздел: Метаданные материализации'
 module: 'dagster_essentials'
 lesson: 'extra-credit'
 ---
 
-# Materialization metadata
+# Метаданные материализации
 
-Now that we’ve covered definition metadata, let’s dive into the other type of metadata: materialization.
+Теперь, когда мы рассмотрели метаданные определения, перейдём к другому типу — метаданным материализации.
 
 ---
 
-## Adding materialization metadata to an asset
+## Добавление метаданных материализации к активу
 
-To add metadata to an asset, you need to do two things:
+Чтобы добавить метаданные к активу, нужно сделать две вещи:
 
-- Return a `MaterializeResult` object with the `metadata` parameter from your asset
-- Use the `MetadataValue` utility class to wrap the data, ensuring it displays correctly in the UI
+- Вернуть из актива объект `MaterializeResult` с параметром `metadata`.
+- Обернуть данные с помощью вспомогательного класса `MetadataValue`, чтобы они корректно отображались в интерфейсе.
 
-Let’s add metadata to the `taxi_trips_file` asset to demonstrate further. This will add the count of records to the asset’s materialization metadata.
+Для наглядности добавим метаданные к активу `taxi_trips_file`. Это позволит записывать количество записей в метаданные материализации актива.
 
-1. Navigate to and open `assets/trips.py`.
+1. Открой файл `assets/trips.py`.
 
-2. Locate the `taxi_trips_file` asset. At this point in the course, the asset should look like this:
+2. Найди актив `taxi_trips_file`. На данном этапе курса он должен выглядеть следующим образом:
 
    ```python
    # src/dagster_essentials/defs/assets/trips.py
@@ -50,13 +50,13 @@ Let’s add metadata to the `taxi_trips_file` asset to demonstrate further. This
            output_file.write(raw_trips.content)
    ```
 
-3. First, we need to calculate the number of records contained in the file. Copy and paste the following after the last line in the asset:
+3. Сначала нужно вычислить количество записей в файле. Скопируй следующий код после последней строки актива:
 
    ```python
    num_rows = len(pd.read_parquet(constants.TAXI_TRIPS_TEMPLATE_FILE_PATH.format(month_to_fetch)))
    ```
 
-4. Next, we’ll add the metadata with the specified type:
+4. Далее добавим метаданные с указанным типом:
 
    ```python
    return dg.MaterializeResult(
@@ -66,7 +66,7 @@ Let’s add metadata to the `taxi_trips_file` asset to demonstrate further. This
    )
    ```
 
-5. Then, since we're now returning something, let's update the return type of the asset to `MaterializeResult`:
+5. Поскольку теперь функция возвращает значение, обновим тип возвращаемого значения актива на `MaterializeResult`:
 
    ```python
    import dagster as dg
@@ -78,13 +78,13 @@ Let’s add metadata to the `taxi_trips_file` asset to demonstrate further. This
    def taxi_trips_file(context) -> dg.MaterializeResult:
    ```
 
-   Let’s break down what’s happening here:
+   Разберём, что происходит:
 
-   - Rather than returning nothing, we'll return some information about the materialization that happened with the `MaterializeResult` class.
-   - The `metadata` parameter accepts a `dict`, where the key is the label or name of the metadata and the value is the data itself. In this case, the key is `Number of records`. The value in this example is everything after `Number of records`.
-   - Using `MetadataValue.int`, the value of the `num_rows` variable is typed as an integer. This tells Dagster to render the data as an integer.
+   - Вместо того чтобы ничего не возвращать, мы вернём информацию о произошедшей материализации с помощью класса `MaterializeResult`.
+   - Параметр `metadata` принимает словарь `dict`, где ключ — метка или имя метаданных, а значение — сами данные. В данном случае ключом является `Number of records`. Значение — выражение после `Number of records`.
+   - С помощью `MetadataValue.int` значение переменной `num_rows` обозначается как целое число. Это сообщает Dagster, что данные нужно отображать как целое число.
 
-   At this point, the asset should look like this:
+   На этом этапе актив должен выглядеть так:
 
    ```python
    # src/dagster_essentials/defs/assets/trips.py
@@ -121,16 +121,18 @@ Let’s add metadata to the `taxi_trips_file` asset to demonstrate further. This
 
 ---
 
-## Materialization metadata in the Dagster UI
+## Метаданные материализации в интерфейсе Dagster
 
-Next, let’s view the metadata in the Dagster UI. This is a good way to survey the data and see if everything was saved as expected.
+Теперь посмотрим на метаданные в интерфейсе Dagster. Это удобный способ изучить данные и убедиться, что всё сохранилось как ожидалось.
 
-1. Navigate to the **Global Asset Lineage** page.
-2. Click **Reload definitions.**
-3. When the definitions are finished loading, select the `taxi_trips_file` asset and materialize all its partitions.
+1. Перейди на страницу **Global Asset Lineage**.
+2. Нажми **Reload definitions**.
+3. Когда определения загрузятся, выбери актив `taxi_trips_file` и материализуй все его партиции.
 
-After the asset has finished materializing, you’ll be able to view the plots associated with the asset. The X-axis of the plot is each partition, labeled with the month. The Y-axis is the number of records for that partition.
+После завершения материализации актива можно будет просмотреть связанные с ним графики. На оси X отмечены партиции с подписями месяцев, а на оси Y — количество записей в каждой партиции.
 
-You can also view this metadata by clicking **View in Asset Catalog**, located under the name of the asset, and then the **Plots** tab.
+Эти метаданные также можно просмотреть, нажав **View in Asset Catalog** под именем актива и затем перейдя на вкладку **Plots**.
 
-![Rendered metadata plot for the taxi_trips_file asset in the Asset Catalog > Plots tab](/images/dagster-essentials/extra-credit/ui-plots-tab.png)
+![График метаданных актива taxi_trips_file на вкладке Asset Catalog > Plots](/images/dagster-essentials/extra-credit/ui-plots-tab.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

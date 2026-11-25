@@ -1,18 +1,18 @@
 ---
-title: "Lesson 5: What's the Definitions object?"
+title: "Урок 5: Что такое объект Definitions?"
 module: 'dagster_essentials'
 lesson: '5'
 ---
 
-# What's the Definitions object?
+# Что такое объект Definitions?
 
-Whenever you define an asset, resource, or schedule in your Dagster deployment, it needs to be part of a `Definitions` object for the code location you’re working in. Each code location can only have a single Definitions object. This object maps to one code location. With code locations, users isolate multiple Dagster projects from each other without requiring multiple deployments. You’ll learn more about code locations a bit later in this lesson.
+Когда ты определяешь актив, ресурс или расписание в своём развёртывании Dagster, этот объект должен входить в состав объекта `Definitions` того расположения кода, в котором ты работаешь. Каждое расположение кода может иметь только один объект Definitions. Этот объект соответствует одному расположению кода. С помощью расположений кода пользователи изолируют несколько проектов Dagster друг от друга, не создавая отдельных развёртываний. Подробнее о расположениях кода поговорим чуть позже в этом уроке.
 
-Let’s use our cookie example to demonstrate. In this case, our cookie assets - like our dry and wet ingredients, cookie dough, chocolate chip cookie dough, and eventually, chocolate chip cookies - can all be thought of as (cookie) **definitions:**
+Вернёмся к примеру с печеньем. Наши активы — сухие и жидкие ингредиенты, тесто для печенья, тесто с кусочками шоколада и, наконец, само печенье с кусочками шоколада — можно считать **определениями** (в данном случае определениями для приготовления печенья):
 
-![In this example, our cookie assets, like our dry and wet ingredients, can be likened to Dagster definitions](/images/dagster-essentials/lesson-5/cookie-definitions.png)
+![Активы приготовления печенья, например сухие и жидкие ингредиенты, можно уподобить определениям Dagster](/images/dagster-essentials/lesson-5/cookie-definitions.png)
 
-In Dagster, the `Definitions` object is located in the `definitions.py` file. If we wanted to create a `Definitions` object for the cookie definitions it would look something like this:
+В Dagster объект `Definitions` находится в файле `definitions.py`. Если бы мы хотели создать объект `Definitions` для определений приготовления печенья, он выглядел бы примерно так:
 
 ```python
 import dagster_cookies.defs as defs
@@ -20,11 +20,11 @@ import dagster_cookies.defs as defs
 defs = dg.components.load_defs(defs)
 ```
 
-## Autoloading
+## Автоматическая загрузка
 
-After the introduction of `dg`, you no longer need to explicitly list all the assets in our project within a `Definitions` object. Dagster can automatically load most objects (we will later see there are other object types besides assets) by importing the contents of the `defs` module.
+После появления `dg` больше не нужно явно перечислять все активы проекта в объекте `Definitions`. Dagster может автоматически загружать большинство объектов (позже мы увидим, что существуют и другие типы объектов, помимо активов), импортируя содержимое модуля `defs`.
 
-Remember that using `dg scaffold` has been placing all our asset files within the `defs` directory.
+Вспомни, что при использовании `dg scaffold` все файлы активов размещались в каталоге `defs`.
 
 ```
 src
@@ -38,15 +38,15 @@ src
             └── trips.py
 ```
 
-You’ll only have one code location (and therefore one `Definitions` object) in this course, but as your project grows, you’ll need to update the `Definitions` object to include new definitions.
+В этом курсе у тебя будет только одно расположение кода (и, соответственно, один объект `Definitions`). Однако по мере роста проекта необходимо следить за тем, чтобы объект `Definitions` включал новые определения.
 
 ---
 
-## How Dagster uses the Definitions object
+## Как Dagster использует объект Definitions
 
-Now that we’ve discussed what the `Definitions` object is, let’s go into how Dagster uses it.
+Разобравшись с тем, что такое объект `Definitions`, рассмотрим, как Dagster его использует.
 
-When running `dg dev`, Dagster looks to the `pyproject.toml` file. This file contains all of the Python dependencies necessary to run Dagster as well as Dagster specific settings on where the `Definitions` object should be loaded.
+При запуске `dg dev` Dagster обращается к файлу `pyproject.toml`. В этом файле содержатся зависимости Python, необходимые для запуска Dagster, а также специфичные для Dagster настройки, указывающие, откуда загружать объект `Definitions`.
 
 ```yaml
 [tool.dg]
@@ -59,7 +59,7 @@ registry_modules = [
 ]
 ```
 
-In your project, open the `dagster_university/dagster_essentials/src/dagster_essentials/definitions.py` file. It should look like the following code:
+Открой в своём проекте файл `dagster_university/dagster_essentials/src/dagster_essentials/definitions.py`. Он должен выглядеть примерно так:
 
 ```python
 # src/dagster_essentials/definitions.py
@@ -73,4 +73,6 @@ def defs():
     return load_from_defs_folder(project_root=Path(__file__).parent.parent.parent)
 ```
 
-**Note** The `definitions.py` file is automatically generated when you scaffold a new Dagster project using [`uvx`](https://docs.dagster.io/getting-started/installation).
+**Примечание:** файл `definitions.py` автоматически генерируется при создании каркаса нового проекта Dagster с помощью [`uvx`](https://docs.dagster.io/getting-started/installation).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,19 +1,21 @@
 ---
-title: 'Lesson 6: Lesson recap'
+title: 'Урок 6: Итоги урока'
 module: 'dagster_essentials'
 lesson: '6'
 ---
 
-# Lesson recap
+# Итоги урока
 
-Dagster comes with many resources and integrations out of the box. However, an integration library is not required to use your tools within Dagster.
+Dagster предоставляет множество готовых ресурсов и интеграций. Однако для использования своих инструментов в Dagster библиотека интеграции не обязательна.
 
-You can pass any object or connection into your code location’s `Definitions` and add it as a resource. The only requirement is that you will need to add `ResourceParam[<ClassName>]` to your asset argument’s type hints for your asset function to understand that you’re referencing a resource.
+Можно передать произвольный объект или подключение в объект `Definitions` своего расположения кода и добавить его как ресурс. Для обычного объекта потребуется указать `ResourceParam[<ClassName>]` в аннотации типа аргумента функции актива, чтобы Dagster понимал, что имеется в виду ресурс.
 
-Check out the [Dagster Docs](https://docs.dagster.io/integrations) for more info about all of Dagster’s integrations.
+Подробнее обо всех интеграциях Dagster можно узнать в [документации Dagster](https://docs.dagster.io/integrations).
 
 {% callout %}
 
-> ‼️ Make sure you update your code to match the practice problem answer before continuing!
+> ‼️ Прежде чем продолжать, обязательно приведи свой код в соответствие с ответом на практическое задание!
 
 {% /callout %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

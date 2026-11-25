@@ -1,31 +1,33 @@
 ---
-title: "Lesson 9: What's a sensor?"
+title: 'Урок 9: Что такое сенсор?'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# What's a sensor?
+# Что такое сенсор?
 
-Sensors are a way to programmatically monitor a specific event and create runs based on it. Sensors continuously check and execute logic to know whether to kick off a run. By default, sensors in Dagster poll every 30 seconds. They are commonly used for situations where you want to materialize an asset after something else happens, such as:
+Сенсоры позволяют программно отслеживать определённое событие и инициировать запуски на его основе. Сенсоры регулярно выполняют проверку и логику, определяющую, нужно ли инициировать запуск. По умолчанию минимальный интервал проверки сенсоров в Dagster составляет 30 секунд. Они часто используются в ситуациях, когда требуется материализовать актив после какого-либо события, например:
 
-- A new file arrives in a specific location, such as Amazon S3
-- Another asset elsewhere has materialized
-- An external system has freed up a worker slot
+- В определённом месте, например Amazon S3, появляется новый файл.
+- Материализован другой актив.
+- Во внешней системе освободилось место для рабочего процесса.
 
 ---
 
-## In this lesson
+## В этом уроке
 
-In this lesson, we’ll assume a hypothetical scenario. Assume that the stakeholders for your taxi trip reports have been doing some ad hoc, exploratory analysis of how many trips happen in certain boroughs (ex. Manhattan or Brooklyn) throughout certain time ranges. They want to answer questions such as:
+Рассмотрим гипотетический сценарий. Допустим, заинтересованные в отчётах о поездках на такси специалисты проводят разовый исследовательский анализ количества поездок в разных районах города (например, Манхэттене или Бруклине) за определённые интервалы времени. Они хотят отвечать на вопросы вроде:
 
-> "How do the December holidays impact ridership during rush hour in Manhattan?"
+> «Как декабрьские праздники влияют на количество поездок в часы пик на Манхэттене?»
 
-They’ve been asking you similar questions, and it’s been taking up lots of your time and bandwidth. Therefore, you’d like to automate this process to enable self-service reporting for your stakeholders.
+Они регулярно задают похожие вопросы, и это отнимает много твоего времени и ресурсов. Поэтому ты хочешь автоматизировать процесс, предоставив им возможность самостоятельно получать отчёты.
 
-You’ve created a request intake form that generates a structured JSON with the request and inserts them into the `data/requests` directory of your Dagster project. Now, you’ll automate answering these ad hoc requests by having a sensor listen to new requests come in. When a new JSON file representing a request lands in the directory, the sensor is triggered and materializes the asset. When the sensor has already materialized a report for all updated files in the directory, the sensor doesn’t kick off any materializations.
+Ты создал форму приёма запросов, которая формирует структурированный JSON с запросом и помещает его в каталог `data/requests` проекта Dagster. Теперь автоматизируем ответы на разовые запросы: сенсор будет отслеживать поступление новых запросов. Когда в каталоге появляется новый JSON-файл, представляющий запрос, сенсор инициирует материализацию актива. Если сенсор уже материализовал отчёты для всех обновлённых файлов в каталоге, он не инициирует новых материализаций.
 
-To fulfill the requirements above, we’ll:
+Чтобы выполнить эти требования, мы:
 
-1. Write a way to customize the asset materialization per request
-2. Write a new asset that creates a report per request
-3. Add a sensor to listen to requests come in
+1. Напишем механизм настройки материализации актива для каждого запроса.
+2. Создадим новый актив, формирующий отчёт по каждому запросу.
+3. Добавим сенсор, отслеживающий поступление запросов.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 9: Updating the Definitions object'
+title: 'Урок 9: Обновление объекта Definitions'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# Updating the Definitions object
+# Обновление объекта Definitions
 
-Once again, sensors can be automatically loaded as part of the module in our `Definitions`. That means there is no changes that need to be made.
+Как и ранее, сенсоры могут автоматически загружаться как часть модуля в объект `Definitions`. Поэтому вносить дополнительные изменения не нужно.
 
-Congratulations on creating a sensor! We’ll discuss how to enable the sensor in a bit, but let’s start by going through the Dagster UI.
+Поздравляем с созданием сенсора! Чуть позже мы обсудим, как включить сенсор, но сначала посмотрим на интерфейс Dagster.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 9: Overview'
+title: 'Урок 9: Обзор'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# Overview
+# Обзор
 
-In Lesson 7, you wrote a schedule to run your pipelines every month. Using schedules is only one of the various ways to trigger asset materializations in Dagster.
+В уроке 7 ты написал расписание ежемесячного запуска пайплайнов. Расписания — лишь один из способов инициировать материализацию активов в Dagster.
 
-Event-driven runs are common in real life. When running our bakery, we may get deliveries of ingredients and need to move them into the kitchen. Just like in baking cookies, data pipelines may also need to be responsive and reactive to events. In Dagster, you can use **sensors** to automate your pipelines for these situations.
+Запуски по событиям часто встречаются в реальной жизни. Например, когда в пекарню доставляют ингредиенты, их нужно перенести на кухню. Как и при приготовлении печенья, пайплайнам данных может требоваться реагировать на события. В Dagster для автоматизации подобных сценариев можно использовать **сенсоры**.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

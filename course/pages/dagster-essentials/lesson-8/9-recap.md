@@ -1,9 +1,11 @@
 ---
-title: 'Lesson 8: Recap'
+title: 'Урок 8: Итоги'
 module: 'dagster_essentials'
 lesson: '8'
 ---
 
-# Recap
+# Итоги
 
-In this lesson, you partitioned your data by time. However, Dagster enables you to partition by any dimensions you have. You can partition with a static list of dimensions or by a dynamic list that you define the logic for.
+В этом уроке ты разделил данные на партиции по времени. Однако Dagster позволяет партиционировать данные по любым имеющимся измерениям. Можно использовать статический список значений или динамический список, логику формирования которого ты определяешь сам.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,20 +1,20 @@
 ---
-title: 'Lesson 7: Practice: Create a weekly_update_job'
+title: 'Урок 7: Практика: создание weekly_update_job'
 module: 'dagster_essentials'
 lesson: '7'
 ---
 
-# Practice: Create a weekly_update_job
+# Практика: создание weekly_update_job
 
-To practice what you’ve learned, add a job to `src/dagster_essentials/defs/jobs.py` that will materialize the `trips_by_week` asset.
+Чтобы закрепить изученное, добавь в `src/dagster_essentials/defs/jobs.py` задание, материализующее актив `trips_by_week`.
 
 ---
 
-## Check your work
+## Проверь свою работу
 
-The job you built should look similar to the following code. Click **View answer** to view it.
+Созданное задание должно выглядеть примерно как следующий код. Нажми **View answer**, чтобы посмотреть ответ.
 
-**If there are differences**, compare what you wrote to the job below and change them, as this job will be used as-is in future lessons.
+**Если есть различия**, сравни свой код с заданием ниже и внеси изменения: в следующих уроках это задание будет использоваться в таком виде.
 
 ```python {% obfuscated="true" %}
 # src/dagster_essentials/defs/jobs.py
@@ -27,3 +27,5 @@ weekly_update_job = dg.define_asset_job(
     selection=trips_by_week,
 )
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
