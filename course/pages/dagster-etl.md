@@ -31,13 +31,13 @@ title: Dagster ETL
   - [Запуск заданий API](/dagster-etl/lesson-4/5-triggering-api-jobs)
   - [Backfill данных из API](/dagster-etl/lesson-4/6-backfilling-from-apis)
 
-- Lesson 5: ETL with dlt
-  - [Overview](/dagster-etl/lesson-5/0-overview)
+- Урок 5: ETL с dlt
+  - [Обзор](/dagster-etl/lesson-5/0-overview)
   - [dlt](/dagster-etl/lesson-5/1-dlt)
-  - [Basic dlt](/dagster-etl/lesson-5/2-basic-dlt)
-  - [Dagster and dlt](/dagster-etl/lesson-5/3-Dagster-and-dlt)
-  - [Refactoring static data with dlt](/dagster-etl/lesson-5/4-refactoring-static-data-with-dlt)
-  - [Refactoring APIs with dlt](/dagster-etl/lesson-5/5-refactoring-apis-with-dlt)
+  - [Основы dlt](/dagster-etl/lesson-5/2-basic-dlt)
+  - [Dagster и dlt](/dagster-etl/lesson-5/3-Dagster-and-dlt)
+  - [Рефакторинг загрузки статических данных с dlt](/dagster-etl/lesson-5/4-refactoring-static-data-with-dlt)
+  - [Рефакторинг API с dlt](/dagster-etl/lesson-5/5-refactoring-apis-with-dlt)
 
 - Lesson 6: Database replication
   - [Overview](/dagster-etl/lesson-6/0-overview)
