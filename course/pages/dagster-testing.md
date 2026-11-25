@@ -2,16 +2,18 @@
 title: Testing with Dagster
 ---
 
-- Lesson 1: Introduction
-  - [About this course](/dagster-testing/lesson-1/0-about-this-course)
-  - [Project preview](/dagster-testing/lesson-1/1-project-preview)
-  - [Testing](/dagster-testing/lesson-1/2-testing)
-  - [Testing data applications](/dagster-testing/lesson-1/3-testing-data-applications)
+- Урок 1: Введение
+  - [О курсе и получении помощи](/dagster-testing/lesson-1/0-about-this-course)
+  - [Знакомство с проектом](/dagster-testing/lesson-1/1-project-preview)
+  - [Тестирование](/dagster-testing/lesson-1/2-testing)
+  - [Тестирование приложений обработки данных](/dagster-testing/lesson-1/3-testing-data-applications)
 
-- Lesson 2: Requirements & installation
-  - [Requirements](/installation/requirements)
-  - [Set up local](/installation/set-up-local)
-  - [Set up Codespace](/installation/set-up-codespace)
+  - [Философия тестирования](/dagster-testing/lesson-1/4-testing-philosophy)
+
+- Урок 2: Требования и установка
+  - [Требования](/installation/requirements)
+  - [Локальная настройка](/installation/set-up-local)
+  - [Настройка Codespace](/installation/set-up-codespace)
 
 - Lesson 3: Testing fundamentals
   - [Overview](/dagster-testing/lesson-3/0-overview)
@@ -44,5 +46,8 @@ title: Testing with Dagster
   - [Code locations](/dagster-testing/lesson-6/4-code-locations)
   - [Anti-patterns to avoid](/dagster-testing/lesson-6/5-anti-patterns)
 
-- Lesson 7: Dagster Skills
-  - [Dagster Skills](/shared/dagster-skills.md)
+- Урок 7: Dagster Skills
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
+
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

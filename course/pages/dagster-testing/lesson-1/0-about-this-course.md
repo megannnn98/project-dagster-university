@@ -1,39 +1,41 @@
 ---
-title: "Lesson 1: About this course & getting help"
+title: 'Урок 1: О курсе и получении помощи'
 module: 'dagster_testing'
 lesson: '1'
 ---
 
-# About this course
+# О курсе
 
-This course is designed for people responsible for building the data platform or data pipelines for their organization who want to learn about testing best practices.
+Этот курс предназначен для тех, кто отвечает за создание платформы данных или пайплайнов данных своей организации и хочет освоить лучшие практики тестирования.
 
-In this course, you'll learn the importance of testing in data applications with Dagster. We will work through many common situations in Dagster and explain how to craft tests so you can feel confident making changes and pushing out code.
+В этом курсе ты узнаешь о важности тестирования приложений обработки данных с Dagster. Мы разберём множество типичных ситуаций в Dagster и объясним, как писать тесты, чтобы уверенно вносить изменения и выпускать код.
 
-By the end of the course, you will:
+К концу курса ты будешь:
 
-- Know how to test your Dagster assets
-- Understand mocking external dependencies
-- Manage integration testing
-- Recognize best practices for testing in Dagster
-
----
-
-## Required experience
-
-To successfully complete this course, you'll need:
-
-- **Dagster familiarity** -  You'll need to know the basics of Dagster to complete this course. **If you've never used Dagster before or want a refresher before getting started**, check out the [Dagster Essentials course](https://courses.dagster.io/courses/dagster-essentials).
-
-**Python knowledge** - While you don’t need to be a Python expert to get started, you do need some Python familiarity to complete this course and use Dagster. Here are the Python concepts you'll use: 
-
-   - [Functions](https://realpython.com/defining-your-own-python-function/)
-   - [Packages and modules](https://dagster.io/blog/python-packages-primer-1)
-   - [Decorators](https://realpython.com/primer-on-python-decorators/)
-   - [Type hints](https://dagster.io/blog/python-type-hinting).
+- Знать, как тестировать ассеты Dagster.
+- Понимать, как подменять внешние зависимости с помощью mock-объектов.
+- Уметь организовывать интеграционное тестирование.
+- Знать лучшие практики тестирования в Dagster.
 
 ---
 
-## Getting help
+## Необходимый опыт
 
-If you'd like some assistance while working through this course, reach out to the Dagster community on [Slack](https://dagster.io/slack) in the `#dagster-university` channel. **Note**: The Dagster team is generally available during US business hours.
+Для успешного прохождения курса тебе понадобится:
+
+- **Знание Dagster** — необходимо знать основы Dagster. **Если ты никогда не использовал Dagster или хочешь освежить знания**, пройди [курс Dagster Essentials](https://courses.dagster.io/courses/dagster-essentials).
+
+**Знание Python** — не нужно быть экспертом в Python, однако для прохождения курса и работы с Dagster необходимы базовые знания языка. Вот понятия Python, которые тебе понадобятся:
+
+   - [Функции](https://realpython.com/defining-your-own-python-function/)
+   - [Пакеты и модули](https://dagster.io/blog/python-packages-primer-1)
+   - [Декораторы](https://realpython.com/primer-on-python-decorators/)
+   - [Аннотации типов](https://dagster.io/blog/python-type-hinting).
+
+---
+
+## Получение помощи
+
+Если нужна помощь при прохождении курса, обратись к сообществу Dagster в [Slack](https://dagster.io/slack), в канале `#dagster-university`. **Примечание:** команда Dagster обычно доступна в рабочие часы США.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
