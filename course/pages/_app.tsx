@@ -13,8 +13,8 @@ import '../styles/prism.css';
 import type {AppProps} from 'next/app';
 import type {MarkdocNextJsPageProps} from '@markdoc/next.js';
 
-const TITLE = 'Markdoc';
-const DESCRIPTION = 'A powerful, flexible, Markdown-based authoring framework';
+const TITLE = 'Dagster University — русский перевод';
+const DESCRIPTION = 'Учебные материалы Dagster University на русском языке';
 
 function collectHeadings(node, sections = []) {
   if (node) {
