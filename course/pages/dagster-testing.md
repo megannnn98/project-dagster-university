@@ -23,12 +23,12 @@ title: Testing with Dagster
   - [Тестирование типов выходных данных ассетов](/dagster-testing/lesson-3/4-testing-asset-output-types)
   - [Тестирование ассетов с контекстом выполнения](/dagster-testing/lesson-3/5-testing-assets-with-execution-context)
 
-- Lesson 4: Mocking
-  - [Overview](/dagster-testing/lesson-4/0-overview)
-  - [Testing with mocks](/dagster-testing/lesson-4/1-testing-with-mocks)
-  - [Testing with resources](/dagster-testing/lesson-4/2-testing-with-resources)
-  - [Materializing resource tests](/dagster-testing/lesson-4/3-materializing-resource-tests)
-  - [Mocking resources for testing](/dagster-testing/lesson-4/4-mocking-resources-for-testing)
+- Урок 4: Подмена зависимостей (mocking)
+  - [Обзор](/dagster-testing/lesson-4/0-overview)
+  - [Тестирование с mock-объектами](/dagster-testing/lesson-4/1-testing-with-mocks)
+  - [Тестирование с ресурсами](/dagster-testing/lesson-4/2-testing-with-resources)
+  - [Тестирование материализации с ресурсами](/dagster-testing/lesson-4/3-materializing-resource-tests)
+  - [Подмена ресурсов при тестировании](/dagster-testing/lesson-4/4-mocking-resources-for-testing)
 
 - Lesson 5: Integration
   - [Overview](/dagster-testing/lesson-5/0-overview)

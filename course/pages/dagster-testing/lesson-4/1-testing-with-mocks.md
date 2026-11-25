@@ -1,16 +1,16 @@
 ---
-title: 'Lesson 4: Testing with mocks'
+title: 'Урок 4: Тестирование с mock-объектами'
 module: 'dagster_testing'
 lesson: '4'
 ---
 
-# Testing with mocks
+# Тестирование с mock-объектами
 
-So far none of the assets we created connect to other services. This is often not the case when building out a true data platform. Even the platform for a small organization will use dozens of external systems.
+До сих пор ни один из созданных ассетов не подключался к другим сервисам. При построении настоящей платформы данных это редко бывает так. Даже платформа небольшой организации использует десятки внешних систем.
 
-In lesson 2 our pipeline brought in city population data from a CSV stored locally. What would it look like instead we queried an API to get city data?
+В уроке 2 наш пайплайн загружал данные о населении городов из локального CSV. Как бы он выглядел, если бы вместо этого мы запрашивали данные о городах через API?
 
-Imagine that an API exists to query city populations by state (sadly this API does not exist in real life but it will not matter for our testing purposes). Let's say the API endpoint exists at `fake.com` and a sample request for a specific state would look like.
+Представим, что существует API для получения численности населения городов по штатам (к сожалению, в действительности такого API нет, но для тестирования это неважно). Допустим, конечная точка API находится на `fake.com`, а пример запроса для конкретного штата выглядит так:
 
 ```bash
 > curl -X GET "https://fake.com/population.json?state=ny" -H "Accept: application/json"
@@ -27,7 +27,7 @@ Imagine that an API exists to query city populations by state (sadly this API do
 }
 ```
 
-We want to rewrite the `state_population_file` asset to use this endpoint instead of reading a file to retrieve the necessary data. This is what the new asset will look like.
+Перепишем ассет `state_population_file`, чтобы вместо чтения файла он использовал эту конечную точку для получения необходимых данных. Вот как будет выглядеть новый ассет:
 
 ```python
 # src/dagster_testing/defs/assets/lesson_4.py
@@ -55,31 +55,31 @@ def state_population_api() -> list[dict]:
         return output
 ```
 
-The code above:
+Приведённый код:
 
-1. Queries the imaginary API for the state "ny".
-2. Extracts the JSON from the API response.
-3. Parses the JSON and extract the "name" and "population" for each city.
-4. Returns the data as a list of dictionaries.
+1. Запрашивает у воображаемого API данные штата "ny".
+2. Извлекает JSON из ответа API.
+3. Разбирает JSON и извлекает поля "name" и "population" для каждого города.
+4. Возвращает данные в виде списка словарей.
 
-This all makes sense but how will we test this asset? Especially considering this API does not even exist.
+Всё понятно, но как тестировать этот ассет, особенно учитывая, что API даже не существует?
 
-## Mocks
+## Mock-объекты
 
-When writing tests we do not want to always connect to the external system being used. Either due to cost, time, security or any number of other factors, it is usually best to keep external dependencies separate from our unit tests which are intended to be fast and predictable checks on our code.
+При написании тестов не всегда нужно подключаться к используемой внешней системе. Из соображений стоимости, времени, безопасности и по многим другим причинам обычно лучше изолировать внешние зависимости от модульных тестов, которые должны быстро и предсказуемо проверять код.
 
 {% callout %}
-> 💡 You can use tests that connect to live systems and we will discuss them in the next lesson.
+> 💡 Можно использовать тесты, подключающиеся к реальным системам. Мы обсудим их в следующем уроке.
 {% /callout %}
 
-To help ensure the isolation of our Python code we can use mocks with `unittest.mock`. Mocks allow us to replace dependencies with controlled responses. When using mocks you should think about:
+Чтобы обеспечить изоляцию кода Python, можно использовать mock-объекты из `unittest.mock`. Они позволяют заменять зависимости контролируемыми ответами. При использовании mock-объектов подумай:
 
-1. What service you are trying to emulate.
-2. How the emulated service should function in order to satisfy the test.
+1. Какой сервис нужно имитировать.
+2. Как имитируемый сервис должен работать, чтобы удовлетворить требованиям теста.
 
-We can start by thinking about the service we need to replace. In this case it is the API `fake.com`. We access the API through the Python `requests` library. So we will need to emulate that in our test.
+Начнём с сервиса, который нужно заменить. В данном случае это API `fake.com`. Мы обращаемся к API через библиотеку Python `requests`, поэтому в тесте необходимо имитировать её работу.
 
-Next we can think about what is returned by that API call. We know the structure of the JSON so we can create a `pytest.fixture` with a sample of what the data may look like.
+Далее рассмотрим, что возвращает вызов API. Мы знаем структуру JSON, поэтому можно создать `pytest.fixture` с примером данных:
 
 ```python
 # tests/test_lesson_4.py
@@ -99,7 +99,7 @@ def example_response():
 }
 ```
 
-Now we need to set the `get` function in `requests` to return our example response.  We will use [Mock](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock) to set this behavior:
+Теперь нужно настроить функцию `get` в `requests`, чтобы она возвращала наш пример ответа. Воспользуемся [Mock](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock) для задания такого поведения:
 
 ```python
 mock_response = Mock()
@@ -107,7 +107,7 @@ mock_response.json.return_value = example_response
 mock_response.raise_for_status.return_value = None
 ```
 
-This creates a mock and sets the return value for `json()` to our example response. We can now move this piece of code into a test. We will decorate the test function with `@patch` which will temporarily replace the object being patched. In this case `requests.get` will be patched.
+Этот код создаёт mock-объект и задаёт для `json()` возвращаемое значение с примером ответа. Теперь можно перенести этот фрагмент в тест. Добавим к тестовой функции декоратор `@patch`, который временно заменяет указанный объект. В данном случае будет подменена функция `requests.get`.
 
 ```python
 # tests/test_lesson_4.py
@@ -128,17 +128,17 @@ def test_state_population_api(mock_get, example_response):
     mock_get.assert_called_once_with(lesson_4.API_URL, params={"state": "ny"})
 ```
 
-The code above:
+Приведённый код:
 
-1. Temporarily replaced `requests.get`.
-2. Uses the patched object as in input parameter along with the fixture `example_response`.
-3. Creates a `Mock()` and sets the return value for `json()` to `example_response`.
-4. Sets the return value for the patched object `mock_get` to the mocked response.
-5. Executes the asset.
-6. Uses `assert` to ensure the output of the asset matches what we expect from the mock.
-7. Ensures that the mock was successfully called with the correct URL and parameters.
+1. Временно заменяет `requests.get`.
+2. Использует подменённый объект как входной параметр вместе с фикстурой `example_response`.
+3. Создаёт `Mock()` и задаёт возвращаемое значение `json()` равным `example_response`.
+4. Задаёт для подменённого объекта `mock_get` возвращаемое значение с имитируемым ответом.
+5. Выполняет ассет.
+6. С помощью `assert` проверяет соответствие результата ассета ожиданиям.
+7. Проверяет, что mock-объект был вызван с правильным URL и параметрами.
 
-We can still use pytest to run the test.
+Тест по-прежнему можно запускать с помощью pytest.
 
 ```bash
 > pytest tests/test_lesson_4.py::test_state_population_api
@@ -146,4 +146,6 @@ We can still use pytest to run the test.
 tests/test_lesson_4.py .                                                          [100%]
 ```
 
-The test completely bypasses the API and returns our mocked data.
+Тест полностью обходит API и возвращает наши тестовые данные.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

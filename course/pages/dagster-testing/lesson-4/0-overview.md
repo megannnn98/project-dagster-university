@@ -1,11 +1,13 @@
 ---
-title: 'Lesson 4: Overview'
+title: 'Урок 4: Обзор'
 module: 'dagster_testing'
 lesson: '4'
 ---
 
-# Overview
+# Обзор
 
-As your data platform scales, it will interact with more and more systems. Writing tests for external systems can present a problem for testing as you now have to rely on components outside of your application.
+По мере масштабирования твоя платформа данных будет взаимодействовать со всё большим количеством систем. Написание тестов для внешних систем может быть проблематичным, поскольку теперь приходится зависеть от компонентов за пределами приложения.
 
-In this lesson we will discuss how to write tests when you need work with other services. Specifically how to emulate the function of those systems for the testing.
+В этом уроке мы обсудим, как писать тесты при работе с другими сервисами, в частности как имитировать работу этих систем при тестировании.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
