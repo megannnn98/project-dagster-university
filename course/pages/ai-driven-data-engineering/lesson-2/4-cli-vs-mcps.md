@@ -1,34 +1,36 @@
 ---
-title: "Lesson 2: CLI vs MCPs"
+title: 'Урок 2: CLI и MCP'
 module: 'ai_driven_data_engineering'
 lesson: '2'
 ---
 
-# CLI vs MCPs
+# CLI и MCP
 
-Like many others, we experimented with an MCP (Model Context Protocol) server when it looked like MCP might become the primary interface for AI assistants. MCPs can serve a purpose (exposing tools and context to the model in a structured way), but we've found that CLIs often work better than MCPs for the kind of workflows we care about.
+Как и многие другие команды, мы экспериментировали с MCP-сервером (Model Context Protocol), когда казалось, что MCP станет основным интерфейсом ИИ-ассистентов. MCP полезен для предоставления модели инструментов и контекста в структурированном виде, однако мы обнаружили, что CLI часто лучше подходит для интересующих нас рабочих процессов.
 
-![Generic prompt to the agent](/images/ai-driven-data-engineering/lesson-2/prompt-agent.png)
+![Общий промпт агенту](/images/ai-driven-data-engineering/lesson-2/prompt-agent.png)
 
-## Why we favor a quality CLI
+## Почему мы предпочитаем качественный CLI
 
-CLIs give you high quality with less surface area. LLMs tend to go off the rails when they're given too much context or too many overlapping tools. A well-designed CLI:
+CLI обеспечивает высокое качество при меньшем количестве интерфейсов. LLM могут терять направление при избытке контекста или пересекающихся инструментов. Хорошо спроектированный CLI:
 
-- Narrows the action space: the agent chooses from a small set of commands (`dg scaffold`, `dg check`, `dg list`, `dg launch`) instead of reasoning over arbitrary file edits and API calls.
-- Encodes best practices: scaffolding and validation are implemented once in the CLI, so the agent doesn't have to "know" our project layout or validation rules from long docs.
-- Is easy to validate: exit codes and stdout are simple to parse and assert on, in both human and automated evaluation.
-- Reduces context and token usage: a CLI doesn't require the model to load large schemas, API docs, or tool descriptions. The agent gets a compact set of commands and short help; responses are typically small (exit code + stdout). That means less context in the prompt and far fewer tokens per interaction than a broad MCP tool set with rich payloads and documentation.
+- Сужает пространство действий: агент выбирает из небольшого набора команд (`dg scaffold`, `dg check`, `dg list`, `dg launch`), вместо рассуждений о произвольных изменениях файлов и вызовах API.
+- Закрепляет лучшие практики: создание структуры и валидация реализованы в CLI один раз, поэтому агенту не нужно узнавать структуру проекта и правила проверки из длинной документации.
+- Удобен для проверки: коды завершения и stdout легко разбирать и проверять как вручную, так и автоматически.
+- Сокращает контекст и расход токенов: CLI не требует загружать в модель большие схемы, документацию API или описания инструментов. Агент получает компактный набор команд и короткую справку; ответы обычно невелики (код завершения и stdout). Это означает меньше контекста в промпте и меньше токенов на взаимодействие, чем при использовании обширного набора MCP-инструментов с богатыми ответами и документацией.
 
-You'll see this pattern directly later. The skill-less agent has to reason over open-ended questions (which layout, which package manager, whether to validate), drawing on broad context. The skill-driven agent calls `dg scaffold` and validates with `dg check defs`, before attempting to execute code.
+Позже ты увидишь этот шаблон на практике. Агент без скилла должен рассуждать над открытыми вопросами: какую структуру выбрать, какой менеджер пакетов использовать и выполнять ли валидацию, опираясь на обширный контекст. Агент со скиллом вызывает `dg scaffold` и проверяет определения через `dg check defs`, прежде чем пытаться выполнить код.
 
-Each command returns a small, structured response. That's the CLI efficiency in practice: not a theoretical claim but a visible pattern in the agent's behavior.
+Каждая команда возвращает небольшой структурированный ответ. Это эффективность CLI на практике — не теоретическое утверждение, а наблюдаемый шаблон поведения агента.
 
-So we invest in making `dg` a solid, opinionated CLI and have our skills teach the agent when and how to use it, rather than relying on a large MCP surface that could overload the model.
+Поэтому мы развиваем надёжный CLI `dg` с заложенными рекомендациями и обучаем агента с помощью скиллов, когда и как его использовать, вместо создания большого набора MCP-инструментов, способного перегрузить модель.
 
-![Prompt with the dg](/images/ai-driven-data-engineering/lesson-2/prompt-agent-dg.png)
+![Промпт с dg](/images/ai-driven-data-engineering/lesson-2/prompt-agent-dg.png)
 
-## When MCPs still help
+## Когда MCP по-прежнему полезен
 
-MCPs can still be useful for things like exposing a running Dagster instance's state or serving dynamic context. For the core loop of "scaffold → edit → check → list → launch," we've found that a good CLI + skills that reference it keeps behavior more reliable and easier to evaluate than a big MCP tool set.
+MCP может быть полезен для предоставления сведений о состоянии запущенного экземпляра Dagster или динамического контекста. Для основного цикла «создание заготовки → редактирование → проверка → перечисление → запуск» мы обнаружили, что качественный CLI и скиллы, ссылающиеся на него, дают более надёжное и удобное для оценки поведение, чем большой набор MCP-инструментов.
 
-In short: we use a quality CLI as the main interface for agents working with Dagster projects, and use skills to guide the agent to that CLI instead of to a broad, high-context MCP surface.
+Иными словами, мы используем качественный CLI как основной интерфейс агентов, работающих с проектами Dagster, а скиллы направляют агента к этому CLI вместо обширного MCP-интерфейса, требующего много контекста.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -2,18 +2,18 @@
 title: AI-Driven Data Engineering
 ---
 
-- Lesson 1: Introduction
-  - [About this course](/ai-driven-data-engineering/lesson-1/0-about-this-course)
-  - [AI-Driven vs. AI Pipelines](/ai-driven-data-engineering/lesson-1/1-ai-driven-vs-ai-pipelines)
-  - [Project preview](/ai-driven-data-engineering/lesson-1/2-project-preview)
+- Урок 1: Введение
+  - [О курсе](/ai-driven-data-engineering/lesson-1/0-about-this-course)
+  - [Разработка с ИИ и ИИ-пайплайны](/ai-driven-data-engineering/lesson-1/1-ai-driven-vs-ai-pipelines)
+  - [Знакомство с проектом](/ai-driven-data-engineering/lesson-1/2-project-preview)
 
-- Lesson 2: AI tools and Dagster skills
-  - [Overview](/ai-driven-data-engineering/lesson-2/0-overview)
-  - [Create a new project (without the skill)](/ai-driven-data-engineering/lesson-2/1-create-project-without-skill)
-  - [What is an MCP server?](/ai-driven-data-engineering/lesson-2/2-what-is-an-mcp-server)
-  - [The dg CLI](/ai-driven-data-engineering/lesson-2/3-dg-cli)
-  - [CLI vs MCPs](/ai-driven-data-engineering/lesson-2/4-cli-vs-mcps)
-  - [How a skill works](/ai-driven-data-engineering/lesson-2/5-how-a-skill-works)
+- Урок 2: ИИ-инструменты и скиллы Dagster
+  - [Обзор](/ai-driven-data-engineering/lesson-2/0-overview)
+  - [Создание проекта без скилла](/ai-driven-data-engineering/lesson-2/1-create-project-without-skill)
+  - [Что такое MCP-сервер?](/ai-driven-data-engineering/lesson-2/2-what-is-an-mcp-server)
+  - [CLI Dagster](/ai-driven-data-engineering/lesson-2/3-dg-cli)
+  - [CLI и MCP](/ai-driven-data-engineering/lesson-2/4-cli-vs-mcps)
+  - [Как работает скилл](/ai-driven-data-engineering/lesson-2/5-how-a-skill-works)
   - [Dagster Skills](/ai-driven-data-engineering/lesson-2/6-dagster-skills)
 
 - Lesson 3: Project setup

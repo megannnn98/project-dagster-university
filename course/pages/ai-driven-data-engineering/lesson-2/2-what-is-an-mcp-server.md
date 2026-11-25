@@ -1,27 +1,29 @@
 ---
-title: "Lesson 2: What is an MCP server?"
+title: 'Урок 2: Что такое MCP-сервер?'
 module: 'ai_driven_data_engineering'
 lesson: '2'
 ---
 
-# What is an MCP server?
+# Что такое MCP-сервер?
 
-One way to give AI assistants richer context is through MCP. MCP stands for Model Context Protocol—an open protocol that allows AI assistants (e.g., Claude, Cursor) to communicate with external tools and data sources through a standard interface.
+Один из способов предоставить ИИ-ассистентам более богатый контекст — использовать MCP. MCP расшифровывается как Model Context Protocol — открытый протокол, позволяющий ИИ-ассистентам (например, Claude, Cursor) взаимодействовать с внешними инструментами и источниками данных через стандартный интерфейс.
 
-## What an MCP server does
+## Что делает MCP-сервер
 
-An MCP server provides structured context and capabilities to an AI agent. It typically exposes:
+MCP-сервер предоставляет ИИ-агенту структурированный контекст и возможности. Обычно он предоставляет:
 
-- **Tools**: Actions the model can invoke (e.g., “run this query” or “fetch that resource”). Each tool has a name, description, and parameters. The server executes the action and returns the result.
-- **Resources**: Data the model can read (e.g., file contents, API responses, database schemas).
-- **Prompts**: Predefined prompt templates the client can call.
+- **Инструменты (tools):** действия, которые модель может вызвать (например, «выполни запрос» или «получи ресурс»). У каждого инструмента есть имя, описание и параметры. Сервер выполняет действие и возвращает результат.
+- **Ресурсы (resources):** данные, которые модель может прочитать (например, содержимое файлов, ответы API, схемы баз данных).
+- **Промпты (prompts):** заранее определённые шаблоны промптов, которые может запросить клиент.
 
-An AI agent—whether it’s an IDE, chatbot, or agent framework—connects to one or more MCP servers. When you ask it to perform a task, it can call tools and read resources from those servers instead of relying solely on the text in the chat.
+ИИ-агент — среда разработки, чат-бот или агентный фреймворк — подключается к одному или нескольким MCP-серверам. Когда ты просишь выполнить задачу, он может вызывать инструменты и читать ресурсы этих серверов вместо того, чтобы полагаться исключительно на текст чата.
 
-## Why MCP got attention
+## Почему MCP привлёк внимание
 
-MCP was proposed as a universal way for AI assistants to plug into your stack—databases, APIs, internal tools, and documentation. In principle, a single “Dagster” MCP server could provide consistent tools and context to any MCP-compatible client.
+MCP предложили как универсальный способ подключения ИИ-ассистентов к твоему технологическому стеку: базам данных, API, внутренним инструментам и документации. В принципе, один MCP-сервер Dagster мог бы предоставлять согласованные инструменты и контекст любому совместимому с MCP клиенту.
 
-That promise of interoperability is why many teams, including ours, experimented with MCP servers early on.
+Именно эта возможность совместимости побудила многие команды, включая нашу, начать экспериментировать с MCP-серверами.
 
-In the next section, we’ll cover the `dg` and the other Dagster CLIs. After that, we’ll explain why we’ve leaned toward a CLI rather than an MCP server for our core AI-driven workflows—and where MCP can still be useful.
+В следующем разделе рассмотрим `dg` и другие CLI Dagster. Затем объясним, почему для основных рабочих процессов разработки с ИИ предпочли CLI вместо MCP-сервера и в каких случаях MCP по-прежнему полезен.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,36 +1,36 @@
 ---
-title: "Lesson 2: Create a new project (without the skill)"
+title: 'Урок 2: Создание проекта без скилла'
 module: 'ai_driven_data_engineering'
 lesson: '2'
 ---
 
-# Create a new project (without the skill)
+# Создание проекта без скилла
 
-First we’ll create a Dagster project without using any additional skills or context. This gives you a baseline: what a capable agent does when it has no Dagster-specific guidance.
+Сначала создадим проект Dagster без дополнительных скиллов и контекста. Это даст базовый результат для сравнения: что делает способный агент без специальных рекомендаций по Dagster.
 
-## Scaffold the project
+## Создание структуры проекта
 
-This section uses the same project name (`university`) as Lesson 4. If you follow along here, delete the folder before starting Lesson 4 so there's no conflict.
+В этом разделе используется то же имя проекта (`university`), что и в уроке 4. Если выполняешь упражнение, перед началом урока 4 удали этот учебный каталог (или перенеси его в другое место), чтобы избежать конфликта.
 
-Use a generic prompt such as:
+Используй общий промпт, например:
 
 ```text
 create a new Dagster project called university
 ```
 
-![Without 1](/images/ai-driven-data-engineering/lesson-2/without-1.png)
+![Без скилла: первый запрос](/images/ai-driven-data-engineering/lesson-2/without-1.png)
 
-The agent will look up how to create a Dagster project and might run something like:
+Агент выяснит, как создать проект Dagster, и может выполнить что-то подобное:
 
 ```bash
 dagster project scaffold --name university
 ```
 
-That uses the older `dagster project scaffold` CLI, which produces a flat layout (e.g. `university/university/` with `__init__.py`, `assets.py`, `definitions.py`).
+Здесь используется устаревшая команда CLI `dagster project scaffold`, создающая плоскую структуру (например, `university/university/` с файлами `__init__.py`, `assets.py` и `definitions.py`).
 
-## Generate assets
+## Генерация ассетов
 
-Next, ask the agent to add assets that load data into DuckDB from external CSV URLs:
+Далее попроси агента добавить ассеты, загружающие данные в DuckDB из внешних CSV по URL:
 
 ```text
 create 3 assets in the university Dagster project that load data into DuckDB tables for the following external files:
@@ -40,11 +40,11 @@ https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/s
 https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_payments.csv
 ```
 
-The agent will add code (often in `assets.py` or similar) and may or may not use `dagster-duckdb` or correct project layout. You get a working pipeline, but structure and tooling are whatever the model infers.
+Агент добавит код (часто в `assets.py` или аналогичный файл) и может использовать или не использовать `dagster-duckdb` и правильную структуру проекта. Ты получишь работающий пайплайн, но структура и инструменты будут зависеть от предположений модели.
 
-## What you get
+## Результат
 
-After scaffolding and adding assets, the project might look like:
+После создания структуры проекта и добавления ассетов он может выглядеть так:
 
 ```text
 tree university/university
@@ -55,6 +55,8 @@ university/university
 └── definitions.py
 ```
 
-When relying on a coding agent without providing it with additional skills or specific context, the agent often resorts to general patterns it has seen before, rather than the best or most idiomatic practices for a given tool. This limitation isn't unique to Dagster—agents tend to produce better, more robust solutions when given guidance tailored to the technology or task at hand. Without those extra hints, the agent’s work is functional, but usually not as deep, maintainable, or aligned with expert usage.
+Когда агенту программирования не предоставляют дополнительных скиллов или специфического контекста, он часто использует общие шаблоны, с которыми уже сталкивался, а не лучшие или наиболее идиоматичные практики конкретного инструмента. Это ограничение характерно не только для Dagster: агенты обычно создают более качественные и надёжные решения, когда получают рекомендации, адаптированные к технологии или задаче. Без дополнительных подсказок результат может быть функциональным, но обычно менее продуманным, удобным в сопровождении и соответствующим экспертным практикам.
 
-![Project layout without the skill](/images/ai-driven-data-engineering/lesson-2/project-without-skills.png)
+![Структура проекта без скиллов](/images/ai-driven-data-engineering/lesson-2/project-without-skills.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

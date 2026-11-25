@@ -1,22 +1,24 @@
 ---
-title: "Lesson 2: Dagster Skills"
+title: 'Урок 2: Dagster Skills'
 module: 'ai_driven_data_engineering'
 lesson: '2'
 ---
 
 # Dagster Skills
 
-We maintain a collection of AI skills that give coding agents the right context and patterns for building with Dagster. We'll go into each skill in more detail later in the course; here is the overview.
+Мы поддерживаем набор ИИ-скиллов, предоставляющих агентам программирования необходимый контекст и шаблоны для разработки с Dagster. Каждый скилл будет подробнее рассмотрен позднее; здесь познакомимся с ними в общих чертах.
 
-## What are AI skills?
+## Что такое ИИ-скиллы?
 
-AI skills started as an [Anthropic concept](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) for giving Claude structured, task-relevant guidance. The idea has since been adopted by other coding agents (e.g. Cursor, Windsurf, Codex) via formats like [Agent Skills](https://agentskills.io/home). A skill is essentially a bundle of instructions and references that tell the agent *when* to use *what* context so it stays on task and follows your preferred patterns.
+ИИ-скиллы возникли как [концепция Anthropic](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) предоставления Claude структурированных рекомендаций, соответствующих задаче. Впоследствии идею переняли другие агенты программирования (например, Cursor, Windsurf, Codex) через форматы вроде [Agent Skills](https://agentskills.io/home). По сути, скилл — набор инструкций и ссылочных материалов, сообщающих агенту, *когда* использовать *какой* контекст, чтобы он не отклонялся от задачи и следовал предпочитаемым шаблонам.
 
-## The Dagster skills we maintain
+## Скиллы Dagster, которые мы поддерживаем
 
-We currently maintain several skills in the [Dagster Skills repository](https://github.com/dagster-io/skills):
+Сейчас мы поддерживаем несколько скиллов в [репозитории Dagster Skills](https://github.com/dagster-io/skills):
 
-- `dagster-expert`: expert guidance for building production-quality Dagster projects. It covers CLI usage (especially `dg`), asset patterns, automation strategies (schedules, sensors, declarative automation), and implementation workflows. This skill is the main one for "how to build and structure a Dagster project" and uses the CLI heavily for scaffolding and validation.
-- `dignified-python`: production-quality Python coding standards for modern Python. Use it for general Python quality (types, exceptions, API design, etc.), not for Dagster-specific patterns. It's the same standard we use internally when writing Python.
+- `dagster-expert`: экспертные рекомендации по созданию проектов Dagster производственного качества. Охватывает использование CLI (особенно `dg`), шаблоны ассетов, стратегии автоматизации (расписания, сенсоры, декларативную автоматизацию) и рабочие процессы реализации. Это основной скилл для создания и организации проекта Dagster, активно использующий CLI для генерации структуры и валидации.
+- `dignified-python`: стандарты написания качественного современного кода Python для production. Используй для общего качества Python-кода (типы, исключения, проектирование API и т. д.), а не специфичных для Dagster шаблонов. Это тот же стандарт, которым мы пользуемся внутри команды при написании Python.
 
-The industry is still in the early stages of developing and structuring skills. Some prefer to make skills very specific and you will see projects that have dozens of skills on a single topic. We have found benefits in building around a single skill (`dagster-expert`) which contains all the information for working with Dagster. Our `dignified-python` skill (which we will discuss later in the course) is broken out because it is non-Dagster-specific. But we will cover when it is useful to use this skill when working with Dagster.
+Индустрия всё ещё находится на ранних этапах разработки и организации скиллов. Некоторые предпочитают узкоспециализированные скиллы, и существуют проекты с десятками скиллов по одной теме. Мы обнаружили преимущества подхода с единым скиллом (`dagster-expert`), содержащим всю информацию для работы с Dagster. Скилл `dignified-python`, который мы рассмотрим позднее, выделен отдельно, поскольку не зависит от Dagster. Мы также разберём, когда его полезно применять при работе с Dagster.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,39 +1,39 @@
 ---
-title: "Lesson 1: AI-Driven vs. AI Pipelines"
+title: 'Урок 1: Разработка с ИИ и ИИ-пайплайны'
 module: 'ai_driven_data_engineering'
 lesson: '1'
 ---
 
-# AI-Driven vs. AI Pipelines
+# Разработка с ИИ и ИИ-пайплайны
 
-It's important to distinguish between two different ways "AI" and "data" come together: **AI pipelines** and **AI-driven development**. This course focuses on the latter.
+Важно различать два способа объединения ИИ и данных: **ИИ-пайплайны** и **разработку с помощью ИИ**. Этот курс посвящён второму подходу.
 
-## AI Pipelines
+## ИИ-пайплайны
 
-AI pipelines are workflows that support AI infrastructure and applications. Examples include:
+ИИ-пайплайны — рабочие процессы, обеспечивающие функционирование инфраструктуры и приложений ИИ. Например:
 
-- RAG (Retrieval-Augmented Generation) pipelines that ingest documents, build embeddings, and serve them to LLMs
-- Model training and deployment pipelines that prepare data, train models, and ship them to production
-- Feature stores and data pipelines that feed ML models
+- RAG-пайплайны (Retrieval-Augmented Generation), которые загружают документы, создают эмбеддинги и предоставляют их большим языковым моделям (LLM).
+- Пайплайны обучения и развёртывания моделей, которые подготавливают данные, обучают модели и развёртывают их в production.
+- Хранилища признаков (feature stores) и пайплайны данных, снабжающие модели машинного обучения.
 
-Dagster fully supports these workflows. You can orchestrate RAG, training jobs, and other AI/ML pipelines with assets, schedules, and resources. If you're building that kind of system, Dagster is a great fit but that's not what this course is about.
+Dagster полностью поддерживает такие рабочие процессы. Можно оркестрировать RAG, задания обучения и другие ИИ/ML-пайплайны с помощью ассетов, расписаний и ресурсов. Dagster хорошо подходит для создания подобных систем, но этот курс посвящён другой теме.
 
-## AI-Driven Development
+## Разработка с помощью ИИ
 
-AI-driven (data) engineering is about using AI to *build* your data platform and Dagster applications faster, more safely, and in line with best practices.
+Инженерия данных с помощью ИИ — это использование ИИ для *создания* платформы данных и приложений Dagster быстрее, безопаснее и в соответствии с лучшими практиками.
 
-In this model, AI assists you as a developer: it can help you write assets, define dependencies, set up resources, and debug runs. The goal is to use AI so you can develop Dagster code more quickly, easily, and safely, without having to look up every API or pattern by hand.
+В этом подходе ИИ помогает тебе как разработчику: писать ассеты, определять зависимости, настраивать ресурсы и отлаживать запуски. Цель — разрабатывать код Dagster быстрее, проще и безопаснее, не разыскивая вручную каждый API или шаблон.
 
-## Why this course focuses on AI-driven workflows
+## Почему этот курс посвящён рабочим процессам с ИИ
 
-This course is focused on **AI-driven workflows**: how you use AI tools to develop and operate Dagster applications. We'll cover the AI tooling Dagster provides and the patterns that help you write better code and get to production sooner. If you're interested in building AI/ML pipelines inside Dagster, you can combine those with what you learn here, but here we're optimizing for how you build with Dagster, not for building RAG or model pipelines themselves.
+Курс посвящён **рабочим процессам разработки с ИИ**: использованию ИИ-инструментов для создания и эксплуатации приложений Dagster. Мы рассмотрим инструменты Dagster и шаблоны, помогающие писать более качественный код и быстрее переходить к production. Если тебе интересно строить ИИ/ML-пайплайны внутри Dagster, можешь сочетать это с полученными знаниями. Однако здесь мы совершенствуем процесс разработки с Dagster, а не создание самих RAG-пайплайнов или пайплайнов моделей.
 
-## Benefits of AI-driven development
+## Преимущества разработки с помощью ИИ
 
-Data engineering can be overwhelming. There are many concepts to learn, patterns to follow, and details to get right. Dagster is built to be the best tool for building and operating data platforms, and AI-driven workflows help you take advantage of it without having to know everything upfront.
+Инженерия данных может оказаться сложной: нужно освоить множество понятий, шаблонов и деталей. Dagster создавался как инструмент для построения и эксплуатации платформ данных, а рабочие процессы с ИИ позволяют пользоваться его возможностями без необходимости знать всё заранее.
 
-- **Ship faster**: With the right AI tools and patterns, work that might normally take weeks can move to minutes. You can go from an idea or a prompt to a runnable asset, a new dependency, or a small refactor in a fraction of the time. AI can draft code that follows Dagster conventions, so you spend less time on boilerplate and more on your data and business logic.
+- **Ускорение выпуска:** с подходящими ИИ-инструментами и шаблонами задачи, обычно занимающие недели, иногда можно выполнить за минуты. Можно значительно быстрее перейти от идеи или промпта к выполняемому ассету, новой зависимости или небольшому рефакторингу. ИИ способен подготовить код, соответствующий соглашениям Dagster, чтобы ты меньше времени тратил на шаблонный код и больше — на данные и бизнес-логику.
+- **Соблюдение лучших практик:** Dagster предлагает определённые принципы организации ассетов, ресурсов и заданий. ИИ-инструменты, знакомые с этими шаблонами, могут предлагать и генерировать соответствующий им код, уменьшая количество ошибок и технического долга.
+- **Снижение порога входа:** не нужно запоминать каждую абстракцию до начала продуктивной работы. Используя ИИ, знакомый с Dagster, можно быстрее выпускать новые возможности и углублять понимание понятий (ассетов, ресурсов, расписаний и т. д.) по мере необходимости. Цель — быстро начать работу и уверенно совершенствовать результат.
 
-- **Build with best practices**: Dagster has strong opinions about how to structure assets, resources, and jobs. AI tools that are aware of those patterns can suggest and generate code that aligns with Dagster best practices, reducing mistakes and technical debt as you go.
-
-- **Lower the learning curve**: You don't have to memorize every abstraction before you're productive. Using AI that understands Dagster, you can get features to production quickly and deepen your understanding of concepts (assets, resources, schedules, etc.) as you need them. The goal is to jumpstart your flow and then iterate with confidence.
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

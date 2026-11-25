@@ -1,46 +1,48 @@
 ---
-title: "Lesson 2: The Dagster CLIs"
+title: 'Урок 2: CLI Dagster'
 module: 'ai_driven_data_engineering'
 lesson: '2'
 ---
 
-# The Dagster CLIs
+# CLI Dagster
 
-We built CLI tooling before AI-driven workflows really took off. It was our attempt to assist with scaffolding, building, and designing Dagster projects with a CLI that encodes opinionated choices about project structure and patterns so you get the most out of Dagster.
+Мы создали инструменты CLI ещё до широкого распространения рабочих процессов с ИИ. Это была попытка упростить создание структуры, разработку и проектирование проектов Dagster с помощью CLI, в котором заложены рекомендуемые решения по структуре и шаблонам проекта, позволяющие максимально эффективно использовать Dagster.
 
-## create-dagster CLI (bootstrapping)
+## CLI create-dagster (инициализация)
 
-The first step in building with Dagster is building a project. The [create-dagster CLI](https://docs.dagster.io/api/clis/create-dagster) is the official way to scaffold that initial structure:
+Первый шаг разработки с Dagster — создание проекта. [CLI create-dagster](https://docs.dagster.io/api/clis/create-dagster) — официальный способ создания первоначальной структуры:
 
-- `create-dagster project` — Scaffold a new Dagster project at a given path. Creates `src/PROJECT_NAME/` with `definitions.py`, a `defs/` directory.
-- `create-dagster workspace` — Initialize a new Dagster workspace with a `projects/` folder, `deployments/local/`, and a root `dg.toml`. Use this when you want to manage multiple projects in one repo.
+- `create-dagster project` — создаёт новый проект Dagster по заданному пути. Формирует `src/PROJECT_NAME/` с файлом `definitions.py` и каталогом `defs/`.
+- `create-dagster workspace` — инициализирует рабочее пространство Dagster с каталогом `projects/`, `deployments/local/` и корневым файлом `dg.toml`. Используй, если хочешь управлять несколькими проектами в одном репозитории.
 
-Run from an empty directory or pass `.` to create in the current directory. For installation and full options, see the [create-dagster CLI reference](https://docs.dagster.io/api/clis/create-dagster).
+Запускай из пустого каталога или передай `.` для создания в текущем каталоге. Инструкции по установке и полный список параметров см. в [справочнике CLI create-dagster](https://docs.dagster.io/api/clis/create-dagster).
 
-## dg CLI (developing)
+## CLI dg (разработка)
 
-The `dg` CLI gives you deterministic actions over your Dagster project. Instead of having to guess where to put files or how to validate definitions, `dg` offers consistent, correct behavior.
+CLI `dg` предоставляет детерминированные операции над проектом Dagster. Вместо догадок о расположении файлов или способах проверки определений `dg` обеспечивает согласованное, корректное поведение.
 
-There are a number of [`dg` commands](https://docs.dagster.io/api/clis/dg-cli/dg-cli-reference):
+Существует несколько [команд `dg`](https://docs.dagster.io/api/clis/dg-cli/dg-cli-reference):
 
-- `dg scaffold`: scaffold Dagster entities (e.g. assets, components), GitHub Actions workflows, and build artifacts.
-- `dg dev`: start a local Dagster instance.
-- `dg check`: check the integrity of your Dagster code.
-- `dg list`: list Dagster entities in the current environment.
-- `dg launch`: launch a Dagster run (e.g. by asset selection, job, or partition).
-- `dg api`: make REST-like API calls to Dagster Plus (agents, assets, deployments, runs, logs, schedules, sensors, secrets, and more).
-- `dg plus`: commands for interacting with Dagster Plus—login, deploy (build and push, configure, start/finish), create (e.g. CI API tokens, env vars), and pull (e.g. env from cloud).
+- `dg scaffold`: создаёт заготовки сущностей Dagster (например, ассетов, компонентов), рабочих процессов GitHub Actions и артефактов сборки.
+- `dg dev`: запускает локальный экземпляр Dagster.
+- `dg check`: проверяет целостность кода Dagster.
+- `dg list`: перечисляет сущности Dagster в текущем окружении.
+- `dg launch`: инициирует запуск Dagster (например, по выборке ассетов, заданию или партиции).
+- `dg api`: выполняет REST-подобные вызовы API Dagster Plus (агенты, ассеты, развёртывания, запуски, журналы, расписания, сенсоры, секреты и т. д.).
+- `dg plus`: команды взаимодействия с Dagster Plus — вход, развёртывание (сборка и отправка, настройка, начало/завершение), создание (например, токенов CI API, переменных окружения) и получение (например, окружения из облака).
 
-## Dagster Components (integrate)
+## Компоненты Dagster (интеграция)
 
-Dagster Components work hand-in-hand with `dg` to let you build pipelines in a lightweight way. [Components](https://docs.dagster.io/guides/build/components) provide an easy interface for designing Dagster applications as well as prebuilt solutions for many common integrations.
+Компоненты Dagster работают совместно с `dg`, позволяя создавать пайплайны без лишней сложности. [Компоненты](https://docs.dagster.io/guides/build/components) предоставляют удобный интерфейс проектирования приложений Dagster и готовые решения для многих распространённых интеграций.
 
-## Why it matters for AI-driven workflows
+## Почему это важно для разработки с ИИ
 
-Instead of writing Dagster code directly, using `dg` and Components allows for a more consistent coding experience and makes it easier to do common things like:
+Использование `dg` и компонентов вместо непосредственного написания всего кода Dagster обеспечивает более согласованный процесс разработки и упрощает типичные операции:
 
-- Scaffold new assets or other definitions in the correct location
-- Validate that definitions load and pass checks
-- List what's defined and launch runs
+- Создание заготовок ассетов и других определений в правильном месте.
+- Проверка успешной загрузки определений и прохождения проверок.
+- Просмотр определённых объектов и запуск выполнения.
 
-That keeps behavior predictable and aligned with how we recommend structuring Dagster projects. We'll see in later sections how the Dagster Skills use `dg` as the primary way to interact with your project.
+Это делает поведение предсказуемым и соответствующим рекомендованной структуре проектов Dagster. В следующих разделах мы увидим, как Dagster Skills используют `dg` в качестве основного способа взаимодействия с проектом.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

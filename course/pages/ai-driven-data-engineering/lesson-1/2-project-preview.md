@@ -1,35 +1,37 @@
 ---
-title: "Lesson 1: Project preview"
+title: 'Урок 1: Знакомство с проектом'
 module: 'ai_driven_data_engineering'
 lesson: '1'
 ---
 
-## What we're building
+## Что мы создаём
 
-Over the course of these lessons, you'll build a complete end-to-end ELT pipeline for a fictional e-commerce company. The pipeline has three stages:
+В ходе уроков ты построишь полноценный сквозной ELT-пайплайн для вымышленной компании электронной коммерции. Пайплайн состоит из трёх этапов:
 
-- **Extract and load**: raw assets pull data from the web and load it into DuckDB tables.
-- **Transform**: a dbt project takes those raw tables and builds staging models and final models.
-- **Export**: a Sling component reads the finished model from DuckDB and exports it to S3 as a Parquet file, ready for downstream consumption by BI tools or other pipelines.
+- **Извлечение и загрузка:** исходные ассеты получают данные из интернета и загружают их в таблицы DuckDB.
+- **Преобразование:** проект dbt использует исходные таблицы для построения staging-моделей и итоговых моделей.
+- **Экспорт:** компонент Sling читает готовую модель из DuckDB и экспортирует её в S3 в виде файла Parquet, пригодного для дальнейшего использования BI-инструментами или другими пайплайнами.
 
-By the end, your asset graph will look like this:
+В конце граф ассетов будет выглядеть так:
 
-![Final Asset Graph](/images/ai-driven-data-engineering/lesson-1/final-dag.png)
+![Итоговый граф ассетов](/images/ai-driven-data-engineering/lesson-1/final-dag.png)
 
-But you will also know enough about how to use AI and Dagster to easily extend it to do just about anything.
+При этом ты будешь достаточно хорошо понимать, как использовать ИИ и Dagster, чтобы легко расширять проект под самые разные задачи.
 
-## How we'll build it
+## Как мы будем его создавать
 
-Here's the part that makes this course different from other Dagster University courses: we'll build this entire pipeline from prompts, not by writing code by hand.
+Вот что отличает этот курс от других курсов Dagster University: весь пайплайн мы построим с помощью промптов, а не ручного написания кода.
 
-Using a coding agent equipped with Dagster skills, you'll take that blank project to a fully wired ELT solution by describing what you want and letting the agent scaffold, write, and validate the code. You'll watch it install dependencies, scaffold files in the right locations, validate definitions, and suggest next steps, all because the skills and CLI give it the right context to do that work correctly.
+С помощью агента программирования, оснащённого скиллами Dagster, ты превратишь пустой проект в полноценное ELT-решение, описывая требования и поручая агенту создавать структуру проекта, писать и проверять код. Ты увидишь, как он устанавливает зависимости, создаёт файлы в нужных местах, проверяет определения и предлагает дальнейшие действия. Это возможно благодаря тому, что скиллы и CLI дают агенту необходимый контекст.
 
-That means you'll spend your energy thinking about your data (what you need, how it should flow, where it should land) rather than remembering which APIs to call or which file to edit.
+Таким образом, ты сможешь сосредоточиться на данных — какие нужны, как они должны перемещаться и где храниться, — вместо запоминания API и расположения файлов.
 
-## What's ahead
+## Что предстоит
 
-Before we build anything, we'll set up the tools and take a tour of the Dagster AI ecosystem so you understand how the pieces fit together. Then you'll build the pipeline step by step. Finally we will discuss some best practices around session management and context habits as well as code quality with AI.
+Прежде чем начать разработку, настроим инструменты и познакомимся с экосистемой ИИ Dagster, чтобы понять, как её части взаимодействуют. Затем поэтапно построим пайплайн. Наконец, обсудим лучшие практики управления сессиями и контекстом, а также качества кода при работе с ИИ.
 
-By the end you'll have a real project (not a toy example) built the way Dagster recommends, from a series of prompts.
+В конце у тебя будет настоящий проект, а не игрушечный пример, построенный рекомендованным Dagster способом с помощью серии промптов.
 
-As you get more comfortable, diving into [Dagster Essentials](https://courses.dagster.io/courses/dagster-essentials) or the specific [docs](https://docs.dagster.io/) will help you understand why things are structured the way they are and how to customize further. But you don't need to wait for that to start shipping.
+По мере освоения материала изучение [Dagster Essentials](https://courses.dagster.io/courses/dagster-essentials) и соответствующих разделов [документации](https://docs.dagster.io/) поможет понять, почему проект устроен именно так и как его дополнительно настроить. Но для начала разработки ждать этого не нужно.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
