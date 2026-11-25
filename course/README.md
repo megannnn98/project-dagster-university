@@ -1,12 +1,12 @@
 # Dagster University
 
-This directory contains the content for Dagster University, located at https://courses.dagster.io. The site is built with [NextJS](https://nextjs.org/) and [Markdoc](https://markdoc.dev/).
+В этом каталоге находятся материалы Dagster University, опубликованного по адресу https://courses.dagster.io. Сайт построен на [NextJS](https://nextjs.org/) и [Markdoc](https://markdoc.dev/).
 
 ---
 
-## Setup
+## Настройка
 
-First, clone this repo and install the dependencies required:
+Сначала клонируй репозиторий, перейди в каталог `course` и установи необходимые зависимости:
 
 ```bash
 npm install
@@ -14,7 +14,7 @@ npm install
 yarn install
 ```
 
-To serve the site locally in development mode (hot-reloading), run:
+Чтобы запустить сайт локально в режиме разработки (с автоматической перезагрузкой), выполни:
 
 ```bash
 npm run dev
@@ -22,38 +22,38 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Открой [http://localhost:3000](http://localhost:3000) в браузере, чтобы увидеть результат.
 
-### Checking links
+### Проверка ссылок
 
-To verify that internal and external links in the course markdown are valid:
+Чтобы проверить корректность внутренних и внешних ссылок в Markdown-файлах курса:
 
 ```bash
 yarn linkcheck
 ```
 
-This runs an internal-link check (that Next.js routes resolve to existing pages) and [markdown-link-check](https://www.npmjs.com/package/markdown-link-check) for external URLs. Internal links starting with `/` and image paths are validated against the `pages/` tree; external links are HTTP-checked. Configuration is in `.markdown-link-check.json`.
+Команда запускает проверку внутренних ссылок (соответствие маршрутов Next.js существующим страницам) и [markdown-link-check](https://www.npmjs.com/package/markdown-link-check) для внешних URL. Внутренние ссылки, начинающиеся с `/`, и пути изображений проверяются относительно дерева `pages/`; внешние ссылки проверяются HTTP-запросами. Конфигурация находится в `.markdown-link-check.json`.
 
 ---
 
-## Authoring
+## Подготовка материалов
 
-Course content lives in `/dagster-university/pages`. Each course has:
+Материалы курсов находятся в каталоге `course/pages` (в исходном описании: `/dagster-university/pages`). У каждого курса есть:
 
-- A category page, located in the directory root, ex: `/../../dagster-essentials.md`. Links to individual lessons are added to these pages to make it easier to navigate the site locally.
-- A dedicated subdirectory, ex: `/../../dagster-essentials`, which contains a folder for each lesson in the course.
+- Страница категории в корне каталога, например `/../../dagster-essentials.md`. На неё добавляются ссылки на отдельные уроки для удобной навигации при локальном запуске сайта.
+- Отдельный подкаталог, например `/../../dagster-essentials`, содержащий папку для каждого урока курса.
 
-### Lesson content
+### Содержание уроков
 
-Learn best by example? Check out this PR to see how to [add a new lesson to a course](https://github.com/dagster-io/dagster/pull/20096).
+Предпочитаешь учиться на примерах? Посмотри этот PR, чтобы узнать, как [добавить новый урок в курс](https://github.com/dagster-io/dagster/pull/20096).
 
-### Formatting with Markdown
+### Форматирование Markdown
 
-We use [Markdoc](https://markdoc.dev/), a flavor of Markdown, to author our content. This flavor of Markdown is similar to that used on GitHub, but with some additional capabilities. Refer to the [Markdoc syntax documentation](https://markdoc.dev/docs/syntax) for more information.
+Для подготовки материалов мы используем [Markdoc](https://markdoc.dev/) — разновидность Markdown, похожую на Markdown в GitHub, но с дополнительными возможностями. Подробнее см. [документацию по синтаксису Markdoc](https://markdoc.dev/docs/syntax).
 
-#### Tables
+#### Таблицы
 
-Commonmark tables are supported, but you can also use list formatting to construct tables. For example:
+Поддерживаются таблицы CommonMark, но для создания таблиц можно также использовать форматирование списков. Например:
 
 ```markdown
 ## commonmark table
@@ -63,7 +63,7 @@ Commonmark tables are supported, but you can also use list formatting to constru
 | Daggy | 1  | The most educated octopus. |
 ```
 
-Becomes the following in Markdoc syntax:
+В синтаксисе Markdoc это выглядит так:
 
 ```markdown
 ## markdoc table 
@@ -79,12 +79,14 @@ Becomes the following in Markdoc syntax:
 {% /table %}
 ```
 
-Refer to the [Markdoc table documentation](https://markdoc.dev/docs/tags#table) for more information and examples.
+Дополнительную информацию и примеры см. в [документации по таблицам Markdoc](https://markdoc.dev/docs/tags#table).
 
 ---
 
-## Getting help
+## Получение помощи
 
-- Join the [Dagster Slack](https://dagster.io/community) community and ask a question in our `#dagster-university` channel
-- Find solutions and patterns in our [GitHub discussions](https://github.com/dagster-io/dagster/discussions)
-- Check out the [Dagster Docs](https://docs.dagster.io/)
+- Присоединяйся к сообществу [Dagster Slack](https://dagster.io/community) и задавай вопросы в канале `#dagster-university`.
+- Ищи решения и шаблоны в [обсуждениях GitHub](https://github.com/dagster-io/dagster/discussions).
+- Обращайся к [документации Dagster](https://docs.dagster.io/).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

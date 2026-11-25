@@ -1,21 +1,33 @@
-# Dagster University
+# Dagster University — русский перевод
 
-Welcome to [Dagster University](https://courses.dagster.io/). This contains all the courses offered by Dagster. Within each project you will find the starting point for the course alongside the completed code for each lesson. Refer to the `README.md` of the particular course for more details.
+Неофициальный русскоязычный перевод [Dagster University](https://courses.dagster.io/). Репозиторий содержит учебные материалы, исходные проекты и готовый код для каждого урока. Подробнее о каждом проекте см. в README соответствующего курса.
 
-## Courses
+**[Начать обучение: Dagster Essentials на русском](DAGSTER_ESSENTIALS_RU.md)** · [Статус перевода и словарь](TRANSLATION_STATUS.md)
 
-| Course Directory | Course Page |
+## Курсы
+
+| Каталог курса | Оригинальный курс |
 |-------------|-------------|
-| [`Dagster Essentials`](dagster_university/dagster_essentials/README.md) | [Dagster Essentials Course](https://courses.dagster.io/courses/dagster-essentials) |
-| [`Dagster & dbt`](dagster_university/dagster_and_dbt/README.md) | [Dagster + dbt Course](https://courses.dagster.io/courses/dagster-dbt) |
-| [`Dagster & ETL`](dagster_university/dagster_and_etl/README.md) | [Dagster + ETL Course](https://courses.dagster.io/courses/dagster-etl) |
-| [`Testing with Dagster`](dagster_university/dagster_testing/README.md) | [Testing with Dagster Course](https://courses.dagster.io/courses/dagster-testing) |
-| [`AI-driven Data Engineering`](dagster_university/ai_driven_data_engineering/README.md) | [AI-driven Data Engineering Course](https://courses.dagster.io/courses/ai-driven-data-engineering) |
+| [`Dagster Essentials`](dagster_university/dagster_essentials/README.md) | [Dagster Essentials](https://courses.dagster.io/courses/dagster-essentials) |
+| [`Dagster & dbt`](dagster_university/dagster_and_dbt/README.md) | [Dagster + dbt](https://courses.dagster.io/courses/dagster-dbt) |
+| [`Dagster & ETL`](dagster_university/dagster_and_etl/README.md) | [Dagster + ETL](https://courses.dagster.io/courses/dagster-etl) |
+| [`Testing with Dagster`](dagster_university/dagster_testing/README.md) | [Тестирование с Dagster](https://courses.dagster.io/courses/dagster-testing) |
+| [`AI-driven Data Engineering`](dagster_university/ai_driven_data_engineering/README.md) | [Инженерия данных с ИИ](https://courses.dagster.io/courses/ai-driven-data-engineering) |
 
-## Platform Support
+## Поддерживаемые платформы
 
-| Operating System | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | Notes |
-|------------------|--------------|--------------|--------------|--------------|-------|
-| **Linux/Ubuntu** | ✅ | ✅ | ✅ | ✅ | Full support |
-| **macOS** | ✅ | ✅ | ✅ | ✅ | Full support |
-| **Windows** | ✅ | ✅ | ✅ | ✅ | Full support |
+| Операционная система | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | Примечания |
+|------------------|--------------|--------------|--------------|-------|
+| **Linux/Ubuntu** | ✅ | ✅ | ✅ | ✅ | Полная поддержка |
+| **macOS** | ✅ | ✅ | ✅ | ✅ | Полная поддержка |
+| **Windows** | ✅ | ✅ | ✅ | ✅ | Полная поддержка |
+
+## Учебный сайт
+
+Для корректного отображения разметки Markdoc, изображений и скрытых решений используй локальную версию сайта по [инструкции](course/README.md). Оглавление на GitHub позволяет перейти к исходным страницам уроков, но GitHub не поддерживает все возможности Markdoc.
+
+## Лицензия
+
+Оригинал: [dagster-io/project-dagster-university](https://github.com/dagster-io/project-dagster-university). Авторство и [Apache License 2.0](LICENSE) сохранены. Перевод не является официальной локализацией. Видео и закрытые материалы не распространяются.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
