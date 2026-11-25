@@ -1,72 +1,74 @@
 ---
-title: "Lesson 5: What's a code location?"
+title: "Урок 5: Что такое расположение кода?"
 module: 'dagster_essentials'
 lesson: '5'
 ---
 
-# What's a code location?
+# Что такое расположение кода?
 
-We’ve talked a lot about definitions, but what about code locations? How do these two things work together?
+Мы много говорили об определениях, но что такое расположения кода? Как связаны эти два понятия?
 
-A _code location_ is a collection of Dagster definitions, such as assets. In Dagster, a code location is made up of two components:
+_Расположение кода (code location)_ — это набор определений Dagster, например активов. В Dagster расположение кода состоит из двух компонентов:
 
-- A Python module that contains a `Definitions` object
-- A Python environment that can load the module above
+- Модуль Python, содержащий объект `Definitions`.
+- Окружение Python, способное загрузить этот модуль.
 
-Let’s go back to our cookie example for a moment. Cookies are typically baked in a kitchen, containing everything you need to make cookies. In the previous section, we talked about how your cookie assets (ex: dry ingredients, chocolate chip cookies) can be thought of as **definitions.**
+Вернёмся ненадолго к примеру с печеньем. Обычно печенье выпекают на кухне, где есть всё необходимое для его приготовления. В предыдущем разделе мы говорили, что активы приготовления печенья (например, сухие ингредиенты и печенье с кусочками шоколада) можно считать **определениями**.
 
-To simplify baking, you would group everything you need in a single location. In this example, a kitchen functions much in the same way a _code location_ does - it collects all of your Dagster definitions into a single location:
+Чтобы упростить выпечку, ты собрал бы всё необходимое в одном месте. В этом примере кухня выполняет примерно ту же функцию, что и _расположение кода_: она объединяет все определения Dagster в одном месте.
 
-![Diagram showing everything needed to bake cookies, such as dry ingredients and chocolate chips, contained in a kitchen.](/images/dagster-essentials/lesson-5/kitchen-code-location.png)
-
----
-
-## How are code locations helpful?
-
-In software engineering, **deployment** is the mechanism by which applications are made available to end users. A Dagster deployment, for example, would include everything needed to run Dagster, such as Python, packages like `pandas`, the Dagster UI, etc. and make it available in a robust environment within the cloud.
-
-Code locations exist to solve issues that come as Dagster deployments scale. When your organization grows to multiple teams orchestrating their data, things can become complicated with a single deployment.
-
-Traditionally, this created problems such as:
-
-- One team deploying their changes creates downtime for another team
-- Two machine learning models use two different versions of the same Python package
-- Being stuck using an old version of an orchestrator because your newer code uses the same dependency as your orchestrator
-- Multiple teams contributing thousands of assets, making the UI difficult to search and navigate
-
-Historically, many teams have tried multiple deployments to solve these problems. However, this creates silos in an organization and goes against being a “single pane of glass” of a company’s data assets. Multiple deployments can also lead to additional complexity, such as more complicated infrastructure, access management, and upgrades.
-
-Dagster uses code locations to solve these problems. With code locations, users isolate their codebases without requiring multiple deployments.
-
-Let’s go back to the cookies for a moment. If your home cookie baking takes off, you might want to expand and become a full-fledged bakery.
-
-As you expand, you may need to use the kitchen for different purposes:
-
-- Commercial production
-- Testing new recipes
-- Packaging
-- Decorating
-
-To ensure things run smoothly, you’d want each purpose to have its own kitchen because that reduces the likelihood of what's happening in one kitchen negatively impacting another. For example, a fire in the test kitchen wouldn’t impact the core business in the commercial kitchen. However, you wouldn't want a whole separate bakery for each purpose because that would be more difficult to maintain and oversee. While you were working in the test bakery, you wouldn't be able to keep an eye on the commerical bakery.
-
-![Different bakery functions, like packaging and decorating, contained within a Bakery location](/images/dagster-essentials/lesson-5/bakery-locations.png)
-
-We want separate kitchens within the same bakery so that even though all kitchens are independent, they’re still in the same building. This allows you to always know what’s happening with all aspects of your bakery.
+![Всё необходимое для приготовления печенья, включая сухие ингредиенты и кусочки шоколада, находится на кухне](/images/dagster-essentials/lesson-5/kitchen-code-location.png)
 
 ---
 
-## How does this relate to code locations in Dagster?
+## Чем полезны расположения кода?
 
-In the following image, each dark purple box is a code location. By separating code locations from the core Dagster services, user-deployed code is secure and isolated from the rest of Dagster. Code locations enable users to run code with their own versions of Python or dependencies.
+В разработке программного обеспечения **развёртывание (deployment)** — это механизм, посредством которого приложения становятся доступны конечным пользователям. Развёртывание Dagster, например, включает всё необходимое для его работы: Python, пакеты вроде `pandas`, интерфейс Dagster и другие компоненты, доступные в надёжном облачном окружении.
 
-![A diagram showing an example of a Dagster deployment with multiple code locations, such as Marketing, Experimental features, and ML deployment pipelines](/images/dagster-essentials/lesson-5/dagster-architecture.png)
+Расположения кода предназначены для решения проблем, возникающих при масштабировании развёртываний Dagster. Когда в организации становится несколько команд, управляющих своими пайплайнами данных, работать в рамках одного развёртывания может быть сложно.
 
-Code locations can be used to separate code by categories, such as:
+Традиционно это приводило к следующим проблемам:
 
-- Teams (ex., marketing or product)
-- Python version (ex., legacy code using Python 3.10 and newer Python 3.12 code locations)
-- Dependency versions (ex., one model using PyTorch v1 and another using PyTorch v2)
-- Functions (ex., ETL, modeling, BI layer)
-- Compliance-sensitive datasets (ex., HIPAA)
+- Развёртывание изменений одной команды вызывает простой у другой.
+- Две модели машинного обучения используют разные версии одного и того же пакета Python.
+- Приходится оставаться на старой версии оркестратора, поскольку новый код использует ту же зависимость, что и оркестратор.
+- Несколько команд добавляют тысячи активов, затрудняя поиск и навигацию в интерфейсе.
 
-These code locations are all maintained in one single Dagster deployment, and changes made to one code location won’t lead to downtime in another one. This allows you to silo packages and versions, but still create connections between data assets as needed. For example, an asset in one code location can depend on an asset in another code location.
+Исторически многие команды пытались решить эти проблемы с помощью нескольких развёртываний. Однако это создаёт изолированные подразделения внутри организации и противоречит идее единого окна для наблюдения за активами данных компании. Несколько развёртываний также усложняют инфраструктуру, управление доступом и обновления.
+
+Dagster решает эти проблемы с помощью расположений кода. Они позволяют изолировать кодовые базы без отдельных развёртываний.
+
+Снова вернёмся к печенью. Если твоя домашняя выпечка станет популярной, возможно, ты захочешь расширить производство и открыть полноценную пекарню.
+
+По мере расширения кухня может понадобиться для разных задач:
+
+- Коммерческое производство.
+- Испытание новых рецептов.
+- Упаковка.
+- Украшение изделий.
+
+Чтобы всё работало без перебоев, для каждой задачи желательно выделить собственную кухню: это снижает вероятность того, что происходящее на одной кухне негативно повлияет на другую. Например, пожар на экспериментальной кухне не затронет основную работу коммерческой кухни. Однако отдельная пекарня для каждой задачи усложнила бы обслуживание и контроль. Работая в экспериментальной пекарне, ты не смог бы наблюдать за коммерческой.
+
+![Разные функции пекарни, такие как упаковка и украшение, объединены в одном здании](/images/dagster-essentials/lesson-5/bakery-locations.png)
+
+Нам нужны отдельные кухни внутри одной пекарни, чтобы они были независимыми, но располагались в одном здании. Так можно постоянно наблюдать за всеми направлениями работы пекарни.
+
+---
+
+## Как это связано с расположениями кода в Dagster?
+
+На следующей схеме каждый тёмно-фиолетовый прямоугольник представляет расположение кода. Отделение расположений кода от основных сервисов Dagster обеспечивает изоляцию пользовательского кода от остальной системы. Расположения кода позволяют пользователям выполнять код со своими версиями Python и зависимостей.
+
+![Пример развёртывания Dagster с несколькими расположениями кода: маркетинг, экспериментальные функции и пайплайны развёртывания моделей ML](/images/dagster-essentials/lesson-5/dagster-architecture.png)
+
+Расположения кода можно использовать для разделения кода по следующим признакам:
+
+- Команды (например, маркетинг или продуктовая команда).
+- Версия Python (например, устаревший код на Python 3.10 и новый код на Python 3.12).
+- Версии зависимостей (например, одна модель использует PyTorch v1, а другая — PyTorch v2).
+- Назначение (например, ETL, моделирование, слой BI).
+- Наборы данных с особыми нормативными требованиями (например, HIPAA).
+
+Все эти расположения кода обслуживаются в рамках одного развёртывания Dagster. Изменения в одном расположении кода не приводят к простою другого. Это позволяет изолировать пакеты и их версии, сохраняя возможность создавать связи между активами данных. Например, актив в одном расположении кода может зависеть от актива в другом.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

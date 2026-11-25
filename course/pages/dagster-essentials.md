@@ -34,11 +34,11 @@ title: Dagster Essentials
   - [Активы с вычислениями в оперативной памяти](/dagster-essentials/lesson-4/5-assets-with-in-memory-computations)
   - [Практика: создание актива trips_by_week](/dagster-essentials/lesson-4/6-coding-practice-trips-by-week-asset)
 
-- Lesson 5: Definitions & code locations
-  - [Overview](/dagster-essentials/lesson-5/0-overview)
-  - [What's the Definitions object?](/dagster-essentials/lesson-5/1-whats-the-definitions-object)
-  - [What's a code location?](/dagster-essentials/lesson-5/2-whats-a-code-location)
-  - [Code locations in the Dagster UI](/dagster-essentials/lesson-5/3-code-locations-dagster-ui)
+- Урок 5: Definitions и расположения кода
+  - [Обзор](/dagster-essentials/lesson-5/0-overview)
+  - [Что такое объект Definitions?](/dagster-essentials/lesson-5/1-whats-the-definitions-object)
+  - [Что такое расположение кода?](/dagster-essentials/lesson-5/2-whats-a-code-location)
+  - [Расположения кода в интерфейсе Dagster](/dagster-essentials/lesson-5/3-code-locations-dagster-ui)
 
 - Lesson 6: Resources
   - [Overview](/dagster-essentials/lesson-6/0-overview)

@@ -1,16 +1,18 @@
 ---
-title: 'Lesson 5: Overview'
+title: 'Урок 5: Обзор'
 module: 'dagster_essentials'
 lesson: '5'
 ---
 
-# Overview
+# Обзор
 
-Now that you’ve learned how to write data pipelines using Dagster’s asset-based model, let’s take a second to zoom out and discuss how Dagster works.
+Теперь, когда ты научился писать пайплайны данных с помощью модели активов Dagster, рассмотрим систему в целом и обсудим, как работает Dagster.
 
-In this lesson, you’ll learn:
+В этом уроке ты узнаешь:
 
-- What a `Definitions` object is
-- What a code location is
-- How code locations fit into Dagster’s architecture
-- How to view and manage code locations in the Dagster UI
+- Что такое объект `Definitions`.
+- Что такое расположение кода (code location).
+- Как расположения кода вписываются в архитектуру Dagster.
+- Как просматривать расположения кода и управлять ими через интерфейс Dagster.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

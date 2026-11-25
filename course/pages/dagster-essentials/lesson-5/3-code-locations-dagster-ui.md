@@ -1,57 +1,59 @@
 ---
-title: 'Lesson 5: Code locations in the Dagster UI'
+title: 'Урок 5: Расположения кода в интерфейсе Dagster'
 module: 'dagster_essentials'
 lesson: '5'
 ---
 
-# Code locations in the Dagster UI
+# Расположения кода в интерфейсе Dagster
 
-In this section, we’ll walk you through code locations in the Dagster UI.
+В этом разделе рассмотрим работу с расположениями кода в интерфейсе Dagster.
 
 {% table %}
 
-- Viewing all code locations
+- Просмотр всех расположений кода
 
 ---
 
 - {% width="60%; fixed" %}
-  To view code locations in the Dagster UI, click **Deployment** in the top navigation. The list of code locations will be under the code locations tab, with the status, last updated and other information.
+  Чтобы просмотреть расположения кода в интерфейсе Dagster, нажми **Deployment** в верхней панели навигации. На вкладке Code locations отображается список расположений кода, их статус, время последнего обновления и другие сведения.
 
-  By default, code locations are named using the name of the module loaded by Dagster. In this case, that’s `dagster_essentials`, which is the name of the folder (or module) the project is contained in.
+  По умолчанию расположения кода именуются по имени модуля, загружаемого Dagster. В данном случае это `dagster_essentials` — имя каталога (или модуля), содержащего проект.
 
-- ![The Code locations tab in the Dagster UI, showing the project's dagster_essentials code location](/images/dagster-essentials/lesson-5/code-locations-ui.png) {% rowspan=2 %}
+- ![Вкладка Code locations в интерфейсе Dagster с расположением кода dagster_essentials](/images/dagster-essentials/lesson-5/code-locations-ui.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Viewing code location loading errors
+- Просмотр ошибок загрузки расположений кода
 
 ---
 
 - {% width="60%; fixed" %}
-  If something is wrong with your code location, the status will appear as **Failed.**
+  Если с расположением кода что-то не так, его статус будет **Failed**.
 
-  Click **View Error** to view the stack trace and troubleshoot issues.
+  Нажми **View Error**, чтобы просмотреть трассировку стека и устранить неполадки.
 
-- ![Code locations will have a status of Failed if there's an issue](/images/dagster-essentials/lesson-5/code-location-error-ui.png) {% rowspan=2 %}
+- ![Статус Failed у расположения кода при возникновении ошибки](/images/dagster-essentials/lesson-5/code-location-error-ui.png) {% rowspan=2 %}
 
 {% /table %}
 
 {% table %}
 
-- Reloading definitions
+- Перезагрузка определений
 
 ---
 
 - {% width="60%; fixed" %}
-  As you add or change definitions in your project, you may need to refresh the code location. When you reload definitions, you’re telling Dagster to retrieve and use the last saved version of your project’s files.
+  При добавлении или изменении определений проекта может потребоваться обновить расположение кода. Перезагрузка определений сообщает Dagster, что необходимо загрузить и использовать последнюю сохранённую версию файлов проекта.
 
-  You can reload definitions in the UI by:
+  Перезагрузить определения через интерфейс можно двумя способами:
 
-  - Navigating to **Deployment > Code locations** and clicking the **Reload** button next to a code location
-  - Navigating to the **Global Asset Lineage** page and clicking the **Reload definitions page**
+  - Перейти в **Deployment > Code locations** и нажать кнопку **Reload** рядом с расположением кода.
+  - Перейти на страницу **Global Asset Lineage** и нажать **Reload definitions**.
 
-- ![The Reload button in the Code locations tab in the Dagster UI](/images/dagster-essentials/lesson-5/code-locations-reload.png) {% rowspan=2 %}
+- ![Кнопка Reload на вкладке Code locations в интерфейсе Dagster](/images/dagster-essentials/lesson-5/code-locations-reload.png) {% rowspan=2 %}
 
 {% /table %}
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
