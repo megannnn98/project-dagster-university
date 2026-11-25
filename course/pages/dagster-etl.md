@@ -47,12 +47,12 @@ title: Dagster ETL
   - [Dagster и Sling](/dagster-etl/lesson-6/4-dagster-and-sling)
   - [Выполнение пайплайна](/dagster-etl/lesson-6/5-managing-sling-assets)
 
-- Lesson 7: ETL with Components
-  - [Overview](/dagster-etl/lesson-7/0-overview)
-  - [Dagster Components](/dagster-etl/lesson-7/1-dagster-components)
-  - [Sling with Components](/dagster-etl/lesson-7/2-sling-with-components)
-  - [Using Components](/dagster-etl/lesson-7/3-using-components)
-  - [Organizing our project](/dagster-etl/lesson-7/4-organizing-our-project)
+- Урок 7: ETL с компонентами
+  - [Обзор](/dagster-etl/lesson-7/0-overview)
+  - [Компоненты Dagster](/dagster-etl/lesson-7/1-dagster-components)
+  - [Sling с компонентами](/dagster-etl/lesson-7/2-sling-with-components)
+  - [Использование компонентов](/dagster-etl/lesson-7/3-using-components)
+  - [Организация проекта](/dagster-etl/lesson-7/4-organizing-our-project)
 
 - Урок 8: Dagster Skills
   - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
