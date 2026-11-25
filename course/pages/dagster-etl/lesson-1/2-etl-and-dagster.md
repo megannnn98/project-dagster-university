@@ -1,31 +1,33 @@
 ---
-title: "Lesson 1: ETL and Dagster"
+title: 'Урок 1: ETL и Dagster'
 module: 'dagster_etl'
 lesson: '1'
 ---
 
-# ETL and Dagster
+# ETL и Dagster
 
-One of Dagster’s core strengths is breaking down data pipelines to their individual assets. This provides full lineage and visibility between different systems.
+Одна из ключевых возможностей Dagster — декомпозиция пайплайнов данных на отдельные ассеты. Это обеспечивает прозрачность и позволяет отслеживать происхождение данных между различными системами.
 
-When visualizing your data stack, it’s often helpful to think of data flowing from left to right. On the far left, you typically find your raw data sources and the ETL processes that bring that data into your platform. This is a logical starting point for building out a data platform: focusing on ETL assets helps you concentrate on the most important datasets and avoid duplicating effort.
+При визуализации стека данных удобно представлять их движение слева направо. Слева обычно располагаются источники исходных данных и ETL-процессы, доставляющие эти данные на платформу. Это логичная отправная точка для построения платформы данных: внимание к ETL-ассетам помогает сосредоточиться на наиболее важных наборах данных и избегать дублирования работы.
 
-![ETL assets 1](/images/dagster-etl/lesson-1/etl-assets-1.png)
+![ETL-ассеты 1](/images/dagster-etl/lesson-1/etl-assets-1.png)
 
-This asset based approach is what makes Dagster particularly well-suited for managing ETL pipelines. Because source assets are so fundamental to building with data, they tend to be reused across multiple projects. For example, if you're ingesting data from an application database, that data may feed into both analytics dashboards and machine learning workflows.
+Именно подход, ориентированный на ассеты, делает Dagster особенно подходящим для управления ETL-пайплайнами. Поскольку исходные ассеты имеют фундаментальное значение для работы с данными, их часто повторно используют в нескольких проектах. Например, если ты загружаешь данные из базы приложения, они могут использоваться и аналитическими дашбордами, и рабочими процессами машинного обучения.
 
-Without an asset based approach, it can get lost that multiple processes rely on the same sources.
+Без подхода, ориентированного на ассеты, легко упустить из виду, что несколько процессов зависят от одних и тех же источников.
 
-![ETL as assets 2](/images/dagster-etl/lesson-1/etl-assets-2.png)
+![ETL как ассеты 2](/images/dagster-etl/lesson-1/etl-assets-2.png)
 
-## Source asset granularity
+## Гранулярность исходных ассетов
 
-Another reason an asset based approach tends to work well for ETL is that data sources tend to represent multiple individual entities. Consider a pipeline that ingests data from your application database, you're likely pulling in multiple schema or tables, each used by specific data applications.
+Ещё одна причина, по которой подход с ассетами хорошо подходит для ETL, заключается в том, что источники данных обычно представляют несколько отдельных сущностей. Рассмотрим пайплайн, загружающий данные из базы приложения: скорее всего, он извлекает несколько схем или таблиц, каждая из которых используется конкретными приложениями обработки данных.
 
-![ETL as assets 1](/images/dagster-etl/lesson-1/etl-as-assets-1.png)
+![ETL как ассеты 1](/images/dagster-etl/lesson-1/etl-as-assets-1.png)
 
-Each of these entities should be tracked as its own asset, so you can associate downstream processes with each one individually. That granularity gives you the ability to monitor, reason about, and recover from failures more effectively.
+Каждую из этих сущностей следует отслеживать как отдельный ассет, чтобы связывать нижестоящие процессы с каждой сущностью индивидуально. Такая гранулярность позволяет эффективнее наблюдать за системой, анализировать её и восстанавливаться после сбоев.
 
-For example, if one source table fails to ingest, an asset based approach allows you to quickly understand which downstream assets and applications are impacted. This level of observability and control is what makes asset-based orchestration so powerful, especially in the context of managing critical ETL pipelines.
+Например, если загрузка одной исходной таблицы завершилась ошибкой, подход с ассетами позволяет быстро определить, какие нижестоящие ассеты и приложения затронуты. Именно этот уровень наблюдаемости и контроля делает оркестрацию, ориентированную на ассеты, настолько эффективной, особенно при управлении критически важными ETL-пайплайнами.
 
-![ETL as assets 2](/images/dagster-etl/lesson-1/etl-as-assets-2.png)
+![ETL как ассеты 2](/images/dagster-etl/lesson-1/etl-as-assets-2.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

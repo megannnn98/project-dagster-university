@@ -2,16 +2,16 @@
 title: Dagster ETL
 ---
 
-- Lesson 1: Introduction
-  - [About this course](/dagster-etl/lesson-1/0-about-this-course)
-  - [What is ETL?](/dagster-etl/lesson-1/1-what-is-etl)
-  - [ETL and Dagster](/dagster-etl/lesson-1/2-etl-and-dagster)
-  - [Project preview](/dagster-etl/lesson-1/3-project-preview)
+- Урок 1: Введение
+  - [О курсе](/dagster-etl/lesson-1/0-about-this-course)
+  - [Что такое ETL?](/dagster-etl/lesson-1/1-what-is-etl)
+  - [ETL и Dagster](/dagster-etl/lesson-1/2-etl-and-dagster)
+  - [Знакомство с проектом](/dagster-etl/lesson-1/3-project-preview)
 
-- Lesson 2: Installation & setup
-  - [Requirements](/installation/requirements)
-  - [Set up local](/installation/set-up-local)
-  - [Set up Codespace](/installation/set-up-codespace)
+- Урок 2: Требования и установка
+  - [Требования](/installation/requirements)
+  - [Локальная настройка](/installation/set-up-local)
+  - [Настройка Codespace](/installation/set-up-codespace)
 
 - Lesson 3: Loading static data
   - [Overview](/dagster-etl/lesson-3/0-overview)
@@ -54,5 +54,7 @@ title: Dagster ETL
   - [Using Components](/dagster-etl/lesson-7/3-using-components)
   - [Organizing our project](/dagster-etl/lesson-7/4-organizing-our-project)
 
-- Lesson 8: Dagster Skills
-  - [Dagster Skills](/shared/dagster-skills.md)
+- Урок 8: Dagster Skills
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
