@@ -12,6 +12,12 @@ class References(HTMLParser):
         self.urls = []
 
     def handle_starttag(self, tag, attrs):
+        # Connection hints point to an origin, not to a page or file.
+        # Next.js emits <link rel="preconnect" href="/"> on static pages.
+        if tag == "link" and dict(attrs).get("rel", "").lower() in (
+            "preconnect", "dns-prefetch"
+        ):
+            return
         for key, value in attrs:
             if key in ("href", "src") and value:
                 self.urls.append(value)
