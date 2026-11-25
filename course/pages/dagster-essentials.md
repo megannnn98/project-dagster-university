@@ -70,21 +70,21 @@ title: Dagster Essentials
   - [Партиции и backfill в интерфейсе Dagster](/dagster-essentials/lesson-8/8-partitions-backfills-dagster-ui)
   - [Итоги](/dagster-essentials/lesson-8/9-recap)
 
-- Lesson 9: Sensors
-  - [Overview](/dagster-essentials/lesson-9/0-overview)
-  - [What's a sensor?](/dagster-essentials/lesson-9/1-whats-a-sensor)
-  - [Configuring asset creation](/dagster-essentials/lesson-9/2-configuring-asset-creation)
-  - [Creating an asset triggered by a sensor](/dagster-essentials/lesson-9/3-creating-an-asset-triggered-by-a-sensor)
-  - [Creating a job](/dagster-essentials/lesson-9/4-creating-a-job)
-  - [Building the sensor](/dagster-essentials/lesson-9/5-building-the-sensor)
-  - [Updating the Definitions object](/dagster-essentials/lesson-9/6-updating-the-definitions-object)
-  - [Sensors in the Dagster UI](/dagster-essentials/lesson-9/7-sensors-dagster-ui)
-  - [Enabling the sensor](/dagster-essentials/lesson-9/8-enabling-the-sensor)
+- Урок 9: Сенсоры
+  - [Обзор](/dagster-essentials/lesson-9/0-overview)
+  - [Что такое сенсор?](/dagster-essentials/lesson-9/1-whats-a-sensor)
+  - [Настройка создания актива](/dagster-essentials/lesson-9/2-configuring-asset-creation)
+  - [Создание актива, запускаемого сенсором](/dagster-essentials/lesson-9/3-creating-an-asset-triggered-by-a-sensor)
+  - [Создание задания](/dagster-essentials/lesson-9/4-creating-a-job)
+  - [Создание сенсора](/dagster-essentials/lesson-9/5-building-the-sensor)
+  - [Обновление объекта Definitions](/dagster-essentials/lesson-9/6-updating-the-definitions-object)
+  - [Сенсоры в интерфейсе Dagster](/dagster-essentials/lesson-9/7-sensors-dagster-ui)
+  - [Включение сенсора](/dagster-essentials/lesson-9/8-enabling-the-sensor)
 
-- Lesson 10: Dagster Skills
-  - [Dagster Skills](/shared/dagster-skills.md)
+- Урок 10: Dagster Skills
+  - [Разработка с ИИ с помощью Dagster Skills](/shared/dagster-skills.md)
 
-- [Capstone](/dagster-essentials/capstone)
+- [Итоговый проект](/dagster-essentials/capstone)
 
 - Extra credit: Metadata
   - [Overview](/dagster-essentials/extra-credit/0-overview)

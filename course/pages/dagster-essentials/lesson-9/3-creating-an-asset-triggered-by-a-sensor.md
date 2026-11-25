@@ -1,14 +1,14 @@
 ---
-title: 'Lesson 9: Creating an asset triggered by a sensor'
+title: 'Урок 9: Создание актива, запускаемого сенсором'
 module: 'dagster_essentials'
 lesson: '9'
 ---
 
-# Creating an asset triggered by a sensor
+# Создание актива, запускаемого сенсором
 
-Now that you’ve defined how the asset can be materialized, let’s create the ad hoc report asset.
+Теперь, когда определён способ настройки материализации актива, создадим актив для разовых отчётов.
 
-1. Add the following imports to `defs/assets/requests.py`:
+1. Добавь следующие импорты в `defs/assets/requests.py`:
 
    ```python
    # src/dagster_essentials/defs/assets/requests.py
@@ -20,13 +20,13 @@ Now that you’ve defined how the asset can be materialized, let’s create the 
    from dagster_essentials.defs.assets import constants
    ```
 
-2. Create a new asset named `adhoc_request` with the following arguments:
+2. Создай новый актив `adhoc_request` со следующими параметрами и зависимостями:
 
-   1. `config`, type annotated to `AdhocRequestConfig`
-   2. the `taxi_zones` and `taxi_trips` assets as dependencies
-   3. `database`, type annotated to `DuckDBResource` to be able to query DuckDB.
+   1. `config` с аннотацией типа `AdhocRequestConfig`.
+   2. Активы `taxi_zones` и `taxi_trips` в качестве зависимостей.
+   3. `database` с аннотацией типа `DuckDBResource` для выполнения запросов к DuckDB.
 
-   The asset should look like this at this point:
+   На данном этапе актив должен выглядеть так:
 
    ```python
    @dg.asset(
@@ -35,20 +35,20 @@ Now that you’ve defined how the asset can be materialized, let’s create the 
    def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource) -> None:
    ```
 
-3. When the report is written to a file, it should have a similar name to the request. A template has been provided in `defs/assets/constants.py` that contains a template named `REQUEST_DESTINATION_TEMPLATE_FILE_PATH` .
+3. При сохранении отчёта в файл его имя должно быть похоже на имя запроса. В файле `defs/assets/constants.py` уже предусмотрен шаблон `REQUEST_DESTINATION_TEMPLATE_FILE_PATH`.
 
-   Generate the file name by using the template and stripping the `.json` extension from the request’s file name:
+   Сформируй имя файла с помощью шаблона, удалив расширение `.json` из имени файла запроса:
 
    ```python
    file_path = constants.REQUEST_DESTINATION_TEMPLATE_FILE_PATH.format(config.filename.split('.')[0])
    ```
 
-4. Next, write a SQL query that:
+4. Далее напиши SQL-запрос, который:
 
-   - Filters out trips that didn’t start in the named borough during the provided date range
-   - Aggregates the data by the day of week and hour the trip started
+   - Отфильтровывает поездки, начавшиеся за пределами указанного района или диапазона дат.
+   - Агрегирует данные по дню недели и часу начала поездки.
 
-     For example:
+     Например:
 
      ```python
      query = """
@@ -79,7 +79,7 @@ Now that you’ve defined how the asset can be materialized, let’s create the 
      """
      ```
 
-5. Next, run the query in DuckDB and store the results as a DataFrame. The config values fill the `?` placeholders as query parameters rather than being formatted into the SQL string, so a request can’t change the query:
+5. Выполни запрос в DuckDB и сохрани результат в виде DataFrame. Значения конфигурации подставляются вместо заполнителей `?` как параметры запроса, а не форматируются внутри строки SQL. Поэтому содержимое запроса пользователя не может изменить структуру SQL-запроса:
 
    ```python
    with database.get_connection() as conn:
@@ -88,7 +88,7 @@ Now that you’ve defined how the asset can be materialized, let’s create the 
        ).fetch_df()
    ```
 
-6. Now that the query data is stored as a DataFrame in the `results` variable, use the Matplotlib library to visualize the frequency of trips at each time of the day for the borough, stratified by the day of the week:
+6. Теперь, когда данные запроса сохранены в переменной `results` как DataFrame, воспользуйся библиотекой Matplotlib для визуализации количества поездок по времени суток в указанном районе с разбивкой по дням недели:
 
    ```python
    fig, ax = plt.subplots(figsize=(10, 6))
@@ -106,14 +106,14 @@ Now that you’ve defined how the asset can be materialized, let’s create the 
    plt.tight_layout()
    ```
 
-7. Lastly, save the report to the destination file specified by the `file_path` variable you declared earlier:
+7. Наконец, сохрани отчёт в целевой файл, указанный в ранее объявленной переменной `file_path`:
 
    ```python
    plt.savefig(file_path)
    plt.close(fig)
    ```
 
-Verify that `requests.py` file looks like the code below:
+Убедись, что файл `requests.py` выглядит как следующий код:
 
 ```python
 # src/dagster_essentials/defs/assets/requests.py
@@ -193,3 +193,5 @@ def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource) -> None:
     plt.savefig(file_path)
     plt.close(fig)
 ```
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
