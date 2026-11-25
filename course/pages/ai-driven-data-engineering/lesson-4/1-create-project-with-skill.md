@@ -1,34 +1,34 @@
 ---
-title: "Lesson 4: Create a new project (with the skill)"
+title: 'Урок 4: Создание проекта со скиллом'
 module: 'ai_driven_data_engineering'
 lesson: '4'
 ---
 
-# Create a new project (with the skill)
+# Создание проекта со скиллом
 
-Before you start, open your AI coding agent in an **empty folder** where you want the project to live. The agent will scaffold the `university/` directory inside it. If you followed along in Lesson 2 and created a `university/` project there, delete that folder first — Lesson 4 creates a fresh one with the skill active.
+Перед началом открой агента программирования в **пустом каталоге**, в котором должен находиться проект. Агент создаст внутри него каталог `university/`. Если ты выполнял урок 2 и уже создал там проект `university/`, удали или перенеси этот учебный каталог: в уроке 4 создаётся новый проект с активным скиллом.
 
-We’ll start by using the same prompts as before but now we will use the `dagster-expert` skill. Our goal is the same, scaffold a project and add three assets that load CSVs into DuckDB, but with skill-driven behavior and `dg` at the center.
+Начнём с тех же промптов, что и раньше, но теперь используем скилл `dagster-expert`. Цель не изменилась: создать структуру проекта и добавить три ассета, загружающих CSV в DuckDB, но теперь скилл направляет работу, а центральную роль играет `dg`.
 
-## Scaffold the project with the skill
+## Создание структуры проекта со скиллом
 
-Use the skill-prefixed prompt:
+Используй промпт с префиксом скилла:
 
 ```text
 /dagster-expert create a new Dagster project called university
 ```
 
-![With 1](/images/ai-driven-data-engineering/lesson-4/with-1.png)
+![Со скиллом: первый запрос](/images/ai-driven-data-engineering/lesson-4/with-1.png)
 
-With the skill, the agent uses the latest recommended project creation command. This time around we can see that it uses the project creation CLI:
+Со скиллом агент использует рекомендованную команду создания проекта. На этот раз видно, что он применяет CLI создания проектов:
 
 ```bash
 uvx create-dagster project university --uv-sync
 ```
 
-![With 2](/images/ai-driven-data-engineering/lesson-4/with-2.png)
+![Со скиллом: создание проекта](/images/ai-driven-data-engineering/lesson-4/with-2.png)
 
-This time you will get a modern layout (e.g. `src/university/`, `pyproject.toml`, `uv`) instead of the older `dagster project scaffold` flat layout that was inferred by the agent.
+Теперь ты получишь современную структуру (например, `src/university/`, `pyproject.toml`, `uv`) вместо старой плоской структуры `dagster project scaffold`, которую агент выбрал самостоятельно.
 
 ```text
 tree university/src/university
@@ -41,11 +41,11 @@ tree university/src/university
     └── resources.py
 ```
 
-At first glance the result may look similar to a new project created without the skill but the structure and tooling are the ones Dagster recommends today. And using `dg` this way will help ensure that our subsequent steps can be executed within the context of a structured Dagster project.
+На первый взгляд результат может выглядеть похоже на новый проект без скилла, но структура и инструменты соответствуют рекомендациям Dagster. Использование `dg` таким образом помогает выполнять последующие шаги в контексте структурированного проекта Dagster.
 
-## Add the three assets with the skill
+## Добавление трёх ассетов со скиллом
 
-Next we'll ask for the same three assets with `dagster-expert`.
+Далее попросим создать те же три ассета с помощью `dagster-expert`.
 
 ```text
 /dagster-expert create 3 assets in the university Dagster project that load data into DuckDB tables for the following external files:
@@ -55,47 +55,47 @@ https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/s
 https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_payments.csv
 ```
 
-![With 3](/images/ai-driven-data-engineering/lesson-4/with-3.png)
+![Со скиллом: запрос на создание ассетов](/images/ai-driven-data-engineering/lesson-4/with-3.png)
 
-The skill again steers the agent toward `dg` and our opinionated project layout from the first step. Instead of simply writing code based on guesses, the agent will perform a series of CLI commands to solve the primary issues of the prompt:
+Скилл снова направляет агента к `dg` и рекомендованной структуре проекта из первого шага. Вместо написания кода на основе догадок агент выполнит ряд команд CLI для решения основных задач промпта:
 
-- Dependency management
-- Scaffolding and business Logic
-- Validation
+- Управление зависимостями.
+- Создание заготовок и бизнес-логика.
+- Валидация.
 
-1. Dependencies: the agent sees that DuckDB is needed and adds it via the project’s package manager, e.g. Dagster works with any package manager, but by default `dg` and Dagster use `uv` for dependency management. This solves one of the primary hurdles of Python development and its cryptic and varied way to handle package management.
+1. Зависимости: агент понимает, что необходим DuckDB, и добавляет его через менеджер пакетов проекта. Dagster работает с любым менеджером пакетов, но по умолчанию `dg` и Dagster используют `uv` для управления зависимостями. Это решает одну из основных проблем разработки на Python — разнообразие и неочевидность способов управления пакетами.
 
    ```bash
    uv add dagster-duckdb
    ```
 
-   ![With 4](/images/ai-driven-data-engineering/lesson-4/with-4.png)
+   ![Со скиллом: зависимости](/images/ai-driven-data-engineering/lesson-4/with-4.png)
 
-2. Scaffolding and Business Logic: after the dependencies are set, the agent can scaffold the additional files necessary. Instead of inventing file locations, the agent uses `dg` so files land where the project expects:
+2. Создание заготовок и бизнес-логика: после настройки зависимостей агент может создать заготовки необходимых файлов. Вместо самостоятельного выбора расположения он использует `dg`, чтобы файлы оказались там, где их ожидает проект:
 
    ```bash
    dg scaffold defs dagster.asset assets/raw_data.py
    ```
 
-   ![With 5](/images/ai-driven-data-engineering/lesson-4/with-5.png)
+   ![Со скиллом: заготовки](/images/ai-driven-data-engineering/lesson-4/with-5.png)
 
-   That keeps definitions in the right place and reduces the context the agent needs to guess. It can then add code specific to our prompt here and only here. This makes it much easier to verify for the agent and for the developers.
+   Это сохраняет определения в правильных местах и уменьшает объём контекста, который агенту приходится восстанавливать по догадкам. Затем он может добавить код, относящийся к нашему промпту, именно в эти файлы. Так результат гораздо проще проверять и агенту, и разработчикам.
 
-3. Validation: finally after editing, the agent can confirm that definitions load and are valid (without running business logic):
+3. Валидация: после редактирования агент может убедиться, что определения загружаются и корректны (без выполнения бизнес-логики):
 
    ```bash
    dg check defs
    ```
 
-   ![With 6](/images/ai-driven-data-engineering/lesson-4/with-6.png)
+   ![Со скиллом: проверка определений](/images/ai-driven-data-engineering/lesson-4/with-6.png)
 
-   These checks are fast and inexpensive. This makes it easier to do larger changes in small, verifiable steps and provide a much easier feedback loop for the agent.
+   Эти проверки быстры и недороги. Они упрощают выполнение крупных изменений небольшими проверяемыми шагами и обеспечивают удобную обратную связь для агента.
 
-   Your agent may use a different validation command, such as `uv run dg list defs`. If it does, ask it explicitly to run `dg check defs` -- that command is the most reliable way to confirm definitions load correctly.
+   Твой агент может использовать другую команду проверки, например `uv run dg list defs`. Если это произойдёт, явно попроси выполнить `dg check defs` — это наиболее надёжный способ убедиться в корректной загрузке определений.
 
-## How this works with skills
+## Как это работает со скиллами
 
-But how is the skill influencing all of this? Since skills are structured documents that explain how work should be accomplished, we can find this bit of information within the skill library (`skills/dagster-expert/skills/dagster-expert/references/project-structure.md`)
+Но как именно скилл влияет на происходящее? Поскольку скиллы — структурированные документы, объясняющие порядок работы, соответствующие инструкции можно найти в библиотеке скилла (`skills/dagster-expert/skills/dagster-expert/references/project-structure.md`):
 
 ```text
 ## Creating and Scaffolding Projects
@@ -115,12 +115,14 @@ dg check defs
 dg dev
 ```
 
-This minimal amount of additional context provides the agent with the correct order of steps. Notice what the agent doesn't have to load: no full schema, no API docs, no project layout docs. Each command returns a compact response: an exit code and a few lines of output. This is the CLI efficiency discussed earlier and why CLIs provide such a good interface for AI workflows. The agent gets exactly what it needs, when it needs it, rather than pulling in broad context upfront.
+Этот небольшой объём дополнительного контекста задаёт агенту правильную последовательность шагов. Обрати внимание, что агенту не нужно загружать полную схему, документацию API или документацию о структуре проекта. Каждая команда возвращает компактный ответ: код завершения и несколько строк вывода. В этом и заключается рассмотренная ранее эффективность CLI. Агент получает ровно то, что ему нужно, в нужный момент, вместо предварительной загрузки обширного контекста.
 
-## Resulting layout
+## Итоговая структура
 
-After scaffolding and adding the three assets with the skill, the project might look like:
+После создания заготовки и добавления трёх ассетов со скиллом проект может выглядеть так:
 
-![Project layout with the skill](/images/ai-driven-data-engineering/lesson-4/project-with-skills.png)
+![Структура проекта со скиллом](/images/ai-driven-data-engineering/lesson-4/project-with-skills.png)
 
-So you get a defs-based layout: assets under `defs/assets/`, shared resources in `defs/resources.py`, and a single `definitions.py` that wires everything together. This matches how `dg` and the Dagster Expert skill expect a project to be structured and makes it easier to add more assets, jobs, and schedules later.
+В итоге получается структура на основе defs: ассеты в `defs/assets/`, общие ресурсы в `defs/resources.py` и единый `definitions.py`, объединяющий всё вместе. Это соответствует ожиданиям `dg` и скилла Dagster Expert и упрощает дальнейшее добавление ассетов, заданий и расписаний.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

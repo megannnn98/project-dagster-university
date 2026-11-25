@@ -1,47 +1,49 @@
 ---
-title: "Lesson 4: Reviewing agent output"
+title: 'Урок 4: Проверка результатов работы агента'
 module: 'ai_driven_data_engineering'
 lesson: '4'
 ---
 
-# Reviewing agent output
+# Проверка результатов работы агента
 
-## What `dg check defs` does and doesn't catch
+## Что проверяет и чего не проверяет dg check defs
 
-`dg check defs` validates the definitions layer in the Dagster project: assets are correctly decorated, resources are registered, schedules reference valid jobs. If a definition fails to load, it reports an error with a traceback. Having a quick feedback loop is very handy but doesn't catch everything.
+`dg check defs` проверяет слой определений проекта Dagster: правильность декораторов ассетов, регистрацию ресурсов, ссылки расписаний на существующие задания. Если определение не загружается, команда сообщает об ошибке со стеком вызовов. Быстрая обратная связь очень удобна, но она не выявляет все проблемы.
 
-`dg check defs` doesn't check:
-- Whether the logic inside an asset function is correct
-- Whether the code follows the project's conventions (the factory pattern, the DuckDB path structure)
-- Whether the agent changed files you didn't intend it to change
-- Whether values are hardcoded when they should come from resources or env vars
+`dg check defs` не проверяет:
+- Корректность логики внутри функции ассета.
+- Соответствие кода соглашениям проекта (фабричному шаблону, структуре путей DuckDB).
+- Не изменил ли агент файлы, которые не следовало менять.
+- Не заданы ли значения непосредственно в коде, когда они должны поступать из ресурсов или переменных окружения.
 
-## Having the agent execute and troubleshoot
+## Запуск и устранение ошибок агентом
 
-When using Dagster skills, the agent will use `dg check defs` quite often. That is because the operation is so quick and can help the agent ensure everything looks good before moving on to more expensive steps.
+При использовании скиллов Dagster агент будет часто выполнять `dg check defs`. Операция настолько быстрая, что помогает убедиться в корректности определений перед переходом к более дорогим шагам.
 
-![Agent flow 1](/images/ai-driven-data-engineering/lesson-4/agent-flow-1.png)
+![Рабочий процесс агента: проверка](/images/ai-driven-data-engineering/lesson-4/agent-flow-1.png)
 
-After you have code that passes `dg check defs`, you can ask the agent to run the newly created code.
+Когда код проходит `dg check defs`, можно попросить агента выполнить только что созданный код.
 
 ```text {% obfuscated="true" %}
 /dagster-expert Run the three raw assets and confirm they materialize without errors.
 ```
 
-Because the agent will launch everything from `dg`, it will have access to all of the logs and output of the execution. This way it will be able to tell if code can execute successfully.
+Поскольку агент запускает всё через `dg`, ему доступны журналы и вывод выполнения. Так он сможет определить, выполняется ли код успешно.
 
-![Agent flow 2](/images/ai-driven-data-engineering/lesson-4/agent-flow-2.png)
+![Рабочий процесс агента: запуск](/images/ai-driven-data-engineering/lesson-4/agent-flow-2.png)
 
-If there is an error while executing the code, it can take the same iterative approach of editing code, ensuring `dg check defs` and executing the code until the run is successful.
+Если во время выполнения возникает ошибка, агент может использовать тот же итеративный подход: редактировать код, проверять его через `dg check defs` и выполнять снова, пока запуск не завершится успешно.
 
-![Agent flow 3](/images/ai-driven-data-engineering/lesson-4/agent-flow-3.png)
+![Рабочий процесс агента: устранение ошибок](/images/ai-driven-data-engineering/lesson-4/agent-flow-3.png)
 
-## Comparing against the reference implementation
+## Сравнение с эталонной реализацией
 
-If you want to see one way the lesson code can look, the course repository includes a completed reference implementation for each lesson with code:
+Если хочешь увидеть один из возможных вариантов кода урока, в репозитории курса имеется готовая эталонная реализация для каждого урока, содержащего код:
 
 ```
 dagster_university/ai_driven_data_engineering/src/ai_driven_data_engineering/completed/lesson_4/
 ```
 
-Because AI-generated code is non-deterministic, your output will not match the reference exactly. The agent may choose different variable names, structure files differently, or use slightly different patterns. That is expected. The reference is a sanity check, not a specification. What matters is that `dg check defs` passes, the assets materialize, and the code does what you asked for.
+Поскольку генерируемый ИИ код недетерминирован, твой результат не будет точно совпадать с эталоном. Агент может выбрать другие имена переменных, иначе организовать файлы или использовать немного другие шаблоны. Это нормально. Эталон — средство проверки здравого смысла, а не спецификация. Важно, чтобы `dg check defs` проходила успешно, ассеты материализовались, а код выполнял поставленную задачу.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,28 +1,28 @@
 ---
-title: "Lesson 4: Debugging"
+title: 'Урок 4: Отладка'
 module: 'ai_driven_data_engineering'
 lesson: '4'
 ---
 
-# Debugging
+# Отладка
 
-Skills aren't only useful for greenfield builds. They are also your first line of defense when something breaks. And things will break as you are developing.
+Скиллы полезны не только при разработке с нуля. Они также являются первой линией защиты, когда что-то ломается. А в процессе разработки ошибки неизбежны.
 
-When that happens, the skill's understanding of Dagster's abstractions means the agent looks in the right place rather than trying random fixes that can introduce additional errors.
+В таких ситуациях знание абстракций Dagster, предоставляемое скиллом, позволяет агенту искать причину в правильном месте вместо случайных исправлений, способных породить дополнительные ошибки.
 
-## Hitting a runtime error
+## Ошибка во время выполнения
 
-Suppose you run the three raw assets and see:
+Допустим, ты запускаешь три исходных ассета и видишь:
 
 ```bash
 _duckdb.IOException: IO Error: Cannot open file "/data/jaffle_shop.duckdb": No such file or directory
 ```
 
-The code assumed a DuckDB database path that doesn't exist on your machine. The agent may have written an absolute path that worked in its context but not in yours (a common failure mode for AI-generated path handling). You need to fix the path and ensure the parent directory gets created.
+Код предполагает путь к базе DuckDB, которого нет на твоём компьютере. Агент мог записать абсолютный путь, работавший в его контексте, но не в твоём (типичная ошибка обработки путей в сгенерированном ИИ коде). Нужно исправить путь и обеспечить создание родительского каталога.
 
-## Debugging with the skill
+## Отладка со скиллом
 
-Ask the agent to debug with the skill active:
+Попроси агента выполнить отладку с активным скиллом:
 
 ```text {% obfuscated="true" %}
 /dagster-expert The raw assets are failing with this error:
@@ -30,13 +30,13 @@ _duckdb.IOException: IO Error: Cannot open file "/data/jaffle_shop.duckdb": No s
 Debug and fix the issue.
 ```
 
-The skill gives the agent a better picture of Dagster's abstractions. In particular, the agent knows that connection configuration lives in `resources`, not inline in asset functions. Rather than searching every file for a path string, the agent goes directly to the DuckDB resource, identifies the misconfigured database path, and fixes it in the right place.
+Скилл даёт агенту лучшее представление об абстракциях Dagster. В частности, агент знает, что конфигурация подключения находится в ресурсах, а не непосредственно в функциях ассетов. Вместо поиска строки пути во всех файлах агент сразу обращается к ресурсу DuckDB, определяет неправильно настроенный путь к базе и исправляет его в нужном месте.
 
-It can also launch the assets and tail logs to confirm the error before fixing it, so it's working from evidence rather than guessing.
+Он также может запустить ассеты и просмотреть последние записи журналов, чтобы подтвердить ошибку перед исправлением и опираться на факты, а не догадки.
 
-## Example fix
+## Пример исправления
 
-The agent updates the resource definition to use a path relative to the project and ensures the parent directory exists at startup:
+Агент обновляет определение ресурса, используя путь относительно проекта, и обеспечивает существование родительского каталога при запуске:
 
 ```python
 from pathlib import Path
@@ -57,6 +57,8 @@ def resources():
     )
 ```
 
-Previously the resource might have used `database="data/jaffle_shop.duckdb"` (relative to wherever the process runs) or an absolute path like `/data/jaffle_shop.duckdb`. The fix uses `Path(__file__).parents[4]` to anchor the path to the project directory regardless of where the process is invoked. With the skill, the agent is more likely to fix the right place (the resource) and use a robust path pattern rather than patching the asset function directly.
+Ранее ресурс мог использовать `database="data/jaffle_shop.duckdb"` (путь относительно рабочего каталога процесса) или абсолютный путь вроде `/data/jaffle_shop.duckdb`. Исправление использует `Path(__file__).parents[4]`, чтобы привязать путь к каталогу проекта независимо от места запуска процесса. Число уровней родителей должно соответствовать фактической структуре проекта. Со скиллом агент с большей вероятностью исправит нужное место (ресурс) и воспользуется надёжным шаблоном работы с путями вместо изменения непосредственно функции ассета.
 
-**Branch Deployments**: When you work in a team or with CI, you often want to try changes in an isolated environment before merging. Dagster+ supports [branch deployments](https://docs.dagster.io/deployment/dagster-plus/deploying-code/branch-deployments) where each branch gets its own deployment so you can run and debug pipelines after the agent makes changes without affecting production. The workflow (build with the skill and `dg`, validate with `dg check defs`, run and debug in a branch deployment) fits naturally with AI-driven iteration where you're making frequent, incremental changes.
+**Развёртывания веток (Branch Deployments):** при работе в команде или с CI часто требуется испытать изменения в изолированном окружении перед слиянием. Dagster+ поддерживает [развёртывания веток](https://docs.dagster.io/deployment/dagster-plus/deploying-code/branch-deployments), при которых каждая ветка получает собственное развёртывание. Это позволяет запускать и отлаживать пайплайны после изменений агента, не затрагивая production. Такой рабочий процесс (разработка со скиллом и `dg`, проверка через `dg check defs`, запуск и отладка в развёртывании ветки) естественно вписывается в итеративную разработку с ИИ, когда изменения небольшие и частые.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

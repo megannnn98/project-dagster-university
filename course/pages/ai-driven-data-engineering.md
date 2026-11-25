@@ -23,14 +23,14 @@ title: AI-Driven Data Engineering
   - [Cursor](/ai-driven-data-engineering/lesson-3/3-cursor)
   - [GitHub Copilot](/ai-driven-data-engineering/lesson-3/4-github-copilot)
 
-- Lesson 4: Building with the Dagster skill
-  - [Overview](/ai-driven-data-engineering/lesson-4/0-overview)
-  - [Create a new project (with the skill)](/ai-driven-data-engineering/lesson-4/1-create-project-with-skill)
-  - [Debugging](/ai-driven-data-engineering/lesson-4/2-debugging)
-  - [Dagster features](/ai-driven-data-engineering/lesson-4/3-dagster-features)
-  - [Reviewing agent output](/ai-driven-data-engineering/lesson-4/4-reviewing-agent-output)
-  - [Debugging strategies](/ai-driven-data-engineering/lesson-4/5-debugging-strategies)
-  - [Writing effective prompts](/ai-driven-data-engineering/lesson-4/6-writing-effective-prompts)
+- Урок 4: Разработка со скиллом Dagster
+  - [Обзор](/ai-driven-data-engineering/lesson-4/0-overview)
+  - [Создание проекта со скиллом](/ai-driven-data-engineering/lesson-4/1-create-project-with-skill)
+  - [Отладка](/ai-driven-data-engineering/lesson-4/2-debugging)
+  - [Возможности Dagster: автоматизация](/ai-driven-data-engineering/lesson-4/3-dagster-features)
+  - [Проверка результатов работы агента](/ai-driven-data-engineering/lesson-4/4-reviewing-agent-output)
+  - [Стратегии отладки](/ai-driven-data-engineering/lesson-4/5-debugging-strategies)
+  - [Написание эффективных промптов](/ai-driven-data-engineering/lesson-4/6-writing-effective-prompts)
 
 - Lesson 5: Integrations, Components, and AI
   - [Overview](/ai-driven-data-engineering/lesson-5/0-overview)
