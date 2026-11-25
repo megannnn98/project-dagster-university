@@ -1,32 +1,34 @@
 ---
-title: "Lesson 3: Triggering partitions"
+title: 'Урок 3: Запуск партиций'
 module: 'dagster_etl'
 lesson: '3'
 ---
 
-# Triggering partitions
+# Запуск партиций
 
-The question of how to automate your pipelines largely depends on how your data arrives. At a high level, there are two main strategies: scheduled and event-driven execution.
+Выбор способа автоматизации пайплайнов во многом зависит от того, как поступают данные. На высоком уровне существуют две основные стратегии: выполнение по расписанию и выполнение по событиям.
 
-## Scheduled ETL
-Scheduled ETL pipelines run at fixed intervals. This works well for data that arrives consistently. For example, if a file is uploaded every morning at 5:00 AM, you might schedule your ETL process to run at 5:15 AM (supplying a small buffer).
+## ETL по расписанию
 
-Scheduling is a simple and very common with ETL. It's easy to set up, reliable, and integrates cleanly with most orchestration tools. However, it lacks nuance. What if the file arrives late, say at 5:45 AM? Unless you’ve implemented proper alerting, your pipeline might fail silently. Even with alerts, you'd need to manually verify when file has actually arrived and trigger an ad-hoc run to process it.
+ETL-пайплайны по расписанию выполняются через фиксированные интервалы. Это хорошо подходит для данных, поступающих регулярно. Например, если файл загружается каждое утро в 5:00, можно запланировать ETL-процесс на 5:15, оставив небольшой запас времени.
 
-## Event-driven ETL
-Event-driven pipelines are triggered by a change in state, such as the arrival of a new file itself. In this model, the timing of the file’s arrival doesn’t matter (5:00 AM, 5:45 AM, 8:00 AM...). The detecting a new file is what triggers the pipeline.
+Выполнение по расписанию — простой и распространённый подход к ETL. Он легко настраивается, надёжен и хорошо интегрируется с большинством оркестраторов. Однако ему не хватает гибкости. Что произойдёт, если файл поступит с опозданием, например в 5:45? Без надлежащих уведомлений сбой пайплайна может остаться незамеченным. Даже при наличии уведомлений придётся вручную проверить поступление файла и инициировать разовый запуск для его обработки.
 
-This approach is more flexible and responsive, but it comes with additional complexity. You need a way to track state, so the system knows which files have already been processed and which ones are new. Without this, you risk duplicate processing or missed data.
+## Событийный ETL
 
-## Scheduling in Dagster
+Событийные пайплайны запускаются при изменении состояния, например при появлении нового файла. В этой модели неважно, когда поступил файл (в 5:00, 5:45 или 8:00). Именно обнаружение нового файла запускает пайплайн.
 
-Our two partitioned pipelines can demonstrate the differences between these two strategies. The time-based partitioned assets fit a schedule while the dynamic partitioned assets will use a sensor (which is Dagster's way to handle event driven architectures).
+Этот подход гибче и быстрее реагирует на изменения, но требует дополнительной сложности. Нужен способ отслеживания состояния, чтобы система знала, какие файлы уже обработаны, а какие являются новыми. Иначе возможны повторная обработка или пропуск данных.
 
-## Implementing schedules
+## Автоматизация в Dagster
 
-For our scheduled pipeline, we’ll use the assets associated with the `DailyPartitionsDefinition` partition. As a reminder, this partition definition requires a specific date (e.g., "2018-01-22") for the asset to execute.
+Наши два партиционированных пайплайна демонстрируют различия между стратегиями. Ассеты с партициями по времени подходят для расписания, а ассеты с динамическими партициями будут использовать сенсор — механизм Dagster для событийных архитектур.
 
-Because we're using Dagster’s built-in `DailyPartitionsDefinition` class to generate a fixed pattern of daily partitions, Dagster can automatically create a corresponding schedule for us. All we need to do is provide the job we want to run and define the cadence at which it should run. Dagster will handle generating the appropriate partition key for each execution:
+## Реализация расписаний
+
+Для пайплайна по расписанию используем ассеты, связанные с определением партиций `DailyPartitionsDefinition`. Напомним: для выполнения ассета такое определение требует конкретной даты (например, "2018-01-22").
+
+Поскольку встроенный класс Dagster `DailyPartitionsDefinition` генерирует регулярный набор дневных партиций, Dagster может автоматически создать соответствующее расписание. Достаточно передать задание, которое нужно выполнять, и определить периодичность. Dagster сам сформирует подходящий ключ партиции для каждого запуска:
 
 ```python
 import dagster as dg
@@ -38,15 +40,15 @@ asset_partitioned_schedule = dg.build_schedule_from_partitioned_job(
 )
 ```
 
-This makes it simple to set up reliable, automated ETL for any use case where data arrives on a regular schedule.
+Это упрощает настройку надёжного автоматического ETL для любых сценариев регулярного поступления данных.
 
-## Implementing Event-driven
+## Реализация событийного выполнения
 
-As mentioned earlier, event-driven pipelines are a bit more complex because they require maintaining state, specifically knowing which data has already been processed and which is new. The good news is that Dagster handles most of the complexity around state management through an abstraction called sensors.
+Как уже упоминалось, событийные пайплайны немного сложнее, поскольку требуют хранения состояния: необходимо знать, какие данные уже обработаны, а какие являются новыми. Хорошая новость в том, что Dagster берёт на себя большую часть сложностей управления состоянием благодаря абстракции сенсоров.
 
-Sensors in Dagster allow you to monitor external systems, like cloud storage, and trigger pipeline runs when new data is detected. They are particularly useful when working with dynamic partitions, where the set of valid partition keys is not always known.
+Сенсоры Dagster позволяют отслеживать внешние системы, например облачное хранилище, и инициировать запуски пайплайна при обнаружении новых данных. Они особенно полезны при работе с динамическими партициями, для которых набор допустимых ключей не всегда известен заранее.
 
-Here’s an example of what a sensor might look like for a dynamically partitioned asset. First we will define the job:
+Вот пример сенсора для ассета с динамическими партициями. Сначала определим задание:
 
 ```python
 # src/dagster_and_etl/defs/jobs.py
@@ -63,7 +65,7 @@ import_dynamic_partition_job = dg.define_asset_job(
 )
 ```
 
-Then we can define the sensor:
+Затем определим сенсор:
 
 ```python
 # src/dagster_and_etl/defs/sensors.py
@@ -108,19 +110,21 @@ def dynamic_sensor(context: dg.SensorEvaluationContext) -> dg.SensorResult:
     )
 ```
 
-The code above does the following:
+Приведённый код:
 
-1. Defines a sensor using the `dg.sensor` decorator for our `import_dynamic_partition_job` job.
-2. Sets the current state from the `context` of the sensor. This determines the history of what the sensor has already processed.
-3. Iterates through the files in the `data/sources` directory and determines if there are any new files since the last time the sensor ran.
-4. Executes the `import_dynamic_partition_job` for any new files that have been added.
+1. Определяет сенсор с помощью декоратора `dg.sensor` для задания `import_dynamic_partition_job`.
+2. Получает текущее состояние из `context` сенсора. Оно отражает историю уже обработанных сенсором данных.
+3. Перебирает файлы в каталоге `data/sources` и определяет, появились ли новые файлы с момента последнего выполнения сенсора.
+4. Инициирует выполнение `import_dynamic_partition_job` для всех добавленных файлов.
 
-Now if we enable this sensor, it will trigger executions for all three files in the `data/sources` directory.
+Если теперь включить сенсор, он инициирует выполнение для всех трёх файлов каталога `data/sources`.
 
-Event-driven pipelines like this can be more resilient and responsive, but they come with some important considerations.
+Такие событийные пайплайны могут быть устойчивее и быстрее реагировать на изменения, но важно учитывать несколько обстоятельств.
 
-First, you need access to the system where state is being checked. In our example, this isn’t an issue since we’re monitoring the local file system. But what if the files lived in a remote system where we don’t have full read access? That could limit our ability to detect changes reliably.
+Во-первых, нужен доступ к системе, состояние которой проверяется. В нашем примере проблем нет, поскольку наблюдение ведётся за локальной файловой системой. Но если файлы находятся в удалённой системе, к которой нет полного доступа на чтение, возможности надёжного обнаружения изменений могут быть ограничены.
 
-You also need to ensure that your sensor logic is efficient. For example, if you’re reading from an S3 bucket containing thousands of files, your sensor would need to query the entire bucket each time it runs. To mitigate this, it's often better to include logic that filters files by a specific prefix or folder path, reducing the scope of each scan.
+Также необходимо обеспечить эффективность логики сенсора. Например, при чтении бакета S3 с тысячами файлов сенсору пришлось бы опрашивать весь бакет при каждом выполнении. Чтобы избежать этого, часто лучше фильтровать файлы по конкретному префиксу или пути каталога, уменьшая область каждого сканирования.
 
-Finally, consider what happens when a sensor is enabled for the first time. Because sensors typically detect anything that hasn’t already been processed, the initial run can trigger a large number of events, potentially attempting to process everything at once.
+Наконец, подумай о том, что произойдёт при первом включении сенсора. Поскольку сенсоры обычно обнаруживают всё, что ещё не обработано, первое выполнение может инициировать множество событий, пытаясь обработать всё сразу.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

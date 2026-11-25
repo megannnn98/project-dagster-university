@@ -1,15 +1,17 @@
 ---
-title: "Lesson 5: dlt"
+title: 'Урок 5: dlt'
 module: 'dagster_etl'
 lesson: '5'
 ---
 
 # dlt
 
-One ETL framework we’re particularly excited about is [data load tool (dlt)](https://dlthub.com/docs/intro). dlt is an open-source, lightweight Python library designed to simplify data loading. It takes care of many of the more tedious aspects of ETL, including schema management, data type handling, and normalization, so you can focus on what matters most.
+Один из особенно интересных ETL-фреймворков — [data load tool (dlt)](https://dlthub.com/docs/intro). dlt — легковесная библиотека Python с открытым исходным кодом, предназначенная для упрощения загрузки данных. Она берёт на себя многие трудоёмкие аспекты ETL, включая управление схемами, обработку типов данных и нормализацию, чтобы ты мог сосредоточиться на наиболее важных задачах.
 
-dlt supports a wide range of popular sources and destinations, which means you can move data between systems without having to build and maintain all the supporting infrastructure yourself. While it still gives you the flexibility to handle custom or complex data workflows, it eliminates much of the boilerplate code you'd otherwise need to write, making your pipelines cleaner, more maintainable, and faster to develop.
+dlt поддерживает широкий набор популярных источников и целевых систем, поэтому можно перемещать данные между системами без самостоятельного создания и сопровождения всей вспомогательной инфраструктуры. Библиотека сохраняет гибкость при реализации сложных или нестандартных рабочих процессов, устраняя большую часть шаблонного кода. В результате пайплайны становятся проще, удобнее в сопровождении и быстрее в разработке.
 
 ![dlt](/images/dagster-etl/lesson-5/dlt.png)
 
-Let's look at a simple dlt example.
+Рассмотрим простой пример dlt.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

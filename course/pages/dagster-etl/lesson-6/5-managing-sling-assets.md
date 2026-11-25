@@ -1,27 +1,27 @@
 ---
-title: "Lesson 6: Executing the pipeline"
+title: 'Урок 6: Выполнение пайплайна'
 module: 'dagster_etl'
 lesson: '6'
 ---
 
-# Executing the pipeline
+# Выполнение пайплайна
 
-We’ve defined all the assets we need, but we haven’t yet discussed how we want to execute this pipeline. When running data replication in production, there are a few important considerations to keep in mind.
+Мы определили все необходимые ассеты, но ещё не обсудили, как выполнять пайплайн. При репликации данных в рабочем окружении важно учитывать несколько обстоятельств.
 
-## Triggering our job
+## Запуск задания
 
-First, let’s consider the best way to trigger our ETL assets. While some ETL tools, like Debezium, support continuous data loading, most are schedule-based.
+Сначала рассмотрим, как лучше запускать ETL-ассеты. Некоторые ETL-инструменты, например Debezium, поддерживают непрерывную загрузку данных, однако большинство работает по расписанию.
 
-Choosing the right schedule can be nuanced. Depending on how the data is extracted (which we’ll cover later), running schedules too frequently may be inefficient. For example, if you attempt to run a job multiple times per minute, one execution might not finish before the next one starts—this can lead to a backup and degraded performance.
+Выбор подходящего расписания имеет свои нюансы. В зависимости от способа извлечения данных (мы рассмотрим это далее) слишком частые запуски могут быть неэффективными. Например, при попытке запускать задание несколько раз в минуту одно выполнение может не успевать завершиться до начала следующего. Это может приводить к накоплению очереди и снижению производительности.
 
-On the other hand, if your schedules are too far apart, you risk missing timely updates and working with stale data. In practice, running your schedules a few times per day, based on data volume and business needs, is often a good balance.
+С другой стороны, если интервалы между запусками слишком велики, можно пропустить своевременные обновления и работать с устаревшими данными. На практике несколько запусков в день, с учётом объёма данных и требований бизнеса, часто являются разумным компромиссом.
 
-Creating a schedule for our Sling ETL assets is no different than defining any other schedule in Dagster. Suppose we want to run two schedules:
+Создание расписания для ETL-ассетов Sling ничем не отличается от создания других расписаний в Dagster. Допустим, нам нужны два расписания:
 
-* One that refreshes all Sling assets once a day
-* Another that refreshes the orders asset three times a day
+* Одно обновляет все ассеты Sling раз в день.
+* Другое обновляет ассет orders три раза в день.
 
-We’d define two separate jobs:
+Определим два отдельных задания:
 
 ```python
 # src/dagster_and_etl/defs/jobs.py
@@ -44,7 +44,7 @@ orders_refresh_job = dg.define_asset_job(
 )
 ```
 
-Then we can create two distinct schedules with different cron expressions:
+Затем можно создать два отдельных расписания с различными выражениями cron:
 
 ```python
 # src/dagster_and_etl/defs/schedules.py
@@ -59,26 +59,26 @@ orders_refresh_schedule = dg.ScheduleDefinition(
 )
 ```
 
-With these schedules in place, all ETL assets will refresh at 6 UTC, and the orders asset will additionally refresh at 12 and 18 UTC.
+При такой настройке все ETL-ассеты будут обновляться в 6:00 UTC, а ассет orders дополнительно — в 12:00 и 18:00 UTC.
 
-## Replication Strategies
+## Стратегии репликации
 
-We haven’t yet discussed how data is replicated with Sling. If you’ve looked at the `replication.yaml` file, you may have noticed that the default mode is set to `full-refresh`:
+Мы ещё не обсуждали, как Sling реплицирует данные. Если ты посмотрел файл `replication.yaml`, возможно, заметил, что по умолчанию задан режим `full-refresh`:
 
 ```yaml
 defaults:
   mode: full-refresh
 ```
 
-This is the same as the full refresh strategy we discussed about earlier where the entire table is copied over every time. For the small database we’re using, this is fine. However, as data volumes grow, you may want to switch to a more efficient replication strategy.
+Это стратегия полного обновления, которую мы рассмотрели ранее: каждый раз копируется вся таблица. Для небольшой учебной базы это нормально. Однако при росте объёма данных можно переключиться на более эффективную стратегию.
 
-Sling does not offer a full CDC solution but we can still manage replication with fairly large databases by using incremental replication.
+Sling не предоставляет полноценного решения CDC, но с помощью инкрементальной репликации можно работать с довольно большими базами данных.
 
-Let’s think about our schema. Of the three tables, customers, products, and orders, which is most likely to grow the largest? The orders table. This makes sense: a single user may place many orders, and each order can involve multiple products.
+Рассмотрим нашу схему. Какая из трёх таблиц — customers, products и orders — скорее всего вырастет сильнее всего? Таблица orders. Это логично: один пользователь может размещать множество заказов, каждый из которых может включать несколько товаров.
 
-Another important characteristic of the orders table is the presence of a time-based column, order_date, which tracks when an order was created. We can use this column to filter the records we need to process during each run.
+Другая важная особенность таблицы orders — наличие столбца времени order_date, фиксирующего момент создания заказа. Его можно использовать для фильтрации записей, обрабатываемых при каждом запуске.
 
-To do this, we can configure the `replication.yaml` file to make orders an incremental asset, using the order_date column to track changes:
+Для этого настроим файл `replication.yaml` так, чтобы orders стал инкрементально обновляемым ассетом, а для отслеживания изменений использовался столбец order_date:
 
 ```yaml
   data.orders:
@@ -87,6 +87,8 @@ To do this, we can configure the `replication.yaml` file to make orders an incre
     update_key: order_date
 ```
 
-With this configuration, Sling will only process new or updated records based on the order_date, reducing data load and improving performance.
+При такой конфигурации Sling будет обрабатывать только новые или обновлённые записи, обнаруживаемые по order_date, сокращая объём загрузки и повышая производительность. Изменения, не отражённые в этом столбце, такая схема сама по себе не обнаружит.
 
-Incremental replication is just one of [many strategies supported by Sling](https://docs.slingdata.io/examples/database-to-database). Regardless of the tool you use, it's important to select a replication approach that fits your data's characteristics and your system's requirements.
+Инкрементальная репликация — лишь одна из [многих стратегий, поддерживаемых Sling](https://docs.slingdata.io/examples/database-to-database). Независимо от выбранного инструмента важно подобрать стратегию репликации, соответствующую характеристикам данных и требованиям системы.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,15 +1,17 @@
 ---
-title: "Lesson 7: Overview"
+title: 'Урок 7: Обзор'
 module: 'dagster_etl'
 lesson: '7'
 ---
 
-# Overview
+# Обзор
 
-We’ve now covered a wide range of ETL use cases, from static files and APIs to database replication. Interestingly, as our pipelines have grown more complex, our code has actually become simpler. That’s thanks to the thoughtful abstractions provided by tools like dlt, Sling and Dagster.
+Мы рассмотрели широкий спектр сценариев ETL: от статических файлов и API до репликации баз данных. Интересно, что по мере усложнения пайплайнов наш код становился проще. Это заслуга продуманных абстракций, предоставляемых такими инструментами, как dlt, Sling и Dagster.
 
-The last topic we’ll cover is [Dagster Components](https://docs.dagster.io/guides/build/components/). So far, we’ve seen how Dagster can work with frameworks like dlt and Sling to build robust pipelines. However, coordinating across frameworks can be difficult. You have to initialize configurations with different CLIs, manage configurations and know how everything connects.
+Последняя тема, которую мы рассмотрим, — [компоненты Dagster (Dagster Components)](https://docs.dagster.io/guides/build/components/). До сих пор мы видели, как Dagster может взаимодействовать с фреймворками dlt и Sling для построения надёжных пайплайнов. Однако координация разных фреймворков может быть сложной: приходится инициализировать конфигурации через разные CLI, управлять настройками и понимать, как всё связано.
 
-In order to simplify this development process, Dagster unifies this all within components. Their goal is to make developing these types of integrations much easy and reduce the amount of code users are responsible for maintaining.
+Чтобы упростить процесс разработки, Dagster объединяет всё это в компонентах. Их цель — облегчить разработку подобных интеграций и сократить количество кода, который пользователи должны сопровождать.
 
-In this section we will redefine the Sling integration from the previous lesson with components.
+В этом разделе мы переопределим интеграцию Sling из предыдущего урока с помощью компонентов.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

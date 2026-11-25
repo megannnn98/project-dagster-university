@@ -1,57 +1,59 @@
 ---
-title: "Lesson 6: Sling database replication set up"
+title: 'Урок 6: Настройка репликации баз данных с Sling'
 module: 'dagster_etl'
 lesson: '6'
 ---
 
-# Sling database replication set up
+# Настройка репликации баз данных с Sling
 
-For this course, we’ll keep things lightweight by using a simple Postgres database with a basic schema and a few rows of sample data, just enough to confirm that everything is working correctly.
+В этом курсе для простоты используем базу Postgres с базовой схемой и несколькими строками тестовых данных — достаточно, чтобы убедиться в корректной работе.
 
-One of the easiest ways to spin up a temporary database is with [Docker](https://www.docker.com/). We’ve provided a pre-configured Docker Compose file that starts a Postgres container and automatically seeds it with data.
+Один из самых простых способов запустить временную базу данных — [Docker](https://www.docker.com/). Мы предоставили готовый файл Docker Compose, который запускает контейнер Postgres и автоматически наполняет его данными.
 
-To get started, run the following command:
+Для начала выполни команду:
 
 ```bash
 docker compose -f tests/docker-compose.yaml up -d
 ```
 
-**Note:** The first time you run this command, Docker may need to download the required image, so it could take a few minutes.
+**Примечание:** при первом выполнении Docker может потребоваться скачать необходимый образ, поэтому запуск может занять несколько минут.
 
-This Docker Compose will launch a Postgres instance and populate it with a small schema containing a few sample tables and rows, perfect for development and testing.
+Docker Compose запустит экземпляр Postgres и заполнит его небольшой схемой с несколькими тестовыми таблицами и строками, подходящими для разработки и тестирования.
 
 `data.customers`
-| Column        | Type         | Description                             |
-|---------------|--------------|-----------------------------------------|
-| customer_id   | `SERIAL`     | Primary key, auto-incrementing ID       |
-| first_name    | `VARCHAR(100)` | Customer's first name                  |
-| last_name     | `VARCHAR(100)` | Customer's last name                   |
-| email         | `VARCHAR(255)` | Unique email address                   |
+| Столбец | Тип | Описание |
+| --- | --- | --- |
+| customer_id | `SERIAL` | Первичный ключ, автоматически увеличиваемый идентификатор |
+| first_name | `VARCHAR(100)` | Имя клиента |
+| last_name | `VARCHAR(100)` | Фамилия клиента |
+| email | `VARCHAR(255)` | Уникальный адрес электронной почты |
 
 `data.products`
-| Column        | Type             | Description                             |
-|---------------|------------------|-----------------------------------------|
-| product_id    | `SERIAL`         | Primary key, auto-incrementing ID       |
-| name          | `VARCHAR(255)`   | Name of the product                     |
-| description   | `TEXT`           | Product description                     |
-| price         | `DECIMAL(10, 2)` | Product price with two decimal places   |
+| Столбец | Тип | Описание |
+| --- | --- | --- |
+| product_id | `SERIAL` | Первичный ключ, автоматически увеличиваемый идентификатор |
+| name | `VARCHAR(255)` | Название товара |
+| description | `TEXT` | Описание товара |
+| price | `DECIMAL(10, 2)` | Цена товара с двумя знаками после запятой |
 
 `data.orders`
-| Column        | Type              | Description                                              |
-|---------------|-------------------|----------------------------------------------------------|
-| order_id      | `SERIAL`          | Primary key, auto-incrementing ID                        |
-| customer_id   | `INTEGER`         | Foreign key referencing `data.customers(customer_id)`    |
-| product_id    | `INTEGER`         | Foreign key referencing `data.products(product_id)`      |
-| quantity      | `INTEGER`         | Quantity of product ordered, defaults to 1               |
-| total_amount  | `DECIMAL(10, 2)`  | Total price for the order                                |
-| order_date    | `TIMESTAMP`       | Timestamp of the order, defaults to current time         |
+| Столбец | Тип | Описание |
+| --- | --- | --- |
+| order_id | `SERIAL` | Первичный ключ, автоматически увеличиваемый идентификатор |
+| customer_id | `INTEGER` | Внешний ключ, ссылающийся на `data.customers(customer_id)` |
+| product_id | `INTEGER` | Внешний ключ, ссылающийся на `data.products(product_id)` |
+| quantity | `INTEGER` | Количество заказанного товара, по умолчанию 1 |
+| total_amount | `DECIMAL(10, 2)` | Общая стоимость заказа |
+| order_date | `TIMESTAMP` | Время заказа, по умолчанию текущее время |
 
-The specifics of the schema aren’t critical for our purposes, we just need some sample data to replicate and, most importantly, the connection details for the Postgres database running in Docker:
+Особенности схемы для нас не так важны. Нам нужны тестовые данные для репликации и, главное, параметры подключения к базе Postgres, работающей в Docker:
 
-| Field             | Value              |
-|------------------|---------------------|
-| **Host**         | `localhost`         |
-| **Port**         | `5432`              |
-| **Database**     | `test_db`           |
-| **Username**     | `test_user`         |
-| **Password**     | `test_pass`         |
+| Параметр | Значение |
+| --- | --- |
+| **Host** | `localhost` |
+| **Port** | `5432` |
+| **Database** | `test_db` |
+| **Username** | `test_user` |
+| **Password** | `test_pass` |
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

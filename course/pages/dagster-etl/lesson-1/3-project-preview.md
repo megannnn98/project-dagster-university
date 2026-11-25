@@ -1,19 +1,21 @@
 ---
-title: "Lesson 1: Project preview"
+title: 'Урок 1: Знакомство с проектом'
 module: 'dbt_etl'
 lesson: '1'
 ---
 
-# Project preview
+# Знакомство с проектом
 
-In this course, we’ll focus on ETL and how to manage data ingestion using Dagster. All of the examples will walk through real-world ETL workflows you're likely to encounter, covering a variety of data sources and the unique challenges they present.
+В этом курсе мы сосредоточимся на ETL и управлении загрузкой данных с помощью Dagster. Все примеры посвящены реальным сценариям ETL, с которыми ты можешь столкнуться, и охватывают разные источники данных и характерные для них сложности.
 
-By the end of the course, you will:
+К концу курса ты научишься:
 
-- Create scheduled and event-driven pipelines to ingest files
-- Build a custom resource to pull data from an external API
-- Use the dlt integration to build more resilient ingestion pipelines
-- Replicate data across databases
-- Refactor your code using Dagster Components for better modularity and reuse
+- Создавать пайплайны загрузки файлов по расписанию и по событиям.
+- Создавать собственный ресурс для получения данных из внешнего API.
+- Использовать интеграцию dlt для построения более устойчивых пайплайнов загрузки.
+- Реплицировать данные между базами.
+- Рефакторить код с помощью компонентов Dagster для повышения модульности и повторного использования.
 
-If you get stuck or want to jump ahead, check out the [finished project here on GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_and_etl).
+Если возникнут трудности или захочется забежать вперёд, посмотри [готовый проект на GitHub](https://github.com/dagster-io/project-dagster-university/tree/main/dagster_university/dagster_and_etl).
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

@@ -1,16 +1,16 @@
 ---
-title: "Lesson 4: Triggering API jobs"
+title: 'Урок 4: Запуск заданий API'
 module: 'dagster_etl'
 lesson: '4'
 ---
 
-# Triggering API jobs
+# Запуск заданий API
 
-This development is following the same pattern as the previous lesson, we’ve built a pipeline that can be run ad hoc to load data into DuckDB. However, in many cases, we’ll want to automate this process to keep data up to date without manual intervention.
+Мы следуем тому же шаблону, что и в предыдущем уроке: построили пайплайн, который можно запускать по необходимости для загрузки данных в DuckDB. Однако во многих случаях нужно автоматизировать этот процесс, чтобы поддерживать актуальность данных без ручного вмешательства.
 
-Since everything we’ve built so far is time-based and revolves around daily extracts, using a schedule is the most appropriate way to automate the pipeline.
+Поскольку всё, что мы построили, привязано ко времени и ежедневному извлечению данных, наиболее подходящий способ автоматизации пайплайна — использование расписания.
 
-Let’s start by creating a simple job that includes the three assets we’ve defined in this pipeline. Once the job is in place, we’ll attach a daily schedule to trigger it automatically:
+Начнём с создания простого задания, включающего три определённых нами ассета. Затем добавим ежедневное расписание для его автоматического запуска:
 
 ```python
 # src/dagster_and_etl/defs/jobs.py
@@ -26,13 +26,13 @@ asteroid_job = dg.define_asset_job(
 )
 ```
 
-We’ll use the job we just defined in our schedule. The first question to answer is when the schedule should execute. Since our assets are designed to process data for the previous day, it makes sense to run the schedule early in the morning, once the day has fully passed, let’s say around 6:00 AM.
+В расписании используем только что определённое задание. Первый вопрос — когда должно выполняться расписание? Поскольку ассеты предназначены для обработки данных предыдущего дня, разумно запускать расписание рано утром, когда день уже полностью завершился, например около 6:00.
 
-We avoid running the pipeline too close to midnight to ensure the data has had time to fully populate. As with all API-based workflows, you’ll want to understand the behavior and latency of your specific source system before finalizing this timing.
+Мы избегаем запуска слишком близко к полуночи, чтобы данные успели поступить в полном объёме. Как и в любых рабочих процессах на основе API, перед окончательным выбором времени необходимо понимать поведение и задержки конкретного источника данных.
 
-This schedule will be similar to those we’ve written previously, with one key difference: it needs to supply a run configuration to the job. Fortunately, Dagster provides access to the execution time of the schedule, which we can use to dynamically generate the date for the run configuration.
+Это расписание будет похоже на написанные ранее, с одним ключевым отличием: оно должно передавать конфигурацию запуска заданию. К счастью, Dagster предоставляет доступ к времени выполнения расписания, которое можно использовать для динамического формирования даты в конфигурации запуска.
 
-Add the following schedule to the `schedules.py`:
+Добавь следующее расписание в файл `schedules.py`:
 
 ```python
 # src/dagster_and_etl/defs/schedules.py
@@ -53,4 +53,6 @@ def date_range_schedule(context):
     )
 ```
 
-Now the pipeline is automated and will run every morning at fetch the previous days data.
+Теперь пайплайн автоматизирован и будет выполняться каждое утро, получая данные за предыдущий день.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

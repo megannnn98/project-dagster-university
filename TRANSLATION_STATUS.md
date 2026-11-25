@@ -8,7 +8,7 @@
 | --- | --- |
 | Dagster Essentials | Все 10 уроков, итоговый проект и дополнительный раздел: переведена 71 учебная страница, включая общие страницы установки и Dagster Skills |
 | Dagster & dbt | Переведены все 38 отдельных страниц, включая уведомление об устаревании и итоговый проект; с четырьмя общими страницами — 42 страницы оглавления, 8 уроков |
-| Dagster & ETL | Перевод всех страниц подготовлен в [PR #6](https://github.com/megannnn98/project-dagster-university/pull/6); ещё не включён в main |
+| Dagster & ETL | Все 8 уроков переведены: 35 отдельных страниц курса и 4 общие страницы, всего 39 из 39 страниц оглавления |
 | Testing with Dagster | Не начат |
 | AI-driven Data Engineering | Не начат |
 
@@ -65,6 +65,23 @@
 | Translator (dbt) | Транслятор |
 | Staging model | Staging-модель |
 | Full refresh | Полное обновление |
+| --- | --- |
+| ETL | Извлечение, преобразование, загрузка |
+| Data warehouse | Хранилище данных |
+| Data lake | Озеро данных |
+| Ingestion | Загрузка данных |
+| Replication | Репликация |
+| Incremental replication | Инкрементальная репликация |
+| Change Data Capture (CDC) | Захват изменений данных (CDC) |
+| Schema inference | Автоматическое определение схемы |
+| Translator | Транслятор |
+| Composability | Компонуемость |
+| Source asset | Исходный ассет |
+| Rolling window | Скользящее окно |
+| Rate limit | Ограничение частоты запросов |
+| Asset check | Проверка ассета |
+| Idempotence | Идемпотентность |
+| Event-driven execution | Событийное выполнение |
 
 Термин asset переводится как «ассет» с соответствующим склонением.
 

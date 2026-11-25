@@ -1,11 +1,13 @@
 ---
-title: "Lesson 4: Overview"
+title: 'Урок 4: Обзор'
 module: 'dagster_etl'
 lesson: '4'
 ---
 
-# Overview
+# Обзор
 
-Now that we’ve covered CSV-based ingestion, let’s move on to another common pattern: loading data from an API. We’ll continue using the same destination (DuckDB) but introduce some new Dagster functionality to fetch data from an external API, apply light processing, and load the results into the database. This pattern is useful when working with third-party services, public datasets, or internal APIs that expose structured data for integration.
+Теперь, когда мы рассмотрели загрузку CSV, перейдём к другому распространённому шаблону: загрузке данных из API. Мы продолжим использовать прежнее место назначения (DuckDB), но познакомимся с новыми возможностями Dagster, чтобы получать данные из внешнего API, немного обрабатывать их и загружать результат в базу данных. Этот шаблон полезен при работе со сторонними сервисами, общедоступными наборами данных или внутренними API, предоставляющими структурированные данные для интеграции.
 
-![API ETL](/images/dagster-etl/lesson-4/api-etl.png)
+![ETL через API](/images/dagster-etl/lesson-4/api-etl.png)
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
