@@ -39,13 +39,13 @@ title: Dagster ETL
   - [Рефакторинг загрузки статических данных с dlt](/dagster-etl/lesson-5/4-refactoring-static-data-with-dlt)
   - [Рефакторинг API с dlt](/dagster-etl/lesson-5/5-refactoring-apis-with-dlt)
 
-- Lesson 6: Database replication
-  - [Overview](/dagster-etl/lesson-6/0-overview)
-  - [Database replication](/dagster-etl/lesson-6/1-database-replication)
+- Урок 6: Репликация баз данных
+  - [Обзор](/dagster-etl/lesson-6/0-overview)
+  - [Репликация баз данных](/dagster-etl/lesson-6/1-database-replication)
   - [Sling](/dagster-etl/lesson-6/2-sling)
-  - [Sling database replication set up](/dagster-etl/lesson-6/3-sling-database-replication-set-up)
-  - [Dagster and Sling](/dagster-etl/lesson-6/4-dagster-and-sling)
-  - [Managing Sling assets](/dagster-etl/lesson-6/5-managing-sling-assets)
+  - [Настройка репликации баз данных с Sling](/dagster-etl/lesson-6/3-sling-database-replication-set-up)
+  - [Dagster и Sling](/dagster-etl/lesson-6/4-dagster-and-sling)
+  - [Выполнение пайплайна](/dagster-etl/lesson-6/5-managing-sling-assets)
 
 - Lesson 7: ETL with Components
   - [Overview](/dagster-etl/lesson-7/0-overview)
