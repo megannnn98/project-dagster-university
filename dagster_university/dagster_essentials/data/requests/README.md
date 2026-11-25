@@ -1,18 +1,18 @@
-# Requests
+# Запросы
 
-This directory simulates a request system in the sensors portion of Dagster University. By creating a "request" file in this directory, your Dagster project will automatically pick up the request and run the pipeline with the parameters specified in the request.
+Этот каталог имитирует систему запросов из раздела о сенсорах Dagster University. При создании файла запроса в этом каталоге проект Dagster автоматически обнаружит запрос и запустит пайплайн с указанными в нём параметрами, если сенсор включён.
 
-The pipeline stored the results in the `data/results` directory.
+Пайплайн сохраняет результаты в каталог `data/results` (см. примечание ниже).
 
-## How it Works
+## Как это работает
 
-Create a new request by adding a file to this directory. The file has to be a valid JSON file with the following fields:
+Создай новый запрос, добавив файл в этот каталог. Файл должен содержать корректный JSON со следующими полями:
 
-- `start_date`: The beginning of the range of inquiry, in the format `YYYY-MM-DD`
-- `end_date`: The end of the range of inquiry, in the format `YYYY-MM-DD`
-- `borough`: The borough to query; one of `Manhattan`, `Brooklyn`, `Queens`, `Bronx`, or `Staten Island`
+- `start_date`: начало диапазона дат запроса в формате `YYYY-MM-DD`.
+- `end_date`: конец диапазона дат запроса в формате `YYYY-MM-DD`.
+- `borough`: район для анализа; одно из значений: `Manhattan`, `Brooklyn`, `Queens`, `Bronx` или `Staten Island`.
 
-Here is a sample request:
+Пример запроса:
 
 ```json
 {
@@ -22,4 +22,8 @@ Here is a sample request:
 }
 ```
 
-Assuming that the file is named `january-staten-island.json`, the result of the pipeline will be stored in `data/results/january-staten-island.json`.
+Если файл называется `january-staten-island.json`, то, согласно исходному README, результат пайплайна будет сохранён в `data/results/january-staten-island.json`.
+
+**Примечание:** путь и формат результата в исходном README расходятся с описанием урока 9, где указан каталог `data/outputs` и отчёт в виде диаграммы. При выполнении упражнения ориентируйся на фактическую реализацию актива и константы проекта.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

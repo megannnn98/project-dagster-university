@@ -1,12 +1,12 @@
-# Testing with Dagster
+# Тестирование с Dagster
 
-## Overview
+## Обзор
 
-Learn how to write tests in Python and apply them to Dagster. In this course, you'll learn how to write unit, mock and integration tests in the context of Dagster and the best practices to ensure high quality for your Dagster project.
+Научись писать тесты на Python и применять их в Dagster. В этом курсе ты освоишь написание модульных тестов, тестов с имитациями (mock) и интеграционных тестов в контексте Dagster, а также лучшие практики обеспечения качества проекта.
 
-## Completed code
+## Готовый код
 
-Most of this module involves running tests with [`pytest`](https://docs.pytest.org/en/stable/). The code you will be testing is located within `dagster_testing`. The tests are in `tests`. Each lesson has its own file for tests.
+Большая часть курса посвящена запуску тестов с помощью [`pytest`](https://docs.pytest.org/en/stable/). Тестируемый код находится в `dagster_testing`, а тесты — в `tests`. У каждого урока свой файл тестов.
 
 ```
 tests
@@ -16,7 +16,7 @@ tests
 └── test_lesson_6.py
 ```
 
-The completed tests are located within a subdirectory `completed`.
+Готовые тесты находятся в подкаталоге `completed`.
 
 ```
 tests
@@ -27,12 +27,14 @@ tests
     └── test_lesson_6.py
 ```
 
-## Dagster UI
+## Интерфейс Dagster
 
-You should not need to use the UI for this module but if you want to see Dagster objects you can execute.
+В этом курсе интерфейс не потребуется. Но если ты хочешь посмотреть объекты Dagster, выполни:
 
 ```bash
 dg dev
 ```
 
-Open http://localhost:3000 with your browser to see the project.
+Открой http://localhost:3000 в браузере, чтобы увидеть проект.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

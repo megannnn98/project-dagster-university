@@ -1,16 +1,18 @@
-Welcome to your new dbt project!
+Добро пожаловать в новый проект dbt!
 
-### Using the starter project
+### Использование стартового проекта
 
-Try running the following commands:
+Попробуй выполнить следующие команды:
 
 - dbt run
 - dbt test
 
-### Resources:
+### Ресурсы
 
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+- Узнай больше о dbt [в документации](https://docs.getdbt.com/docs/introduction).
+- Посмотри [Discourse](https://discourse.getdbt.com/), где собраны распространённые вопросы и ответы.
+- Присоединяйся к [чату](https://community.getdbt.com/) в Slack для обсуждений и поддержки.
+- Найди ближайшие [мероприятия dbt](https://events.getdbt.com).
+- Читай [блог](https://blog.getdbt.com/), чтобы следить за развитием dbt и лучшими практиками.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._

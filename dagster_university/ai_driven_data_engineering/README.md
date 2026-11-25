@@ -1,18 +1,20 @@
-# AI-driven data engineering
+# Инженерия данных с ИИ
 
-Completed project for the AI-driven data engineering course.
+Готовый проект курса по инженерии данных с ИИ.
 
-## Local development with MinIO (S3)
+## Локальная разработка с MinIO (S3)
 
-The project uses S3 for exporting `fct_orders` (e.g. via Sling) and for asset checks. To run a local MinIO instance:
+Проект использует S3 для экспорта `fct_orders` (например, через Sling) и проверок активов. Чтобы запустить локальный экземпляр MinIO:
 
-1. Start MinIO and create the `test-bucket` bucket:
+1. Запусти MinIO и создай бакет `test-bucket`:
    ```bash
    docker compose up -d
    ```
 
-2. Set S3 credentials and endpoint (e.g. copy from `.env.example` to `.env`):
+2. Задай учётные данные и адрес S3 (например, скопировав `.env.example` в `.env`):
    ```bash
    cp .env.example .env
    ```
-   Then run `dg dev` (or your Dagster command) from this directory; it will read `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_ENDPOINT_URL_S3` from the environment.
+   Затем выполни `dg dev` (или свою команду Dagster) из этого каталога. Она прочитает переменные окружения `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` и `AWS_ENDPOINT_URL_S3`.
+
+_Русский перевод оригинального материала Dagster University; текст изменён при переводе._
