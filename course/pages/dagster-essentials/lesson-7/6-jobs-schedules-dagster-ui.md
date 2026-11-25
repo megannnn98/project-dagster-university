@@ -41,14 +41,14 @@ lesson: '7'
 
 {% table %}
 
-- Просмотр активов задания
+- Просмотр ассетов задания
 
 ---
 
 - {% width="60%" %}
-  Выбрав конкретное задание, ты увидишь граф активов, входящих в него.
+  Выбрав конкретное задание, ты увидишь граф ассетов, входящих в него.
 
-- ![Граф активов trip_update_job в интерфейсе Dagster](/images/dagster-essentials/lesson-7/ui-trip-update-job-asset-graph.png) {% rowspan=2 %}
+- ![Граф ассетов trip_update_job в интерфейсе Dagster](/images/dagster-essentials/lesson-7/ui-trip-update-job-asset-graph.png) {% rowspan=2 %}
 
 {% /table %}
 

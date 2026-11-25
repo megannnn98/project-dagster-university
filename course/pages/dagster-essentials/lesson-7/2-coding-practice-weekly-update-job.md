@@ -6,7 +6,7 @@ lesson: '7'
 
 # Практика: создание weekly_update_job
 
-Чтобы закрепить изученное, добавь в `src/dagster_essentials/defs/jobs.py` задание, материализующее актив `trips_by_week`.
+Чтобы закрепить изученное, добавь в `src/dagster_essentials/defs/jobs.py` задание, материализующее ассет `trips_by_week`.
 
 ---
 
